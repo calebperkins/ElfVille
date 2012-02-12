@@ -1,0 +1,7 @@
+.settings/*
+*.class
+*~
+*.lock
+*.DS_STORE
+*.swp
+*.out
