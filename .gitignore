@@ -1,0 +1,3 @@
+*.class
+.buildpath
+.settings/
