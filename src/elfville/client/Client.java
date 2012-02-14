@@ -1,34 +1,51 @@
 package elfville.client;
 
+import java.awt.*;
 import javax.swing.*;
+import elfville.client.views.*;
 
 /**
  * Main entry point for client.
- * 
- * @author caleb
- * 
+ * @author Caleb Perkins
+ *
  */
-public class Client extends JFrame {
+public class Client {
 
-	private static final long serialVersionUID = 2917659626432208915L;
+	private JFrame frame;
 
-	public Client() {
-		setTitle("ElfVille");
-		setSize(800, 600);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Client window = new Client();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	/**
-	 * @param args
+	 * Create the application.
 	 */
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				Client ex = new Client();
-				ex.setVisible(true);
-			}
-		});
+	public Client() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame("ElfVille");
+		frame.setBounds(100, 100, 800, 600);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
+		
+		frame.add(new LoginPanel());
 	}
 
 }
