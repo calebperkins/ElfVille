@@ -8,9 +8,9 @@ import elfville.server.model.Post;
  */
 public class CentralBoardControl extends Controller{
 
-	public static GetCentralBoardOut getPosts(GetCentralBoardIn inM) {
+	public static GetCentralBoardResponse getPosts(GetCentralBoardRequest inM) {
 		database.postDB.printPosts();
-		GetCentralBoardOut outM = new GetCentralBoardOut();
+		GetCentralBoardResponse outM = new GetCentralBoardResponse();
 		outM.secret = "Valentine's day surprise!";
 		return outM;
 	}

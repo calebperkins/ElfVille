@@ -1,6 +1,6 @@
 package elfville.protocol;
 
-public class GetCentralBoardOut extends Message {
+public class GetCentralBoardRequest extends Message {
 
 	/**
 	 * 

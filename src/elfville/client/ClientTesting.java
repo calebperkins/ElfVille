@@ -11,13 +11,13 @@ public class ClientTesting {
 		ObjectInputStream ois = null;
 		try {
 			// open a socket connection
-			Socket socket = new Socket("Heran-Yangs-MacBook-Pro.local", 8444);
+			Socket socket = new Socket("localhost", 8444);
 			// open I/O streams for objects
 			oos = new ObjectOutputStream(socket.getOutputStream());
 			ois = new ObjectInputStream(socket.getInputStream());
 
 			for (int i = 0; i < 50; i++) {
-				Message outMessage = new GetCentralBoardIn();
+				Message outMessage = new GetCentralBoardRequest();
 
 				// write the objects to the server
 				oos.writeObject(outMessage);

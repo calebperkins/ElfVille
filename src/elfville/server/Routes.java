@@ -7,8 +7,8 @@ public class Routes {
 
 	public static Message processRequest(Message m) {
 		if (m.getType() == "" || true) {
-			GetCentralBoardIn inM = (GetCentralBoardIn) m;
-			GetCentralBoardOut outM = CentralBoardControl.getPosts(inM);
+			GetCentralBoardRequest inM = (GetCentralBoardRequest) m;
+			GetCentralBoardResponse outM = CentralBoardControl.getPosts(inM);
 			return outM;
 		}
 		return m;
