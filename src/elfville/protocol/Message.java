@@ -11,6 +11,7 @@ import java.io.Serializable;
 public abstract class Message implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String type;
+	public String secret; // TODO: delete! for testing only!
 	
 	public Message() {
 		type = this.getClass().getName();
@@ -19,4 +20,5 @@ public abstract class Message implements Serializable {
 	public String getType() {
 		return type;
 	}
+	
 }
