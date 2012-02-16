@@ -26,11 +26,11 @@ public class SocketController {
 		System.out.println(send(new GetCentralBoardRequest()).secret);
 	}
 	
-	private static ResponseMessage write(Message req) throws IOException {
+	private static Response write(Message req) throws IOException {
 		out.writeObject(req);
 		out.flush();
 		try {
-			return (ResponseMessage) in.readObject();
+			return (Response) in.readObject();
 		} catch (ClassNotFoundException e) {
 			return null;
 		}
