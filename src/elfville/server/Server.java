@@ -1,6 +1,8 @@
 package elfville.server;
 
 import java.net.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.io.*;
 
 import elfville.server.controller.Controller;
@@ -23,13 +25,15 @@ public class Server {
         // Read database from Disk
         // Database.db = new Database("OnDiskLocation");
         
+        ExecutorService pool = Executors.newCachedThreadPool();
+        
         System.out.println("Server now listening...");
         
         // Support Multiple Clients
         while (listening) {
         	// Socket acceptedSocket = serverSocket.accept();
         	// System.out.println("Accepted a cennection from: " + acceptedSocket.getInetAddress());
-        	new ServerThread(serverSocket.accept()).start();
+        	pool.execute(new ServerThread(serverSocket.accept()));
         }
 
         serverSocket.close();
