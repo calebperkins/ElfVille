@@ -23,6 +23,8 @@ public class Server {
         // Read database from Disk
         // Database.db = new Database("OnDiskLocation");
         
+        System.out.println("Server now listening...");
+        
         // Support Multiple Clients
         while (listening) {
         	// Socket acceptedSocket = serverSocket.accept();

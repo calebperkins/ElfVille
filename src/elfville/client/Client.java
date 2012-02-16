@@ -34,6 +34,13 @@ public class Client {
 	 */
 	public Client() {
 		initialize();
+		try {
+			//SocketController.initialize();
+			//ClientTesting.main(null);
+		} catch (Exception e) {
+			System.err.println("Could not open socket connection. Exiting.");
+			System.exit(-1);
+		}
 	}
 
 	/**
