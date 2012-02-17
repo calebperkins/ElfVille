@@ -19,7 +19,7 @@ public class Server {
         }
 
         // Initialize database
-        Controller.database = new Database();
+        Database.DB = new Database();
         // Read database from Disk
         // Database.db = new Database("OnDiskLocation");
         
