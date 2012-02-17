@@ -34,6 +34,12 @@ public class Client {
 	 */
 	public Client() {
 		initialize();
+		try {
+			SocketController.initialize();	
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(frame, "Could not establish connection to server. Exiting.", "Connection error", JOptionPane.ERROR_MESSAGE);;
+			System.exit(-1);
+		}
 	}
 
 	/**

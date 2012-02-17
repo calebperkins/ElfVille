@@ -1,4 +1,4 @@
 package elfville.protocol;
 
-public class SignUpResponse extends ResponseMessage {
+public class SignUpResponse extends Response {
 }

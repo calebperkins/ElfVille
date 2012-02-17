@@ -7,7 +7,7 @@ import java.io.*;
 
 import elfville.protocol.Message;
 
-public class ServerThread extends Thread {
+public class ServerThread implements Runnable {
 	private Socket clientSocket;
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
@@ -25,9 +25,9 @@ public class ServerThread extends Thread {
 			}
 			return;
 		}
-		this.start();
 	}
 
+	@Override
 	public void run() {
 		while (true) {
 			try {
