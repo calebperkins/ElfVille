@@ -1,7 +1,5 @@
 package elfville.client.views;
 
-import java.util.List;
-
 import javax.swing.*;
 
 /**
@@ -10,6 +8,7 @@ import javax.swing.*;
  *
  */
 public class CentralBoard extends JPanel {
+	private static final long serialVersionUID = 1L;
 	private JLabel title;
 	//private List<Post> posts;
 

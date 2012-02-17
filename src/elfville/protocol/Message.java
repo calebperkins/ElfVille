@@ -21,4 +21,13 @@ public abstract class Message implements Serializable {
 		return type;
 	}
 	
+	/**
+	 * Helper to determine what class something is.
+	 * @param klass the class to check
+	 * @return true if the given argument is equal to the type of this class
+	 */
+	public boolean isA(Class<?> klass) {
+		return type.equals(klass.getName());
+	}
+	
 }

@@ -7,7 +7,7 @@ public class Routes {
 
 	public static Message processRequest(Message m) {
 		
-		if (m.getType().equals(GetCentralBoardRequest.class.getName())) {
+		if (m.isA(GetCentralBoardRequest.class)) {
 			GetCentralBoardRequest inM = (GetCentralBoardRequest) m;
 			GetCentralBoardResponse outM = CentralBoardControl.getPosts(inM);
 			return outM;

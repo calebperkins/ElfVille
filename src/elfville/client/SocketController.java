@@ -37,4 +37,16 @@ public class SocketController {
 	public static GetCentralBoardResponse send(GetCentralBoardRequest req) throws IOException {
 		return (GetCentralBoardResponse) write(req);
 	}
+	
+	public static SignInResponse send(SignInRequest req) throws IOException {
+		return (SignInResponse) write(req);
+	}
+	
+	public static SignUpResponse send(SignUpRequest req) throws IOException {
+		return (SignUpResponse) write(req);
+	}
+	
+	public static CreatePostResponse send(CreatePostRequest req) throws IOException {
+		return (CreatePostResponse) write(req);
+	}
 }
