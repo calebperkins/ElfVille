@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.UnknownHostException;
+
 import elfville.protocol.*;
 
 /**
@@ -16,14 +18,10 @@ public class SocketController {
 	private static ObjectOutputStream out;
 	private static ObjectInputStream in;
 	
-	public static void initialize() throws Exception {
+	public static void initialize() throws UnknownHostException, IOException {
 		socket = new Socket("localhost", 8444);
-		//socket.setSoTimeout(5000);
 		out = new ObjectOutputStream(socket.getOutputStream());
 		in = new ObjectInputStream(socket.getInputStream());
-		
-		// Just for testing, remove me later
-		System.out.println(send(new GetCentralBoardRequest()).secret);
 	}
 	
 	private static Response write(Message req) throws IOException {
@@ -32,7 +30,7 @@ public class SocketController {
 		try {
 			return (Response) in.readObject();
 		} catch (ClassNotFoundException e) {
-			return null;
+			return null; // shouldn't happen?
 		}
 	}
 
