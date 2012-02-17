@@ -25,7 +25,7 @@ public class ClientTesting {
 				// read an object from the server
 				Message inMessage = (Message) ois.readObject();
 
-				System.out.println("The secret is: " + inMessage.secret);
+				System.out.println("The secret is: " + inMessage.getType() + inMessage.secret);
 				
 				Thread.sleep(1000L);
 			}

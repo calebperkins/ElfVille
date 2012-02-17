@@ -6,7 +6,8 @@ import elfville.server.controller.CentralBoardControl;
 public class Routes {
 
 	public static Message processRequest(Message m) {
-		if (m.getType() == "" || true) {
+		
+		if (m.getType().equals(GetCentralBoardRequest.class.getName())) {
 			GetCentralBoardRequest inM = (GetCentralBoardRequest) m;
 			GetCentralBoardResponse outM = CentralBoardControl.getPosts(inM);
 			return outM;
