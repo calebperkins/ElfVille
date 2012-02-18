@@ -5,7 +5,7 @@ import java.net.*;
 
 import java.io.*;
 
-import elfville.protocol.Message;
+import elfville.protocol.*;
 
 public class ServerThread implements Runnable {
 	private Socket clientSocket;
@@ -31,8 +31,8 @@ public class ServerThread implements Runnable {
 	public void run() {
 		while (true) {
 			try {
-				Message inMessage = (Message) ois.readObject();
-				Message outMessage = Routes.processRequest(inMessage);
+				Request inMessage = (Request) ois.readObject();
+				Response outMessage = Routes.processRequest(inMessage);
 				oos.writeObject(outMessage);
 				oos.flush();
 			} catch (Exception e) {

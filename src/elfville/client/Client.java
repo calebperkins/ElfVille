@@ -37,8 +37,7 @@ public class Client {
 		try {
 			SocketController.initialize();	
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(frame, "Could not establish connection to server. Exiting.", "Connection error", JOptionPane.ERROR_MESSAGE);;
-			System.exit(-1);
+			showConnectionError(frame);
 		}
 	}
 
@@ -52,6 +51,15 @@ public class Client {
 		//frame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
 		
 		frame.add(new LoginPanel());
+	}
+	
+	/**
+	 * Used when a socket error occurs. Shows an alert dialog.
+	 * @param c
+	 */
+	public static void showConnectionError(Component c) {
+		JOptionPane.showMessageDialog(c, "Socket connection broke. Try again.", "Connection error", JOptionPane.ERROR_MESSAGE);
+		System.exit(-1);
 	}
 
 }

@@ -1,6 +1,5 @@
 package elfville.protocol;
 
-public class CreatePostRequest extends Request {
+public abstract class Request extends Message {
 	private static final long serialVersionUID = 1L;
-	public SerializablePost post;
 }

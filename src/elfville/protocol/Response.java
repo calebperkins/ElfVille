@@ -8,5 +8,5 @@ public abstract class Response extends Message {
 		FAILURE
 	}
 	
-	public Status status;
+	public Status status = Status.FAILURE;
 }

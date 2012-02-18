@@ -2,6 +2,7 @@ package elfville.client.views;
 
 import javax.swing.*;
 
+import elfville.client.Client;
 import elfville.client.SocketController;
 import elfville.protocol.*;
 
@@ -63,8 +64,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 			SignInResponse m = SocketController.send(req);
 			System.out.println(m.secret);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			Client.showConnectionError(this);
 		}
 	}
 
