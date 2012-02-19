@@ -1,6 +1,10 @@
 package elfville.client.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.*;
+import elfville.protocol.*;
 
 /**
  * Renders the central board using the central board request.
@@ -9,22 +13,27 @@ import javax.swing.*;
  */
 public class CentralBoard extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private JLabel title;
-	//private List<Post> posts;
+	private final JLabel title = new JLabel("Central Board");
+	private final List<Post> posts = new ArrayList<Post>();
 
 	/**
 	 * Create the panel.
 	 */
-	public CentralBoard(elfville.protocol.GetCentralBoardResponse response) {
+	public CentralBoard() {
 		super();
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		title = new JLabel("Central Board");
-		title.setHorizontalAlignment(SwingConstants.CENTER);
-		
 		add(title);
+	}
+	
+	public void load(GetCentralBoardResponse response) {
+		for (Post p : posts) {
+			remove(p);
+		}
+		posts.clear();
 		
-		for (elfville.protocol.SerializablePost post : response.getPosts()) {
-			add(new Post(post));
+		for (SerializablePost post : response.getPosts()) {
+			Post p = new Post(post);
+			posts.add(p);
+			add(p);
 		}
 	}
 

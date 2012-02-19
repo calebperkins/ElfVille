@@ -24,7 +24,7 @@ public class SocketController {
 		in = new ObjectInputStream(socket.getInputStream());
 	}
 	
-	private static Response write(Message req) throws IOException {
+	private static Response write(Request req) throws IOException {
 		out.writeObject(req);
 		out.flush();
 		try {

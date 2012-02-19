@@ -9,4 +9,8 @@ public abstract class Response extends Message {
 	}
 	
 	public Status status = Status.FAILURE;
+	
+	public boolean isOK() {
+		return status == Status.SUCCESS;
+	}
 }
