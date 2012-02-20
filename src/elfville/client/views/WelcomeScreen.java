@@ -11,7 +11,7 @@ public class WelcomeScreen extends JPanel {
 	public WelcomeScreen() {
 		add(new JLabel("Welcome to Elfville"));
 		add(new LoginPanel());
-		// TODO add registration panel
+		add(new RegistrationPanel());
 	}
 
 }
