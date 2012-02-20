@@ -61,7 +61,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 		
 		try {
 			SignInResponse m = SocketController.send(req);
-			System.out.println(m.secret);
+			System.out.println(m.status);
 			CentralBoard b = (CentralBoard) ClientWindow.switchScreen("central_board"); // TODO: check response code
 			b.load(SocketController.send(new GetCentralBoardRequest()));
 		} catch (IOException e1) {
