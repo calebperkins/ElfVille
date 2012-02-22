@@ -22,6 +22,8 @@ public class CentralBoard extends JPanel {
 	public CentralBoard() {
 		super();
 		add(title);
+		// list of posts here....
+		add(new CreatePostPanel());
 	}
 	
 	public void load(GetCentralBoardResponse response) {
