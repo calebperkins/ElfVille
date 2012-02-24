@@ -21,6 +21,15 @@ public class PostDB extends DB {
 	public void delete(Post post) {
 		posts.remove(post);
 	}
+	
+	public Post findPostByModelID(int modelID) {
+		for (Post post : posts) {
+			if (post.getModelID() == modelID) {
+				return post;
+			}
+		}
+		return null;
+	}
 
 	// Only the elf's posts on the central board will be returned
 	public List<Post> findCentralPostsByElf(Elf elf) {

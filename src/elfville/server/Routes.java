@@ -5,34 +5,34 @@ import elfville.server.controller.CentralBoardControl;
 
 public class Routes {
 	
-	private static SignInResponse respond(SignInRequest r, int currElfModelID) {
+	private static SignInResponse respond(SignInRequest r, int currUserModelID) {
 		return new SignInResponse(Response.Status.FAILURE, "Not implemented"); // TODO
 	}
 	
-	private static CentralBoardResponse respond(CentralBoardRequest r, int currElfModelID) {
+	private static CentralBoardResponse respond(CentralBoardRequest r, int currUserModelID) {
 		return CentralBoardControl.getPosts(r);
 	}
 	
-	private static SignUpResponse respond(SignUpRequest r, int currElfModelID) {
+	private static SignUpResponse respond(SignUpRequest r, int currUserModelID) {
 		return new SignUpResponse(Response.Status.FAILURE, "Not implemented"); // TODO
 	}
 	
-	private static PostResponse respond(PostRequest r, int currElfModelID) {
+	private static PostResponse respond(PostRequest r, int currUserModelID) {
 		return new PostResponse(null); // TODO
 	}
 
-	public static Response processRequest(Request r, int currElfModelID) {	
+	public static Response processRequest(Request r, int currUserModelID) {	
 		if (r instanceof CentralBoardRequest) {
-			return respond((CentralBoardRequest) r, currElfModelID);
+			return respond((CentralBoardRequest) r, currUserModelID);
 		} 
 		else if (r instanceof SignInRequest) {
-			return respond((SignInRequest) r, currElfModelID);
+			return respond((SignInRequest) r, currUserModelID);
 		} 
 		else if (r instanceof SignUpRequest) {
-			return respond((SignUpRequest) r, currElfModelID);
+			return respond((SignUpRequest) r, currUserModelID);
 		} 
 		else if (r instanceof PostRequest) {
-			return respond((PostRequest) r, currElfModelID);
+			return respond((PostRequest) r, currUserModelID);
 		}
 		return null; // TODO: implement rest
 	}

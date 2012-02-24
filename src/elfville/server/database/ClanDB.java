@@ -13,6 +13,15 @@ public class ClanDB extends DB {
 		clans = new ArrayList<Clan>();
 	}
 
+	public Clan findClanByModelID(int modelID) {
+		for (Clan clan : clans) {
+			if (clan.getModelID() == modelID) {
+				return clan;
+			}
+		}
+		return null;
+	}
+	
 	public void insert(Clan clan) {
 		clans.add(clan);
 	}
@@ -30,12 +39,4 @@ public class ClanDB extends DB {
 		}
 	}
 	
-	/* auto generated getter and setter functions */
-	public List<Clan> getClans() {
-		return clans;
-	}
-
-	public void setClans(List<Clan> clans) {
-		this.clans = clans;
-	}
 }

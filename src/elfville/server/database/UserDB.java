@@ -12,4 +12,13 @@ public class UserDB extends DB {
 	public UserDB() {
 		users = new ArrayList<User>();
 	}
+	
+	public User findUserByModelID(int modelID) {
+		for (User user : users) {
+			if (user.getModelID() == modelID) {
+				return user;
+			}
+		}
+		return null;
+	}
 }
