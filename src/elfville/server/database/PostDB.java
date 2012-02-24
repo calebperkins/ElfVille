@@ -26,7 +26,7 @@ public class PostDB extends DB {
 	public List<Post> findCentralPostsByElf(Elf elf) {
 		List<Post> matchedPosts = new ArrayList<Post>();
 		for (Post post : posts) {
-			if (post.getElf() == elf && post.getClan() == null) {
+			if (post.getElf() == elf) {
 				matchedPosts.add(post);
 			}
 		}
@@ -35,23 +35,7 @@ public class PostDB extends DB {
 	
 	// return all public posts on the Central Board.
 	public List<Post> getCentralPosts() {
-		List<Post> matchedPosts = new ArrayList<Post>();
-		for (Post post : posts) {
-			if (post.getClan() == null) {
-				matchedPosts.add(post);
-			}
-		}
-		return matchedPosts;
-	}
-	
-	public List<Post> findPostsByClan(Clan clan) {
-		List<Post> matchedPosts = new ArrayList<Post>();
-		for (Post post : posts) {
-			if (post.getClan() == clan){
-				matchedPosts.add(post);
-			};
-		}
-		return matchedPosts;
+		return posts;
 	}
 	
 	// Debugging function

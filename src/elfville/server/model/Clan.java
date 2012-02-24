@@ -9,6 +9,7 @@ public class Clan extends Model {
 
 	private String name;
 	private String description;
+	private List<Post> posts;
 	
 	// returns a list of elves who are either member or leader of the clan
 	public List<Elf> getElves() {
@@ -53,13 +54,13 @@ public class Clan extends Model {
 	
 	// The clan leader cannot do this operation
 	public void leaveClan(Elf elf) {
-		database.clanElfDB.deleteElf(elf);
 		// delete all posts from this elf in this clan
-		for (Post post : database.postDB.getPosts()) {
-			if (post.getClan() == this && post.getElf() == elf) {
+		for (Post post : posts) {
+			if (post.getElf() == elf) { 
 				post.delete();
 			}
 		}
+		database.clanElfDB.deleteElf(elf);
 	}
 
 	public boolean isLeader(Elf elf) {
@@ -79,12 +80,11 @@ public class Clan extends Model {
 	}
 
 	public List<Post> getPosts() {
-		return database.postDB.findPostsByClan(this);
+		return posts;
 	}
 	
 	public void createPost(Post post) {
-		post.setClan(this);
-		database.postDB.insert(post);
+		posts.add(post);
 	}
 	
 	public void deletePost(Post post) {

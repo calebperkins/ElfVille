@@ -14,4 +14,7 @@ public abstract class Model {
 		APPLICANT, MEMBER, LEADER
 	}
 	
+	public enum ElfPostRelationship {
+		UPSOCK, DOWNSOCK
+	}
 }

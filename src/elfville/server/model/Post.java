@@ -1,6 +1,7 @@
 package elfville.server.model;
 
 import java.util.Date;
+import java.util.List;
 
 /*
  * Post Model
@@ -9,20 +10,29 @@ public class Post extends Model{
 	private Elf elf;
 	private String title;
 	private String content;
-	private int numSock;
-	private Clan clan;  // left null for central board
+	private List<Elf> upsockedElves;
+	private List<Elf> downsockedElves;
 
 	public void delete() {
 		database.postDB.delete(this);
 	}
 
+	public void upsock(Elf upsockingElf) {
+		if (!upsockedElves.contains(upsockingElf)) {
+			upsockedElves.add(upsockingElf);
+		}
+	}
+	
+	// Each post cannot have < 0 socks. 
+	public void downsock(Elf downsockingElf) {
+		if (!downsockedElves.contains(downsockingElf) && getNumSock() > 0) {
+			downsockedElves.add(downsockingElf);
+		}		
+	}
+	
 	/* auto generated getters and setters */
 	public int getNumSock() {
-		return numSock;
-	}
-
-	public void setNumSock(int numSock) {
-		this.numSock = numSock;
+		return upsockedElves.size() - downsockedElves.size();
 	}
 
 	public Elf getElf() {
@@ -51,14 +61,5 @@ public class Post extends Model{
 		this.content = content;
 		this.updated_at = new Date();
 	}
-
-	public Clan getClan() {
-		return clan;
-	}
-
-	public void setClan(Clan clan) {
-		this.clan = clan;
-	}
-	
 	
 }
