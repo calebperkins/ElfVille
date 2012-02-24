@@ -8,4 +8,10 @@ public class PostCentralBoardRequest extends Request {
 	public PostCentralBoardRequest(SerializablePost post) {
 		this.post= post;
 	}
+	
+	public PostCentralBoardRequest(String content, String title) {
+		post = new SerializablePost();
+		post.content = content;
+		post.title = title;
+	}
 }

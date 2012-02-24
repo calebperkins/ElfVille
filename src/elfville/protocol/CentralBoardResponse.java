@@ -3,7 +3,6 @@ package elfville.protocol;
 import java.util.ArrayList;
 import java.util.List;
 
-import elfville.protocol.Response.Status;
 import elfville.server.model.Post;
 
 public class CentralBoardResponse extends Response {
@@ -25,7 +24,7 @@ public class CentralBoardResponse extends Response {
 	private ArrayList<SerializablePost> buildPostList(List<Post> centralBoardPosts){
 		ArrayList<SerializablePost> out = new ArrayList<SerializablePost>();
 		for (Post p : centralBoardPosts){
-			SerializablePost s= new SerializablePost(p);
+			SerializablePost s= p.getSerializablePost();
 			out.add(s);
 		}
 		return out;

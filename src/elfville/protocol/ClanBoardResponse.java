@@ -26,8 +26,8 @@ public class ClanBoardResponse extends Response {
 	
 	private ArrayList<SerializablePost> buildPostList(List<Post> centralBoardPosts){
 		ArrayList<SerializablePost> out = new ArrayList<SerializablePost>();
-		for (Post p : centralBoardPosts){
-			SerializablePost s= new SerializablePost(p);
+		for (Post p : centralBoardPosts) {
+			SerializablePost s= p.getSerializablePost();
 			out.add(s);
 		}
 		return out;
