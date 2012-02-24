@@ -50,7 +50,6 @@ public class Post extends Model{
 
 	public void setElf(Elf elf) {
 		this.elf = elf;
-		this.updated_at = new Date();
 	}
 
 	public String getTitle() {
@@ -59,7 +58,6 @@ public class Post extends Model{
 
 	public void setTitle(String title) {
 		this.title = title;
-		this.updated_at = new Date();
 	}
 
 	public String getContent() {
@@ -68,14 +66,5 @@ public class Post extends Model{
 
 	public void setContent(String content) {
 		this.content = content;
-		this.updated_at = new Date();
-	}
-
-	public Date getUpdatedAt() {
-		return (Date) updated_at.clone();
-	}
-
-	public Date getCreatedAt() {
-		return (Date) created_at.clone();
 	}
 }

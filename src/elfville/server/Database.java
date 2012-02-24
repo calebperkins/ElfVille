@@ -20,6 +20,8 @@ public class Database {
 	public ClanElfDB clanElfDB;
 	public UserDB userDB;
 	
+	private int countID;
+	
 	// Initiate a new Database object
 	public Database() {
 		clanDB = new ClanDB();
@@ -27,6 +29,7 @@ public class Database {
 		elfDB = new ElfDB();
 		clanElfDB = new ClanElfDB();
 		userDB = new UserDB();
+		countID = -1;
 		
 		// TODO: testing. deleted later!
 		Post p = new Post();
@@ -38,6 +41,11 @@ public class Database {
 	// Read the database from disk
 	public Database(String dbLocation) {
 		
+	}
+	
+	public int getAndIncrementCountID() {
+		countID ++;
+		return countID;
 	}
 	
 	protected void readFromDisk() {
