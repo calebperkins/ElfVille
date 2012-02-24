@@ -1,9 +1,9 @@
 package elfville.protocol;
 
-public class PostClanBoardResponse extends Response {
+public class UpsockResponse extends Response {
 	private static final long serialVersionUID = 1L;
 	
-	public PostClanBoardResponse(Status s){
+	public UpsockResponse(Status s){
 		super();
 		status= s;
 	}
