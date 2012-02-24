@@ -12,4 +12,27 @@ public class UserDB extends DB {
 	public UserDB() {
 		users = new ArrayList<User>();
 	}
+	
+	public User findUserByModelID(int modelID) {
+		for (User user : users) {
+			if (user.getModelID() == modelID) {
+				return user;
+			}
+		}
+		return null;
+	}
+	
+	public User findUserByUsername(String username) {
+		for (User user : users) {
+			if (user.getUsername().equals(username)) {
+				return user;
+			}
+		}
+		return null;
+	}
+
+	public void insert(User user) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class Elf extends Model{
 	
-	private String username;
+	private String elfName;
 	private String description;
 
 	public List<Post> getPosts() {
@@ -27,11 +27,11 @@ public class Elf extends Model{
 	}
 	
 	/* auto generated getter and setter functions */
-	public String getUserName() {
-		return username;
+	public String getElfName() {
+		return elfName;
 	}
-	public void setUserName(String name) {
-		this.username = name;
+	public void setElfName(String elfName) {
+		this.elfName = elfName;
 	}
 	public String getDescription() {
 		return description;

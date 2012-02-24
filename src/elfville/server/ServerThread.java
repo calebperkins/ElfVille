@@ -11,6 +11,8 @@ public class ServerThread implements Runnable {
 	private Socket clientSocket;
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
+	
+	public Integer currentUserId;	//TODO: make this better
 
 	public ServerThread(Socket client) {
 		clientSocket = client;
@@ -32,7 +34,7 @@ public class ServerThread implements Runnable {
 		while (true) {
 			try {
 				Request inMessage = (Request) ois.readObject();
-				Response outMessage = Routes.processRequest(inMessage);
+				Response outMessage = Routes.processRequest(inMessage, currentUserId);
 				oos.writeObject(outMessage);
 				oos.flush();
 			} catch (Exception e) {
