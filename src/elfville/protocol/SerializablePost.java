@@ -5,6 +5,8 @@ import java.util.Date;
 
 public class SerializablePost implements Serializable {
 	private static final long serialVersionUID = -2419148757484798094L;
+	public String modelID;
+	public String elfID;
 	public String username;
 	public String title;
 	public int upvotes;
@@ -12,12 +14,4 @@ public class SerializablePost implements Serializable {
 	public String content;
 	public Date createdAt;
 	
-	public SerializablePost(elfville.server.model.Post post){
-		super();
-		username= post.getElf().getName();
-		upvotes = post.getNumUpsock();
-		downvotes = post.getNumDownsock();
-		content= post.getContent();
-		createdAt= post.getCreatedAt();
-	}
 }
