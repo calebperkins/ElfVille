@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import elfville.protocol.SerializableClan;
+import elfville.server.SecurityUtils;
 
 /*
  * Clan Model.
@@ -21,7 +22,7 @@ public class Clan extends Model {
 	public Clan(SerializableClan clan){
 		this.name= clan.name;
 		this.description= clan.description;
-		setLeader(database.elfDB.findElfByModelID(clan.leader));
+		setLeader(database.elfDB.findElfByEncryptedModelID(clan.leader.id));
 		//TODO: set leader in clan elf DB
 		posts= new ArrayList<Post>();
 	}
@@ -31,10 +32,7 @@ public class Clan extends Model {
 		SerializableClan clan= new SerializableClan();
 		clan.clanName= name;
 		clan.description= description;
-		
-		
 		return clan;
-		
 	}
 	
 	// returns a list of elves who are either member or leader of the clan

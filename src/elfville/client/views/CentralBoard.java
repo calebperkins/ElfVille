@@ -32,7 +32,7 @@ public class CentralBoard extends JPanel {
 		}
 		posts.clear();
 		
-		for (SerializablePost post : response.getPosts()) {
+		for (SerializablePost post : response.posts) {
 			Post p = new Post(post);
 			posts.add(p);
 			add(p);
