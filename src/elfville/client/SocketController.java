@@ -34,8 +34,8 @@ public class SocketController {
 		}
 	}
 
-	public static GetCentralBoardResponse send(GetCentralBoardRequest req) throws IOException {
-		return (GetCentralBoardResponse) write(req);
+	public static CentralBoardResponse send(CentralBoardRequest req) throws IOException {
+		return (CentralBoardResponse) write(req);
 	}
 	
 	public static SignInResponse send(SignInRequest req) throws IOException {
@@ -46,7 +46,7 @@ public class SocketController {
 		return (SignUpResponse) write(req);
 	}
 	
-	public static CreatePostResponse send(CreatePostRequest req) throws IOException {
-		return (CreatePostResponse) write(req);
+	public static PostResponse send(PostRequest req) throws IOException {
+		return (PostResponse) write(req);
 	}
 }

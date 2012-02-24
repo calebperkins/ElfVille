@@ -9,21 +9,15 @@ public class Post extends Model{
 	private Elf elf;
 	private String title;
 	private String content;
-	private int numSock;
 	private Clan clan;  // left null for central board
-
+	private int upvotes;
+	private int downvotes;
+	
 	public void delete() {
 		database.postDB.delete(this);
 	}
 
 	/* auto generated getters and setters */
-	public int getNumSock() {
-		return numSock;
-	}
-
-	public void setNumSock(int numSock) {
-		this.numSock = numSock;
-	}
 
 	public Elf getElf() {
 		return elf;
@@ -59,6 +53,28 @@ public class Post extends Model{
 	public void setClan(Clan clan) {
 		this.clan = clan;
 	}
+
+	public Date getUpdatedAt() {
+		return (Date) updated_at.clone();
+	}
+
+	public Date getCreatedAt() {
+		return (Date) created_at.clone();
+	}
+
+	public int getUpvotes() {
+		return upvotes;
+	}
 	
+	public void incrUpvotes(){
+		upvotes++;
+	}
 	
+	public int getDownvotes() {
+		return downvotes;
+	}
+	
+	public void incrDownvotes(){
+		downvotes++;
+	}
 }

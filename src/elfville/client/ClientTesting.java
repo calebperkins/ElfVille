@@ -17,7 +17,7 @@ public class ClientTesting {
 			ois = new ObjectInputStream(socket.getInputStream());
 
 			for (int i = 0; i < 50; i++) {
-				Message outMessage = new GetCentralBoardRequest();
+				Message outMessage = new CentralBoardRequest();
 
 				// write the objects to the server
 				oos.writeObject(outMessage);

@@ -9,5 +9,16 @@ public class SerializablePost implements Serializable {
 	public int upvotes;
 	public int downvotes;
 	public String content;
-	public Date timestamp;
+	public Date updated_at;
+	public Date created_at;
+	
+	public SerializablePost(elfville.server.model.Post post){
+		super();
+		username= post.getElf().getName();
+		upvotes= post.getUpvotes();
+		downvotes= post.getDownvotes();
+		content= post.getContent();
+		updated_at= post.getUpdatedAt();
+		created_at= post.getCreatedAt();
+	}
 }
