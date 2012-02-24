@@ -2,8 +2,12 @@ package elfville.client.views;
 
 import javax.swing.*;
 
+import elfville.client.SocketController;
+import elfville.protocol.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 /**
  * Collection of controls to allow user to login.
@@ -52,8 +56,17 @@ public class LoginPanel extends JPanel implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO send login request
-		System.out.println("Login clicked");
+		SignInRequest req = new SignInRequest();
+		req.username = usernameField.getText();
+		
+		try {
+			SignInResponse m = SocketController.send(req);
+			System.out.println(m.status);
+			CentralBoard b = (CentralBoard) ClientWindow.switchScreen("central_board"); // TODO: check response code
+			b.load(SocketController.send(new GetCentralBoardRequest()));
+		} catch (IOException e1) {
+			ClientWindow.showConnectionError(this);
+		}
 	}
 
 }

@@ -4,13 +4,33 @@ import elfville.protocol.*;
 import elfville.server.controller.CentralBoardControl;
 
 public class Routes {
+	
+	private static SignInResponse respond(SignInRequest r) {
+		return new SignInResponse(Response.Status.FAILURE, "Not implemented"); // TODO
+	}
+	
+	private static GetCentralBoardResponse respond(GetCentralBoardRequest r) {
+		return CentralBoardControl.getPosts(r);
+	}
+	
+	private static SignUpResponse respond(SignUpRequest r) {
+		return new SignUpResponse(); // TODO
+	}
+	
+	private static CreatePostResponse respond(CreatePostRequest r) {
+		return new CreatePostResponse(); // TODO
+	}
 
-	public static Message processRequest(Message m) {
-		if (m.getType() == "" || true) {
-			GetCentralBoardRequest inM = (GetCentralBoardRequest) m;
-			GetCentralBoardResponse outM = CentralBoardControl.getPosts(inM);
-			return outM;
+	public static Response processRequest(Request r) {	
+		if (r instanceof GetCentralBoardRequest) {
+			return respond((GetCentralBoardRequest) r);
+		} else if (r instanceof SignInRequest) {
+			return respond((SignInRequest) r);
+		} else if (r instanceof SignUpRequest) {
+			return respond((SignUpRequest) r);
+		} else if (r instanceof CreatePostRequest) {
+			return respond((CreatePostRequest) r);
 		}
-		return m;
+		return null; // TODO: implement rest
 	}
 }

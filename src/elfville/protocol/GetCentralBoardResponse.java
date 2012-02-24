@@ -3,7 +3,7 @@ package elfville.protocol;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetCentralBoardResponse extends ResponseMessage {
+public class GetCentralBoardResponse extends Response {
 
 	private static final long serialVersionUID = 1L;
 	

@@ -1,4 +1,5 @@
 package elfville.protocol;
 
-public class SignUpResponse extends ResponseMessage {
+public class SignUpResponse extends Response {
+	private static final long serialVersionUID = 1L;
 }
