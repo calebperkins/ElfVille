@@ -27,9 +27,14 @@ public class AuthenticationControl extends Controller {
 		SignUpResponse outM;
 		Elf elf= database.elfDB.findElfByUsername(inM.username);
 		if(elf != null){
-			 outM= new SignUpResponse(Status.SUCCESS, "word");
-		} else {
+			//username is taken
 			 outM= new SignUpResponse(Status.FAILURE, "word");
+		} else {
+			elf= new Elf();
+			elf.setUserName(inM.username);
+			elf.setDescription(inM.description);
+			database.elfDB.insert(elf);
+			outM= new SignUpResponse(Status.SUCCESS, "word");
 		}
 		return outM;
 	}
