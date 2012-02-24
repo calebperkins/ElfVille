@@ -5,7 +5,6 @@ import elfville.protocol.SignInRequest;
 import elfville.protocol.SignInResponse;
 import elfville.protocol.SignUpRequest;
 import elfville.protocol.SignUpResponse;
-import elfville.server.ServerThread;
 import elfville.server.model.*;
 
 /* 
