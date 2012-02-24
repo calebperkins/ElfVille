@@ -41,7 +41,12 @@ public class RegistrationPanel extends JPanel implements ActionListener {
 		SignUpRequest req = new SignUpRequest(usernameField.getText());
 		try {
 			SignUpResponse resp = SocketController.send(req);
-			System.out.println(resp.status);
+			if (resp.status == Response.Status.SUCCESS) {
+				CentralBoard b = (CentralBoard) ClientWindow.switchScreen("central_board");
+				b.load(SocketController.send(new CentralBoardRequest()));
+			} else {
+				ClientWindow.showError(this, resp.message, "Registration error");
+			}
 		} catch (IOException e) {
 			ClientWindow.showConnectionError(this);
 		}

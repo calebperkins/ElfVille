@@ -45,8 +45,8 @@ public class LoginPanel extends JPanel implements ActionListener {
 		
 		add(usernameLabel);
 		add(usernameField);
-		add(passwordLabel);
-		add(passwordField);
+		//add(passwordLabel);
+		//add(passwordField);
 		add(loginButton);
 
 	}
@@ -61,9 +61,12 @@ public class LoginPanel extends JPanel implements ActionListener {
 		
 		try {
 			SignInResponse m = SocketController.send(req);
-			System.out.println(m.status);
-			CentralBoard b = (CentralBoard) ClientWindow.switchScreen("central_board"); // TODO: check response code
-			b.load(SocketController.send(new CentralBoardRequest()));
+			if (m.status == Response.Status.SUCCESS) {
+				CentralBoard b = (CentralBoard) ClientWindow.switchScreen("central_board");
+				b.load(SocketController.send(new CentralBoardRequest()));
+			} else {
+				ClientWindow.showError(this, m.message, "Login error");
+			}
 		} catch (IOException e1) {
 			ClientWindow.showConnectionError(this);
 		}

@@ -14,7 +14,7 @@ public class CentralBoardResponse extends Response {
 	public CentralBoardResponse(Status s, String msg, List<Post> centralBoardPosts){
 		super();
 		this.status= s;
-		this.secret= msg;
+		this.message= msg;
 		posts= buildPostList(centralBoardPosts);
 	}
 

@@ -14,7 +14,7 @@ public class Routes {
 	}
 	
 	private static SignUpResponse respond(SignUpRequest r) {
-		return new SignUpResponse(null, null); // TODO
+		return new SignUpResponse(Response.Status.FAILURE, "Not implemented"); // TODO
 	}
 	
 	private static PostResponse respond(PostRequest r) {

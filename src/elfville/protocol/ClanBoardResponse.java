@@ -15,7 +15,7 @@ public class ClanBoardResponse extends Response {
 	public ClanBoardResponse(Status s, String msg, List<Post> clanBoardPosts){
 		super();
 		this.status= s;
-		this.secret= msg;
+		this.message= msg;
 		posts= buildPostList(clanBoardPosts);
 	}
 

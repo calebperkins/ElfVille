@@ -14,7 +14,7 @@ public class CentralBoardControl extends Controller{
 		database.postDB.printPosts();
 		CentralBoardResponse outM = new CentralBoardResponse(Status.SUCCESS,
 				"whatever", database.postDB.getCentralPosts());
-		outM.secret = "Valentine's day surprise!";
+		outM.message = "Valentine's day surprise!";
 		return outM;
 	}
 	

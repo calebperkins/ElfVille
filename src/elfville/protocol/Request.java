@@ -1,5 +1,7 @@
 package elfville.protocol;
 
-public abstract class Request extends Message {
+import java.io.Serializable;
+
+public abstract class Request implements Serializable {
 	private static final long serialVersionUID = 1L;
 }
