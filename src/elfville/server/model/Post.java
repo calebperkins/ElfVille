@@ -3,6 +3,8 @@ package elfville.server.model;
 import java.util.Date;
 import java.util.List;
 
+import elfville.protocol.SerializablePost;
+
 /*
  * Post Model
  */
@@ -12,6 +14,12 @@ public class Post extends Model{
 	private String content;
 	private List<Elf> upsockedElves;
 	private List<Elf> downsockedElves;
+	
+	public Post(SerializablePost postRequest){
+		elf= postRequest.username;
+		title= postRequest.title;
+		content= postRequest.content;
+	}
 
 	public void delete() {
 		database.postDB.delete(this);
@@ -50,7 +58,6 @@ public class Post extends Model{
 
 	public void setElf(Elf elf) {
 		this.elf = elf;
-		this.updated_at = new Date();
 	}
 
 	public String getTitle() {
@@ -59,7 +66,6 @@ public class Post extends Model{
 
 	public void setTitle(String title) {
 		this.title = title;
-		this.updated_at = new Date();
 	}
 
 	public String getContent() {
@@ -68,14 +74,5 @@ public class Post extends Model{
 
 	public void setContent(String content) {
 		this.content = content;
-		this.updated_at = new Date();
-	}
-
-	public Date getUpdatedAt() {
-		return (Date) updated_at.clone();
-	}
-
-	public Date getCreatedAt() {
-		return (Date) created_at.clone();
 	}
 }

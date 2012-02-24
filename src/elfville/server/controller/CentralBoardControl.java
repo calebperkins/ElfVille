@@ -18,4 +18,8 @@ public class CentralBoardControl extends Controller{
 		return outM;
 	}
 	
+	public static CentralBoardPostResponse addPost(CentralBoardPostRequest postRequest){
+		Post post= new Post(postRequest);
+	}
+	
 }

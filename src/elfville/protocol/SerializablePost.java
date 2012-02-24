@@ -9,8 +9,7 @@ public class SerializablePost implements Serializable {
 	public int upvotes;
 	public int downvotes;
 	public String content;
-	public Date updated_at;
-	public Date created_at;
+	public Date createdAt;
 	
 	public SerializablePost(elfville.server.model.Post post){
 		super();
@@ -18,7 +17,6 @@ public class SerializablePost implements Serializable {
 		upvotes = post.getNumUpsock();
 		downvotes = post.getNumDownsock();
 		content= post.getContent();
-		updated_at= post.getUpdatedAt();
-		created_at= post.getCreatedAt();
+		createdAt= post.getCreatedAt();
 	}
 }
