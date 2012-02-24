@@ -3,6 +3,8 @@ package elfville.server.model;
 import java.util.Date;
 import java.util.List;
 
+import elfville.protocol.SerializablePost;
+
 /*
  * Post Model
  */
@@ -12,6 +14,12 @@ public class Post extends Model{
 	private String content;
 	private List<Elf> upsockedElves;
 	private List<Elf> downsockedElves;
+	
+	public Post(SerializablePost postRequest){
+		elf= postRequest.username;
+		title= postRequest.title;
+		content= postRequest.content;
+	}
 
 	public void delete() {
 		database.postDB.delete(this);

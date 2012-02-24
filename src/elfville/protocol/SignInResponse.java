@@ -6,6 +6,5 @@ public class SignInResponse extends Response {
 	public SignInResponse(Status s, String msg) {
 		super();
 		status = s;
-		message = msg;
 	}
 }
