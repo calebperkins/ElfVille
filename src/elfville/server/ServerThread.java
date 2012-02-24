@@ -11,6 +11,8 @@ public class ServerThread implements Runnable {
 	private Socket clientSocket;
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
+	
+	public int currentElfId;	//TODO: make this better
 
 	public ServerThread(Socket client) {
 		clientSocket = client;
