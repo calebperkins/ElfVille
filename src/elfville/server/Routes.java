@@ -1,20 +1,24 @@
 package elfville.server;
 
 import elfville.protocol.*;
-import elfville.server.controller.CentralBoardControl;
+import elfville.server.controller.*;
 
 public class Routes {
 	
 	private static SignInResponse respond(SignInRequest r, int currUserModelID) {
-		return new SignInResponse(Response.Status.FAILURE, "Not implemented"); // TODO
+		return AuthenticationControl.signIn(r, currUserModelID);
+	}
+
+	private static SignUpResponse respond(SignUpRequest r, int currUserModelID) {
+		return AuthenticationControl.signUp(r, currUserModelID);
 	}
 	
 	private static CentralBoardResponse respond(CentralBoardRequest r, int currUserModelID) {
-		return CentralBoardControl.getPosts(r);
+		return CentralBoardControl.getAllPosts(r);
 	}
 	
-	private static SignUpResponse respond(SignUpRequest r, int currUserModelID) {
-		return new SignUpResponse(Response.Status.FAILURE, "Not implemented"); // TODO
+	private static PostCentralBoardResponse respond(PostCentralBoardRequest r, int currUserModelID) {
+		return CentralBoardControl.addPost(r, currUserModelID);
 	}
 	
 	private static PostResponse respond(PostRequest r, int currUserModelID) {
