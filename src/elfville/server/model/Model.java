@@ -7,14 +7,24 @@ import elfville.server.Database;
 public abstract class Model {
 	static Database database = Database.DB;
 
-	Date created_at;
-	Date updated_at;	
+	private final Date createdAt;
+	final int modelID;
+	Date updatedAt;  // Not used
+	
+	public Model() {
+		modelID = database.getAndIncrementCountID();
+		createdAt = new Date();
+	}
 
 	public enum ClanElfRelationship {
 		APPLICANT, MEMBER, LEADER
 	}
 	
-	public enum ElfPostRelationship {
-		UPSOCK, DOWNSOCK
+	public int getModelID() {
+		return modelID;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 }
