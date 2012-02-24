@@ -14,7 +14,7 @@ public class Routes {
 	}
 	
 	private static SignUpResponse respond(SignUpRequest r) {
-		return new SignUpResponse(); // TODO
+		return new SignUpResponse(null, null); // TODO
 	}
 	
 	private static PostResponse respond(PostRequest r) {

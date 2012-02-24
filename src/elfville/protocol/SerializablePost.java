@@ -15,8 +15,8 @@ public class SerializablePost implements Serializable {
 	public SerializablePost(elfville.server.model.Post post){
 		super();
 		username= post.getElf().getName();
-		upvotes= post.getUpvotes();
-		downvotes= post.getDownvotes();
+		upvotes = post.getNumUpsock();
+		downvotes = post.getNumDownsock();
 		content= post.getContent();
 		updated_at= post.getUpdatedAt();
 		created_at= post.getCreatedAt();

@@ -30,6 +30,14 @@ public class Post extends Model{
 		}		
 	}
 	
+	public int getNumUpsock() {
+		return upsockedElves.size();
+	}
+	
+	public int getNumDownsock() {
+		return downsockedElves.size();
+	}
+	
 	public int getNumSock() {
 		return upsockedElves.size() - downsockedElves.size();
 	}
@@ -69,13 +77,5 @@ public class Post extends Model{
 
 	public Date getCreatedAt() {
 		return (Date) created_at.clone();
-	}
-
-	public int getUpvotes() {
-		return upvotes;
-	}
-	
-	public void incrUpvotes(){
-		upvotes++;
 	}
 }
