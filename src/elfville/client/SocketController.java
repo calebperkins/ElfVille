@@ -49,4 +49,8 @@ public class SocketController {
 	public static PostResponse send(PostRequest req) throws IOException {
 		return (PostResponse) write(req);
 	}
+	
+	public static PostCentralBoardResponse send(PostCentralBoardRequest req) throws IOException {
+		return (PostCentralBoardResponse) write(req);
+	}
 }

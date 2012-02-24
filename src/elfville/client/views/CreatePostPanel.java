@@ -2,8 +2,12 @@ package elfville.client.views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.*;
+
+import elfville.client.SocketController;
+import elfville.protocol.*;
 
 public class CreatePostPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -26,10 +30,21 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 		add(button);
 	}
 
+	// Post the message
+	// TODO finish
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO post the message
-		
+		PostCentralBoardRequest req = new PostCentralBoardRequest(text.getText());
+		try {
+			PostCentralBoardResponse resp = SocketController.send(req);
+			if (resp.isOK()) {
+				System.out.println("Posted!");
+			} else {
+				System.out.println("Not posted!");
+			}
+		} catch (IOException e1) {
+			ClientWindow.showConnectionError(this);
+		}
 	}
 
 }
