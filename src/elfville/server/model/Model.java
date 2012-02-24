@@ -3,6 +3,7 @@ package elfville.server.model;
 import java.util.Date;
 
 import elfville.server.Database;
+import elfville.server.SecurityUtils;
 
 public abstract class Model {
 	static Database database = Database.DB;
@@ -24,6 +25,10 @@ public abstract class Model {
 		return modelID;
 	}
 
+	public String getEncryptedModelID() {
+		return SecurityUtils.encryptIntToString(getModelID()); 
+	}
+	
 	public Date getCreatedAt() {
 		return createdAt;
 	}

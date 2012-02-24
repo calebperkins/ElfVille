@@ -34,7 +34,8 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 	// TODO finish
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		PostCentralBoardRequest req = new PostCentralBoardRequest(text.getText());
+		// TODO!
+		PostCentralBoardRequest req = new PostCentralBoardRequest(text.getText(), "TODO");
 		try {
 			PostCentralBoardResponse resp = SocketController.send(req);
 			if (resp.isOK()) {

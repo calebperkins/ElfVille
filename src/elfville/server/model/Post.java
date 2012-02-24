@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import elfville.protocol.*;
+import elfville.server.SecurityUtils;
 
 /*
  * Post Model
@@ -16,11 +17,25 @@ public class Post extends Model{
 	private List<Elf> downsockedElves;
 	
 	public Post(SerializablePost postRequest){
+		super();
 		// elf= postRequest.username;
 		// title= postRequest.title;
 		content= postRequest.content;
 	}
 
+	public SerializablePost getSerializablePost() {
+		SerializablePost sPost = new SerializablePost();
+		sPost.title = title;
+		sPost.content = content;
+		sPost.createdAt = getCreatedAt();
+		sPost.upvotes = getNumUpsock();
+		sPost.downvotes = getNumDownsock();
+		sPost.username = elf.getUserName();
+		sPost.elfID = elf.getEncryptedModelID();
+		sPost.modelID = getEncryptedModelID();
+		return sPost;
+	}
+	
 	public void delete() {
 		database.postDB.delete(this);
 	}
