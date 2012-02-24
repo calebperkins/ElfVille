@@ -1,10 +1,8 @@
 package elfville.protocol;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
-import elfville.protocol.Response.Status;
 import elfville.server.model.Post;
 
 public class ClanBoardResponse extends Response {
