@@ -34,7 +34,7 @@ public class ServerThread implements Runnable {
 		while (true) {
 			try {
 				Request inMessage = (Request) ois.readObject();
-				Response outMessage = Routes.processRequest(inMessage);
+				Response outMessage = Routes.processRequest(inMessage, currentElfId);
 				oos.writeObject(outMessage);
 				oos.flush();
 			} catch (Exception e) {
