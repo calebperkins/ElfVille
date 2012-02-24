@@ -26,12 +26,14 @@ public class AuthenticationControl extends Controller {
 	}
 
 	public static SignUpResponse signUp(SignUpRequest inM) {
+		System.out.println("Sign up is called!");
 		SignUpResponse outM;
 		User user = database.userDB.findUserByUsername(inM.username);
 		Elf elf;
-		if(user != null){ 
+		if (user != null){ 
 			//username is taken
-			 outM = new SignUpResponse(Status.FAILURE, "word");
+			outM = new SignUpResponse(Status.FAILURE, "The username is already taken");
+			System.out.println("The username is already taken");
 		} else {
 			elf = new Elf();
 			elf.setElfName(inM.username);
@@ -42,6 +44,7 @@ public class AuthenticationControl extends Controller {
 			//user.setPassword("lolskates");  //TODO: password
 			user.setUsername(inM.username);
 			database.userDB.insert(user);
+			System.out.println("sign up success");
 			outM= new SignUpResponse(Status.SUCCESS, "word");
 		}
 		return outM;

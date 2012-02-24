@@ -23,7 +23,9 @@ public class UserDB extends DB {
 	}
 	
 	public User findUserByUsername(String username) {
+		System.out.println("username being found: " + username);
 		for (User user : users) {
+			System.out.println("Looping username: " + user.getUsername());
 			if (user.getUsername().equals(username)) {
 				return user;
 			}
@@ -32,7 +34,6 @@ public class UserDB extends DB {
 	}
 
 	public void insert(User user) {
-		// TODO Auto-generated method stub
-		
+		users.add(user);
 	}
 }
