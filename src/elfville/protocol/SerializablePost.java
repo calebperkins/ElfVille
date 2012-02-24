@@ -20,4 +20,13 @@ public class SerializablePost implements Serializable {
 		content= post.getContent();
 		createdAt= post.getCreatedAt();
 	}
+	
+	public SerializablePost(String c) {
+		super();
+		username = null;
+		content = c;
+		upvotes =0;
+		downvotes = 0;
+		createdAt = new Date();
+	}
 }
