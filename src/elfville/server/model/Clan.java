@@ -1,6 +1,9 @@
 package elfville.server.model;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import elfville.protocol.SerializableClan;
 
 /*
  * Clan Model.
@@ -10,6 +13,28 @@ public class Clan extends Model {
 	private String name;
 	private String description;
 	private List<Post> posts;
+	
+	public Clan(){
+		
+	}
+	
+	public Clan(SerializableClan clan){
+		this.name= clan.name;
+		this.description= clan.description;
+		setLeader(database.elfDB.findElfByModelID(clan.leader));
+		posts= new ArrayList<Post>();
+	}
+	
+	//make a serializable clan object out of this clan
+	public SerializableClan getSerializableClan(){
+		SerializableClan clan= new SerializableClan();
+		clan.clanName= name;
+		clan.description= description;
+		
+		
+		return clan;
+		
+	}
 	
 	// returns a list of elves who are either member or leader of the clan
 	public List<Elf> getElves() {
