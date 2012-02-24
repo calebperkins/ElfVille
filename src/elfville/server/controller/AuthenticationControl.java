@@ -33,7 +33,7 @@ public class AuthenticationControl extends Controller {
 			 outM = new SignUpResponse(Status.FAILURE, "word");
 		} else {
 			elf = new Elf();
-			elf.setUserName(inM.username);
+			elf.setElfName(inM.username);
 			elf.setDescription(inM.description);
 			database.elfDB.insert(elf);
 			user= new User();

@@ -1,10 +1,9 @@
 package elfville.server.model;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import elfville.protocol.*;
-import elfville.server.SecurityUtils;
 
 /*
  * Post Model
@@ -16,11 +15,14 @@ public class Post extends Model{
 	private List<Elf> upsockedElves;
 	private List<Elf> downsockedElves;
 	
-	public Post(SerializablePost postRequest){
+	public Post(SerializablePost postRequest, Elf elf){
 		super();
 		// elf= postRequest.username;
-		// title= postRequest.title;
-		content= postRequest.content;
+		title= postRequest.title;
+		content = postRequest.content;
+		this.elf = elf;
+		upsockedElves = new ArrayList<Elf>();
+		downsockedElves = new ArrayList<Elf>();
 	}
 
 	public SerializablePost getSerializablePost() {

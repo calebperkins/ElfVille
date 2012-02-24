@@ -9,13 +9,16 @@ public class Routes {
 	private static SignInResponse respond(SignInRequest r, Integer currUserModelID) {
 		return AuthenticationControl.signIn(r, currUserModelID); // TODO
 	}
-	
-	private static CentralBoardResponse respond(CentralBoardRequest r, int currUserModelID) {
-		return CentralBoardControl.getPosts(r);
-	}
-	
 	private static SignUpResponse respond(SignUpRequest r, int currUserModelID) {
 		return AuthenticationControl.signUp(r); // TODO
+	}
+	
+	private static CentralBoardResponse respond(CentralBoardRequest r, int currUserModelID) {
+		return CentralBoardControl.getAllPosts(r);
+	}
+
+	private static PostCentralBoardResponse respond(PostCentralBoardRequest r, int currUserModelID) {
+		return CentralBoardControl.addPost(r, currUserModelID);
 	}
 	
 	private static PostResponse respond(PostRequest r, int currUserModelID) {

@@ -2,7 +2,7 @@ package elfville.server.controller;
 
 import elfville.protocol.*;
 
-import elfville.server.model.Post;
+import elfville.server.model.*;
 import elfville.protocol.Response.Status;
 
 /*
@@ -10,7 +10,7 @@ import elfville.protocol.Response.Status;
  */
 public class CentralBoardControl extends Controller{
 
-	public static CentralBoardResponse getPosts(CentralBoardRequest inM) {
+	public static CentralBoardResponse getAllPosts(CentralBoardRequest inM) {
 		database.postDB.printPosts();
 		CentralBoardResponse outM = new CentralBoardResponse(Status.SUCCESS,
 				"whatever", database.postDB.getCentralPosts());
@@ -18,8 +18,13 @@ public class CentralBoardControl extends Controller{
 		return outM;
 	}
 	
-	public static PostCentralBoardResponse addPost(PostCentralBoardRequest postRequest){
-		Post post= new Post(postRequest.post);
+	public static PostCentralBoardResponse addPost(PostCentralBoardRequest postRequest, int currUserModelID) {
+		User user = database.userDB.findUserByModelID(currUserModelID);
+		if (user == null) {
+			return new PostCentralBoardResponse(Status.FAILURE);
+		}
+		Elf elf = user.getElf();
+		Post post= new Post(postRequest.post, elf);
 		database.postDB.insert(post);
 		return new PostCentralBoardResponse(Status.SUCCESS);
 	}
