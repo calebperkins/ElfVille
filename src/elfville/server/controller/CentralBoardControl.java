@@ -19,8 +19,9 @@ public class CentralBoardControl extends Controller{
 	}
 	
 	public static PostCentralBoardResponse addPost(PostCentralBoardRequest postRequest){
-		// Post post= new Post(postRequest);
-		return null;
+		Post post= new Post(postRequest.post);
+		database.postDB.insert(post);
+		return new PostCentralBoardResponse(Status.SUCCESS);
 	}
 	
 }
