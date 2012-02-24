@@ -3,9 +3,9 @@ package elfville.protocol;
 public class PostCentralBoardRequest extends Request {
 	private static final long serialVersionUID = 1L;
 	
-	public String content;
+	public SerializablePost post;
 	
-	public PostCentralBoardRequest(String content) {
-		this.content = content;
+	public PostCentralBoardRequest(SerializablePost post) {
+		this.post= post;
 	}
 }
