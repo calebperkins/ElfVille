@@ -1,5 +1,8 @@
 package elfville.server.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import elfville.protocol.*;
 
 import elfville.server.model.*;
@@ -11,11 +14,19 @@ import elfville.protocol.Response.Status;
 public class CentralBoardControl extends Controller{
 
 	public static CentralBoardResponse getAllPosts(CentralBoardRequest inM) {
-		database.postDB.printPosts();
 		CentralBoardResponse outM = new CentralBoardResponse(Status.SUCCESS,
-				"whatever", database.postDB.getCentralPosts());
+				"whatever", buildPostList(database.postDB.getCentralPosts()));
 		outM.message = "Valentine's day surprise!";
 		return outM;
+	}
+	
+	private static ArrayList<SerializablePost> buildPostList(List<Post> boardPosts){
+		ArrayList<SerializablePost> out = new ArrayList<SerializablePost>();
+		for (Post p : boardPosts){
+			SerializablePost s= p.getSerializablePost();
+			out.add(s);
+		}
+		return out;
 	}
 	
 	public static PostCentralBoardResponse addPost(PostCentralBoardRequest postRequest, int currUserModelID) {

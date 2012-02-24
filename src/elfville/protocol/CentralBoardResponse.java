@@ -8,25 +8,11 @@ import elfville.server.model.Post;
 public class CentralBoardResponse extends Response {
 
 	private static final long serialVersionUID = 1L;
-	private ArrayList<SerializablePost> posts;
+	public ArrayList<SerializablePost> posts;
 	
-	public CentralBoardResponse(Status s, String msg, List<Post> centralBoardPosts){
+	public CentralBoardResponse(Status s, String msg, ArrayList<SerializablePost> arrayList){
 		super();
 		this.status= s;
-		posts= buildPostList(centralBoardPosts);
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<SerializablePost> getPosts() {
-		return (List<SerializablePost>) posts.clone();
-	}
-	
-	private ArrayList<SerializablePost> buildPostList(List<Post> centralBoardPosts){
-		ArrayList<SerializablePost> out = new ArrayList<SerializablePost>();
-		for (Post p : centralBoardPosts){
-			SerializablePost s= p.getSerializablePost();
-			out.add(s);
-		}
-		return out;
+		this.posts= arrayList;
 	}
 }

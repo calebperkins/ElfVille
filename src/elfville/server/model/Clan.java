@@ -22,6 +22,7 @@ public class Clan extends Model {
 		this.name= clan.name;
 		this.description= clan.description;
 		setLeader(database.elfDB.findElfByModelID(clan.leader));
+		//TODO: set leader in clan elf DB
 		posts= new ArrayList<Post>();
 	}
 	

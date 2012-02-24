@@ -3,6 +3,8 @@ package elfville.server.database;
 import java.util.ArrayList;
 import java.util.List;
 
+import elfville.server.SecurityUtils;
+import elfville.server.model.Clan;
 import elfville.server.model.User;
 
 public class UserDB extends DB {
@@ -22,8 +24,15 @@ public class UserDB extends DB {
 		return null;
 	}
 	
+	public User findUserByEncryptedModelID(String encID) {
+		int modelID = SecurityUtils.decryptStringToInt(encID);
+		return findUserByModelID(modelID);
+	}
+	
 	public User findUserByUsername(String username) {
+		System.out.println("username being found: " + username);
 		for (User user : users) {
+			System.out.println("Looping username: " + user.getUsername());
 			if (user.getUsername().equals(username)) {
 				return user;
 			}
@@ -32,7 +41,6 @@ public class UserDB extends DB {
 	}
 
 	public void insert(User user) {
-		// TODO Auto-generated method stub
-		
+		users.add(user);
 	}
 }

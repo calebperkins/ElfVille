@@ -16,6 +16,7 @@ public class ServerThread implements Runnable {
 
 	public ServerThread(Socket client) {
 		clientSocket = client;
+		currentUserId = -1;
 		try {
 			ois = new ObjectInputStream(clientSocket.getInputStream());
 			oos = new ObjectOutputStream(clientSocket.getOutputStream());
