@@ -3,6 +3,7 @@ package elfville.server.database;
 import java.util.ArrayList;
 import java.util.List;
 
+import elfville.server.SecurityUtils;
 import elfville.server.model.*;
 
 public class ClanDB extends DB {
@@ -20,6 +21,11 @@ public class ClanDB extends DB {
 			}
 		}
 		return null;
+	}
+	
+	public Clan findClanByEncryptedModelID(String encID) {
+		int modelID = SecurityUtils.decryptStringToInt(encID);
+		return findClanByModelID(modelID);
 	}
 	
 	public void insert(Clan clan) {

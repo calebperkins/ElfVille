@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import elfville.server.SecurityUtils;
 import elfville.server.model.*;
 
 public class PostDB extends DB {
@@ -29,6 +30,11 @@ public class PostDB extends DB {
 			}
 		}
 		return null;
+	}
+	
+	public Post findPostByEncryptedModelID(String encID) {
+		int modelID = SecurityUtils.decryptStringToInt(encID);
+		return findPostByModelID(modelID);
 	}
 
 	// Only the elf's posts on the central board will be returned
