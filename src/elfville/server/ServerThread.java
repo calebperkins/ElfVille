@@ -12,7 +12,7 @@ public class ServerThread implements Runnable {
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
 	
-	public int currentUserId;	//TODO: make this better
+	public Integer currentUserId;	//TODO: make this better
 
 	public ServerThread(Socket client) {
 		clientSocket = client;
