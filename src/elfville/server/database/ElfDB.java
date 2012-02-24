@@ -19,6 +19,24 @@ public class ElfDB extends DB {
 
 	// No elf delete function
 	
+	public Elf findElfByModelID(int modelID) {
+		for (Elf elf : elves) {
+			if (elf.getModelID() == modelID) {
+				return elf;
+			}
+		}
+		return null;
+	}
+	
+	public Elf findElfByUsername(String username) {
+		for (Elf elf : elves) {
+			if (elf.getUserName() == username) {
+				return elf;
+			}
+		}
+		return null;
+	}
+	
 	// auto generated getters and setters
 	public List<Elf> getElves() {
 		return elves;
