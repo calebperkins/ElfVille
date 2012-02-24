@@ -1,5 +1,6 @@
 package elfville.protocol;
 
-public class CreatePostResponse extends Response {
+public class CentralBoardRequest extends Request {
 	private static final long serialVersionUID = 1L;
+
 }

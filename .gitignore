@@ -1,3 +1,7 @@
+.settings/*
 *.class
-.buildpath
-.settings/
+*~
+*.lock
+*.DS_STORE
+*.swp
+*.out

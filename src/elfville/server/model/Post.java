@@ -30,10 +30,11 @@ public class Post extends Model{
 		}		
 	}
 	
-	/* auto generated getters and setters */
 	public int getNumSock() {
 		return upsockedElves.size() - downsockedElves.size();
 	}
+
+	/* auto generated getters and setters */
 
 	public Elf getElf() {
 		return elf;
@@ -61,5 +62,20 @@ public class Post extends Model{
 		this.content = content;
 		this.updated_at = new Date();
 	}
+
+	public Date getUpdatedAt() {
+		return (Date) updated_at.clone();
+	}
+
+	public Date getCreatedAt() {
+		return (Date) created_at.clone();
+	}
+
+	public int getUpvotes() {
+		return upvotes;
+	}
 	
+	public void incrUpvotes(){
+		upvotes++;
+	}
 }

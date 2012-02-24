@@ -26,7 +26,7 @@ public class CentralBoard extends JPanel {
 		add(new CreatePostPanel());
 	}
 	
-	public void load(GetCentralBoardResponse response) {
+	public void load(CentralBoardResponse response) {
 		for (Post p : posts) {
 			remove(p);
 		}
