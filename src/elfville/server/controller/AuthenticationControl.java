@@ -3,6 +3,8 @@ package elfville.server.controller;
 import elfville.protocol.Response.Status;
 import elfville.protocol.SignInRequest;
 import elfville.protocol.SignInResponse;
+import elfville.protocol.SignUpRequest;
+import elfville.protocol.SignUpResponse;
 import elfville.server.model.Elf;
 
 /* 
@@ -21,4 +23,15 @@ public class AuthenticationControl extends Controller {
 		return outM;
 	}
 
+	public static SignUpResponse getPosts(SignUpRequest inM) {
+		SignUpResponse outM;
+		Elf elf= database.elfDB.findElfByUsername(inM.username);
+		if(elf != null){
+			 outM= new SignUpResponse(Status.SUCCESS, "word");
+		} else {
+			 outM= new SignUpResponse(Status.FAILURE, "word");
+		}
+		return outM;
+	}
+	
 }
