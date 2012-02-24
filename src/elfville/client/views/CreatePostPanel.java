@@ -13,12 +13,28 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private final JTextArea text = new JTextArea();
 	private final JButton button = new JButton("Post");
+	private final String clanName;
 
 	/**
 	 * Create the panel.
 	 */
 	public CreatePostPanel() {
 		super();
+		clanName = null;
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder("New Post"),
+                BorderFactory.createEmptyBorder(5,5,5,5)));
+		
+		button.addActionListener(this);
+		
+		add(text);
+		add(button);
+	}
+	
+	public CreatePostPanel(String clanName) {
+		super();
+		this.clanName = clanName;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("New Post"),
@@ -35,9 +51,16 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO!
-		PostCentralBoardRequest req = new PostCentralBoardRequest(text.getText(), "TODO");
 		try {
-			PostCentralBoardResponse resp = SocketController.send(req);
+			Response resp;
+			if (clanName == null) {
+				PostCentralBoardRequest req = new PostCentralBoardRequest(text.getText(), "TODO");
+				resp = (Response) SocketController.send(req); // returns PostCentralBoardResponse
+			} else {
+				PostClanBoardRequest req = new PostClanBoardRequest(text.getText(), "TODO", clanName);
+				resp = (Response) SocketController.send(req); // returns PostClanlBoardResponse
+			}
+			
 			if (resp.isOK()) {
 				System.out.println("Posted!");
 			} else {
