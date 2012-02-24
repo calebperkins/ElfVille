@@ -1,7 +1,10 @@
 package elfville.protocol;
 
-public abstract class Response extends Message {
+import java.io.Serializable;
+
+public abstract class Response implements Serializable {
 	private static final long serialVersionUID = 1L;
+	public String message;
 
 	public static enum Status {
 		SUCCESS,

@@ -6,6 +6,6 @@ public class SignUpResponse extends Response {
 	public SignUpResponse(Status s, String msg) {
 		super();
 		status = s;
-		secret = msg;
+		message = msg;
 	}
 }

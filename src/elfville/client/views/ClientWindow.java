@@ -58,9 +58,14 @@ public class ClientWindow extends JFrame {
 	 * @param c
 	 */
 	public static void showConnectionError(Component c) {
-		JOptionPane.showMessageDialog(c, "Socket connection broke. Try again.",
-				"Connection error", JOptionPane.ERROR_MESSAGE);
+		showError(c, "Socket connection broke. Try again.",
+				"Connection error");
 		System.exit(-1);
+	}
+	
+	public static void showError(Component c, String msg, String title) {
+		JOptionPane.showMessageDialog(c, msg,
+				title, JOptionPane.ERROR_MESSAGE);
 	}
 
 }
