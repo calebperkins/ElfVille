@@ -1,22 +1,22 @@
 package elfville.server;
 
 import elfville.protocol.*;
-import elfville.server.controller.*;
+import elfville.server.controller.AuthenticationControl;
+import elfville.server.controller.CentralBoardControl;
 
 public class Routes {
 	
-	private static SignInResponse respond(SignInRequest r, int currUserModelID) {
-		return AuthenticationControl.signIn(r, currUserModelID);
+	private static SignInResponse respond(SignInRequest r, Integer currUserModelID) {
+		return AuthenticationControl.signIn(r, currUserModelID); // TODO
 	}
-
 	private static SignUpResponse respond(SignUpRequest r, int currUserModelID) {
-		return AuthenticationControl.signUp(r, currUserModelID);
+		return AuthenticationControl.signUp(r); // TODO
 	}
 	
 	private static CentralBoardResponse respond(CentralBoardRequest r, int currUserModelID) {
 		return CentralBoardControl.getAllPosts(r);
 	}
-	
+
 	private static PostCentralBoardResponse respond(PostCentralBoardRequest r, int currUserModelID) {
 		return CentralBoardControl.addPost(r, currUserModelID);
 	}
@@ -25,7 +25,7 @@ public class Routes {
 		return new PostResponse(null); // TODO
 	}
 
-	public static Response processRequest(Request r, int currUserModelID) {	
+	public static Response processRequest(Request r, Integer currUserModelID) {	
 		if (r instanceof CentralBoardRequest) {
 			return respond((CentralBoardRequest) r, currUserModelID);
 		} 

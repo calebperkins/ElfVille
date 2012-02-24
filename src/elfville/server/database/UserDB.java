@@ -30,4 +30,9 @@ public class UserDB extends DB {
 		}
 		return null;
 	}
+
+	public void insert(User user) {
+		// TODO Auto-generated method stub
+		
+	}
 }
