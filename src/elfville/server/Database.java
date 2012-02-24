@@ -32,9 +32,9 @@ public class Database {
 		countID = -1;
 		
 		// TODO: testing. deleted later!
-		Post p = new Post();
-		p.setContent("this post is created in Database.java just to test");
-		postDB.insert(p);
+		// Post p = new Post();
+		// p.setContent("this post is created in Database.java just to test");
+		// postDB.insert(p);
 		
 	}
 	

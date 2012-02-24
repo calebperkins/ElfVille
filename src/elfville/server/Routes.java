@@ -18,7 +18,7 @@ public class Routes {
 	}
 	
 	private static PostResponse respond(PostRequest r) {
-		return new PostResponse(); // TODO
+		return new PostResponse(null); // TODO
 	}
 
 	public static Response processRequest(Request r) {	

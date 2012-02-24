@@ -3,7 +3,7 @@ package elfville.server.model;
 import java.util.Date;
 import java.util.List;
 
-import elfville.protocol.SerializablePost;
+import elfville.protocol.*;
 
 /*
  * Post Model
@@ -16,8 +16,8 @@ public class Post extends Model{
 	private List<Elf> downsockedElves;
 	
 	public Post(SerializablePost postRequest){
-		elf= postRequest.username;
-		title= postRequest.title;
+		// elf= postRequest.username;
+		// title= postRequest.title;
 		content= postRequest.content;
 	}
 
