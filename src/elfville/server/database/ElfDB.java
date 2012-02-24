@@ -28,15 +28,6 @@ public class ElfDB extends DB {
 		return null;
 	}
 	
-	public Elf findElfByUsername(String username) {
-		for (Elf elf : elves) {
-			if (elf.getUserName() == username) {
-				return elf;
-			}
-		}
-		return null;
-	}
-	
 	// auto generated getters and setters
 	public List<Elf> getElves() {
 		return elves;

@@ -30,7 +30,7 @@ public class Post extends Model{
 		sPost.createdAt = getCreatedAt();
 		sPost.upvotes = getNumUpsock();
 		sPost.downvotes = getNumDownsock();
-		sPost.username = elf.getUserName();
+		sPost.username = elf.getElfName();
 		sPost.elfID = elf.getEncryptedModelID();
 		sPost.modelID = getEncryptedModelID();
 		return sPost;
