@@ -1,6 +1,7 @@
 package elfville.protocol;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SerializableClan implements Serializable {
@@ -13,5 +14,11 @@ public class SerializableClan implements Serializable {
 	public SerializableElf leader;
 	public List<SerializableElf> members;
 	public List<SerializablePost> posts;
+	
+	public SerializableClan() {
+		super();
+		members = new ArrayList<SerializableElf>();
+		posts = new ArrayList<SerializablePost>();
+	}
 
 }

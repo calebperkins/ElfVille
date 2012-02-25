@@ -22,10 +22,17 @@ public class Clan extends Model {
 		
 	//make a serializable clan object out of this clan
 	public SerializableClan getSerializableClan(){
-		SerializableClan clan= new SerializableClan();
-		clan.clanName= name;
-		clan.clanDescription= description;
-		return clan;
+		SerializableClan sClan= new SerializableClan();
+		sClan.clanName = name;
+		sClan.clanDescription= description;
+		for (Post post : posts) {
+			sClan.posts.add(post.getSerializablePost());
+		}
+		sClan.leader = getLeader().getSerializableElf();
+		for (Elf elf : getElves()) {
+			sClan.members.add(elf.getSerializableElf());
+		}
+		return sClan;
 	}
 	
 	// returns a list of elves who are either member or leader of the clan
