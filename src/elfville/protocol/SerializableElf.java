@@ -7,7 +7,7 @@ public class SerializableElf implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	public String elfName;
-	public String id;
-	
+	public String modelID;
+	public int numSocks;
 
 }
