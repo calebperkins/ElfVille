@@ -3,6 +3,9 @@ package elfville.server;
 import elfville.protocol.*;
 import elfville.server.controller.AuthenticationControl;
 import elfville.server.controller.CentralBoardControl;
+import elfville.server.model.Elf;
+import elfville.server.model.Post;
+import elfville.server.model.User;
 
 public class Routes {
 
@@ -24,22 +27,38 @@ public class Routes {
 			CurrentUserProfile currentUser) {
 		return CentralBoardControl.addPost(r, currentUser);
 	}
+	
+	private static VoteResponse respond(VoteRequest r, CurrentUserProfile currentUser) {
+		VoteResponse resp = new VoteResponse(Response.Status.FAILURE);
+		User user= Database.DB.userDB.findUserByModelID(currentUser.getCurrentUserId());
+		if(user == null){
+			return resp;
+		}
+		Elf e= user.getElf();
+		if(e == null){
+			return resp;
+		}
+		Post post = Database.DB.postDB.findPostByModelID(SecurityUtils.decryptStringToInt(r.modelID));
 
-	private static PostResponse respond(PostRequest r, CurrentUserProfile currentUser) {
-		return new PostResponse(null); // TODO
+		if (r.upsock && post.upsock(e)) {
+			resp.status = Response.Status.SUCCESS;
+		} else if (!r.upsock && post.downsock(e)) {
+			resp.status = Response.Status.SUCCESS;
+		}
+		return resp;
 	}
 
 	public static Response processRequest(Request r, CurrentUserProfile currentUser) {
 		if (r instanceof CentralBoardRequest) {
 			return respond((CentralBoardRequest) r, currentUser);
 		} else if (r instanceof SignInRequest) {
-			return respond((SignInRequest) r, currentUser);
+			return respond((SignInRequest) r, currentUser);	
 		} else if (r instanceof SignUpRequest) {
 			return respond((SignUpRequest) r, currentUser);
-		} else if (r instanceof PostRequest) {
-			return respond((PostRequest) r, currentUser);
 		} else if (r instanceof PostCentralBoardRequest) {
 			return respond((PostCentralBoardRequest) r, currentUser);
+		} else if (r instanceof VoteRequest) {
+			return respond((VoteRequest) r, currentUser);
 		}
 		return null; // TODO: implement rest
 	}

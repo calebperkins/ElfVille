@@ -7,12 +7,11 @@ public abstract class Response implements Serializable {
 	public String message;
 
 	public static enum Status {
-		SUCCESS,
-		FAILURE
+		SUCCESS, FAILURE
 	}
-	
+
 	public Status status = Status.FAILURE;
-	
+
 	public boolean isOK() {
 		return status == Status.SUCCESS;
 	}
