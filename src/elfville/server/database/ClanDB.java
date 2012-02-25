@@ -46,8 +46,11 @@ public class ClanDB extends DB {
 	}
 
 	public Clan findClanByName(String clanName) {
-		powerwangszzzz
-		// TODO Auto-generated method stub
+		for(Clan c : clans){
+			if(c.getName().equals(clanName)){
+				return c;
+			}
+		}
 		return null;
 	}
 	

@@ -17,19 +17,12 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 	private final String clanName;
 	private final JLabel titleLabel = new JLabel("Title");
 	private final JLabel textLabel = new JLabel("Text");
-
-	/**
-	 * Create the panel.
-	 */
-	public CreatePostPanel() {
-		super();
-		clanName = null;
-		makeThePanel();
-	}
+	private final Refreshable board;
 	
-	public CreatePostPanel(String clanName) {
+	public CreatePostPanel(Refreshable board, String clanName) {
 		super();
 		this.clanName = clanName;
+		this.board = board;
 		makeThePanel();
 	}
 	
@@ -57,16 +50,16 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 			Response resp;
 			if (clanName == null) {
 				PostCentralBoardRequest req = new PostCentralBoardRequest(text.getText(), title.getText());
-				resp = (Response) SocketController.send(req); // returns PostCentralBoardResponse
+				resp = SocketController.send(req); // returns PostCentralBoardResponse
 			} else {
 				PostClanBoardRequest req = new PostClanBoardRequest(text.getText(), title.getText(), clanName);
-				resp = (Response) SocketController.send(req); // returns PostClanlBoardResponse
+				resp = SocketController.send(req); // returns PostClanlBoardResponse
 			}
 			
 			if (resp.isOK()) {
-				System.out.println("Posted!");
+				board.refresh();
 			} else {
-				System.out.println("Not posted!");
+				System.err.println("Not posted!");
 			}
 		} catch (IOException e1) {
 			ClientWindow.showConnectionError(this);
