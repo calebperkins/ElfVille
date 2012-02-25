@@ -22,7 +22,11 @@ public class Clan extends Model {
 	public Clan(SerializableClan clan){
 		this.name= clan.name;
 		this.description= clan.description;
-		setLeader(database.elfDB.findElfByEncryptedModelID(clan.leader.id));
+		Elf leader= database.elfDB.findElfByEncryptedModelID(clan.leader.id); 
+		if(leader == null){
+			return;
+		}
+		
 		//TODO: set leader in clan elf DB
 		posts= new ArrayList<Post>();
 	}
