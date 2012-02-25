@@ -11,5 +11,6 @@ public class SerializableElf implements Serializable {
 	public int numSocks;
 
 	public String id;
+	//TODO why do we have both id and modelID?
 
 }

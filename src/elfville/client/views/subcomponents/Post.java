@@ -1,4 +1,4 @@
-package elfville.client.views;
+package elfville.client.views.subcomponents;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.swing.*;
 
+import elfville.client.ClientWindow;
 import elfville.client.SocketController;
 import elfville.protocol.*;
 
@@ -26,12 +27,10 @@ public class Post extends JPanel {
 	private class VoteHandler implements ActionListener {
 		private boolean upsock;
 		private String postID;
-		private Post component;
 		
 		public VoteHandler(String postID, boolean upsock, Post component) {
 			this.upsock = upsock;
 			this.postID = postID;
-			this.component = component;
 		}
 
 		@Override
@@ -43,6 +42,7 @@ public class Post extends JPanel {
 				if (!resp.isOK()) {
 					System.err.println("Did not vote!");
 				}
+				// TODO after we indicate how a user has voted, probably want to refresh the board.
 			} catch (IOException e1) {
 				ClientWindow.showConnectionError();
 			}
@@ -55,7 +55,7 @@ public class Post extends JPanel {
 	 */
 	public Post(SerializablePost p) {
 		super();
-		
+		// TODO have some indication of whether (and how) the user has voted on this post.
 		username = new JLabel(p.username);
 		content = new JTextArea(p.content);
 		upvote = new JButton("Likes: " + Integer.toString(p.upvotes));

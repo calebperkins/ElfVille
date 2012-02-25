@@ -1,12 +1,13 @@
 package elfville.client.views;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.*;
 
+import elfville.client.ClientWindow;
 import elfville.client.SocketController;
+import elfville.client.views.subcomponents.CreatePostPanel;
+import elfville.client.views.subcomponents.Post;
 import elfville.protocol.*;
 
 /**
@@ -18,41 +19,35 @@ import elfville.protocol.*;
 public class CentralBoard extends JPanel implements Refreshable {
 	private static final long serialVersionUID = 1L;
 	private final JLabel title = new JLabel("Central Board");
-	private final List<Post> posts = new ArrayList<Post>();
+	private final JPanel createPost = new CreatePostPanel(this, null);
 
-	/**
-	 * Create the panel.
-	 */
-	public CentralBoard() {
+	public CentralBoard(CentralBoardResponse response){
 		super();
 		add(title);
-		// list of posts here....
-		add(new CreatePostPanel(this, null));
+		add(createPost);
+		for (SerializablePost post : response.posts) {
+			add(new Post(post));
+		}
 	}
 
 	@Override
 	public void refresh() {
-		CentralBoardRequest req = new CentralBoardRequest();
+		showCentralBoard();
+	}
+	
+	public static void showCentralBoard() {
 		try {
-			CentralBoardResponse resp = SocketController.send(req);
-			load(resp);
+			CentralBoardResponse resp = SocketController.send(new CentralBoardRequest());
+			if (resp.status == Response.Status.SUCCESS) {
+				CentralBoard b = new CentralBoard(resp);
+				ClientWindow.switchScreen(b);
+			}
+			else {
+				ClientWindow.showError(resp.message, "Error retrieving central board");
+			}
 		} catch (IOException e) {
 			ClientWindow.showConnectionError();
 		}
 	}
-
-	public void load(CentralBoardResponse response) {
-		for (Post p : posts) {
-			remove(p);
-		}
-		posts.clear();
-
-		for (SerializablePost post : response.posts) {
-			Post p = new Post(post);
-			posts.add(p);
-			add(p);
-		}
-		revalidate();
-	}
-
+	
 }

@@ -1,4 +1,4 @@
-package elfville.client.views;
+package elfville.client.views.subcomponents;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,15 +6,18 @@ import java.io.IOException;
 
 import javax.swing.*;
 
+import elfville.client.ClientWindow;
 import elfville.client.SocketController;
+import elfville.client.views.Refreshable;
 import elfville.protocol.*;
 
 
 public class CreateClanPanel extends JPanel implements ActionListener {
+	private static final long serialVersionUID = 1L;
 	private final JTextArea description = new JTextArea();
 	private final JTextField name = new JTextField();
-	private final JButton button = new JButton("Create");
-	private final JLabel nameLabel = new JLabel("name");
+	private final JButton button = new JButton("Create Clan");
+	private final JLabel nameLabel = new JLabel("Name");
 	private final JLabel descriptionLabel = new JLabel("Description");
 	private final Refreshable board;
 	
@@ -27,7 +30,7 @@ public class CreateClanPanel extends JPanel implements ActionListener {
 	private void makeThePanel() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("New Post"),
+                BorderFactory.createTitledBorder("Create Clan"),
                 BorderFactory.createEmptyBorder(5,5,5,5)));
 		
 		button.addActionListener(this);
@@ -41,11 +44,10 @@ public class CreateClanPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		try {
-			if (name.getText().equals("")) {
-				System.err.println("Need a clan name to create a clan!");
-			}
-			else {
+		if (name.getText().equals("")) {
+			System.err.println("Need a clan name to create a clan!");
+		} else {
+			try {
 				SerializableClan clan = new SerializableClan();
 				clan.clanName = name.getText();
 				clan.clanDescription = description.getText();
@@ -54,11 +56,11 @@ public class CreateClanPanel extends JPanel implements ActionListener {
 				if (resp.isOK()) {
 					board.refresh();
 				} else {
-					System.err.println("Not posted!");
+					System.err.println("Posting failed.");
 				}
+			} catch (IOException e1) {
+				ClientWindow.showConnectionError();
 			}
-		} catch (IOException e1) {
-			ClientWindow.showConnectionError();
 		}
 	}
 
