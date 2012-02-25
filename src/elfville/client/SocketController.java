@@ -9,21 +9,23 @@ import java.net.UnknownHostException;
 import elfville.protocol.*;
 
 /**
- * Generic class for sending socket requests. Most methods are static. Why? Why not?
+ * Generic class for sending socket requests. Most methods are static. Why? Why
+ * not?
+ * 
  * @author Caleb Perkins
- *
+ * 
  */
 public class SocketController {
 	private static Socket socket;
 	private static ObjectOutputStream out;
 	private static ObjectInputStream in;
-	
+
 	public static void initialize() throws UnknownHostException, IOException {
 		socket = new Socket("localhost", 8444);
 		out = new ObjectOutputStream(socket.getOutputStream());
 		in = new ObjectInputStream(socket.getInputStream());
 	}
-	
+
 	private static Response write(Request req) throws IOException {
 		out.writeObject(req);
 		out.flush();
@@ -34,27 +36,30 @@ public class SocketController {
 		}
 	}
 
-	public static CentralBoardResponse send(CentralBoardRequest req) throws IOException {
+	public static CentralBoardResponse send(CentralBoardRequest req)
+			throws IOException {
 		return (CentralBoardResponse) write(req);
 	}
-	
+
 	public static SignInResponse send(SignInRequest req) throws IOException {
 		return (SignInResponse) write(req);
 	}
-	
+
 	public static SignUpResponse send(SignUpRequest req) throws IOException {
 		return (SignUpResponse) write(req);
 	}
-	
+
 	public static PostResponse send(PostRequest req) throws IOException {
 		return (PostResponse) write(req);
 	}
-	
-	public static PostCentralBoardResponse send(PostCentralBoardRequest req) throws IOException {
+
+	public static PostCentralBoardResponse send(PostCentralBoardRequest req)
+			throws IOException {
 		return (PostCentralBoardResponse) write(req);
 	}
 
-	public static PostClanBoardResponse send(PostClanBoardRequest req) throws IOException {
+	public static PostClanBoardResponse send(PostClanBoardRequest req)
+			throws IOException {
 		return (PostClanBoardResponse) write(req);
 	}
 
@@ -62,7 +67,8 @@ public class SocketController {
 		return (VoteResponse) write(req);
 	}
 
-	public static ClanBoardResponse send(ClanBoardRequest req) throws IOException {
+	public static ClanBoardResponse send(ClanBoardRequest req)
+			throws IOException {
 		return (ClanBoardResponse) write(req);
 	}
 }

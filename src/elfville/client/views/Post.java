@@ -21,6 +21,7 @@ public class Post extends JPanel {
 	private JTextArea content;
 	private JButton upvote;
 	private JButton downvote;
+	private JTextArea title;
 	
 	private class VoteHandler implements ActionListener {
 		private boolean upsock;
@@ -35,12 +36,10 @@ public class Post extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			VoteRequest req = new VoteRequest(postID, upsock);
 			try {
-				VoteResponse resp = (VoteResponse) SocketController.send(req);
+				VoteResponse resp = SocketController.send(req);
 				
-				if (resp.isOK()) {
-					System.out.println("Posted!");
-				} else {
-					System.out.println("Not posted!");
+				if (!resp.isOK()) {
+					System.err.println("Did not vote!");
 				}
 			} catch (IOException e1) {
 				// TODO: not sure how to get the following line to do what we want.
@@ -60,11 +59,13 @@ public class Post extends JPanel {
 		content = new JTextArea(p.content);
 		upvote = new JButton("Likes: " + Integer.toString(p.upvotes));
 		downvote = new JButton("Dislikes: " + Integer.toString(p.downvotes));
+		title = new JTextArea(p.title);
 		
 		upvote.addActionListener(new VoteHandler(p.modelID, true));
 		downvote.addActionListener(new VoteHandler(p.modelID, false));
 		
 		add(username);
+		add(title);
 		add(content);
 		add(upvote);
 		add(downvote);
