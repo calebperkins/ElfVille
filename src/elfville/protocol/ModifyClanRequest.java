@@ -1,5 +1,7 @@
 package elfville.protocol;
 
+import elfville.protocol.models.SerializableClan;
+
 public class ModifyClanRequest extends Request {
 	/**
 	 * 
