@@ -5,6 +5,7 @@ import java.util.List;
 
 import elfville.protocol.*;
 
+import elfville.server.CurrentUserProfile;
 import elfville.server.model.*;
 import elfville.protocol.Response.Status;
 
@@ -29,8 +30,8 @@ public class CentralBoardControl extends Controller{
 		return out;
 	}
 	
-	public static PostCentralBoardResponse addPost(PostCentralBoardRequest postRequest, int currUserModelID) {
-		User user = database.userDB.findUserByModelID(currUserModelID);
+	public static PostCentralBoardResponse addPost(PostCentralBoardRequest postRequest, CurrentUserProfile currentUser) {
+		User user = database.userDB.findUserByModelID(currentUser.getCurrentUserId());
 		if (user == null) {
 			return new PostCentralBoardResponse(Status.FAILURE);
 		}
