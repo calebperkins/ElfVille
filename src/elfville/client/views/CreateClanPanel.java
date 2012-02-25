@@ -58,7 +58,7 @@ public class CreateClanPanel extends JPanel implements ActionListener {
 				}
 			}
 		} catch (IOException e1) {
-			ClientWindow.showConnectionError(this);
+			ClientWindow.showConnectionError();
 		}
 	}
 

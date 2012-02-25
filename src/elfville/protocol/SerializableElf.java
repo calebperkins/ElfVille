@@ -10,4 +10,6 @@ public class SerializableElf implements Serializable {
 	public String modelID;
 	public int numSocks;
 
+	public String id;
+
 }
