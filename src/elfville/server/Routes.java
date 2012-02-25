@@ -10,12 +10,12 @@ import elfville.server.model.User;
 
 public class Routes {
 
-	private static SignInResponse respond(SignInRequest r,
+	private static Response respond(SignInRequest r,
 			CurrentUserProfile currentUser) {
 		return AuthenticationControl.signIn(r, currentUser); // TODO
 	}
 
-	private static SignUpResponse respond(SignUpRequest r,  CurrentUserProfile currentUser) {
+	private static Response respond(SignUpRequest r,  CurrentUserProfile currentUser) {
 		return AuthenticationControl.signUp(r, currentUser); // TODO
 	}
 
@@ -24,7 +24,7 @@ public class Routes {
 		return CentralBoardControl.getAllPosts(r);
 	}
 
-	private static PostCentralBoardResponse respond(PostCentralBoardRequest r,
+	private static Response respond(PostCentralBoardRequest r,
 			CurrentUserProfile currentUser) {
 		return CentralBoardControl.addPost(r, currentUser);
 	}
@@ -33,8 +33,8 @@ public class Routes {
 		return ClanBoardControl.modifyClan(r, currentUser);
 	}
 	
-	private static VoteResponse respond(VoteRequest r, CurrentUserProfile currentUser) {
-		VoteResponse resp = new VoteResponse(Response.Status.FAILURE);
+	private static Response respond(VoteRequest r, CurrentUserProfile currentUser) {
+		Response resp = new Response(Response.Status.FAILURE);
 		User user= Database.DB.userDB.findUserByModelID(currentUser.getCurrentUserId());
 		if(user == null){
 			return resp;
