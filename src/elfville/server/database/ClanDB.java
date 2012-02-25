@@ -44,5 +44,11 @@ public class ClanDB extends DB {
 			}
 		}
 	}
+
+	public Clan findClanByName(String clanName) {
+		powerwangszzzz
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

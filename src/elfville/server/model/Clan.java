@@ -16,28 +16,15 @@ public class Clan extends Model {
 	private List<Post> posts;
 	
 	public Clan(){
-		
 	}
 	
-	public Clan(SerializableClan clan){
-		this.name= clan.name;
-		this.description= clan.description;
-		Elf leader= database.elfDB.findElfByEncryptedModelID(clan.leader.id); 
-		if(leader == null){
-			return;
-		}
-		
-		//TODO: set leader in clan elf DB
-		posts= new ArrayList<Post>();
+	public Clan(String name, String description){
+		super();
+		this.name= name;
+		this.description= description;
+		this.posts= new ArrayList<Post>();
 	}
 	
-	//make a serializable clan object out of this clan
-	public SerializableClan getSerializableClan(){
-		SerializableClan clan= new SerializableClan();
-		clan.clanName= name;
-		clan.description= description;
-		return clan;
-	}
 	
 	// returns a list of elves who are either member or leader of the clan
 	public List<Elf> getElves() {
