@@ -40,7 +40,7 @@ public class RegistrationPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		SignUpRequest req = new SignUpRequest(usernameField.getText());
 		try {
-			SignUpResponse resp = SocketController.send(req);
+			Response resp = SocketController.send(req);
 			if (resp.status == Response.Status.SUCCESS) {
 				CentralBoard b = (CentralBoard) ClientWindow.switchScreen("central_board");
 				b.load(SocketController.send(new CentralBoardRequest()));

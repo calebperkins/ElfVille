@@ -8,6 +8,7 @@ import javax.swing.*;
 
 import elfville.client.SocketController;
 import elfville.protocol.*;
+import elfville.protocol.models.SerializableClan;
 
 
 public class CreateClanPanel extends JPanel implements ActionListener {

@@ -2,7 +2,6 @@ package elfville.server.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import elfville.protocol.SerializableClan;
 
 /*

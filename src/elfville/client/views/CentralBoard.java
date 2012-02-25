@@ -8,6 +8,7 @@ import javax.swing.*;
 
 import elfville.client.SocketController;
 import elfville.protocol.*;
+import elfville.protocol.models.SerializablePost;
 
 /**
  * Renders the central board using the central board request.

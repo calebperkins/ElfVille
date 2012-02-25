@@ -4,6 +4,7 @@ import java.util.List;
 
 import elfville.protocol.*;
 import elfville.protocol.Response.Status;
+import elfville.protocol.models.SerializableClan;
 import elfville.server.CurrentUserProfile;
 import elfville.server.model.*;
 

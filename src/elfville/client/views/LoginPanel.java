@@ -60,7 +60,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 		req.username = usernameField.getText();
 		
 		try {
-			SignInResponse m = SocketController.send(req);
+			Response m = SocketController.send(req);
 			if (m.status == Response.Status.SUCCESS) {
 				CentralBoard b = (CentralBoard) ClientWindow.switchScreen("central_board");
 				b.load(SocketController.send(new CentralBoardRequest()));

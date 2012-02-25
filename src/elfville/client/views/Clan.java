@@ -9,6 +9,7 @@ import javax.swing.*;
 
 import elfville.client.SocketController;
 import elfville.protocol.*;
+import elfville.protocol.models.SerializableClan;
 
 public class Clan extends JPanel {
 	private JButton clanName;
@@ -72,7 +73,7 @@ public class Clan extends JPanel {
 		leaderName = new JButton(c.leader.elfName);
 		
 		clanName.addActionListener(new ClanHandler(c.clanID, c.clanName, this));
-		leaderName.addActionListener(new LeaderHandler(c.leader.id, this));
+		leaderName.addActionListener(new LeaderHandler(c.leader.modelID, this));
 		
 		add(clanName);
 		add(leaderName); // TODO we need a way to distinguish between clan and leader names
