@@ -13,7 +13,7 @@ import elfville.protocol.*;
  * @author aaron
  *
  */
-public class ClanBoard extends JPanel {
+public class ClanBoard extends JPanel implements Refreshable {
 	private static final long serialVersionUID = 1L;
 	private JLabel title;
 	private final List<Post> posts = new ArrayList<Post>();
@@ -42,7 +42,7 @@ public class ClanBoard extends JPanel {
 		
 		title = new JLabel(clanName + "'s Board");
 		add(title);
-		postPanel = new CreatePostPanel(clanName);
+		postPanel = new CreatePostPanel(this, clanName);
 		add(postPanel);
 		
 		/*
@@ -53,5 +53,10 @@ public class ClanBoard extends JPanel {
 		}
 		*/
 	}
-	
+
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		
+	}
 }
