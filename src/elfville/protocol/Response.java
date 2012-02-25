@@ -2,7 +2,7 @@ package elfville.protocol;
 
 import java.io.Serializable;
 
-public abstract class Response implements Serializable {
+public class Response implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public String message;
 	public Status status;
@@ -23,5 +23,9 @@ public abstract class Response implements Serializable {
 	public Response(Status s, String msg) {
 		status = s;
 		message = msg;
+	}
+	
+	public Response(Status s) {
+		status = s;
 	}
 }

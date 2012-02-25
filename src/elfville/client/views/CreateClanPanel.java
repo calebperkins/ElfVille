@@ -50,7 +50,7 @@ public class CreateClanPanel extends JPanel implements ActionListener {
 				clan.clanName = name.getText();
 				clan.clanDescription = description.getText();
 				CreateClanRequest req = new CreateClanRequest(clan);
-				CreateClanResponse resp = SocketController.send(req);
+				Response resp = SocketController.send(req);
 				if (resp.isOK()) {
 					board.refresh();
 				} else {
