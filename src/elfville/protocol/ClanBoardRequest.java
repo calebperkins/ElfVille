@@ -2,7 +2,6 @@ package elfville.protocol;
 
 public class ClanBoardRequest extends Request {
 	private static final long serialVersionUID = 1L;
-	private String clanName;
 	private String clanModelID;
 	
 	public String getClanModelID() {
@@ -13,15 +12,8 @@ public class ClanBoardRequest extends Request {
 		this.clanModelID = clanModelID;
 	}
 
-	public ClanBoardRequest(String clanName){
-		this.setClanName(clanName);
+	public ClanBoardRequest(String clanModelID){
+		this.setClanModelID(clanModelID);
 	}
 
-	public String getClanName() {
-		return clanName;
-	}
-
-	public void setClanName(String clanName) {
-		this.clanName = clanName;
-	}
 }

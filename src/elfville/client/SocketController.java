@@ -71,4 +71,8 @@ public class SocketController {
 			throws IOException {
 		return (ClanBoardResponse) write(req);
 	}
+
+	public static CreateClanResponse send(CreateClanRequest req) throws IOException {
+		return (CreateClanResponse) write(req);
+	}
 }

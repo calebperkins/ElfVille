@@ -3,48 +3,20 @@ package elfville.client.views;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 
 import elfville.client.SocketController;
-import elfville.protocol.ClanBoardRequest;
-import elfville.protocol.ClanBoardResponse;
+import elfville.protocol.ClanListingRequest;
+import elfville.protocol.ClanListingResponse;
 import elfville.protocol.Response;
 
-public class ClanDirectory extends JPanel {
+public class ClanDirectory extends JPanel implements Refreshable {
 	
-	private class ClickHandler implements ActionListener {
-		private String name;
-		private ClanDirectory component;
-		
-		public ClickHandler(String name, ClanDirectory component) {
-			this.name = name;
-			this.component = component;
-		}
-
-		/**
-		 * Click on a clan and get directed to its clan page.
-		 */
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO name is the name of the clan, right?
-			ClanBoardRequest req = new ClanBoardRequest(name);
-			try {
-				ClanBoardResponse resp = SocketController.send(req);
-				if (resp.status == Response.Status.SUCCESS){
-					ClanBoard b = (ClanBoard) ClientWindow.switchScreen("clan_board");
-					b.changeClanLoadPosts(name, SocketController.send(new ClanBoardRequest(name)));
-				} else {
-					ClientWindow.showError(component, resp.message, "Login error");
-				}
-			} catch (IOException e1) {
-				ClientWindow.showConnectionError(component);
-			}
-		}
-		
-	}
-
 	private static final long serialVersionUID = 1L;
+	private final List<Post> posts = new ArrayList<Post>();
 
 	/**
 	 * Create the panel.
@@ -52,9 +24,19 @@ public class ClanDirectory extends JPanel {
 	public ClanDirectory() {
 		super();
 		add(new JLabel("Clan Directory"));
+		add(new CreateClanPanel(this));
 		// TODO we need a class Clan that's like post (the above ClickHandler action listener should
 		// be a part of that class). Then we need to make this more like CentralBoard and ClanBoard
 		// with a load clans method (instead of loading posts).
 	}
+	
+	public void loadClans(ClanListingResponse response) {
+		//TODO do this.
+	}
 
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		
+	}
 }
