@@ -65,10 +65,10 @@ public class LoginPanel extends JPanel implements ActionListener {
 				CentralBoard b = (CentralBoard) ClientWindow.switchScreen("central_board");
 				b.load(SocketController.send(new CentralBoardRequest()));
 			} else {
-				ClientWindow.showError(this, m.message, "Login error");
+				ClientWindow.showError(m.message, "Login error");
 			}
 		} catch (IOException e1) {
-			ClientWindow.showConnectionError(this);
+			ClientWindow.showConnectionError();
 		}
 	}
 

@@ -35,10 +35,10 @@ public class ClanDirectory extends JPanel {
 					ClanBoard b = (ClanBoard) ClientWindow.switchScreen("clan_board");
 					b.changeClanLoadPosts(name, SocketController.send(new ClanBoardRequest(name)));
 				} else {
-					ClientWindow.showError(component, resp.message, "Login error");
+					ClientWindow.showError(resp.message, "Login error");
 				}
 			} catch (IOException e1) {
-				ClientWindow.showConnectionError(component);
+				ClientWindow.showConnectionError();
 			}
 		}
 		

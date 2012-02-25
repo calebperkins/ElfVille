@@ -15,10 +15,17 @@ public class Clan extends Model {
 	private String description;
 	private List<Post> posts;
 	
+	public Clan(String name, String description){
+		super();
+		this.name= name;
+		this.description= description;
+		this.posts= new ArrayList<Post>();
+	}
+	
 	public Clan() {
 		super();
-		
 	}
+		
 		
 	//make a serializable clan object out of this clan
 	public SerializableClan getSerializableClan(){

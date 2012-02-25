@@ -2,6 +2,7 @@ package elfville.server.controller;
 
 import elfville.protocol.*;
 import elfville.protocol.Response.Status;
+import elfville.server.CurrentUserProfile;
 import elfville.server.model.*;
 
 /*
@@ -11,9 +12,9 @@ import elfville.server.model.*;
 public class ClanBoardControl extends Controller{
 	
 	
-	public static ClanBoardResponse getClanBoard(ClanBoardRequest inM, Integer currUserModelID) {
+	public static ClanBoardResponse getClanBoard(ClanBoardRequest inM, CurrentUserProfile currentUser) {
 		// Check if the user's elf is a clan member
-		User user = database.userDB.findUserByModelID(currUserModelID);
+		User user = database.userDB.findUserByModelID(currentUser.getCurrentUserId());
 		if (user == null) {
 			return new ClanBoardResponse(Status.FAILURE);
 		}
