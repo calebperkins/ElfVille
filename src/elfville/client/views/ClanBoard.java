@@ -30,6 +30,7 @@ public class ClanBoard extends JPanel {
 	}
 	
 	public void changeClanLoadPosts(String clanName, ClanBoardResponse response) {
+		// TODO add clan summary? Member listing?
 		for (Post p : posts) {
 			remove(p);
 		}

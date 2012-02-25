@@ -7,7 +7,6 @@ import java.io.IOException;
 import javax.swing.*;
 
 import elfville.client.SocketController;
-import elfville.client.views.Post.VoteHandler;
 import elfville.protocol.ClanBoardRequest;
 import elfville.protocol.ClanBoardResponse;
 import elfville.protocol.Response;
