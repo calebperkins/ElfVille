@@ -40,6 +40,7 @@ public class ClientWindow extends JFrame {
 		screens.put("welcome", new WelcomeScreen());
 		screens.put("central_board", new CentralBoard());
 		screens.put("clan_directory", new ClanDirectory());
+		screens.put("clan_board", new ClanBoard());
 
 		// Add screens to cards
 		Iterator<Entry<String, JPanel>> it = screens.entrySet().iterator();

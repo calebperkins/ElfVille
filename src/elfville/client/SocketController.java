@@ -57,4 +57,12 @@ public class SocketController {
 	public static PostClanBoardResponse send(PostClanBoardRequest req) throws IOException {
 		return (PostClanBoardResponse) write(req);
 	}
+
+	public static VoteResponse send(VoteRequest req) throws IOException {
+		return (VoteResponse) write(req);
+	}
+
+	public static ClanBoardResponse send(ClanBoardRequest req) throws IOException {
+		return (ClanBoardResponse) write(req);
+	}
 }

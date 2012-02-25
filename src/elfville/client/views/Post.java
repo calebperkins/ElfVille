@@ -2,13 +2,17 @@ package elfville.client.views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.*;
+
+import elfville.client.SocketController;
 import elfville.protocol.*;
 
 /**
  * Displays an individual post.
  * @author Caleb Perkins
+ * @author Aaron Martinez
  *
  */
 public class Post extends JPanel {
@@ -19,17 +23,29 @@ public class Post extends JPanel {
 	private JButton downvote;
 	
 	private class VoteHandler implements ActionListener {
-		private boolean like;
-		private int postID;
+		private boolean upsock;
+		private String postID;
 		
-		public VoteHandler(int postID, boolean like) {
-			this.like = like;
+		public VoteHandler(String postID, boolean upsock) {
+			this.upsock = upsock;
 			this.postID = postID;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO send vote request			
+			VoteRequest req = new VoteRequest(postID, upsock);
+			try {
+				VoteResponse resp = (VoteResponse) SocketController.send(req);
+				
+				if (resp.isOK()) {
+					System.out.println("Posted!");
+				} else {
+					System.out.println("Not posted!");
+				}
+			} catch (IOException e1) {
+				// TODO: not sure how to get the following line to do what we want.
+				// ClientWindow.showConnectionError(this);
+			}
 		}
 		
 	}
@@ -45,8 +61,8 @@ public class Post extends JPanel {
 		upvote = new JButton("Likes: " + Integer.toString(p.upvotes));
 		downvote = new JButton("Dislikes: " + Integer.toString(p.downvotes));
 		
-		upvote.addActionListener(new VoteHandler(666, true)); // TODO: actual post ID
-		downvote.addActionListener(new VoteHandler(666, false));
+		upvote.addActionListener(new VoteHandler(p.modelID, true));
+		downvote.addActionListener(new VoteHandler(p.modelID, false));
 		
 		add(username);
 		add(content);

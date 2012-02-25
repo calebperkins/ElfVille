@@ -12,8 +12,11 @@ import elfville.protocol.*;
 public class CreatePostPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private final JTextArea text = new JTextArea();
+	private final JTextField title = new JTextField();
 	private final JButton button = new JButton("Post");
 	private final String clanName;
+	private final JLabel titleLabel = new JLabel("Title");
+	private final JLabel textLabel = new JLabel("Text");
 
 	/**
 	 * Create the panel.
@@ -21,20 +24,16 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 	public CreatePostPanel() {
 		super();
 		clanName = null;
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("New Post"),
-                BorderFactory.createEmptyBorder(5,5,5,5)));
-		
-		button.addActionListener(this);
-		
-		add(text);
-		add(button);
+		makeThePanel();
 	}
 	
 	public CreatePostPanel(String clanName) {
 		super();
 		this.clanName = clanName;
+		makeThePanel();
+	}
+	
+	private void makeThePanel() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("New Post"),
@@ -42,22 +41,25 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 		
 		button.addActionListener(this);
 		
+		add(titleLabel);
+		add(title);
+		add(textLabel);
 		add(text);
 		add(button);
 	}
 
 	// Post the message
-	// TODO finish
+	// TODO finish.... Actually, I think I have now finished it (Aaron), but I'm not sure enough to remove this TODO myself
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO!
+		// TODO Force there to be a title? Force there to be text? Both?
 		try {
 			Response resp;
 			if (clanName == null) {
-				PostCentralBoardRequest req = new PostCentralBoardRequest(text.getText(), "TODO");
+				PostCentralBoardRequest req = new PostCentralBoardRequest(text.getText(), title.getText());
 				resp = (Response) SocketController.send(req); // returns PostCentralBoardResponse
 			} else {
-				PostClanBoardRequest req = new PostClanBoardRequest(text.getText(), "TODO", clanName);
+				PostClanBoardRequest req = new PostClanBoardRequest(text.getText(), title.getText(), clanName);
 				resp = (Response) SocketController.send(req); // returns PostClanlBoardResponse
 			}
 			
