@@ -2,7 +2,6 @@ package elfville.server.controller;
 
 import java.util.List;
 
-import elfville.protocol.ClanBoardResponse;
 import elfville.protocol.ClanListingRequest;
 import elfville.protocol.ClanListingResponse;
 import elfville.protocol.CreateClanRequest;
@@ -11,18 +10,24 @@ import elfville.protocol.Response.Status;
 import elfville.protocol.SerializableClan;
 import elfville.server.CurrentUserProfile;
 import elfville.server.model.Clan;
-import elfville.server.model.ClanElf;
 import elfville.server.model.Elf;
-import elfville.server.model.Model.ClanElfRelationship;
 import elfville.server.model.User;
 
 public class ClanDirectoryControl extends Controller {
 	public static ClanListingResponse getClanListing(ClanListingRequest inM, CurrentUserProfile currentUser) {
-		ClanListingResponse outM; 
-		List <SerializableClan> clans= null; //TODO: do actual stuff here
-		outM = new ClanListingResponse(Status.SUCCESS, "ok", clans);
+		ClanListingResponse resp= new ClanListingResponse(Status.FAILURE);
 		
-		return outM;
+		User user = database.userDB.findUserByModelID(currentUser.getCurrentUserId());
+		if (user == null) {
+			return resp;
+		}
+		
+		List <SerializableClan> clans= ControllerUtils.buildBoardList(database.clanDB.getClans());
+		
+		resp.status= Status.SUCCESS;
+		resp.clans= clans;
+
+		return resp;
 	}
 	
 	public static CreateClanResponse createClan(CreateClanRequest createRequest, CurrentUserProfile currentUser){
@@ -58,9 +63,8 @@ public class ClanDirectoryControl extends Controller {
 		}
 		
 		Clan clan= new Clan(createRequest.clan.clanName, createRequest.clan.clanDescription);
+		clan.setLeader(leader);
 		database.clanDB.insert(clan);
-		ClanElf leaderTracker= new ClanElf(clan, leader, ClanElfRelationship.LEADER);
-		database.clanElfDB.insert(leaderTracker);
 		
 		resp.status = Status.SUCCESS;
 		return resp;

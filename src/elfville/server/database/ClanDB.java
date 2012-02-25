@@ -10,6 +10,10 @@ public class ClanDB extends DB {
 
 	private List<Clan> clans;
 
+	public List<Clan> getClans() {
+		return clans;
+	}
+
 	public ClanDB() {
 		clans = new ArrayList<Clan>();
 	}
