@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import elfville.protocol.*;
+import elfville.protocol.models.SerializablePost;
 
 /*
  * Post Model

@@ -2,7 +2,7 @@ package elfville.server.model;
 
 import java.util.List;
 
-import elfville.protocol.SerializableElf;
+import elfville.protocol.models.SerializableElf;
 
 /*
  * Elf Model.

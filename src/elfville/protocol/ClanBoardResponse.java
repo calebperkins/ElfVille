@@ -1,5 +1,7 @@
 package elfville.protocol;
 
+import elfville.protocol.models.SerializableClan;
+
 public class ClanBoardResponse extends Response {
 
 	private static final long serialVersionUID = 1L;

@@ -3,8 +3,8 @@ package elfville.server.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import elfville.protocol.SerializableClan;
-import elfville.protocol.SerializablePost;
+import elfville.protocol.models.SerializableClan;
+import elfville.protocol.models.SerializablePost;
 import elfville.server.model.Clan;
 import elfville.server.model.Post;
 

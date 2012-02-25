@@ -23,15 +23,15 @@ public class CentralBoardControl extends Controller{
 	
 
 	
-	public static PostCentralBoardResponse addPost(PostCentralBoardRequest postRequest, CurrentUserProfile currentUser) {
+	public static Response addPost(PostCentralBoardRequest postRequest, CurrentUserProfile currentUser) {
 		User user = database.userDB.findUserByModelID(currentUser.getCurrentUserId());
 		if (user == null) {
-			return new PostCentralBoardResponse(Status.FAILURE);
+			return new Response(Status.FAILURE);
 		}
 		Elf elf = user.getElf();
 		Post post= new Post(postRequest.post, elf);
 		database.postDB.insert(post);
-		return new PostCentralBoardResponse(Status.SUCCESS);
+		return new Response(Status.SUCCESS);
 	}
 	
 }

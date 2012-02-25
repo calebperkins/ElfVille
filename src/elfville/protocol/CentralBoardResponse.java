@@ -3,6 +3,7 @@ package elfville.protocol;
 import java.util.ArrayList;
 import java.util.List;
 
+import elfville.protocol.models.SerializablePost;
 import elfville.server.model.Post;
 
 public class CentralBoardResponse extends Response {
