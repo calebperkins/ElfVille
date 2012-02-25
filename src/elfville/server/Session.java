@@ -11,11 +11,11 @@ public class Session implements Runnable {
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
 
-	public int currentUserId; // TODO: make this better
+	private CurrentUserProfile currentUser;
 
 	public Session(Socket client) {
 		clientSocket = client;
-		currentUserId = -1;
+		currentUser = new CurrentUserProfile();
 		try {
 			ois = new ObjectInputStream(clientSocket.getInputStream());
 			oos = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -35,12 +35,14 @@ public class Session implements Runnable {
 			try {
 				Request request = (Request) ois.readObject();
 				Response response = Routes.processRequest(request,
-						currentUserId);
+						currentUser);
 				
 				// set session authentication
 				if ((request instanceof SignUpRequest) || (request instanceof SignInRequest)) {
 					if (response.isOK())
-						currentUserId = 1; // TODO: real user ID
+						System.out.printf("the current user's id is: %d", currentUser.getCurrentUserId());
+						
+						//currentUserId = 1; // TODO: real user ID
 				}
 				
 				oos.writeObject(response);

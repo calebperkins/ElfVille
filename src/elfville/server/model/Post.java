@@ -42,17 +42,21 @@ public class Post extends Model{
 		database.postDB.delete(this);
 	}
 
-	public void upsock(Elf upsockingElf) {
+	public boolean upsock(Elf upsockingElf) {
 		if (!upsockedElves.contains(upsockingElf)) {
 			upsockedElves.add(upsockingElf);
+			return true;
 		}
+		return false;
 	}
 	
 	// Each post cannot have < 0 socks. 
-	public void downsock(Elf downsockingElf) {
+	public boolean downsock(Elf downsockingElf) {
 		if (!downsockedElves.contains(downsockingElf) && getNumSock() > 0) {
 			downsockedElves.add(downsockingElf);
+			return true;
 		}		
+		return false;
 	}
 	
 	public int getNumUpsock() {

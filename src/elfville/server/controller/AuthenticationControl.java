@@ -1,10 +1,12 @@
 package elfville.server.controller;
 
+
 import elfville.protocol.Response.Status;
 import elfville.protocol.SignInRequest;
 import elfville.protocol.SignInResponse;
 import elfville.protocol.SignUpRequest;
 import elfville.protocol.SignUpResponse;
+import elfville.server.CurrentUserProfile;
 import elfville.server.model.*;
 
 /* 
@@ -12,11 +14,11 @@ import elfville.server.model.*;
  */
 public class AuthenticationControl extends Controller {
 	
-	public static SignInResponse signIn(SignInRequest inM, Integer currUserModelID) {
+	public static SignInResponse signIn(SignInRequest r, CurrentUserProfile currentUser) {
 		SignInResponse outM;
-		User user = database.userDB.findUserByUsername(inM.username);
+		User user = database.userDB.findUserByUsername(r.username);
 		if(user != null){
-			currUserModelID= user.getModelID();
+			currentUser.setCurrentUserId(user.getModelID());
 			outM = new SignInResponse(Status.SUCCESS, "word");
 		} else {
 			outM = new SignInResponse(Status.FAILURE, "word");
@@ -24,7 +26,7 @@ public class AuthenticationControl extends Controller {
 		return outM;
 	}
 
-	public static SignUpResponse signUp(SignUpRequest inM) {
+	public static SignUpResponse signUp(SignUpRequest inM, CurrentUserProfile currentUser) {
 		System.out.println("Sign up is called!");
 		SignUpResponse outM;
 		User user = database.userDB.findUserByUsername(inM.username);
@@ -43,6 +45,9 @@ public class AuthenticationControl extends Controller {
 			//user.setPassword("lolskates");  //TODO: password
 			user.setUsername(inM.username);
 			database.userDB.insert(user);
+			//sign the user in
+			currentUser.setCurrentUserId(user.getModelID());
+			
 			System.out.println("sign up success");
 			outM= new SignUpResponse(Status.SUCCESS, "word");
 		}

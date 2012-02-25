@@ -17,7 +17,7 @@ import elfville.server.model.Elf;
 import elfville.server.model.Post;
 import elfville.server.SecurityUtils;
 
-public class ClanListingControl extends Controller {
+public class ClanDirectoryControl extends Controller {
 	public static ClanListingResponse getClanListing(ClanListingRequest inM, int userNumber) {
 		ClanListingResponse outM; 
 		List <SerializableClan> clans= null; //TODO: do actual stuff here
