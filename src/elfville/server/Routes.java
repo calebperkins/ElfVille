@@ -3,6 +3,7 @@ package elfville.server;
 import elfville.protocol.*;
 import elfville.server.controller.AuthenticationControl;
 import elfville.server.controller.CentralBoardControl;
+import elfville.server.controller.ClanBoardControl;
 import elfville.server.model.Elf;
 import elfville.server.model.Post;
 import elfville.server.model.User;
@@ -26,6 +27,10 @@ public class Routes {
 	private static Response respond(PostCentralBoardRequest r,
 			CurrentUserProfile currentUser) {
 		return CentralBoardControl.addPost(r, currentUser);
+	}
+	
+	private static Response respond(ModifyClanRequest r, CurrentUserProfile currentUser){
+		return ClanBoardControl.modifyClan(r, currentUser);
 	}
 	
 	private static Response respond(VoteRequest r, CurrentUserProfile currentUser) {
@@ -59,6 +64,8 @@ public class Routes {
 			return respond((PostCentralBoardRequest) r, currentUser);
 		} else if (r instanceof VoteRequest) {
 			return respond((VoteRequest) r, currentUser);
+		} else if (r instanceof ModifyClanRequest){
+			return respond((ModifyClanRequest)r, currentUser);
 		}
 		return null; // TODO: implement rest
 	}
