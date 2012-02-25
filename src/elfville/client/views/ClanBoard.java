@@ -43,6 +43,7 @@ public class ClanBoard extends JPanel {
 		}
 		posts.clear();
 		
+		/*
 		for (SerializablePost post : response.getPosts()) {
 			Post p = new Post(post);
 			posts.add(p);
@@ -52,5 +53,6 @@ public class ClanBoard extends JPanel {
 			// see also CentralBoard.java (which suggests a need for refactoring...)
 			add(p);
 		}
+		*/
 	}
 }

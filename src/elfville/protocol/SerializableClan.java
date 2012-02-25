@@ -9,8 +9,7 @@ public class SerializableClan implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	public String clanName;
-	public String description;
-	public String name;
+	public String clanDescription;
 	public SerializableElf leader;
 	public List<SerializableElf> members;
 
