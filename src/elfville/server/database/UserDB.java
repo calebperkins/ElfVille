@@ -1,46 +1,35 @@
 package elfville.server.database;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import elfville.server.SecurityUtils;
-import elfville.server.model.Clan;
 import elfville.server.model.User;
 
 public class UserDB extends DB {
 
-	private List<User> users;
-	
+	private ConcurrentHashMap<Integer, User> id_map;
+	private ConcurrentHashMap<String, User> username_map;
+
 	public UserDB() {
-		users = new ArrayList<User>();
+		id_map = new ConcurrentHashMap<Integer, User>();
+		username_map = new ConcurrentHashMap<String, User>();
 	}
-	
+
 	public User findUserByModelID(int modelID) {
-		for (User user : users) {
-			if (user.getModelID() == modelID) {
-				return user;
-			}
-		}
-		return null;
+		return id_map.get(modelID);
 	}
-	
+
 	public User findUserByEncryptedModelID(String encID) {
 		int modelID = SecurityUtils.decryptStringToInt(encID);
 		return findUserByModelID(modelID);
 	}
-	
+
 	public User findUserByUsername(String username) {
-		System.out.println("username being found: " + username);
-		for (User user : users) {
-			System.out.println("Looping username: " + user.getUsername());
-			if (user.getUsername().equals(username)) {
-				return user;
-			}
-		}
-		return null;
+		return username_map.get(username);
 	}
 
 	public void insert(User user) {
-		users.add(user);
+		id_map.put(user.getModelID(), user);
+		username_map.put(user.getUsername(), user);
 	}
 }

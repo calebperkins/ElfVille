@@ -2,7 +2,7 @@ package elfville.server.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import elfville.protocol.SerializableClan;
+import elfville.protocol.models.SerializableClan;
 
 /*
  * Clan Model.
@@ -85,7 +85,6 @@ public class Clan extends Model {
 	public void joinClan(Elf elf) {
 		// TODO: what if there is a former relationship between this elf and
 		// this clan?
-		
 		ClanElf clanElf = new ClanElf(this, elf,
 				Model.ClanElfRelationship.MEMBER);
 		database.clanElfDB.insert(clanElf);
