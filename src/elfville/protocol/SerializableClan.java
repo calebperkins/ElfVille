@@ -12,5 +12,6 @@ public class SerializableClan implements Serializable {
 	public String clanDescription;
 	public SerializableElf leader;
 	public List<SerializableElf> members;
+	public List<SerializablePost> posts;
 
 }
