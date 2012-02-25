@@ -35,10 +35,6 @@ public class CentralBoard extends JPanel {
 		for (SerializablePost post : response.posts) {
 			Post p = new Post(post);
 			posts.add(p);
-			//I'm not sure this is right... I think we need to keep a reference
-			// to the created CreatePostPanel and add p to that... Otherwise,
-			// I'm not sure what adding the CreatePostPanel actually ends up doing. - aaron
-			// see also ClanBoard.java (which suggests a need for  refactoring...)
 			add(p);
 		}
 	}

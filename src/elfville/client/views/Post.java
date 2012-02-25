@@ -25,10 +25,12 @@ public class Post extends JPanel {
 	private class VoteHandler implements ActionListener {
 		private boolean upsock;
 		private String postID;
+		private Post component;
 		
-		public VoteHandler(String postID, boolean upsock) {
+		public VoteHandler(String postID, boolean upsock, Post component) {
 			this.upsock = upsock;
 			this.postID = postID;
+			this.component = component;
 		}
 
 		@Override
@@ -44,7 +46,7 @@ public class Post extends JPanel {
 				}
 			} catch (IOException e1) {
 				// TODO: not sure how to get the following line to do what we want.
-				// ClientWindow.showConnectionError(this);
+				ClientWindow.showConnectionError(component);
 			}
 		}
 		
@@ -61,8 +63,8 @@ public class Post extends JPanel {
 		upvote = new JButton("Likes: " + Integer.toString(p.upvotes));
 		downvote = new JButton("Dislikes: " + Integer.toString(p.downvotes));
 		
-		upvote.addActionListener(new VoteHandler(p.modelID, true));
-		downvote.addActionListener(new VoteHandler(p.modelID, false));
+		upvote.addActionListener(new VoteHandler(p.modelID, true, this));
+		downvote.addActionListener(new VoteHandler(p.modelID, false, this));
 		
 		add(username);
 		add(content);

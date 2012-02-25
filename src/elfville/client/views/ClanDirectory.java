@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.swing.*;
 
 import elfville.client.SocketController;
+import elfville.client.views.Post.VoteHandler;
 import elfville.protocol.ClanBoardRequest;
 import elfville.protocol.ClanBoardResponse;
 import elfville.protocol.Response;
@@ -15,9 +16,11 @@ public class ClanDirectory extends JPanel {
 	
 	private class ClickHandler implements ActionListener {
 		private String name;
+		private ClanDirectory component;
 		
-		public ClickHandler(String name) {
+		public ClickHandler(String name, ClanDirectory component) {
 			this.name = name;
+			this.component = component;
 		}
 
 		/**
@@ -31,15 +34,12 @@ public class ClanDirectory extends JPanel {
 				ClanBoardResponse resp = SocketController.send(req);
 				if (resp.status == Response.Status.SUCCESS){
 					ClanBoard b = (ClanBoard) ClientWindow.switchScreen("clan_board");
-					b.changeClan(name);
-					b.load(SocketController.send(new ClanBoardRequest(name)));
+					b.changeClanLoadPosts(name, SocketController.send(new ClanBoardRequest(name)));
 				} else {
-					// TODO: not sure how to get the following line to do what we want.
-					//ClientWindow.showError(this, resp.message, "Login error");
+					ClientWindow.showError(component, resp.message, "Login error");
 				}
 			} catch (IOException e1) {
-				// TODO: not sure how to get the following line to do what we want.
-				//ClientWindow.showConnectionError(this);
+				ClientWindow.showConnectionError(component);
 			}
 		}
 		
@@ -53,6 +53,9 @@ public class ClanDirectory extends JPanel {
 	public ClanDirectory() {
 		super();
 		add(new JLabel("Clan Directory"));
+		// TODO we need a class Clan that's like post (the above ClickHandler action listener should
+		// be a part of that class). Then we need to make this more like CentralBoard and ClanBoard
+		// with a load clans method (instead of loading posts).
 	}
 
 }
