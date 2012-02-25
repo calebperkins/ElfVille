@@ -37,7 +37,7 @@ public class CentralBoard extends JPanel implements Refreshable {
 			CentralBoardResponse resp = SocketController.send(req);
 			load(resp);
 		} catch (IOException e) {
-			ClientWindow.showConnectionError(this);
+			ClientWindow.showConnectionError();
 		}
 	}
 
