@@ -1,9 +1,12 @@
 package elfville.client.views;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
+
+import elfville.client.SocketController;
 import elfville.protocol.*;
 
 /**
@@ -24,6 +27,16 @@ public class CentralBoard extends JPanel {
 		add(title);
 		// list of posts here....
 		add(new CreatePostPanel());
+	}
+	
+	public void refresh() {
+		CentralBoardRequest req = new CentralBoardRequest();
+		try {
+			CentralBoardResponse resp = SocketController.send(req);
+			load(resp);
+		} catch (IOException e) {
+			ClientWindow.showConnectionError(this);
+		}
 	}
 	
 	public void load(CentralBoardResponse response) {
