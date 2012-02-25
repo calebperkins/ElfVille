@@ -19,16 +19,7 @@ public class Clan extends Model {
 		super();
 		
 	}
-	
-	public Clan(SerializableClan clan) {
-		super();
-		this.name= clan.clanName;
-		this.description= clan.clanDescription;
-		setLeader(database.elfDB.findElfByEncryptedModelID(clan.leader.id));
-		//TODO: set leader in clan elf DB
-		posts= new ArrayList<Post>();
-	}
-	
+		
 	//make a serializable clan object out of this clan
 	public SerializableClan getSerializableClan(){
 		SerializableClan clan= new SerializableClan();

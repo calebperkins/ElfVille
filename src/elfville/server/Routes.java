@@ -3,43 +3,62 @@ package elfville.server;
 import elfville.protocol.*;
 import elfville.server.controller.AuthenticationControl;
 import elfville.server.controller.CentralBoardControl;
+import elfville.server.model.Elf;
+import elfville.server.model.Post;
+import elfville.server.model.User;
 
 public class Routes {
 
 	private static SignInResponse respond(SignInRequest r,
-			Integer currUserModelID) {
-		return AuthenticationControl.signIn(r, currUserModelID); // TODO
+			CurrentUserProfile currentUser) {
+		return AuthenticationControl.signIn(r, currentUser); // TODO
 	}
 
-	private static SignUpResponse respond(SignUpRequest r, int currUserModelID) {
-		return AuthenticationControl.signUp(r); // TODO
+	private static SignUpResponse respond(SignUpRequest r,  CurrentUserProfile currentUser) {
+		return AuthenticationControl.signUp(r, currentUser); // TODO
 	}
 
 	private static CentralBoardResponse respond(CentralBoardRequest r,
-			int currUserModelID) {
+			CurrentUserProfile currentUser) {
 		return CentralBoardControl.getAllPosts(r);
 	}
 
 	private static PostCentralBoardResponse respond(PostCentralBoardRequest r,
-			int currUserModelID) {
-		return CentralBoardControl.addPost(r, currUserModelID);
+			CurrentUserProfile currentUser) {
+		return CentralBoardControl.addPost(r, currentUser);
+	}
+	
+	private static VoteResponse respond(VoteRequest r, CurrentUserProfile currentUser) {
+		VoteResponse resp = new VoteResponse(Response.Status.FAILURE);
+		User user= Database.DB.userDB.findUserByModelID(currentUser.getCurrentUserId());
+		if(user == null){
+			return resp;
+		}
+		Elf e= user.getElf();
+		if(e == null){
+			return resp;
+		}
+		Post post = Database.DB.postDB.findPostByModelID(SecurityUtils.decryptStringToInt(r.modelID));
+
+		if (r.upsock && post.upsock(e)) {
+			resp.status = Response.Status.SUCCESS;
+		} else if (!r.upsock && post.downsock(e)) {
+			resp.status = Response.Status.SUCCESS;
+		}
+		return resp;
 	}
 
-	private static PostResponse respond(PostRequest r, int currUserModelID) {
-		return new PostResponse(null); // TODO
-	}
-
-	public static Response processRequest(Request r, int currUserModelID) {
+	public static Response processRequest(Request r, CurrentUserProfile currentUser) {
 		if (r instanceof CentralBoardRequest) {
-			return respond((CentralBoardRequest) r, currUserModelID);
+			return respond((CentralBoardRequest) r, currentUser);
 		} else if (r instanceof SignInRequest) {
-			return respond((SignInRequest) r, currUserModelID);
+			return respond((SignInRequest) r, currentUser);	
 		} else if (r instanceof SignUpRequest) {
-			return respond((SignUpRequest) r, currUserModelID);
-		} else if (r instanceof PostRequest) {
-			return respond((PostRequest) r, currUserModelID);
+			return respond((SignUpRequest) r, currentUser);
 		} else if (r instanceof PostCentralBoardRequest) {
-			return respond((PostCentralBoardRequest) r, currUserModelID);
+			return respond((PostCentralBoardRequest) r, currentUser);
+		} else if (r instanceof VoteRequest) {
+			return respond((VoteRequest) r, currentUser);
 		}
 		return null; // TODO: implement rest
 	}
