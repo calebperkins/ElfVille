@@ -19,9 +19,9 @@ public class AuthenticationControl extends Controller {
 		User user = database.userDB.findUserByUsername(r.username);
 		if(user != null){
 			currentUser.setCurrentUserId(user.getModelID());
-			outM = new SignInResponse(Status.SUCCESS, "word");
+			outM = new SignInResponse(Status.SUCCESS, "Welcome :)");
 		} else {
-			outM = new SignInResponse(Status.FAILURE, "word");
+			outM = new SignInResponse(Status.FAILURE, "Username not found/incorrect.");
 		}
 		return outM;
 	}
