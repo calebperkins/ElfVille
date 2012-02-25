@@ -44,7 +44,7 @@ public class Post extends JPanel {
 					System.err.println("Did not vote!");
 				}
 			} catch (IOException e1) {
-				ClientWindow.showConnectionError(component);
+				ClientWindow.showConnectionError();
 			}
 		}
 		

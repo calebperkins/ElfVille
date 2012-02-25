@@ -15,35 +15,47 @@ public class Clan extends Model {
 	private String description;
 	private List<Post> posts;
 	
+	public Clan(String name, String description){
+		super();
+		this.name= name;
+		this.description= description;
+		this.posts= new ArrayList<Post>();
+	}
+	
 	public Clan() {
 		super();
-		
 	}
+		
 		
 	//make a serializable clan object out of this clan
 	public SerializableClan getSerializableClan(){
 		SerializableClan sClan= new SerializableClan();
 		sClan.clanName = name;
-		sClan.clanDescription= description;
+		sClan.clanDescription = description;
+		sClan.numSocks = getNumSock();
 		for (Post post : posts) {
 			sClan.posts.add(post.getSerializablePost());
 		}
 		sClan.leader = getLeader().getSerializableElf();
-		for (Elf elf : getElves()) {
+		for (Elf elf : getMembers()) {
 			sClan.members.add(elf.getSerializableElf());
 		}
 		return sClan;
 	}
 	
 	// returns a list of elves who are either member or leader of the clan
-	public List<Elf> getElves() {
+	public List<Elf> getMembers() {
 		return database.clanElfDB.getElvesForClan(this);
+	}
+	
+	public List<Elf> getApplicants() {
+		return database.clanElfDB.getApplicantsForClan(this);
 	}
 	
 	/* The number of socks owned by all clan members combined */
 	public int getNumSock() {
 		int numSock = 0;
-		for (Elf elf : getElves()) {
+		for (Elf elf : getMembers()) {
 			numSock += elf.getNumSocks();
 		}
 		return numSock;
@@ -96,7 +108,15 @@ public class Clan extends Model {
 	
 	// also true if the elf is the leader
 	public boolean isMember(Elf elf) {
-		List<Elf> elves = getElves();
+		List<Elf> elves = getMembers();
+		if (elves.contains(elf)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isApplicant(Elf elf) {
+		List<Elf> elves = getApplicants();
 		if (elves.contains(elf)) {
 			return true;
 		}

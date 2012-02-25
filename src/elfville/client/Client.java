@@ -22,7 +22,7 @@ public class Client {
 					SocketController.initialize();
 					window.setVisible(true);
 				} catch (IOException e) {
-					ClientWindow.showConnectionError(null);
+					ClientWindow.showConnectionError();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

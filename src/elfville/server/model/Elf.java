@@ -22,7 +22,8 @@ public class Elf extends Model{
 	public SerializableElf getSerializableElf(){
 		SerializableElf elf= new SerializableElf();
 		elf.elfName= elfName;
-		elf.id= getEncryptedModelID();
+		elf.modelID= getEncryptedModelID();
+		elf.numSocks = getNumSocks();
 		return elf;
 	}
 	

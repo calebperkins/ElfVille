@@ -44,5 +44,14 @@ public class ClanDB extends DB {
 			}
 		}
 	}
+
+	public Clan findClanByName(String clanName) {
+		for(Clan c : clans){
+			if(c.getName().equals(clanName)){
+				return c;
+			}
+		}
+		return null;
+	}
 	
 }

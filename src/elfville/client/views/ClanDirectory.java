@@ -14,7 +14,6 @@ import elfville.protocol.ClanListingResponse;
 import elfville.protocol.Response;
 
 public class ClanDirectory extends JPanel implements Refreshable {
-	
 	private static final long serialVersionUID = 1L;
 	private final List<Post> posts = new ArrayList<Post>();
 

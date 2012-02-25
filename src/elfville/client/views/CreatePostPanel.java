@@ -62,7 +62,7 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 				System.err.println("Not posted!");
 			}
 		} catch (IOException e1) {
-			ClientWindow.showConnectionError(this);
+			ClientWindow.showConnectionError();
 		}
 	}
 

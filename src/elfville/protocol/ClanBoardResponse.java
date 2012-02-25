@@ -12,16 +12,15 @@ public class ClanBoardResponse extends Response {
 	public SerializableClan clan;
 	public ArrayList<SerializablePost> posts;
 	
+	public enum ElfClanRelationship {
+		OUTSIDER, APPLICANT, MEMBER, LEADER
+	}
+	
+	public ElfClanRelationship elfStatus;
+	
 	public ClanBoardResponse(Status s) {
 		super();
 		status = s;
 	}
 	
-	public ClanBoardResponse(Status s, String msg, List<Post> clanBoardPosts){
-		super();
-		this.status= s;
-		this.message= msg;
-		// posts= buildPostList(clanBoardPosts);
-	}
-
 }

@@ -2,7 +2,7 @@ package elfville.server.controller;
 
 import elfville.protocol.*;
 import elfville.protocol.Response.Status;
-import elfville.server.SecurityUtils;
+import elfville.server.CurrentUserProfile;
 import elfville.server.model.*;
 
 /*
@@ -12,9 +12,9 @@ import elfville.server.model.*;
 public class ClanBoardControl extends Controller{
 	
 	
-	public static ClanBoardResponse getClanBoard(ClanBoardRequest inM, Integer currUserModelID) {
+	public static ClanBoardResponse getClanBoard(ClanBoardRequest inM, CurrentUserProfile currentUser) {
 		// Check if the user's elf is a clan member
-		User user = database.userDB.findUserByModelID(currUserModelID);
+		User user = database.userDB.findUserByModelID(currentUser.getCurrentUserId());
 		if (user == null) {
 			return new ClanBoardResponse(Status.FAILURE);
 		}
@@ -28,23 +28,25 @@ public class ClanBoardControl extends Controller{
 		ClanBoardResponse outM = new ClanBoardResponse(Status.SUCCESS);
 		
 		// Basic board info that is visible to all elves
-		outM.clan.clanName = clan.getName();
-		outM.clan.clanDescription = clan.getDescription();
+		outM.clan = clan.getSerializableClan();
 		
 		boolean isMember = clan.isMember(elf);
+		if (isMember) {
+			if (clan.isLeader(elf)) {
+				outM.elfStatus = ClanBoardResponse.ElfClanRelationship.LEADER;
+			} else {
+				outM.elfStatus = ClanBoardResponse.ElfClanRelationship.MEMBER;
+			}
+		} else {
+			if (clan.isApplicant(elf)) {
+				outM.elfStatus = ClanBoardResponse.ElfClanRelationship.APPLICANT;
+			} else {
+				outM.elfStatus = ClanBoardResponse.ElfClanRelationship.OUTSIDER;
+			}
+			// Posts are only visible to clan members
+			outM.clan.posts = null;
+		}
 		
 		return outM;
 	}
-	
-	/*
-	/logic here to make sure that the user is allowed to get posts from this clan board
-	Elf elf = database.userDB.findUserByModelID(userNumber).getElf();
-	Clan clan= database.clanDB.findClanByModelID(SecurityUtils.decryptStringToInt(inM.clanID));
-	if(clan.isMember(elf)){
-		outM = new ClanListingResponse(Status.SUCCESS,
-				"whatever", clan.getPosts());
-	} else {
-		outM= new ClanListingResponse(Status.FAILURE, "lol", null);
-	}
-	*/
 }

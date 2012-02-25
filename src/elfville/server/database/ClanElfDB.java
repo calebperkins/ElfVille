@@ -55,7 +55,19 @@ public class ClanElfDB extends DB {
 		}
 		return elves;
 	}
-	
+
+	// Get all elves under a clan, including both members and leader
+	public List<Elf> getApplicantsForClan(Clan clan) {
+		List<Elf> elves = new ArrayList<Elf>();
+		for (ClanElf clanElf : clanElves) {
+			if (clanElf.getClan() == clan && 
+					clanElf.getRelationship() == Model.ClanElfRelationship.APPLICANT) {
+				elves.add(clanElf.getElf());
+			}
+		}
+		return elves;
+	}
+
 	// Get a clan's leader
 	public Elf getClanLeader(Clan clan) {
 		for (ClanElf clanElf : clanElves) {

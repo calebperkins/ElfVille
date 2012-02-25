@@ -11,6 +11,7 @@ public class SerializableClan implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public String clanName;
 	public String clanDescription;
+	public int numSocks;
 	public SerializableElf leader;
 	public List<SerializableElf> members;
 	public List<SerializablePost> posts;
