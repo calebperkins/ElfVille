@@ -31,7 +31,7 @@ public class Server {
         while (listening) {
         	// Socket acceptedSocket = serverSocket.accept();
         	// System.out.println("Accepted a cennection from: " + acceptedSocket.getInetAddress());
-        	pool.execute(new ServerThread(serverSocket.accept()));
+        	pool.execute(new Session(serverSocket.accept()));
         }
 
         serverSocket.close();

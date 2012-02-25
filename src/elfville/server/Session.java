@@ -6,14 +6,14 @@ import java.io.*;
 
 import elfville.protocol.*;
 
-public class ServerThread implements Runnable {
+public class Session implements Runnable {
 	private Socket clientSocket;
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
 
-	public Integer currentUserId; // TODO: make this better
+	public int currentUserId; // TODO: make this better
 
-	public ServerThread(Socket client) {
+	public Session(Socket client) {
 		clientSocket = client;
 		currentUserId = -1;
 		try {
@@ -33,16 +33,23 @@ public class ServerThread implements Runnable {
 	public void run() {
 		while (true) {
 			try {
-				Request inMessage = (Request) ois.readObject();
-				Response outMessage = Routes.processRequest(inMessage,
+				Request request = (Request) ois.readObject();
+				Response response = Routes.processRequest(request,
 						currentUserId);
-				oos.writeObject(outMessage);
+				
+				// set session authentication
+				if ((request instanceof SignUpRequest) || (request instanceof SignInRequest)) {
+					if (response.isOK())
+						currentUserId = 1; // TODO: real user ID
+				}
+				
+				oos.writeObject(response);
 				oos.flush();
 			} catch (EOFException e) {
 				System.out.println("Client disconnected.");
 				break;
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				// Catch client errors
 				e.printStackTrace();
 				break;
 			}

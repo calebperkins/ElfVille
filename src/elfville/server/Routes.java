@@ -29,7 +29,7 @@ public class Routes {
 		return new PostResponse(null); // TODO
 	}
 
-	public static Response processRequest(Request r, Integer currUserModelID) {
+	public static Response processRequest(Request r, int currUserModelID) {
 		if (r instanceof CentralBoardRequest) {
 			return respond((CentralBoardRequest) r, currUserModelID);
 		} else if (r instanceof SignInRequest) {
