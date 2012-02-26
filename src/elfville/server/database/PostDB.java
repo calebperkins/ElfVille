@@ -23,7 +23,7 @@ public class PostDB extends DB {
 		posts.remove(post);
 	}
 	
-	public Post findPostByModelID(int modelID) {
+	public Post findByModelID(int modelID) {
 		for (Post post : posts) {
 			if (post.getModelID() == modelID) {
 				return post;
@@ -32,9 +32,9 @@ public class PostDB extends DB {
 		return null;
 	}
 	
-	public Post findPostByEncryptedModelID(String encID) {
+	public Post findByEncryptedModelID(String encID) {
 		int modelID = SecurityUtils.decryptStringToInt(encID);
-		return findPostByModelID(modelID);
+		return findByModelID(modelID);
 	}
 
 	// Only the elf's posts on the central board will be returned

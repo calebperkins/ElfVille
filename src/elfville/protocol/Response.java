@@ -27,5 +27,6 @@ public class Response implements Serializable {
 	
 	public Response(Status s) {
 		status = s;
+		message = "";
 	}
 }
