@@ -2,6 +2,7 @@ package elfville.protocol;
 
 import elfville.protocol.models.SerializableClan;
 import elfville.protocol.models.SerializableElf;
+import elfville.protocol.models.SerializablePost;
 
 public class ModifyClanRequest extends Request {
 	/**
@@ -16,5 +17,6 @@ public class ModifyClanRequest extends Request {
 	public ModClan requestType;
 	public SerializableClan clan;
 	public SerializableElf applicant;
+	public SerializablePost post;
 
 }

@@ -1,15 +1,10 @@
 package elfville.server;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import elfville.protocol.*;
-import elfville.protocol.models.*;
 import elfville.server.controller.AuthenticationControl;
 import elfville.server.controller.CentralBoardControl;
 import elfville.server.controller.ClanBoardControl;
 import elfville.server.controller.ClanDirectoryControl;
-import elfville.server.model.Clan;
 import elfville.server.model.Elf;
 import elfville.server.model.Post;
 import elfville.server.model.User;

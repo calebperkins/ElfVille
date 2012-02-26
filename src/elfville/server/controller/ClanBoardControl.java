@@ -142,7 +142,7 @@ public class ClanBoardControl extends Controller {
 
 		case LEAVE:
 			// see if the elf is in the clan and is not the leader
-			if (!clan.isLeader(elf) && clan.isMember(elf)) {
+			if (clan.isLeader(elf) || !clan.isMember(elf)) {
 				return resp;
 			}
 			clan.leaveClan(elf);
@@ -174,7 +174,21 @@ public class ClanBoardControl extends Controller {
 			break;
 			
 		case DELETEPOST:
-			//make sure the person 
+			//make sure the person trying to delete the post is the clan leader
+			if(!clan.isLeader(elf)){
+				return resp;
+			}
+			
+			if(req.post == null){
+				return resp;
+			}
+			
+			//make sure this post is actually a post in the clan
+			if(!clan.hasPost(req.post.modelID)){
+				return resp;
+			}
+			
+			clan.deletePost(req.post.modelID);
 			break;
 		}
 		

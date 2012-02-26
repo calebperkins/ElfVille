@@ -6,6 +6,7 @@ import java.util.List;
 import elfville.protocol.*;
 
 import elfville.server.CurrentUserProfile;
+import elfville.server.Database;
 import elfville.server.model.*;
 import elfville.protocol.Response.Status;
 
@@ -48,6 +49,30 @@ public class CentralBoardControl extends Controller {
 		Post post = new Post(postRequest.post, elf);
 		database.postDB.insert(post);
 		resp.status = Status.SUCCESS;
+		return resp;
+	}
+	
+	public static Response votePost(VoteRequest r, CurrentUserProfile currentUser) {
+		Response resp = new Response(Status.FAILURE);
+		
+		User user = Database.DB.userDB.findUserByModelID(currentUser
+				.getCurrentUserId());
+		if (user == null) {
+			return resp;
+		}
+		
+		Elf e = user.getElf();
+		if (e == null) {
+			return resp;
+		}
+		Post post = Database.DB.postDB.findByEncryptedModelID(r.modelID);
+
+		if (r.upsock && post.upsock(e)) {
+			resp.status = Response.Status.SUCCESS;
+		} else if (!r.upsock && post.downsock(e)) {
+			resp.status = Response.Status.SUCCESS;
+		}
+		
 		return resp;
 	}
 
