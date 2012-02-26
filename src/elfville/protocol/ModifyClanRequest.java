@@ -2,6 +2,7 @@ package elfville.protocol;
 
 import elfville.protocol.models.SerializableClan;
 import elfville.protocol.models.SerializableElf;
+import elfville.protocol.models.SerializablePost;
 
 public class ModifyClanRequest extends Request {
 	/**
@@ -21,5 +22,7 @@ public class ModifyClanRequest extends Request {
 	public SerializableElf applicant;
 	// TODO: this makes aaron wary, why is elf self reporting who he is?
 	// actually nvm, it's worse than that, because the client has no easy way of knowing who this elf is.
+	public SerializablePost post;
+	// Hmm, aaron does not understand point of serializable post here...
 
 }
