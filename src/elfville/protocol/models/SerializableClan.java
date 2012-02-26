@@ -1,10 +1,11 @@
-package elfville.protocol;
+package elfville.protocol.models;
 
-import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class SerializableClan implements Serializable {
+
+public class SerializableClan extends SerializableModel {
 	/**
 	 * 
 	 */

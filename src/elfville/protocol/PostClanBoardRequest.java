@@ -1,5 +1,7 @@
 package elfville.protocol;
 
+import elfville.protocol.models.SerializablePost;
+
 public class PostClanBoardRequest extends Request {
 	private static final long serialVersionUID = 1L;
 	

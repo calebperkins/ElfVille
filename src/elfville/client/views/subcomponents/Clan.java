@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import elfville.client.views.ClanBoard;
 import elfville.protocol.*;
+import elfville.protocol.models.SerializableClan;
 
 public class Clan extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -59,7 +60,6 @@ public class Clan extends JPanel {
 		
 		clanName.addActionListener(new ClanHandler(c.clanID, c.clanName));
 		leaderName.addActionListener(new LeaderHandler(c.leader.modelID, c.leader.elfName));
-		
 		add(clanName);
 		add(leaderName); // TODO we need a way to distinguish between clan and leader names
 		add(clanDescription);

@@ -10,6 +10,7 @@ import elfville.client.ClientWindow;
 import elfville.client.SocketController;
 import elfville.client.views.Refreshable;
 import elfville.protocol.*;
+import elfville.protocol.models.SerializableClan;
 
 
 public class CreateClanPanel extends JPanel implements ActionListener {
@@ -52,7 +53,7 @@ public class CreateClanPanel extends JPanel implements ActionListener {
 				clan.clanName = name.getText();
 				clan.clanDescription = description.getText();
 				CreateClanRequest req = new CreateClanRequest(clan);
-				CreateClanResponse resp = SocketController.send(req);
+				Response resp = SocketController.send(req);
 				if (resp.isOK()) {
 					board.refresh();
 				} else {

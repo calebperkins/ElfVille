@@ -49,4 +49,57 @@ public class ClanBoardControl extends Controller{
 		
 		return outM;
 	}
+	
+	public static Response modifyClan(ModifyClanRequest req, CurrentUserProfile currentUser){
+		Response resp= new Response(Status.FAILURE);
+		
+		//make sure that the current user still exists!
+		User user = database.userDB.findUserByModelID(currentUser.getCurrentUserId());
+		if (user == null) {
+			return resp;
+		}
+		Elf elf= user.getElf();
+		
+		//check to make sure that we were sent a clan
+		if(req.clan == null){
+			return resp;
+		}
+		
+		Clan clan= database.clanDB.findClanByEncryptedModelID(req.clan.clanID);
+		
+		//check to see that the requested clan actually exists
+		if(clan == null){
+			return resp;
+		}
+		
+		switch(req.requestType){
+		case DELETE:
+			//make sure that this elf is actually the leader of the clan
+			if(!clan.isLeader(elf)){
+				return resp;
+			}
+			clan.delteClan();
+			break;
+			
+		case JOIN:
+			//see if this elf has not already applied or is in the clan
+			if(!clan.isApplicant(elf) || !clan.isLeader(elf) || !clan.isMember(elf)){
+				return resp;
+			}
+			clan.applyClan(elf);
+			break;
+			
+		case LEAVE:
+			//see if the elf is in the clan and is not the leader
+			if(clan.isLeader(elf) || !clan.isMember(elf)){
+				return resp;
+			}
+			clan.leaveClan(elf);
+			break;
+		}
+		
+		resp.status= Status.SUCCESS;
+		
+		return resp;
+	}
 }

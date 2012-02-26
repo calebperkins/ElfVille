@@ -9,6 +9,7 @@ import elfville.client.SocketController;
 import elfville.client.views.subcomponents.CreatePostPanel;
 import elfville.client.views.subcomponents.Post;
 import elfville.protocol.*;
+import elfville.protocol.models.SerializablePost;
 
 /**
  * Renders the central board using the central board request.

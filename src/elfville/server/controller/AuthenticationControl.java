@@ -3,9 +3,8 @@ package elfville.server.controller;
 
 import elfville.protocol.Response.Status;
 import elfville.protocol.SignInRequest;
-import elfville.protocol.SignInResponse;
+import elfville.protocol.Response;
 import elfville.protocol.SignUpRequest;
-import elfville.protocol.SignUpResponse;
 import elfville.server.CurrentUserProfile;
 import elfville.server.model.*;
 
@@ -14,26 +13,26 @@ import elfville.server.model.*;
  */
 public class AuthenticationControl extends Controller {
 	
-	public static SignInResponse signIn(SignInRequest r, CurrentUserProfile currentUser) {
-		SignInResponse outM;
+	public static Response signIn(SignInRequest r, CurrentUserProfile currentUser) {
+		Response outM;
 		User user = database.userDB.findUserByUsername(r.username);
 		if(user != null){
 			currentUser.setCurrentUserId(user.getModelID());
-			outM = new SignInResponse(Status.SUCCESS, "Welcome :)");
+			outM = new Response(Status.SUCCESS, "Welcome :)");
 		} else {
-			outM = new SignInResponse(Status.FAILURE, "Username not found/incorrect.");
+			outM = new Response(Status.FAILURE, "Username not found/incorrect.");
 		}
 		return outM;
 	}
 
-	public static SignUpResponse signUp(SignUpRequest inM, CurrentUserProfile currentUser) {
+	public static Response signUp(SignUpRequest inM, CurrentUserProfile currentUser) {
 		System.out.println("Sign up is called!");
-		SignUpResponse outM;
+		Response outM;
 		User user = database.userDB.findUserByUsername(inM.username);
 		Elf elf;
 		if (user != null){ 
 			//username is taken
-			outM = new SignUpResponse(Status.FAILURE, "The username is already taken");
+			outM = new Response(Status.FAILURE, "The username is already taken");
 			System.out.println("The username is already taken");
 		} else {
 			elf = new Elf();
@@ -49,7 +48,7 @@ public class AuthenticationControl extends Controller {
 			currentUser.setCurrentUserId(user.getModelID());
 			
 			System.out.println("sign up success");
-			outM= new SignUpResponse(Status.SUCCESS, "word");
+			outM= new Response(Status.SUCCESS, "word");
 		}
 		return outM;
 	}

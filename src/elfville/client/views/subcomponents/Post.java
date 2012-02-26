@@ -9,6 +9,7 @@ import javax.swing.*;
 import elfville.client.ClientWindow;
 import elfville.client.SocketController;
 import elfville.protocol.*;
+import elfville.protocol.models.SerializablePost;
 
 /**
  * Displays an individual post.
@@ -37,7 +38,7 @@ public class Post extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			VoteRequest req = new VoteRequest(postID, upsock);
 			try {
-				VoteResponse resp = SocketController.send(req);
+				Response resp = SocketController.send(req);
 				
 				if (!resp.isOK()) {
 					System.err.println("Did not vote!");

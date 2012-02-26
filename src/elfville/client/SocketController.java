@@ -41,30 +41,26 @@ public class SocketController {
 		return (CentralBoardResponse) write(req);
 	}
 
-	public static SignInResponse send(SignInRequest req) throws IOException {
-		return (SignInResponse) write(req);
+	public static Response send(SignInRequest req) throws IOException {
+		return (Response) write(req);
 	}
 
-	public static SignUpResponse send(SignUpRequest req) throws IOException {
-		return (SignUpResponse) write(req);
+	public static Response send(SignUpRequest req) throws IOException {
+		return (Response) write(req);
 	}
 
-	public static PostResponse send(PostRequest req) throws IOException {
-		return (PostResponse) write(req);
-	}
-
-	public static PostCentralBoardResponse send(PostCentralBoardRequest req)
+	public static Response send(PostCentralBoardRequest req)
 			throws IOException {
-		return (PostCentralBoardResponse) write(req);
+		return (Response) write(req);
 	}
 
-	public static PostClanBoardResponse send(PostClanBoardRequest req)
+	public static Response send(PostClanBoardRequest req)
 			throws IOException {
-		return (PostClanBoardResponse) write(req);
+		return (Response) write(req);
 	}
 
-	public static VoteResponse send(VoteRequest req) throws IOException {
-		return (VoteResponse) write(req);
+	public static Response send(VoteRequest req) throws IOException {
+		return (Response) write(req);
 	}
 
 	public static ClanBoardResponse send(ClanBoardRequest req)
@@ -72,7 +68,7 @@ public class SocketController {
 		return (ClanBoardResponse) write(req);
 	}
 
-	public static CreateClanResponse send(CreateClanRequest req) throws IOException {
-		return (CreateClanResponse) write(req);
+	public static Response send(CreateClanRequest req) throws IOException {
+		return (Response) write(req);
 	}
 }
