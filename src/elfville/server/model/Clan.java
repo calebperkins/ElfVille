@@ -34,10 +34,10 @@ public class Clan extends Model {
 	// make a serializable clan object out of this clan
 	public SerializableClan getSerializableClan() {
 		SerializableClan sClan = new SerializableClan();
-		sClan.clanName = name;
-		sClan.clanDescription = description;
+		sClan.clanName = getName();
+		sClan.clanDescription = getDescription();
 		sClan.numSocks = getNumSock();
-		sClan.modelID = SecurityUtils.encryptIntToString(this.modelID);
+		sClan.modelID = SecurityUtils.encryptIntToString(this.getModelID());
 		for (ConcurrentHashMap.Entry<Integer, Post> post : posts.entrySet()) {
 			sClan.posts.add(post.getValue().getSerializablePost());
 		}
@@ -46,15 +46,6 @@ public class Clan extends Model {
 			sClan.members.add(member.getValue().getSerializableElf());
 		}
 		return sClan;
-	}
-
-	// returns a list of elves who are either member or leader of the clan
-	public ConcurrentHashMap<Integer, Elf> getMembers() {
-		return members;
-	}
-
-	public ConcurrentHashMap<Integer, Elf> getApplicants() {
-		return applicants;
 	}
 
 	/* The number of socks owned by all clan members combined */
@@ -67,28 +58,35 @@ public class Clan extends Model {
 	}
 
 	public Elf getLeader() {
-		return leader;
+		Elf l;
+		synchronized(this) {
+			l = leader;
+		}
+		return l;
 	}
 
 	public void setLeader(Elf elf) {
 		if (leader != null) {
 			// TODO: throws some errors!
 		}
-		leader = elf;
+		synchronized (this) {
+			leader = elf;
+		}
+		members.put(elf.getModelID(), elf);
 	}
 
 	// A stranger becomes an applicant
 	public void applyClan(Elf elf) {
-		if (applicants.contains(elf.modelID) || members.contains(elf.modelID)) {
+		if (applicants.contains(elf.getModelID()) || members.contains(elf.getModelID())) {
 			return;
 		}
-		applicants.put(elf.modelID, elf);
+		applicants.put(elf.getModelID(), elf);
 	}
 
 	// An applicant becomes a member
 	public void joinClan(Elf elf) {
-		if (applicants.contains(elf.modelID) && !members.contains(elf.modelID)) {
-			members.put(elf.modelID, elf);
+		if (applicants.contains(elf.getModelID()) && !members.contains(elf.getModelID())) {
+			members.put(elf.getModelID(), elf);
 		}
 	}
 
@@ -99,15 +97,15 @@ public class Clan extends Model {
 
 	// The clan leader cannot do this operation
 	public void leaveClan(Elf elf) {
-		if (elf == leader) {
+		if (elf == getLeader()) {
 			return;
 		}
 		for (ConcurrentHashMap.Entry<Integer, Post> post : posts.entrySet()) {
 			if (post.getValue().getElf() == elf) {
-				posts.remove(post.getValue().modelID);
+				posts.remove(post.getValue().getModelID());
 			}
 		}
-		members.remove(elf.modelID);
+		members.remove(elf.getModelID());
 	}
 
 	public boolean isLeader(Elf elf) {
@@ -119,31 +117,43 @@ public class Clan extends Model {
 
 	// also true if the elf is the leader
 	public boolean isMember(Elf elf) {
-		return members.contains(elf.modelID);
+		return members.contains(elf.getModelID());
 	}
 
 	public boolean isApplicant(Elf elf) {
-		return applicants.contains(elf.modelID);
+		return applicants.contains(elf.getModelID());
 	}
 
 	public void createPost(Post post) {
-		posts.put(post.modelID, post);
+		posts.put(post.getModelID(), post);
 	}
 
 	// auto generated getters and setters
 	public String getName() {
-		return name;
+		String n;
+		synchronized (this) {
+			n = name;
+		}
+		return n;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		synchronized(this) {
+			this.name = name;
+		}
 	}
 
 	public String getDescription() {
-		return description;
+		String d;
+		synchronized (this) {
+			d = description;
+		}
+		return d;
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		synchronized(this) {
+			this.description = description;
+		}
 	}
 }

@@ -40,18 +40,30 @@ public class Elf extends Model {
 
 	/* auto generated getter and setter functions */
 	public String getElfName() {
-		return elfName;
+		String n;
+		synchronized(this) {
+			n = elfName;
+		}
+		return n;
 	}
 
 	public void setElfName(String elfName) {
-		this.elfName = elfName;
+		synchronized(this) {
+			this.elfName = elfName;
+		}
 	}
 
 	public String getDescription() {
-		return description;
+		String d;
+		synchronized(this) {
+			d = description;
+		}
+		return d;
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		synchronized(this) {
+			this.description = description;
+		}
 	}
 }
