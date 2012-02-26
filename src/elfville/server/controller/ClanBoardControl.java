@@ -69,7 +69,7 @@ public class ClanBoardControl extends Controller {
 			return resp;
 		}
 
-		Clan clan = database.clanDB.findByEncryptedModelID(req.clan.clanID);
+		Clan clan = database.clanDB.findByEncryptedModelID(req.clan.modelID);
 
 		// check to see that the requested clan actually exists
 		if (clan == null) {
@@ -116,7 +116,7 @@ public class ClanBoardControl extends Controller {
 			return resp;
 		}
 
-		Clan clan = database.clanDB.findByEncryptedModelID(req.clan.clanID);
+		Clan clan = database.clanDB.findByEncryptedModelID(req.clan.modelID);
 
 		// check to see that the requested clan actually exists
 		if (clan == null) {

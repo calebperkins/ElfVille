@@ -14,7 +14,6 @@ public class SerializableClan extends SerializableModel {
 	public SerializableElf leader;
 	public List<SerializableElf> members;
 	public List<SerializablePost> posts;
-	public String clanID;
 
 	public SerializableClan() {
 		super();

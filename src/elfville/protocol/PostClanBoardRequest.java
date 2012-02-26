@@ -13,7 +13,7 @@ public class PostClanBoardRequest extends Request {
 	public PostClanBoardRequest(SerializablePost post, String clanID) {
 		this.post = post;
 		this.clan= new SerializableClan();
-		clan.clanID= clanID;
+		clan.modelID= clanID;
 	}
 
 	public PostClanBoardRequest(String content, String title, String clanID) {
@@ -21,6 +21,6 @@ public class PostClanBoardRequest extends Request {
 		post.content = content;
 		post.title = title;
 		this.clan= new SerializableClan();
-		clan.clanID= clanID;
+		clan.modelID= clanID;
 	}
 }
