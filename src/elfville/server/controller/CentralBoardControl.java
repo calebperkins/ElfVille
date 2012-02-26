@@ -71,7 +71,8 @@ public class CentralBoardControl extends Controller {
 
 		if (r.upsock && post.upsock(e)) {
 			resp.status = Response.Status.SUCCESS;
-		} else if (!r.upsock && post.downsock(e)) {
+		} 
+		if (!r.upsock && post.downsock(e)) {
 			resp.status = Response.Status.SUCCESS;
 		}
 		

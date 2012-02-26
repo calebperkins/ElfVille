@@ -46,7 +46,8 @@ public class Post extends Model {
 	}
 
 	public boolean upsock(Elf upsockingElf) {
-		if (!upsockedElves.contains(upsockingElf)) {
+		//each elf can only upsock OR downsock a single post
+		if (!upsockedElves.contains(upsockingElf) && !downsockedElves.contains(upsockingElf)) {
 			upsockedElves.add(upsockingElf);
 			return true;
 		}
@@ -55,7 +56,8 @@ public class Post extends Model {
 
 	// Each post cannot have < 0 socks.
 	public boolean downsock(Elf downsockingElf) {
-		if (!downsockedElves.contains(downsockingElf) && getNumSock() > 0) {
+		//each elf can only upsock OR downsock a single post
+		if (!downsockedElves.contains(downsockingElf) && !upsockedElves.contains(downsockingElf)) {
 			downsockedElves.add(downsockingElf);
 			return true;
 		}
