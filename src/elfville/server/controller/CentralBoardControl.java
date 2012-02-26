@@ -78,5 +78,38 @@ public class CentralBoardControl extends Controller {
 		
 		return resp;
 	}
-
+	
+	public static Response deletePost(DeleteCentralBoardRequest req, CurrentUserProfile currentUser){
+		Response resp = new Response(Status.FAILURE);
+		
+		User user = Database.DB.userDB.findUserByModelID(currentUser.getCurrentUserId());
+		if (user == null) {
+			return resp;
+		}
+		
+		Elf elf = user.getElf();
+		if (elf == null) {
+			return resp;
+		}
+		
+		if(req.post == null){
+			return resp;
+		}
+		
+		Post post = Database.DB.postDB.findByEncryptedModelID(req.post.modelID);
+		
+		if(post == null){
+			return resp;
+		}
+		
+		//make sure the person trying to delete the post created the post
+		if(!post.getElf().equals(elf)){
+			return resp;
+		}
+		
+		Database.DB.postDB.delete(post);
+		
+		resp.status= Status.SUCCESS;
+		return resp;
+	}
 }

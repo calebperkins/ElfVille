@@ -174,17 +174,21 @@ public class ClanBoardControl extends Controller {
 			break;
 			
 		case DELETEPOST:
-			//make sure the person trying to delete the post is the clan leader
-			if(!clan.isLeader(elf)){
-				return resp;
-			}
 			
 			if(req.post == null){
 				return resp;
 			}
 			
+			Post post= clan.getPostFromEncrpytedModelID(req.post.modelID);
+			
 			//make sure this post is actually a post in the clan
-			if(!clan.hasPost(req.post.modelID)){
+			if(post == null){
+				return resp;
+			}
+			
+			//make sure the person trying to delete the post is the clan leader
+			//or the person who created the post
+			if(!clan.isLeader(elf) && !post.getElf().equals(elf)){
 				return resp;
 			}
 			

@@ -50,9 +50,12 @@ public class Routes {
 		return ClanBoardControl.postClanBoard(r, currentUser);
 	}
 
-	//TODO: move this code out of routes!  it should be in a controller
 	private static Response respond(VoteRequest r, CurrentUserProfile currentUser){
 		return  CentralBoardControl.votePost(r, currentUser);
+	}
+	
+	private static Response respond(DeleteCentralBoardRequest r, CurrentUserProfile currentUser){
+		return CentralBoardControl.deletePost(r, currentUser);
 	}
 
 	
@@ -81,6 +84,8 @@ public class Routes {
 			return respond ((PostClanBoardRequest) r, currentUser);
 		} else if (r instanceof VoteRequest){
 			return respond ((VoteRequest) r, currentUser);
+		} else if (r instanceof DeleteCentralBoardRequest){
+			return respond ((DeleteCentralBoardRequest) r, currentUser);
 		}
 		return null; // TODO: implement rest
 	}
