@@ -47,8 +47,9 @@ public class ClanDirectoryControl extends Controller {
 		if (createRequest.clan == null) {
 			return resp;
 		}
-
-		if (database.clanDB.findByName(createRequest.clan.clanName) == null) {
+		
+		//make sure there is not already a clan with this name
+		if (database.clanDB.findByName(createRequest.clan.clanName) != null) {
 			return resp;
 		}
 

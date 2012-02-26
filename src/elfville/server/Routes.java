@@ -8,6 +8,7 @@ import elfville.protocol.models.*;
 import elfville.server.controller.AuthenticationControl;
 import elfville.server.controller.CentralBoardControl;
 import elfville.server.controller.ClanBoardControl;
+import elfville.server.controller.ClanDirectoryControl;
 import elfville.server.model.Clan;
 import elfville.server.model.Elf;
 import elfville.server.model.Post;
@@ -39,7 +40,21 @@ public class Routes {
 			CurrentUserProfile currentUser) {
 		return ClanBoardControl.modifyClan(r, currentUser);
 	}
+	
+	private static ClanListingResponse respond(ClanListingRequest r, CurrentUserProfile currentUser){
+		return ClanDirectoryControl.getClanListing(r, currentUser);
+	}
+	
+	private static Response respond(CreateClanRequest r, CurrentUserProfile currentUser){
+		return ClanDirectoryControl.createClan(r, currentUser);
+	}
+	
+	private static ClanBoardResponse respond(ClanBoardRequest r, CurrentUserProfile
+			currentUser){
+		return ClanBoardControl.getClanBoard(r, currentUser);
+	}
 
+	//TODO: move this code out of routes!  it should be in a controller
 	private static Response respond(VoteRequest r,
 			CurrentUserProfile currentUser) {
 		Response resp = new Response();
@@ -62,18 +77,7 @@ public class Routes {
 		return resp;
 	}
 
-	private static ClanListingResponse respond(ClanListingRequest req,
-			CurrentUserProfile user) {
-		ClanListingResponse resp = new ClanListingResponse(
-				Response.Status.SUCCESS);
-		List<Clan> clans = Database.DB.clanDB.getClans();
-		ArrayList<SerializableClan> sclans = new ArrayList<SerializableClan>();
-		for (Clan c : clans) {
-			sclans.add(c.getSerializableClan());
-		}
-		resp.clans = sclans;
-		return resp;
-	}
+	
 
 	public static Response processRequest(Request r,
 			CurrentUserProfile currentUser) {
@@ -91,6 +95,10 @@ public class Routes {
 			return respond((ModifyClanRequest) r, currentUser);
 		} else if (r instanceof ClanListingRequest) {
 			return respond((ClanListingRequest) r, currentUser);
+		} else if (r instanceof CreateClanRequest){
+			return respond((CreateClanRequest) r, currentUser);
+		} else if (r instanceof ClanBoardRequest){
+			return respond((ClanBoardRequest) r, currentUser);
 		}
 		return null; // TODO: implement rest
 	}

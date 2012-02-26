@@ -26,6 +26,7 @@ public class ClanDB extends DB {
 	}
 
 	public Clan findByEncryptedModelID(String encID) {
+		//TODO: security issue here.  it is possible to break the server by sending garbage as the encID
 		int modelID = SecurityUtils.decryptStringToInt(encID);
 		return findByModelID(modelID);
 	}
