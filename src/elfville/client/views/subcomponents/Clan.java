@@ -54,6 +54,7 @@ public class Clan extends JPanel {
 	 */
 	public Clan(SerializableClan c) {
 		super();
+		// TODO: possible to maybe deduplicate code between this and Post.java
 
 		clanName = new JButton(c.clanName);
 		clanDescription = new JTextArea(c.clanDescription);
@@ -67,7 +68,7 @@ public class Clan extends JPanel {
 		add(clanName);
 		add(leaderName); // TODO we need a way to distinguish between clan and
 							// leader names
-		add(clanDescription);
+		add(new JScrollPane(clanDescription));
 	}
 
 }

@@ -18,5 +18,4 @@ public class ClanBoardResponse extends Response {
 		super();
 		status = s;
 	}
-
 }

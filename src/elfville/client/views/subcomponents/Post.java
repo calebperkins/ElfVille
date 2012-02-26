@@ -35,8 +35,8 @@ public class Post extends JPanel {
 		title.setWrapStyleWord(true);
 
 		add(username);
-		add(title);
-		add(content);
+		add(new JScrollPane(title));
+		add(new JScrollPane(content));
 	}
 
 }
