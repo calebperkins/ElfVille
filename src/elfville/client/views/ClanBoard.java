@@ -34,6 +34,9 @@ public class ClanBoard extends JPanel implements Refreshable {
 		add(title);
 		postPanel = new CreatePostPanel(this, clanID);
 		add(postPanel);
+		
+		
+		
 
 		/*
 		 * TODO: why was this removed? for (SerializablePost post :

@@ -27,11 +27,6 @@ public class ClanDirectory extends JPanel implements Refreshable {
 		for (SerializableClan clan : response.clans) {
 			add(new Clan(clan));
 		}
-		// TODO we need a class Clan that's like post (the above ClickHandler
-		// action listener should
-		// be a part of that class). Then we need to make this more like
-		// CentralBoard and ClanBoard
-		// with a load clans method (instead of loading posts).
 	}
 
 	@Override

@@ -18,16 +18,15 @@ public class ClientWindow extends JFrame {
 	private JPanel current;
 
 	public static void switchScreen(JPanel next) {
-		// window.getContentPane().remove(window.current);
 		window.getContentPane().removeAll();
 		main = new JPanel();
 		main.setLayout(new BorderLayout());
 		window.getContentPane().add(main);
+		// following line only needed if we implement logout
+		//if (!(next instanceof WelcomeScreen)){
 		main.add(navigation, BorderLayout.PAGE_START);
-		// next.setLayout(new BoxLayout(next, BoxLayout.PAGE_AXIS));
+		//}
 		main.add(next, BorderLayout.CENTER);
-		// window.getContentPane().add(navigation);
-		// window.getContentPane().add(next);
 		window.current = next;
 		window.validate();
 	}
@@ -44,10 +43,8 @@ public class ClientWindow extends JFrame {
 
 		main.setLayout(new BorderLayout());
 		this.getContentPane().add(main);
-		main.add(navigation, BorderLayout.PAGE_START);
+		//main.add(navigation, BorderLayout.PAGE_START);
 		main.add(current, BorderLayout.CENTER);
-		// this.getContentPane().add(navigation);
-		// this.getContentPane().add(current);
 		window = this;
 	}
 
