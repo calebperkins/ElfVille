@@ -7,7 +7,9 @@ import javax.swing.*;
 import elfville.client.ClientWindow;
 import elfville.client.SocketController;
 import elfville.client.views.subcomponents.CreatePostPanel;
+import elfville.client.views.subcomponents.Post;
 import elfville.protocol.*;
+import elfville.protocol.models.SerializablePost;
 
 /**
  * Renders the central board using the central board request.
@@ -35,13 +37,9 @@ public class ClanBoard extends JPanel implements Refreshable {
 		postPanel = new CreatePostPanel(this, clanID);
 		add(postPanel);
 		
-		
-		
-
-		/*
-		 * TODO: why was this removed? for (SerializablePost post :
-		 * response.getPosts()) { add(Post(post)); }
-		 */
+		for (SerializablePost post : resp.clan.posts) {
+			add(new Post(post));
+		}
 	}
 
 	@Override

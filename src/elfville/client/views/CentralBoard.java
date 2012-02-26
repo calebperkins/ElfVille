@@ -31,8 +31,10 @@ public class CentralBoard extends JPanel implements Refreshable {
 		// (bottom of page)
 		add(title);
 		add(createPost);
+		JScrollPane scroll = new JScrollPane();
+		add(scroll);
 		for (SerializablePost post : response.posts) {
-			add(new Post(post));
+			scroll.add(new Post(post));
 		}
 	}
 
