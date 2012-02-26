@@ -1,3 +1,4 @@
+/*
 package elfville.server.database;
 
 import java.util.ArrayList;
@@ -5,11 +6,11 @@ import java.util.List;
 
 import elfville.server.model.*;
 
-public class ClanElfDB extends DB {
+public class NClanElfDB extends DB {
 
 	private List<ClanElf> clanElves;
 
-	public ClanElfDB() {
+	public NClanElfDB() {
 		clanElves = new ArrayList<ClanElf>();
 	}
 
@@ -89,3 +90,4 @@ public class ClanElfDB extends DB {
 	}
 
 }
+*/

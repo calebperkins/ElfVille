@@ -1,7 +1,10 @@
 package elfville.server.model;
 
 import java.util.ArrayList;
+
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
 import elfville.protocol.models.SerializableClan;
 
 /*
@@ -11,13 +14,20 @@ public class Clan extends Model {
 
 	private String name;
 	private String description;
-	private List<Post> posts;
+	private ConcurrentHashMap<Integer, Post> posts;
+	
+	private Elf leader;
+	private ConcurrentHashMap<Integer, Elf> applicants;
+	private ConcurrentHashMap<Integer, Elf> members;
+	// private List<Post> posts;
 
 	public Clan(String name, String description) {
 		super();
 		this.name = name;
 		this.description = description;
-		this.posts = new ArrayList<Post>();
+		posts = new ConcurrentHashMap<Integer, Post>();
+		members = new ConcurrentHashMap<Integer, Elf>();
+		applicants = new ConcurrentHashMap<Integer, Elf>();
 	}
 
 	public Clan() {
@@ -30,49 +40,49 @@ public class Clan extends Model {
 		sClan.clanName = name;
 		sClan.clanDescription = description;
 		sClan.numSocks = getNumSock();
-		for (Post post : posts) {
-			sClan.posts.add(post.getSerializablePost());
+		for (ConcurrentHashMap.Entry<Integer, Post> post : posts.entrySet()) {
+			sClan.posts.add(post.getValue().getSerializablePost());
 		}
 		sClan.leader = getLeader().getSerializableElf();
-		for (Elf elf : getMembers()) {
-			sClan.members.add(elf.getSerializableElf());
+		for (ConcurrentHashMap.Entry<Integer, Elf> member : members.entrySet()) {
+			sClan.members.add(member.getValue().getSerializableElf());
 		}
 		return sClan;
 	}
 
 	// returns a list of elves who are either member or leader of the clan
-	public List<Elf> getMembers() {
-		return database.clanElfDB.getElvesForClan(this);
+	public ConcurrentHashMap<Integer, Elf> getMembers() {
+		return members;
 	}
 
-	public List<Elf> getApplicants() {
-		return database.clanElfDB.getApplicantsForClan(this);
+	public ConcurrentHashMap<Integer, Elf> getApplicants() {
+		return applicants;
 	}
 
 	/* The number of socks owned by all clan members combined */
 	public int getNumSock() {
 		int numSock = 0;
-		for (Elf elf : getMembers()) {
-			numSock += elf.getNumSocks();
+		for (ConcurrentHashMap.Entry<Integer, Elf> member : members.entrySet()) {
+			numSock += member.getValue().getNumSocks();
 		}
 		return numSock;
 	}
 
 	public Elf getLeader() {
-		return database.clanElfDB.getClanLeader(this);
+		return leader;
 	}
 
 	public void setLeader(Elf elf) {
-		// TODO: what if there is a former relationship between this elf and
-		// this clan?
-		ClanElf clanElf = new ClanElf(this, elf,
-				Model.ClanElfRelationship.LEADER);
-		database.clanElfDB.insert(clanElf);
+		if (leader != null) {
+			
+		}
+		leader = elf;
 	}
 
 	public void applyClan(Elf elf) {
 		// TODO: what if there is a former relationship between this elf and
 		// this clan?
+		/*
 		if (database.clanElfDB.getApplicantsForClan(this).contains(elf))
 			return;
 		if (database.clanElfDB.getElvesForClan(this).contains(elf))
@@ -80,14 +90,17 @@ public class Clan extends Model {
 		ClanElf clanElf = new ClanElf(this, elf,
 				Model.ClanElfRelationship.APPLICANT);
 		database.clanElfDB.insert(clanElf);
+		*/
 	}
 
 	public void joinClan(Elf elf) {
 		// TODO: what if there is a former relationship between this elf and
 		// this clan?
+		/*
 		ClanElf clanElf = new ClanElf(this, elf,
 				Model.ClanElfRelationship.MEMBER);
 		database.clanElfDB.insert(clanElf);
+		*/
 	}
 
 	// the database takes care of cascading delete
@@ -98,12 +111,14 @@ public class Clan extends Model {
 	// The clan leader cannot do this operation
 	public void leaveClan(Elf elf) {
 		// delete all posts from this elf in this clan
+		/*
 		for (Post post : posts) {
 			if (post.getElf() == elf) {
 				post.delete();
 			}
 		}
 		database.clanElfDB.deleteElf(elf);
+		*/
 	}
 
 	public boolean isLeader(Elf elf) {
@@ -115,31 +130,15 @@ public class Clan extends Model {
 
 	// also true if the elf is the leader
 	public boolean isMember(Elf elf) {
-		List<Elf> elves = getMembers();
-		if (elves.contains(elf)) {
-			return true;
-		}
-		return false;
+		return members.contains(elf.modelID);
 	}
 
 	public boolean isApplicant(Elf elf) {
-		List<Elf> elves = getApplicants();
-		if (elves.contains(elf)) {
-			return true;
-		}
-		return false;
-	}
-
-	public List<Post> getPosts() {
-		return posts;
+		return applicants.contains(elf.modelID);
 	}
 
 	public void createPost(Post post) {
-		posts.add(post);
-	}
-
-	public void deletePost(Post post) {
-		database.postDB.delete(post);
+		posts.put(post.modelID, post);
 	}
 
 	// auto generated getters and setters

@@ -17,7 +17,8 @@ public class Elf extends Model {
 	}
 
 	public List<Clan> getClans() {
-		return database.clanElfDB.getClansForElf(this);
+		// TODO: haven't been implemented yet
+		return null;
 	}
 
 	public SerializableElf getSerializableElf() {
