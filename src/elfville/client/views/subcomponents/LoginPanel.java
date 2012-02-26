@@ -59,8 +59,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		SignInRequest req = new SignInRequest();
-		req.username = usernameField.getText();
+		SignInRequest req = new SignInRequest(usernameField.getText());
 
 		try {
 			Response m = SocketController.send(req);

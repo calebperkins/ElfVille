@@ -20,11 +20,10 @@ import elfville.protocol.models.SerializablePost;
 public class ClanBoard extends JPanel implements Refreshable {
 	private static final long serialVersionUID = 1L;
 	private final JLabel title;
-	private CreatePostPanel postPanel;
 	private String clanID;
 	private String clanName;
 
-	public ClanBoard(String clanID, String clanName, ClanBoardResponse resp) {
+	public ClanBoard(String clanID, String clanName, ClanBoardResponse response) {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.clanID = clanID;
@@ -34,12 +33,16 @@ public class ClanBoard extends JPanel implements Refreshable {
 		// TODO add clan summary? Member listing? (will need to change layout)
 		title.setText(clanName + "'s Board");
 		add(title);
-		postPanel = new CreatePostPanel(this, clanID);
-		add(postPanel);
+		CreatePostPanel createPost = new CreatePostPanel(this, clanID);
+		add(createPost);
 		
-		for (SerializablePost post : resp.clan.posts) {
-			add(new Post(post));
+		JPanel postPanel = new JPanel();
+		postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
+		for (SerializablePost post : response.clan.posts) {
+			postPanel.add(new Post(post));
 		}
+		JScrollPane scroll = new JScrollPane(postPanel);
+		add(scroll);
 	}
 
 	@Override
