@@ -2,46 +2,45 @@ package elfville.server.database;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import elfville.server.SecurityUtils;
 import elfville.server.model.*;
 
 public class ClanDB extends DB {
 
-	private List<Clan> clans;
+	private ConcurrentHashMap<Integer, Clan> idMap;
+	private ConcurrentHashMap<String, Clan> nameMap;
 
 	public List<Clan> getClans() {
-		return clans;
+		return new ArrayList<Clan>(nameMap.values());
 	}
 
 	public ClanDB() {
-		clans = new ArrayList<Clan>();
+		idMap = new ConcurrentHashMap<Integer, Clan>();
+		nameMap = new ConcurrentHashMap<String, Clan>();
 	}
 
-	public Clan findClanByModelID(int modelID) {
-		for (Clan clan : clans) {
-			if (clan.getModelID() == modelID) {
-				return clan;
-			}
-		}
-		return null;
+	public Clan findByModelID(int modelID) {
+		return idMap.get(modelID);
 	}
-	
-	public Clan findClanByEncryptedModelID(String encID) {
+
+	public Clan findByEncryptedModelID(String encID) {
 		int modelID = SecurityUtils.decryptStringToInt(encID);
-		return findClanByModelID(modelID);
+		return findByModelID(modelID);
 	}
-	
+
 	public void insert(Clan clan) {
-		clans.add(clan);
+		idMap.put(clan.getModelID(), clan);
+		nameMap.put(clan.getName(), clan);
 	}
-	
+
 	public void delete(Clan clan) {
 		// delete all posts of the clan
 		for (Post post : clan.getPosts()) {
 			post.delete();
 		}
-		// delete all ClanElfRelationships of this clan 
+		// delete all ClanElfRelationships of this clan
 		for (ClanElf clanElf : database.clanElfDB.getClanElves()) {
 			if (clanElf.getClan() == clan) {
 				database.clanElfDB.delete(clanElf);
@@ -49,13 +48,8 @@ public class ClanDB extends DB {
 		}
 	}
 
-	public Clan findClanByName(String clanName) {
-		for(Clan c : clans){
-			if(c.getName().equals(clanName)){
-				return c;
-			}
-		}
-		return null;
+	public Clan findByName(String clanName) {
+		return nameMap.get(clanName);
 	}
-	
+
 }

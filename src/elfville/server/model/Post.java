@@ -1,29 +1,28 @@
 package elfville.server.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import elfville.protocol.*;
 import elfville.protocol.models.SerializablePost;
 
 /*
  * Post Model
  */
-public class Post extends Model{
+public class Post extends Model {
 	private Elf elf;
 	private String title;
 	private String content;
-	private List<Elf> upsockedElves;
-	private List<Elf> downsockedElves;
-	
-	public Post(SerializablePost postRequest, Elf elf){
+	private Set<Elf> upsockedElves;
+	private Set<Elf> downsockedElves;
+
+	public Post(SerializablePost postRequest, Elf elf) {
 		super();
 		// elf= postRequest.username;
-		title= postRequest.title;
+		title = postRequest.title;
 		content = postRequest.content;
 		this.elf = elf;
-		upsockedElves = new ArrayList<Elf>();
-		downsockedElves = new ArrayList<Elf>();
+		upsockedElves = new HashSet<Elf>();
+		downsockedElves = new HashSet<Elf>();
 	}
 
 	public SerializablePost getSerializablePost() {
@@ -38,7 +37,7 @@ public class Post extends Model{
 		sPost.modelID = getEncryptedModelID();
 		return sPost;
 	}
-	
+
 	public void delete() {
 		database.postDB.delete(this);
 	}
@@ -50,24 +49,24 @@ public class Post extends Model{
 		}
 		return false;
 	}
-	
-	// Each post cannot have < 0 socks. 
+
+	// Each post cannot have < 0 socks.
 	public boolean downsock(Elf downsockingElf) {
 		if (!downsockedElves.contains(downsockingElf) && getNumSock() > 0) {
 			downsockedElves.add(downsockingElf);
 			return true;
-		}		
+		}
 		return false;
 	}
-	
+
 	public int getNumUpsock() {
 		return upsockedElves.size();
 	}
-	
+
 	public int getNumDownsock() {
 		return downsockedElves.size();
 	}
-	
+
 	public int getNumSock() {
 		return upsockedElves.size() - downsockedElves.size();
 	}

@@ -9,58 +9,66 @@ import elfville.server.CurrentUserProfile;
 import elfville.server.model.*;
 
 public class ClanDirectoryControl extends Controller {
-	public static ClanListingResponse getClanListing(ClanListingRequest inM, CurrentUserProfile currentUser) {
-		ClanListingResponse resp= new ClanListingResponse(Status.FAILURE);
-		
-		User user = database.userDB.findUserByModelID(currentUser.getCurrentUserId());
+	public static ClanListingResponse getClanListing(ClanListingRequest inM,
+			CurrentUserProfile currentUser) {
+		ClanListingResponse resp = new ClanListingResponse(Status.FAILURE);
+
+		User user = database.userDB.findUserByModelID(currentUser
+				.getCurrentUserId());
 		if (user == null) {
 			return resp;
 		}
-		
-		List <SerializableClan> clans= ControllerUtils.buildBoardList(database.clanDB.getClans());
-		
-		resp.status= Status.SUCCESS;
-		resp.clans= clans;
+
+		List<SerializableClan> clans = ControllerUtils
+				.buildBoardList(database.clanDB.getClans());
+
+		resp.status = Status.SUCCESS;
+		resp.clans = clans;
 
 		return resp;
 	}
-	
-	public static Response createClan(CreateClanRequest createRequest, CurrentUserProfile currentUser){
-		Response resp= new Response(Status.FAILURE);
+
+	public static Response createClan(CreateClanRequest createRequest,
+			CurrentUserProfile currentUser) {
+		Response resp = new Response(Status.FAILURE);
 		Elf leader;
-		
-		User user = database.userDB.findUserByModelID(currentUser.getCurrentUserId());
+
+		User user = database.userDB.findUserByModelID(currentUser
+				.getCurrentUserId());
 		if (user == null) {
 			return resp;
 		}
-		
-		leader= user.getElf();
-		if(leader == null){
-			return resp;
-		}		
-		
-		if(createRequest.clan == null){
+
+		leader = user.getElf();
+		if (leader == null) {
 			return resp;
 		}
-		
-		if(database.clanDB.findClanByName(createRequest.clan.clanName) == null){
+
+		if (createRequest.clan == null) {
 			return resp;
 		}
-		
-		//require the clan name to have at least one character
-		if(createRequest.clan.clanName == null || createRequest.clan.clanName == ""){
+
+		if (database.clanDB.findByName(createRequest.clan.clanName) == null) {
 			return resp;
 		}
-		
-		//require the clan description to have at least one character
-		if(createRequest.clan.clanDescription == null || createRequest.clan.clanDescription == ""){
+
+		// require the clan name to have at least one character
+		if (createRequest.clan.clanName == null
+				|| createRequest.clan.clanName == "") {
 			return resp;
 		}
-		
-		Clan clan= new Clan(createRequest.clan.clanName, createRequest.clan.clanDescription);
+
+		// require the clan description to have at least one character
+		if (createRequest.clan.clanDescription == null
+				|| createRequest.clan.clanDescription == "") {
+			return resp;
+		}
+
+		Clan clan = new Clan(createRequest.clan.clanName,
+				createRequest.clan.clanDescription);
 		clan.setLeader(leader);
 		database.clanDB.insert(clan);
-		
+
 		resp.status = Status.SUCCESS;
 		return resp;
 	}

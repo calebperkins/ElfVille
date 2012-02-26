@@ -6,26 +6,26 @@ import elfville.server.SecurityUtils;
 import elfville.server.model.Elf;
 
 public class ElfDB extends DB {
-	
+
 	private HashMap<Integer, Elf> elves;
-	
+
 	public ElfDB() {
 		elves = new HashMap<Integer, Elf>();
 	}
-	
+
 	public void insert(Elf elf) {
 		elves.put(elf.getModelID(), elf);
 	}
 
 	// No elf delete function
-	
-	public Elf findElfByModelID(int modelID) {
+
+	public Elf findByID(int modelID) {
 		return elves.get(modelID);
 	}
-	
-	public Elf findElfByEncryptedModelID(String encID) {
+
+	public Elf findByEncryptedID(String encID) {
 		int modelID = SecurityUtils.decryptStringToInt(encID);
-		return findElfByModelID(modelID);
+		return findByID(modelID);
 	}
-	
+
 }
