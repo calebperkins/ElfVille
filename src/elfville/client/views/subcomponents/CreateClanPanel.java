@@ -1,5 +1,6 @@
 package elfville.client.views.subcomponents;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -40,8 +41,12 @@ public class CreateClanPanel extends JPanel implements ActionListener {
 		add(descriptionLabel);
 		description.setLineWrap(true);
 		description.setWrapStyleWord(true);
-		add(description);
+		JScrollPane scrollableDescription = new JScrollPane(description);
+		scrollableDescription.setPreferredSize(new Dimension(300,100));
+		scrollableDescription.setMinimumSize(new Dimension(300, 40));
+		add(scrollableDescription);
 		add(button);
+		setMaximumSize(new Dimension(300, 150));
 	}
 
 	@Override
