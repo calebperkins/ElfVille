@@ -1,9 +1,14 @@
 package elfville.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import elfville.protocol.*;
+import elfville.protocol.models.*;
 import elfville.server.controller.AuthenticationControl;
 import elfville.server.controller.CentralBoardControl;
 import elfville.server.controller.ClanBoardControl;
+import elfville.server.model.Clan;
 import elfville.server.model.Elf;
 import elfville.server.model.Post;
 import elfville.server.model.User;
@@ -57,6 +62,19 @@ public class Routes {
 		return resp;
 	}
 
+	private static ClanListingResponse respond(ClanListingRequest req,
+			CurrentUserProfile user) {
+		ClanListingResponse resp = new ClanListingResponse(
+				Response.Status.SUCCESS);
+		List<Clan> clans = Database.DB.clanDB.getClans();
+		ArrayList<SerializableClan> sclans = new ArrayList<SerializableClan>();
+		for (Clan c : clans) {
+			sclans.add(c.getSerializableClan());
+		}
+		resp.clans = sclans;
+		return resp;
+	}
+
 	public static Response processRequest(Request r,
 			CurrentUserProfile currentUser) {
 		if (r instanceof CentralBoardRequest) {
@@ -71,6 +89,8 @@ public class Routes {
 			return respond((VoteRequest) r, currentUser);
 		} else if (r instanceof ModifyClanRequest) {
 			return respond((ModifyClanRequest) r, currentUser);
+		} else if (r instanceof ClanListingRequest) {
+			return respond((ClanListingRequest) r, currentUser);
 		}
 		return null; // TODO: implement rest
 	}
