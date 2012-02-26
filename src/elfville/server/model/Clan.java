@@ -124,8 +124,30 @@ public class Clan extends Model {
 		return applicants.contains(elf.getModelID());
 	}
 
+	public Post getPostFromEncrpytedModelID (String encryptedModelID) {
+		return posts.get(SecurityUtils.decryptStringToInt(encryptedModelID));
+	}
+	
 	public void createPost(Post post) {
 		posts.put(post.getModelID(), post);
+	}
+	
+	public boolean hasPost(Post post) {
+		return posts.contains(post.getModelID());
+	}
+	
+	public boolean hasPost(String encryptedModelID) {
+		return hasPost(getPostFromEncrpytedModelID(encryptedModelID));
+	}
+	
+	public void deletePost(Post post) {
+		if (posts.contains(post.getModelID())) {
+			posts.remove(post.getModelID());
+		}
+	}
+	
+	public void deletePost(String encryptedModelID) {
+		deletePost(getPostFromEncrpytedModelID(encryptedModelID));
 	}
 
 	// auto generated getters and setters
