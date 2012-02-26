@@ -122,7 +122,7 @@ public class ClanBoardControl extends Controller {
 		if (clan == null) {
 			return resp;
 		}
-
+		
 		switch (req.requestType) {
 		case DELETE:
 			// make sure that this elf is actually the leader of the clan
@@ -148,7 +148,36 @@ public class ClanBoardControl extends Controller {
 			}
 			clan.leaveClan(elf);
 			break;
+			
+		case ACCEPT:
+			//make sure that the accepter is actually the leader
+			if(req.applicant == null){
+				return resp;
+			}
+			
+			Elf applicant= database.elfDB.findByEncryptedID(req.applicant.elfID);
+			
+			if(applicant == null){
+				return resp;
+			}
+			
+			if(!clan.isLeader(elf)){
+				return resp;
+			}
+			//make sure that the elf being accepted is actually an applicant
+			if(clan.isApplicant(applicant)){
+				return resp;
+			}
+			
+			clan.joinClan(applicant);
+			
+			break;
+			
+		case DELETEPOST:
+			//make sure the person 
+			break;
 		}
+		
 
 		resp.status = Status.SUCCESS;
 

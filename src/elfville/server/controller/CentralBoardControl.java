@@ -15,6 +15,7 @@ import elfville.protocol.Response.Status;
 public class CentralBoardControl extends Controller {
 
 	public static CentralBoardResponse getAllPosts(CentralBoardRequest inM) {
+		//TODO: add some checks here
 		CentralBoardResponse outM = new CentralBoardResponse(Status.SUCCESS,
 				"whatever", ControllerUtils.buildPostList(database.postDB
 						.getCentralPosts()));
@@ -24,15 +25,30 @@ public class CentralBoardControl extends Controller {
 
 	public static Response addPost(PostCentralBoardRequest postRequest,
 			CurrentUserProfile currentUser) {
+		//TODO: add some checks here
 		User user = database.userDB.findUserByModelID(currentUser
 				.getCurrentUserId());
+		Response resp= new Response(Status.FAILURE);
 		if (user == null) {
-			return new Response(Status.FAILURE);
+			return resp;
 		}
+		
+		if(postRequest.post == null){
+			return resp;
+		}
+		
+		//make sure that we acutally get some content to post
+		if(postRequest.post.title == null || postRequest.post.title == "" ||
+				postRequest.post.content == null || postRequest.post.content == ""){
+			return resp;
+		}
+		
+		//yay we can actually post!
 		Elf elf = user.getElf();
 		Post post = new Post(postRequest.post, elf);
 		database.postDB.insert(post);
-		return new Response(Status.SUCCESS);
+		resp.status = Status.SUCCESS;
+		return resp;
 	}
 
 }

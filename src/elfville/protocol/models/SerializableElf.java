@@ -6,4 +6,5 @@ public class SerializableElf extends SerializableModel {
 
 	public String elfName;
 	public int numSocks;
+	public String elfID;
 }
