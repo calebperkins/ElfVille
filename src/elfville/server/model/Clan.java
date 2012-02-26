@@ -1,10 +1,6 @@
 package elfville.server.model;
 
-import java.util.ArrayList;
-
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-
 import elfville.protocol.models.SerializableClan;
 import elfville.server.SecurityUtils;
 
@@ -76,33 +72,24 @@ public class Clan extends Model {
 
 	public void setLeader(Elf elf) {
 		if (leader != null) {
-			
+			// TODO: throws some errors!
 		}
 		leader = elf;
 	}
 
+	// A stranger becomes an applicant
 	public void applyClan(Elf elf) {
-		// TODO: what if there is a former relationship between this elf and
-		// this clan?
-		/*
-		if (database.clanElfDB.getApplicantsForClan(this).contains(elf))
+		if (applicants.contains(elf.modelID) || members.contains(elf.modelID)) {
 			return;
-		if (database.clanElfDB.getElvesForClan(this).contains(elf))
-			return;
-		ClanElf clanElf = new ClanElf(this, elf,
-				Model.ClanElfRelationship.APPLICANT);
-		database.clanElfDB.insert(clanElf);
-		*/
+		}
+		applicants.put(elf.modelID, elf);
 	}
 
+	// An applicant becomes a member
 	public void joinClan(Elf elf) {
-		// TODO: what if there is a former relationship between this elf and
-		// this clan?
-		/*
-		ClanElf clanElf = new ClanElf(this, elf,
-				Model.ClanElfRelationship.MEMBER);
-		database.clanElfDB.insert(clanElf);
-		*/
+		if (applicants.contains(elf.modelID) && !members.contains(elf.modelID)) {
+			members.put(elf.modelID, elf);
+		}
 	}
 
 	// the database takes care of cascading delete
@@ -112,15 +99,15 @@ public class Clan extends Model {
 
 	// The clan leader cannot do this operation
 	public void leaveClan(Elf elf) {
-		// delete all posts from this elf in this clan
-		/*
-		for (Post post : posts) {
-			if (post.getElf() == elf) {
-				post.delete();
+		if (elf == leader) {
+			return;
+		}
+		for (ConcurrentHashMap.Entry<Integer, Post> post : posts.entrySet()) {
+			if (post.getValue().getElf() == elf) {
+				posts.remove(post.getValue().modelID);
 			}
 		}
-		database.clanElfDB.deleteElf(elf);
-		*/
+		members.remove(elf.modelID);
 	}
 
 	public boolean isLeader(Elf elf) {
