@@ -1,47 +1,31 @@
 package elfville.server.database;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import elfville.server.SecurityUtils;
-import elfville.server.model.Clan;
 import elfville.server.model.Elf;
 
 public class ElfDB extends DB {
 	
-	private List<Elf> elves;
+	private HashMap<Integer, Elf> elves;
 	
 	public ElfDB() {
-		elves = new ArrayList<Elf>();
+		elves = new HashMap<Integer, Elf>();
 	}
 	
 	public void insert(Elf elf) {
-		elves.add(elf);
+		elves.put(elf.getModelID(), elf);
 	}
 
 	// No elf delete function
 	
 	public Elf findElfByModelID(int modelID) {
-		for (Elf elf : elves) {
-			if (elf.getModelID() == modelID) {
-				return elf;
-			}
-		}
-		return null;
+		return elves.get(modelID);
 	}
 	
 	public Elf findElfByEncryptedModelID(String encID) {
 		int modelID = SecurityUtils.decryptStringToInt(encID);
 		return findElfByModelID(modelID);
 	}
-
-	// auto generated getters and setters
-	public List<Elf> getElves() {
-		return elves;
-	}
-
-	public void setElves(List<Elf> elves) {
-		this.elves = elves;
-	}
-
+	
 }
