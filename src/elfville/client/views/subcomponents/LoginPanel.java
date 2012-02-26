@@ -1,8 +1,10 @@
-package elfville.client.views;
+package elfville.client.views.subcomponents;
 
 import javax.swing.*;
 
+import elfville.client.ClientWindow;
 import elfville.client.SocketController;
+import elfville.client.views.CentralBoard;
 import elfville.protocol.*;
 
 import java.awt.event.ActionEvent;
@@ -15,7 +17,7 @@ import java.io.IOException;
  *
  */
 public class LoginPanel extends JPanel implements ActionListener {
-	private static final long serialVersionUID = -3656217652715542542L;
+	private static final long serialVersionUID = 1L;
 	private JTextField usernameField;
 	private JPasswordField passwordField;
 	private JButton loginButton;
@@ -62,8 +64,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 		try {
 			Response m = SocketController.send(req);
 			if (m.status == Response.Status.SUCCESS) {
-				CentralBoard b = (CentralBoard) ClientWindow.switchScreen("central_board");
-				b.load(SocketController.send(new CentralBoardRequest()));
+				CentralBoard.showCentralBoard();
 			} else {
 				ClientWindow.showError(m.message, "Login error");
 			}

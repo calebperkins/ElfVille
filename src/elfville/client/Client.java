@@ -2,7 +2,6 @@ package elfville.client;
 
 import java.awt.*;
 import java.io.IOException;
-import elfville.client.views.*;
 
 /**
  * Main entry point for client.

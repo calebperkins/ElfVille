@@ -1,4 +1,4 @@
-package elfville.client.views;
+package elfville.client.views.subcomponents;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,8 +6,11 @@ import java.io.IOException;
 
 import javax.swing.*;
 
+import elfville.client.ClientWindow;
 import elfville.client.SocketController;
-import elfville.protocol.*;
+import elfville.client.views.CentralBoard;
+import elfville.protocol.Response;
+import elfville.protocol.SignUpRequest;
 
 public class RegistrationPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -41,11 +44,10 @@ public class RegistrationPanel extends JPanel implements ActionListener {
 		SignUpRequest req = new SignUpRequest(usernameField.getText());
 		try {
 			Response resp = SocketController.send(req);
-			if (resp.status == Response.Status.SUCCESS) {
-				CentralBoard b = (CentralBoard) ClientWindow.switchScreen("central_board");
-				b.load(SocketController.send(new CentralBoardRequest()));
+			if (resp.status == Response.Status.SUCCESS){
+				CentralBoard.showCentralBoard();
 			} else {
-				ClientWindow.showError(resp.message, "Registration error");
+				ClientWindow.showError(resp.message, "Registration error:");
 			}
 		} catch (IOException e) {
 			ClientWindow.showConnectionError();

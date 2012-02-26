@@ -1,10 +1,12 @@
 package elfville.client.views;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
 import javax.swing.*;
 
+import elfville.client.ClientWindow;
+import elfville.client.SocketController;
+import elfville.client.views.subcomponents.CreatePostPanel;
 import elfville.protocol.*;
 
 
@@ -16,47 +18,46 @@ import elfville.protocol.*;
 public class ClanBoard extends JPanel implements Refreshable {
 	private static final long serialVersionUID = 1L;
 	private final JLabel title;
-	private final List<Post> posts = new ArrayList<Post>();
 	private CreatePostPanel postPanel;
+	private String clanID;
+	private String clanName;
 
-	/**
-	 * Create the panel.
-	 */
-	public ClanBoard() {
+	public ClanBoard(String clanID, String clanName, ClanBoardResponse resp) {
+		// TODO Auto-generated constructor stub
 		super();
-		title = new JLabel("Clan Board");
+		this.clanID = clanID;
+		this.clanName = clanName;
+		title = new JLabel("Board of the " + clanName);
 		add(title);
-		postPanel = null;
-	}
-	
-	public void changeClanLoadPosts(String clanName, ClanBoardResponse response) {
 		// TODO add clan summary? Member listing?
-		for (Post p : posts) {
-			remove(p);
-		}
-		posts.clear();
-		if (null != postPanel) {
-			remove(postPanel);
-		}
-		remove(title);
-		
 		title.setText(clanName + "'s Board");
 		add(title);
-		postPanel = new CreatePostPanel(this, clanName);
+		postPanel = new CreatePostPanel(this, clanID);
 		add(postPanel);
 		
-		/*
+		/* TODO: why was this removed?
 		for (SerializablePost post : response.getPosts()) {
-			Post p = new Post(post);
-			posts.add(p);
-			add(p);
+			add(Post(post));
 		}
 		*/
 	}
 
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
-		
+		showClanBoard(clanID, clanName);
+	}
+	
+
+	public static void showClanBoard(String clanID, String clanName) {
+		try {
+			ClanBoardResponse resp = SocketController.send(new ClanBoardRequest(clanID));
+			if (resp.status == Response.Status.SUCCESS){
+				ClientWindow.switchScreen(new ClanBoard(clanID, clanName, resp));
+			} else {
+				ClientWindow.showError(resp.message, "Error retrieving clan board.");
+			}
+		} catch (IOException e1) {
+			ClientWindow.showConnectionError();
+		}
 	}
 }

@@ -1,4 +1,4 @@
-package elfville.client.views;
+package elfville.client.views.subcomponents;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,7 +6,9 @@ import java.io.IOException;
 
 import javax.swing.*;
 
+import elfville.client.ClientWindow;
 import elfville.client.SocketController;
+import elfville.client.views.Refreshable;
 import elfville.protocol.*;
 
 public class CreatePostPanel extends JPanel implements ActionListener {
@@ -14,14 +16,14 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 	private final JTextArea text = new JTextArea();
 	private final JTextField title = new JTextField();
 	private final JButton button = new JButton("Post");
-	private final String clanName;
+	private final String clanID;
 	private final JLabel titleLabel = new JLabel("Title");
 	private final JLabel textLabel = new JLabel("Text");
 	private final Refreshable board;
 	
-	public CreatePostPanel(Refreshable board, String clanName) {
+	public CreatePostPanel(Refreshable board, String clanID) {
 		super();
-		this.clanName = clanName;
+		this.clanID = clanID;
 		this.board = board;
 		makeThePanel();
 	}
@@ -48,11 +50,11 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 		// TODO Force there to be a title? Force there to be text? Both?
 		try {
 			Response resp;
-			if (clanName == null) {
+			if (clanID == null) {
 				PostCentralBoardRequest req = new PostCentralBoardRequest(text.getText(), title.getText());
 				resp = SocketController.send(req); // returns PostCentralBoardResponse
 			} else {
-				PostClanBoardRequest req = new PostClanBoardRequest(text.getText(), title.getText(), clanName);
+				PostClanBoardRequest req = new PostClanBoardRequest(text.getText(), title.getText(), clanID);
 				resp = SocketController.send(req); // returns PostClanlBoardResponse
 			}
 			

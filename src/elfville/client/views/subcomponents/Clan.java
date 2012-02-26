@@ -1,17 +1,16 @@
-package elfville.client.views;
+package elfville.client.views.subcomponents;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.List;
 
 import javax.swing.*;
 
-import elfville.client.SocketController;
+import elfville.client.views.ClanBoard;
 import elfville.protocol.*;
 import elfville.protocol.models.SerializableClan;
 
 public class Clan extends JPanel {
+	private static final long serialVersionUID = 1L;
 	private JButton clanName;
 	private JTextArea clanDescription;
 	private JButton leaderName;
@@ -19,40 +18,27 @@ public class Clan extends JPanel {
 	
 	private class ClanHandler implements ActionListener {
 		private String clanID;
-		private Clan component;
 		private String clanName;
 		
-		public ClanHandler(String clanID, String clanName, Clan component) {
+		public ClanHandler(String clanID, String clanName) {
 			this.clanID = clanID;
 			this.clanName = clanName;
-			this.component = component;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			ClanBoardRequest req = new ClanBoardRequest(clanID);
-			try {
-				ClanBoardResponse resp = SocketController.send(req);
-				if (resp.status == Response.Status.SUCCESS){
-					ClanBoard b = (ClanBoard) ClientWindow.switchScreen("clan_board");
-					b.changeClanLoadPosts(clanName, resp);
-				} else {
-					ClientWindow.showError(resp.message, "Login error");
-				}
-			} catch (IOException e1) {
-				ClientWindow.showConnectionError();
-			}
+			ClanBoard.showClanBoard(clanID, clanName);
 		}
 		
 	}
 	
 	private class LeaderHandler implements ActionListener {
 		private String elfID;
-		private Clan component;
+		private String elfName;
 		
-		public LeaderHandler(String elfID, Clan component) {
+		public LeaderHandler(String elfID, String elfName) {
 			this.elfID = elfID;
-			this.component = component;
+			this.elfName = elfName;
 		}
 
 		@Override
@@ -72,9 +58,8 @@ public class Clan extends JPanel {
 		clanDescription = new JTextArea(c.clanDescription);
 		leaderName = new JButton(c.leader.elfName);
 		
-		clanName.addActionListener(new ClanHandler(c.clanID, c.clanName, this));
-		leaderName.addActionListener(new LeaderHandler(c.leader.modelID, this));
-		
+		clanName.addActionListener(new ClanHandler(c.clanID, c.clanName));
+		leaderName.addActionListener(new LeaderHandler(c.leader.modelID, c.leader.elfName));
 		add(clanName);
 		add(leaderName); // TODO we need a way to distinguish between clan and leader names
 		add(clanDescription);

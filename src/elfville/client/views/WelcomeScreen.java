@@ -2,6 +2,9 @@ package elfville.client.views;
 
 import javax.swing.*;
 
+import elfville.client.views.subcomponents.LoginPanel;
+import elfville.client.views.subcomponents.RegistrationPanel;
+
 public class WelcomeScreen extends JPanel {
 	private static final long serialVersionUID = 1L;
 
