@@ -32,8 +32,7 @@ public class ClanBoardControl extends Controller {
 		// Basic board info that is visible to all elves
 		outM.clan = clan.getSerializableClan();
 
-		boolean isMember = clan.isMember(elf);
-		if (isMember) {
+		if (clan.isMember(elf) || clan.isLeader(elf)) {
 			if (clan.isLeader(elf)) {
 				outM.elfStatus = ClanBoardResponse.ElfClanRelationship.LEADER;
 			} else {
@@ -81,13 +80,13 @@ public class ClanBoardControl extends Controller {
 		}
 		
 		//make sure we were actually sent a post
-		if(req.post.content == null || req.post.content == "" ||
-				req.post.title == null || req.post.title == ""){
+		if(req.post.content == null || req.post.content.equals("") ||
+				req.post.title == null || req.post.title.equals("")){
 			return resp;
 		}
 		
 		//make sure that this elf is a part of the clan
-		if (!clan.isLeader(elf) || !clan.isMember(elf)) {
+		if (!clan.isLeader(elf) && !clan.isMember(elf)) {
 			return resp;
 		}
 		
@@ -134,8 +133,8 @@ public class ClanBoardControl extends Controller {
 
 		case JOIN:
 			// see if this elf has not already applied or is in the clan
-			if (!clan.isApplicant(elf) || !clan.isLeader(elf)
-					|| !clan.isMember(elf)) {
+			if (clan.isApplicant(elf) || clan.isLeader(elf)
+					|| clan.isMember(elf)) {
 				return resp;
 			}
 			clan.applyClan(elf);
@@ -143,14 +142,14 @@ public class ClanBoardControl extends Controller {
 
 		case LEAVE:
 			// see if the elf is in the clan and is not the leader
-			if (clan.isLeader(elf) || !clan.isMember(elf)) {
+			if (!clan.isLeader(elf) && clan.isMember(elf)) {
 				return resp;
 			}
 			clan.leaveClan(elf);
 			break;
 			
 		case ACCEPT:
-			//make sure that the accepter is actually the leader
+			
 			if(req.applicant == null){
 				return resp;
 			}
@@ -161,11 +160,12 @@ public class ClanBoardControl extends Controller {
 				return resp;
 			}
 			
+			//make sure that the accepter is actually the leader
 			if(!clan.isLeader(elf)){
 				return resp;
 			}
 			//make sure that the elf being accepted is actually an applicant
-			if(clan.isApplicant(applicant)){
+			if(!clan.isApplicant(applicant)){
 				return resp;
 			}
 			

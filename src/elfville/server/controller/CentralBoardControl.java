@@ -37,9 +37,9 @@ public class CentralBoardControl extends Controller {
 			return resp;
 		}
 		
-		//make sure that we acutally get some content to post
-		if(postRequest.post.title == null || postRequest.post.title == "" ||
-				postRequest.post.content == null || postRequest.post.content == ""){
+		//make sure that we actually get some content to post
+		if(postRequest.post.title == null || postRequest.post.title.equals("") ||
+				postRequest.post.content == null || postRequest.post.content.equals("")){
 			return resp;
 		}
 		
