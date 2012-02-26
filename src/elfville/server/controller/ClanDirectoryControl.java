@@ -55,13 +55,13 @@ public class ClanDirectoryControl extends Controller {
 
 		// require the clan name to have at least one character
 		if (createRequest.clan.clanName == null
-				|| createRequest.clan.clanName == "") {
+				|| createRequest.clan.clanName.equals("")) {
 			return resp;
 		}
 
 		// require the clan description to have at least one character
 		if (createRequest.clan.clanDescription == null
-				|| createRequest.clan.clanDescription == "") {
+				|| createRequest.clan.clanDescription.equals("")) {
 			return resp;
 		}
 

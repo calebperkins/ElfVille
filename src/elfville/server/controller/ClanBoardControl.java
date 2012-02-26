@@ -81,8 +81,8 @@ public class ClanBoardControl extends Controller {
 		}
 		
 		//make sure we were actually sent a post
-		if(req.post.content == null || req.post.content == "" ||
-				req.post.title == null || req.post.title == ""){
+		if(req.post.content == null || req.post.content.equals("") ||
+				req.post.title == null || req.post.title.equals("")){
 			return resp;
 		}
 		
