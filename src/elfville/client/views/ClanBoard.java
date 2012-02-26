@@ -23,13 +23,13 @@ public class ClanBoard extends JPanel implements Refreshable {
 	private String clanName;
 
 	public ClanBoard(String clanID, String clanName, ClanBoardResponse resp) {
-		// TODO Auto-generated constructor stub
 		super();
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.clanID = clanID;
 		this.clanName = clanName;
 		title = new JLabel("Board of the " + clanName);
 		add(title);
-		// TODO add clan summary? Member listing?
+		// TODO add clan summary? Member listing? (will need to change layout)
 		title.setText(clanName + "'s Board");
 		add(title);
 		postPanel = new CreatePostPanel(this, clanID);

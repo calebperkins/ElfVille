@@ -1,8 +1,11 @@
 package elfville.client;
 
+import java.awt.BorderLayout;
+
 import javax.swing.*;
 
 import elfville.client.views.WelcomeScreen;
+import elfville.client.views.subcomponents.NavigationScreen;
 
 public class ClientWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -10,14 +13,22 @@ public class ClientWindow extends JFrame {
 	// TODO - remove global variable, or at least find a way to make it final
 	public static ClientWindow window;
 	
-	//private final JPanel navigation;
+	private static final JPanel navigation = new NavigationScreen();
+	private static JPanel main = new JPanel();
 	private JPanel current;
 
 
 	public static void switchScreen(JPanel next) {
 		//window.getContentPane().remove(window.current);
 		window.getContentPane().removeAll();
-		window.getContentPane().add(next);
+		main = new JPanel();
+		main.setLayout(new BorderLayout());
+		window.getContentPane().add(main);
+		main.add(navigation, BorderLayout.PAGE_START);
+		//next.setLayout(new BoxLayout(next, BoxLayout.PAGE_AXIS));
+		main.add(next, BorderLayout.CENTER);
+		//window.getContentPane().add(navigation);
+		//window.getContentPane().add(next);
 		window.current = next;
 		window.validate();
 	}
@@ -30,10 +41,14 @@ public class ClientWindow extends JFrame {
 		setBounds(100, 100, 800, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		//TODO: consider adding navigation panel
 		current = new WelcomeScreen(); 
 		
-		this.getContentPane().add(current);
+		main.setLayout(new BorderLayout());
+		this.getContentPane().add(main);
+		main.add(navigation, BorderLayout.PAGE_START);
+		main.add(current, BorderLayout.CENTER);
+		//this.getContentPane().add(navigation);
+		//this.getContentPane().add(current);
 		window = this;
 	}
 

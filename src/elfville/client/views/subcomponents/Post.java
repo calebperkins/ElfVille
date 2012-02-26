@@ -57,6 +57,7 @@ public class Post extends JPanel {
 	public Post(SerializablePost p) {
 		super();
 		// TODO have some indication of whether (and how) the user has voted on this post.
+		//setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		username = new JLabel(p.username);
 		content = new JTextArea(p.content);
 		upvote = new JButton("Likes: " + Integer.toString(p.upvotes));
