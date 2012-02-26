@@ -24,7 +24,7 @@ public class Response implements Serializable {
 		status = s;
 		message = msg;
 	}
-	
+
 	public Response(Status s) {
 		status = s;
 		message = "";

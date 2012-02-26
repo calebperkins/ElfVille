@@ -12,7 +12,6 @@ import elfville.client.views.Refreshable;
 import elfville.protocol.*;
 import elfville.protocol.models.SerializableClan;
 
-
 public class CreateClanPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private final JTextArea description = new JTextArea();
@@ -21,21 +20,21 @@ public class CreateClanPanel extends JPanel implements ActionListener {
 	private final JLabel nameLabel = new JLabel("Name");
 	private final JLabel descriptionLabel = new JLabel("Description");
 	private final Refreshable board;
-	
+
 	public CreateClanPanel(Refreshable board) {
 		super();
 		this.board = board;
 		makeThePanel();
 	}
-	
+
 	private void makeThePanel() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Create Clan"),
-                BorderFactory.createEmptyBorder(5,5,5,5)));
-		
+				BorderFactory.createTitledBorder("Create Clan"),
+				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
 		button.addActionListener(this);
-		
+
 		add(nameLabel);
 		add(name);
 		add(descriptionLabel);

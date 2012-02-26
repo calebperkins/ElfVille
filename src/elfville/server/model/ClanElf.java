@@ -1,15 +1,15 @@
 package elfville.server.model;
 
 public class ClanElf extends Model {
-	
+
 	private Clan clan;
 	private Elf elf;
-	
+
 	private ClanElfRelationship relationship;
-	
+
 	public ClanElf() {
 	}
-	
+
 	public ClanElf(Clan clan, Elf elf, ClanElfRelationship relationship) {
 		this.clan = clan;
 		this.elf = elf;

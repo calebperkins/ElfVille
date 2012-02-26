@@ -25,12 +25,12 @@ public class RegistrationPanel extends JPanel implements ActionListener {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Register"),
-                BorderFactory.createEmptyBorder(5,5,5,5)));
-		
+				BorderFactory.createTitledBorder("Register"),
+				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
 		usernameLabel.setLabelFor(usernameField);
 		registerButton.addActionListener(this);
-		
+
 		add(usernameLabel);
 		add(usernameField);
 		add(registerButton);
@@ -44,7 +44,7 @@ public class RegistrationPanel extends JPanel implements ActionListener {
 		SignUpRequest req = new SignUpRequest(usernameField.getText());
 		try {
 			Response resp = SocketController.send(req);
-			if (resp.status == Response.Status.SUCCESS){
+			if (resp.status == Response.Status.SUCCESS) {
 				CentralBoard.showCentralBoard();
 			} else {
 				ClientWindow.showError(resp.message, "Registration error:");

@@ -14,10 +14,10 @@ public class NavigationScreen extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JButton centralBoard;
 	private JButton clanDirectory;
-	
+
 	private class ButtonHandler implements ActionListener {
 		private boolean centralBoard;
-		
+
 		public ButtonHandler(boolean centralBoard) {
 			this.centralBoard = centralBoard;
 		}
@@ -31,18 +31,18 @@ public class NavigationScreen extends JPanel {
 			}
 		}
 	}
-	
+
 	public NavigationScreen() {
 		super();
-		
+
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-		
+
 		centralBoard = new JButton("Central Board");
 		clanDirectory = new JButton("Clan Directory");
-		
+
 		centralBoard.addActionListener(new ButtonHandler(true));
 		clanDirectory.addActionListener(new ButtonHandler(false));
-		
+
 		add(centralBoard);
 		add(clanDirectory);
 	}

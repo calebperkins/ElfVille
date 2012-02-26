@@ -9,10 +9,9 @@ public class ClanListingResponse extends Response {
 	private static final long serialVersionUID = 1L;
 
 	public ClanListingResponse(Status s) {
-		this.status= s;
+		this.status = s;
 	}
-	
-	public List<SerializableClan> clans;	
 
+	public List<SerializableClan> clans;
 
 }

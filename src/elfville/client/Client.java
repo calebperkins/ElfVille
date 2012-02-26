@@ -5,8 +5,9 @@ import java.io.IOException;
 
 /**
  * Main entry point for client.
+ * 
  * @author Caleb Perkins
- *
+ * 
  */
 public class Client {
 

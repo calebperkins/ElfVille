@@ -13,8 +13,9 @@ import java.io.IOException;
 
 /**
  * Collection of controls to allow user to login.
+ * 
  * @author Caleb Perkins
- *
+ * 
  */
 public class LoginPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -31,24 +32,24 @@ public class LoginPanel extends JPanel implements ActionListener {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Login"),
-                BorderFactory.createEmptyBorder(5,5,5,5)));
-		
+				BorderFactory.createTitledBorder("Login"),
+				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
 		usernameField = new JTextField();
 		passwordField = new JPasswordField();
 		loginButton = new JButton("Login");
 		loginButton.addActionListener(this);
-		
+
 		usernameLabel = new JLabel("Username");
 		usernameLabel.setLabelFor(usernameField);
-		
+
 		passwordLabel = new JLabel("Password");
 		passwordLabel.setLabelFor(passwordField);
-		
+
 		add(usernameLabel);
 		add(usernameField);
-		//add(passwordLabel);
-		//add(passwordField);
+		// add(passwordLabel);
+		// add(passwordField);
 		add(loginButton);
 
 	}
@@ -60,7 +61,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		SignInRequest req = new SignInRequest();
 		req.username = usernameField.getText();
-		
+
 		try {
 			Response m = SocketController.send(req);
 			if (m.status == Response.Status.SUCCESS) {

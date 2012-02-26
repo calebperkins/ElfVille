@@ -1,19 +1,18 @@
 package elfville.server.database;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import elfville.server.model.*;
 
-
 public class ClanElfDB extends DB {
-
 
 	private List<ClanElf> clanElves;
 
 	public ClanElfDB() {
 		clanElves = new ArrayList<ClanElf>();
 	}
-	
+
 	public void insert(ClanElf clanElf) {
 		clanElves.add(clanElf);
 	}
@@ -21,23 +20,23 @@ public class ClanElfDB extends DB {
 	public void delete(ClanElf clanElf) {
 		clanElves.remove(clanElf);
 	}
-	
+
 	public void deleteElf(Elf elf) {
 		for (ClanElf clanElf : clanElves) {
-			if (clanElf.getElf() == elf && 
-					clanElf.getRelationship() != Model.ClanElfRelationship.LEADER) {
+			if (clanElf.getElf() == elf
+					&& clanElf.getRelationship() != Model.ClanElfRelationship.LEADER) {
 				// TODO: check if deleting while iterating is possible
 				clanElves.remove(clanElf);
 			}
 		}
 	}
-	
+
 	// Get all clans that an elf has joined.
 	public List<Clan> getClansForElf(Elf elf) {
 		List<Clan> clans = new ArrayList<Clan>();
 		for (ClanElf clanElf : clanElves) {
-			if (clanElf.getElf() == elf && 
-					clanElf.getRelationship() != Model.ClanElfRelationship.APPLICANT) {
+			if (clanElf.getElf() == elf
+					&& clanElf.getRelationship() != Model.ClanElfRelationship.APPLICANT) {
 				clans.add(clanElf.getClan());
 			}
 		}
@@ -48,8 +47,8 @@ public class ClanElfDB extends DB {
 	public List<Elf> getElvesForClan(Clan clan) {
 		List<Elf> elves = new ArrayList<Elf>();
 		for (ClanElf clanElf : clanElves) {
-			if (clanElf.getClan() == clan && 
-					clanElf.getRelationship() != Model.ClanElfRelationship.APPLICANT) {
+			if (clanElf.getClan() == clan
+					&& clanElf.getRelationship() != Model.ClanElfRelationship.APPLICANT) {
 				elves.add(clanElf.getElf());
 			}
 		}
@@ -60,8 +59,8 @@ public class ClanElfDB extends DB {
 	public List<Elf> getApplicantsForClan(Clan clan) {
 		List<Elf> elves = new ArrayList<Elf>();
 		for (ClanElf clanElf : clanElves) {
-			if (clanElf.getClan() == clan && 
-					clanElf.getRelationship() == Model.ClanElfRelationship.APPLICANT) {
+			if (clanElf.getClan() == clan
+					&& clanElf.getRelationship() == Model.ClanElfRelationship.APPLICANT) {
 				elves.add(clanElf.getElf());
 			}
 		}
@@ -71,14 +70,14 @@ public class ClanElfDB extends DB {
 	// Get a clan's leader
 	public Elf getClanLeader(Clan clan) {
 		for (ClanElf clanElf : clanElves) {
-			if (clanElf.getClan() == clan &&
-					clanElf.getRelationship() == Model.ClanElfRelationship.LEADER) {
+			if (clanElf.getClan() == clan
+					&& clanElf.getRelationship() == Model.ClanElfRelationship.LEADER) {
 				return clanElf.getElf();
 			}
 		}
 		return null;
 	}
-	
+
 	// auto generated getters and setters
 
 	public List<ClanElf> getClanElves() {
@@ -88,6 +87,5 @@ public class ClanElfDB extends DB {
 	public void setClanElves(List<ClanElf> clanElves) {
 		this.clanElves = clanElves;
 	}
-
 
 }

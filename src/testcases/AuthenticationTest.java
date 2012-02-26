@@ -2,10 +2,8 @@ package testcases;
 
 import static org.junit.Assert.*;
 
-
 import java.io.IOException;
 import java.net.UnknownHostException;
-
 
 import org.junit.Test;
 
@@ -19,7 +17,6 @@ import elfville.server.Server;
 
 public class AuthenticationTest {
 
-	
 	@Test
 	public void signUpTest() throws UnknownHostException, IOException {
 		SignUpRequest req = new SignUpRequest("user1");
@@ -27,7 +24,7 @@ public class AuthenticationTest {
 		System.out.println(resp.status.toString());
 		assertEquals(resp.status, Status.SUCCESS);
 	}
-	
+
 	@Test
 	public void multipleSignUpTest() throws UnknownHostException, IOException {
 		// should fail because we signed up the same username once above
@@ -36,7 +33,7 @@ public class AuthenticationTest {
 		System.out.println(resp.status.toString());
 		assertEquals(resp.status, Status.FAILURE);
 	}
-	
+
 	// @Test
 	public void signInTest() throws UnknownHostException, IOException {
 		// SignInRequest req = new SignInRequest("user1");

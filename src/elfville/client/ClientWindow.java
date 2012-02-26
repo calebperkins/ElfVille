@@ -12,23 +12,22 @@ public class ClientWindow extends JFrame {
 
 	// TODO - remove global variable, or at least find a way to make it final
 	public static ClientWindow window;
-	
+
 	private static final JPanel navigation = new NavigationScreen();
 	private static JPanel main = new JPanel();
 	private JPanel current;
 
-
 	public static void switchScreen(JPanel next) {
-		//window.getContentPane().remove(window.current);
+		// window.getContentPane().remove(window.current);
 		window.getContentPane().removeAll();
 		main = new JPanel();
 		main.setLayout(new BorderLayout());
 		window.getContentPane().add(main);
 		main.add(navigation, BorderLayout.PAGE_START);
-		//next.setLayout(new BoxLayout(next, BoxLayout.PAGE_AXIS));
+		// next.setLayout(new BoxLayout(next, BoxLayout.PAGE_AXIS));
 		main.add(next, BorderLayout.CENTER);
-		//window.getContentPane().add(navigation);
-		//window.getContentPane().add(next);
+		// window.getContentPane().add(navigation);
+		// window.getContentPane().add(next);
 		window.current = next;
 		window.validate();
 	}
@@ -40,15 +39,15 @@ public class ClientWindow extends JFrame {
 		super("ElfVille");
 		setBounds(100, 100, 800, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		current = new WelcomeScreen(); 
-		
+
+		current = new WelcomeScreen();
+
 		main.setLayout(new BorderLayout());
 		this.getContentPane().add(main);
 		main.add(navigation, BorderLayout.PAGE_START);
 		main.add(current, BorderLayout.CENTER);
-		//this.getContentPane().add(navigation);
-		//this.getContentPane().add(current);
+		// this.getContentPane().add(navigation);
+		// this.getContentPane().add(current);
 		window = this;
 	}
 
@@ -56,14 +55,13 @@ public class ClientWindow extends JFrame {
 	 * Used when a socket error occurs. Shows an alert dialog.
 	 */
 	public static void showConnectionError() {
-		showError("Socket connection broke. Try again.",
-				"Connection error");
+		showError("Socket connection broke. Try again.", "Connection error");
 		System.exit(-1);
 	}
-	
+
 	public static void showError(String msg, String title) {
-		JOptionPane.showMessageDialog(null, msg,
-				title, JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, msg, title,
+				JOptionPane.ERROR_MESSAGE);
 	}
 
 }

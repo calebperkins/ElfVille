@@ -49,13 +49,11 @@ public class SocketController {
 		return (Response) write(req);
 	}
 
-	public static Response send(PostCentralBoardRequest req)
-			throws IOException {
+	public static Response send(PostCentralBoardRequest req) throws IOException {
 		return (Response) write(req);
 	}
 
-	public static Response send(PostClanBoardRequest req)
-			throws IOException {
+	public static Response send(PostClanBoardRequest req) throws IOException {
 		return (Response) write(req);
 	}
 
@@ -72,7 +70,8 @@ public class SocketController {
 		return (Response) write(req);
 	}
 
-	public static ClanListingResponse send(ClanListingRequest req) throws IOException {
+	public static ClanListingResponse send(ClanListingRequest req)
+			throws IOException {
 		return (ClanListingResponse) write(req);
 	}
 }

@@ -21,8 +21,8 @@ public class ClanBoardControl extends Controller {
 		}
 		Elf elf = user.getElf();
 
-		Clan clan = database.clanDB.findByEncryptedModelID(inM
-				.getClanModelID());
+		Clan clan = database.clanDB
+				.findByEncryptedModelID(inM.getClanModelID());
 		if (clan == null) {
 			return new ClanBoardResponse(Status.FAILURE);
 		}

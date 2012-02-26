@@ -8,21 +8,21 @@ import elfville.server.SecurityUtils;
 import elfville.server.model.*;
 
 public class PostDB extends DB {
-	
+
 	private List<Post> posts;
-	
+
 	public PostDB() {
 		posts = new ArrayList<Post>();
 	}
-	
+
 	public void insert(Post post) {
 		posts.add(post);
 	}
-	
+
 	public void delete(Post post) {
 		posts.remove(post);
 	}
-	
+
 	public Post findByModelID(int modelID) {
 		for (Post post : posts) {
 			if (post.getModelID() == modelID) {
@@ -31,7 +31,7 @@ public class PostDB extends DB {
 		}
 		return null;
 	}
-	
+
 	public Post findByEncryptedModelID(String encID) {
 		int modelID = SecurityUtils.decryptStringToInt(encID);
 		return findByModelID(modelID);
@@ -47,20 +47,20 @@ public class PostDB extends DB {
 		}
 		return matchedPosts;
 	}
-	
+
 	// return all public posts on the Central Board.
 	public List<Post> getCentralPosts() {
 		return posts;
 	}
-	
+
 	// Debugging function
 	public void printPosts() {
 		for (Post p : posts) {
 			System.out.println(p.getContent());
 		}
 	}
-	
-	// auto generated getters and setters	
+
+	// auto generated getters and setters
 	public List<Post> getPosts() {
 		return posts;
 	}

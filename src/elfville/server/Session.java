@@ -34,17 +34,18 @@ public class Session implements Runnable {
 		while (true) {
 			try {
 				Request request = (Request) ois.readObject();
-				Response response = Routes.processRequest(request,
-						currentUser);
-				
+				Response response = Routes.processRequest(request, currentUser);
+
 				// set session authentication
-				if ((request instanceof SignUpRequest) || (request instanceof SignInRequest)) {
+				if ((request instanceof SignUpRequest)
+						|| (request instanceof SignInRequest)) {
 					if (response.isOK())
-						System.out.printf("the current user's id is: %d", currentUser.getCurrentUserId());
-						
-						//currentUserId = 1; // TODO: real user ID
+						System.out.printf("the current user's id is: %d",
+								currentUser.getCurrentUserId());
+
+					// currentUserId = 1; // TODO: real user ID
 				}
-				
+
 				oos.writeObject(response);
 				oos.flush();
 			} catch (EOFException e) {
