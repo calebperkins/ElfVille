@@ -16,6 +16,8 @@ public class Session implements Runnable {
 	public Session(Socket client) {
 		clientSocket = client;
 		currentUser = new CurrentUserProfile();
+		//-1 denotes a user that is not logged in
+		currentUser.setCurrentUserId(-1);
 		try {
 			ois = new ObjectInputStream(clientSocket.getInputStream());
 			oos = new ObjectOutputStream(clientSocket.getOutputStream());
