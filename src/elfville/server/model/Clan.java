@@ -3,6 +3,7 @@ package elfville.server.model;
 import java.util.ArrayList;
 import java.util.List;
 import elfville.protocol.models.SerializableClan;
+import elfville.server.SecurityUtils;
 
 /*
  * Clan Model.
@@ -30,6 +31,7 @@ public class Clan extends Model {
 		sClan.clanName = name;
 		sClan.clanDescription = description;
 		sClan.numSocks = getNumSock();
+		sClan.clanID = SecurityUtils.encryptIntToString(this.modelID);
 		for (Post post : posts) {
 			sClan.posts.add(post.getSerializablePost());
 		}
