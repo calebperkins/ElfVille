@@ -1,8 +1,5 @@
 package elfville.server.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import elfville.protocol.*;
 
 import elfville.server.CurrentUserProfile;
@@ -26,10 +23,10 @@ public class CentralBoardControl extends Controller {
 
 	public static Response addPost(PostCentralBoardRequest postRequest,
 			CurrentUserProfile currentUser) {
-		//TODO: add some checks here
+		Response resp= new Response(Status.FAILURE);
+		
 		User user = database.userDB.findUserByModelID(currentUser
 				.getCurrentUserId());
-		Response resp= new Response(Status.FAILURE);
 		if (user == null) {
 			return resp;
 		}
@@ -65,7 +62,12 @@ public class CentralBoardControl extends Controller {
 		if (e == null) {
 			return resp;
 		}
+		
 		Post post = Database.DB.postDB.findByEncryptedModelID(r.modelID);
+		
+		if(post == null){
+			return resp;
+		}
 
 		if (r.upsock && post.upsock(e)) {
 			resp.status = Response.Status.SUCCESS;

@@ -5,9 +5,6 @@ import elfville.server.controller.AuthenticationControl;
 import elfville.server.controller.CentralBoardControl;
 import elfville.server.controller.ClanBoardControl;
 import elfville.server.controller.ClanDirectoryControl;
-import elfville.server.model.Elf;
-import elfville.server.model.Post;
-import elfville.server.model.User;
 
 public class Routes {
 
@@ -54,26 +51,8 @@ public class Routes {
 	}
 
 	//TODO: move this code out of routes!  it should be in a controller
-	private static Response respond(VoteRequest r,
-			CurrentUserProfile currentUser) {
-		Response resp = new Response();
-		User user = Database.DB.userDB.findUserByModelID(currentUser
-				.getCurrentUserId());
-		if (user == null) {
-			return resp;
-		}
-		Elf e = user.getElf();
-		if (e == null) {
-			return resp;
-		}
-		Post post = Database.DB.postDB.findByEncryptedModelID(r.modelID);
-
-		if (r.upsock && post.upsock(e)) {
-			resp.status = Response.Status.SUCCESS;
-		} else if (!r.upsock && post.downsock(e)) {
-			resp.status = Response.Status.SUCCESS;
-		}
-		return resp;
+	private static Response respond(VoteRequest r, CurrentUserProfile currentUser){
+		return  CentralBoardControl.votePost(r, currentUser);
 	}
 
 	
@@ -100,6 +79,8 @@ public class Routes {
 			return respond((ClanBoardRequest) r, currentUser);
 		} else if (r instanceof PostClanBoardRequest){
 			return respond ((PostClanBoardRequest) r, currentUser);
+		} else if (r instanceof VoteRequest){
+			return respond ((VoteRequest) r, currentUser);
 		}
 		return null; // TODO: implement rest
 	}
