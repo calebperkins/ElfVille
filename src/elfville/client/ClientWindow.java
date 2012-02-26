@@ -19,7 +19,7 @@ public class ClientWindow extends JFrame {
 		window.getContentPane().removeAll();
 		window.getContentPane().add(next);
 		window.current = next;
-		window.revalidate();
+		window.validate();
 	}
 
 	/**
