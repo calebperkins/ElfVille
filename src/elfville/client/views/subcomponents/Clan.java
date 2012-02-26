@@ -17,17 +17,17 @@ public class Clan extends JPanel {
 	// TODO: perhaps add leader name with a link to profile
 
 	private class ClanHandler implements ActionListener {
-		private String clanID;
+		private String modelID;
 		private String clanName;
 
-		public ClanHandler(String clanID, String clanName) {
-			this.clanID = clanID;
+		public ClanHandler(String modelID, String clanName) {
+			this.modelID = modelID;
 			this.clanName = clanName;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			ClanBoard.showClanBoard(clanID, clanName);
+			ClanBoard.showClanBoard(modelID, clanName);
 		}
 
 	}
@@ -57,6 +57,8 @@ public class Clan extends JPanel {
 
 		clanName = new JButton(c.clanName);
 		clanDescription = new JTextArea(c.clanDescription);
+		clanDescription.setLineWrap(true);
+		clanDescription.setWrapStyleWord(true);
 		leaderName = new JButton(c.leader.elfName);
 
 		clanName.addActionListener(new ClanHandler(c.modelID, c.clanName));
