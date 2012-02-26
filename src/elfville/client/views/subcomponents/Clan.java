@@ -32,22 +32,7 @@ public class Clan extends JPanel {
 
 	}
 
-	private class LeaderHandler implements ActionListener {
-		private String elfID;
-		private String elfName;
-
-		public LeaderHandler(String elfID, String elfName) {
-			this.elfID = elfID;
-			this.elfName = elfName;
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO load the elf profile (which currently doesn't exist
-			// (profiles don't))
-		}
-
-	}
+	
 
 	/**
 	 * Create the panel.
@@ -63,8 +48,7 @@ public class Clan extends JPanel {
 		leaderName = new JButton(c.leader.elfName);
 
 		clanName.addActionListener(new ClanHandler(c.modelID, c.clanName));
-		leaderName.addActionListener(new LeaderHandler(c.leader.modelID,
-				c.leader.elfName));
+		leaderName.addActionListener(new ElfHandler(c.leader.modelID));
 		add(clanName);
 		add(leaderName); // TODO we need a way to distinguish between clan and
 							// leader names

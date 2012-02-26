@@ -21,7 +21,7 @@ public class ClanDirectory extends JPanel implements Refreshable {
 	 */
 	public ClanDirectory(ClanListingResponse response) {
 		super();
-		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(title);
 		add(createClan);
 		JPanel clanPanel = new JPanel();
