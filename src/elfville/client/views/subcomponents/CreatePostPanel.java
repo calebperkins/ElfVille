@@ -1,5 +1,6 @@
 package elfville.client.views.subcomponents;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -39,8 +40,10 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 		add(titleLabel);
 		add(title);
 		add(textLabel);
+		text.setPreferredSize(new Dimension(300,100));
 		add(text);
 		add(button);
+		setMaximumSize(new Dimension(300, 150));
 	}
 
 	// Post the message
