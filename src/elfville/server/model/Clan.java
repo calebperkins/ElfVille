@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import elfville.protocol.models.SerializableClan;
+import elfville.server.SecurityUtils;
 
 /*
  * Clan Model.
@@ -40,6 +41,7 @@ public class Clan extends Model {
 		sClan.clanName = name;
 		sClan.clanDescription = description;
 		sClan.numSocks = getNumSock();
+		sClan.modelID = SecurityUtils.encryptIntToString(this.modelID);
 		for (ConcurrentHashMap.Entry<Integer, Post> post : posts.entrySet()) {
 			sClan.posts.add(post.getValue().getSerializablePost());
 		}

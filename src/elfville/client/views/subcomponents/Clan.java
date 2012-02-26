@@ -59,7 +59,7 @@ public class Clan extends JPanel {
 		clanDescription = new JTextArea(c.clanDescription);
 		leaderName = new JButton(c.leader.elfName);
 
-		clanName.addActionListener(new ClanHandler(c.clanID, c.clanName));
+		clanName.addActionListener(new ClanHandler(c.modelID, c.clanName));
 		leaderName.addActionListener(new LeaderHandler(c.leader.modelID,
 				c.leader.elfName));
 		add(clanName);

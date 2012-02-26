@@ -15,6 +15,7 @@ public class Post extends Model {
 	private Set<Elf> upsockedElves;
 	private Set<Elf> downsockedElves;
 
+	//TODO: this should not take a serializable post as an argument.  code must be refactored
 	public Post(SerializablePost postRequest, Elf elf) {
 		super();
 		// elf= postRequest.username;

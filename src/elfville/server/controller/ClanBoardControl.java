@@ -51,6 +51,53 @@ public class ClanBoardControl extends Controller {
 
 		return outM;
 	}
+	
+	public static Response postClanBoard(PostClanBoardRequest req,
+			CurrentUserProfile currentUser){
+		Response resp= new Response(Status.FAILURE);
+		
+		// make sure that the current user still exists!
+		User user = database.userDB.findUserByModelID(currentUser
+				.getCurrentUserId());
+		if (user == null) {
+			return resp;
+		}
+		Elf elf = user.getElf();
+
+		// check to make sure that we were sent a clan
+		if (req.clan == null) {
+			return resp;
+		}
+
+		Clan clan = database.clanDB.findByEncryptedModelID(req.clan.modelID);
+
+		// check to see that the requested clan actually exists
+		if (clan == null) {
+			return resp;
+		}
+		
+		if(req.post == null){
+			return resp;
+		}
+		
+		//make sure we were actually sent a post
+		if(req.post.content == null || req.post.content == "" ||
+				req.post.title == null || req.post.title == ""){
+			return resp;
+		}
+		
+		//make sure that this elf is a part of the clan
+		if (!clan.isLeader(elf) || !clan.isMember(elf)) {
+			return resp;
+		}
+		
+		Post post= new Post(req.post, elf);
+		//now we can post
+		clan.createPost(post);
+		
+		resp.status= Status.SUCCESS;
+		return resp;
+	}
 
 	public static Response modifyClan(ModifyClanRequest req,
 			CurrentUserProfile currentUser) {
@@ -69,7 +116,7 @@ public class ClanBoardControl extends Controller {
 			return resp;
 		}
 
-		Clan clan = database.clanDB.findByEncryptedModelID(req.clan.clanID);
+		Clan clan = database.clanDB.findByEncryptedModelID(req.clan.modelID);
 
 		// check to see that the requested clan actually exists
 		if (clan == null) {
