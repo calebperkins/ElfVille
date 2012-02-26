@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import elfville.client.views.ClanBoard;
-import elfville.protocol.*;
 import elfville.protocol.models.SerializableClan;
 
 public class Clan extends JPanel {

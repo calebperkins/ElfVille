@@ -24,6 +24,10 @@ public class CentralBoard extends JPanel implements Refreshable {
 
 	public CentralBoard(CentralBoardResponse response){
 		super();
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		// TODO fix the scrolling problem (also maybe add auto wrap)
+		// basically posts with sentences that are really long run off page
+		// and central boards with too many posts can't see the newest ones (bottom of page)
 		add(title);
 		add(createPost);
 		for (SerializablePost post : response.posts) {
