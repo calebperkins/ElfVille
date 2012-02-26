@@ -38,6 +38,8 @@ public class CreateClanPanel extends JPanel implements ActionListener {
 		add(nameLabel);
 		add(name);
 		add(descriptionLabel);
+		description.setLineWrap(true);
+		description.setWrapStyleWord(true);
 		add(description);
 		add(button);
 	}

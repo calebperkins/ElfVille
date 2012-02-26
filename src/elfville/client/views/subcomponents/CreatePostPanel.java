@@ -41,17 +41,17 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 		add(title);
 		add(textLabel);
 		text.setPreferredSize(new Dimension(300,100));
+		text.setMinimumSize(new Dimension(300, 40));
 		add(text);
 		add(button);
 		setMaximumSize(new Dimension(300, 150));
 	}
 
 	// Post the message
-	// TODO finish.... Actually, I think I have now finished it (Aaron), but I'm
-	// not sure enough to remove this TODO myself
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Force there to be a title? Force there to be text? Both?
+		// TODO Nice helpful "need to entire title" or "need to enter text" messages
+		// but these are enforced by server anyway, just not a helpful error message.
 		try {
 			Response resp;
 			if (clanID == null) {
