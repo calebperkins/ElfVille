@@ -19,8 +19,8 @@ public class ClanDirectoryControl extends Controller {
 			return resp;
 		}
 
-		List<SerializableClan> clans = ControllerUtils
-				.buildBoardList(database.clanDB.getClans());
+		List<SerializableClan> clans = 
+				ControllerUtils .buildBoardList(database.clanDB.getClans());
 
 		resp.status = Status.SUCCESS;
 		resp.clans = clans;

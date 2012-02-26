@@ -53,6 +53,10 @@ public class Routes {
 			currentUser){
 		return ClanBoardControl.getClanBoard(r, currentUser);
 	}
+	
+	private static Response respond(PostClanBoardRequest r, CurrentUserProfile currentUser){
+		return ClanBoardControl.postClanBoard(r, currentUser);
+	}
 
 	//TODO: move this code out of routes!  it should be in a controller
 	private static Response respond(VoteRequest r,
@@ -99,6 +103,8 @@ public class Routes {
 			return respond((CreateClanRequest) r, currentUser);
 		} else if (r instanceof ClanBoardRequest){
 			return respond((ClanBoardRequest) r, currentUser);
+		} else if (r instanceof PostClanBoardRequest){
+			return respond ((PostClanBoardRequest) r, currentUser);
 		}
 		return null; // TODO: implement rest
 	}
