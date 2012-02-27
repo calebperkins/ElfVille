@@ -1,16 +1,16 @@
 package elfville.server.database;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import elfville.server.SecurityUtils;
 import elfville.server.model.Elf;
 
 public class ElfDB extends DB {
-
-	private HashMap<Integer, Elf> elves;
+	private static final long serialVersionUID = 2139777693898457296L;
+	private ConcurrentHashMap<Integer, Elf> elves;
 
 	public ElfDB() {
-		elves = new HashMap<Integer, Elf>();
+		elves = new ConcurrentHashMap<Integer, Elf>();
 	}
 
 	public void insert(Elf elf) {

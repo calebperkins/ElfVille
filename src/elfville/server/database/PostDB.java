@@ -1,35 +1,32 @@
 package elfville.server.database;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import elfville.server.SecurityUtils;
 import elfville.server.model.*;
 
 public class PostDB extends DB {
-
-	private List<Post> posts;
+	private static final long serialVersionUID = -5939983651247977959L;
+	private ConcurrentHashMap<Integer, Post> idMap;
 
 	public PostDB() {
-		posts = new ArrayList<Post>();
+		idMap = new ConcurrentHashMap<Integer, Post>();
 	}
 
 	public void insert(Post post) {
-		posts.add(post);
+		idMap.put(post.getModelID(), post);
 	}
 
 	public void delete(Post post) {
-		posts.remove(post);
+		idMap.remove(post);
 	}
 
 	public Post findByModelID(int modelID) {
-		for (Post post : posts) {
-			if (post.getModelID() == modelID) {
-				return post;
-			}
-		}
-		return null;
+		return idMap.get(modelID);
 	}
 
 	public Post findByEncryptedModelID(String encID) {
@@ -39,6 +36,7 @@ public class PostDB extends DB {
 
 	// Only the elf's posts on the central board will be returned
 	public List<Post> findCentralPostsByElf(Elf elf) {
+		List<Post> posts = new ArrayList<Post>(idMap.values());
 		List<Post> matchedPosts = new ArrayList<Post>();
 		for (Post post : posts) {
 			if (post.getElf() == elf) {
@@ -48,25 +46,15 @@ public class PostDB extends DB {
 		return matchedPosts;
 	}
 
-	// return all public posts on the Central Board.
+	/**
+	 * Returns a list of central board posts sorted by socks.
+	 * 
+	 * @return
+	 */
 	public List<Post> getCentralPosts() {
+		List<Post> posts = new ArrayList<Post>(idMap.values());
+		Collections.sort(posts);
 		return posts;
-	}
-
-	// Debugging function
-	public void printPosts() {
-		for (Post p : posts) {
-			System.out.println(p.getContent());
-		}
-	}
-
-	// auto generated getters and setters
-	public List<Post> getPosts() {
-		return posts;
-	}
-
-	public void setPosts(List<Post> posts) {
-		this.posts = posts;
 	}
 
 }

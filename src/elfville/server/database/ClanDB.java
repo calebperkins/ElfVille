@@ -8,7 +8,7 @@ import elfville.server.SecurityUtils;
 import elfville.server.model.*;
 
 public class ClanDB extends DB {
-
+	private static final long serialVersionUID = -5780129841962632025L;
 	private ConcurrentHashMap<Integer, Clan> idMap;
 	private ConcurrentHashMap<String, Clan> nameMap;
 
@@ -26,7 +26,8 @@ public class ClanDB extends DB {
 	}
 
 	public Clan findByEncryptedModelID(String encID) {
-		//TODO: security issue here.  it is possible to break the server by sending garbage as the encID
+		// TODO: security issue here. it is possible to break the server by
+		// sending garbage as the encID
 		int modelID = SecurityUtils.decryptStringToInt(encID);
 		return findByModelID(modelID);
 	}
@@ -41,23 +42,15 @@ public class ClanDB extends DB {
 		nameMap.remove(clan.getName());
 
 		/*
-		// delete all posts of the clan
-		for (Post post : clan.getPosts()) {
-			post.delete();
-		}
-		// delete all ClanElfRelationships of this clan
-		for (ClanElf clanElf : database.clanElfDB.getClanElves()) {
-			if (clanElf.getClan() == clan) {
-				database.clanElfDB.delete(clanElf);
-			}
-		}
-		*/
+		 * // delete all posts of the clan for (Post post : clan.getPosts()) {
+		 * post.delete(); } // delete all ClanElfRelationships of this clan for
+		 * (ClanElf clanElf : database.clanElfDB.getClanElves()) { if
+		 * (clanElf.getClan() == clan) { database.clanElfDB.delete(clanElf); } }
+		 */
 	}
 
-	
 	public Clan findByName(String clanName) {
 		return nameMap.get(clanName);
 	}
-	
 
 }
