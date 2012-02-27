@@ -12,8 +12,9 @@ public class ServerStart {
 	public class ServerThread extends Thread {
 		@Override
 		public void run() {
+			String args[]= new String[0];
 			try {
-				Server.main(null);
+				Server.main(args);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
