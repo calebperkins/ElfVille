@@ -10,6 +10,7 @@ import elfville.protocol.models.SerializablePost;
  * Post Model
  */
 public class Post extends Model {
+	private static final long serialVersionUID = 6422767335685038776L;
 	private Elf elf;
 	private String title;
 	private String content;
@@ -28,7 +29,7 @@ public class Post extends Model {
 		downsockedElves = Collections.synchronizedSet(new HashSet<Elf>());
 	}
 
-	public SerializablePost getSerializablePost() {
+	public SerializablePost toSerializablePost() {
 		SerializablePost sPost = new SerializablePost();
 		sPost.title = getTitle();
 		sPost.content = getContent();
@@ -118,5 +119,11 @@ public class Post extends Model {
 		synchronized (this) {
 			this.content = content;
 		}
+	}
+
+	@Override
+	public boolean save() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

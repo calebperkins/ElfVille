@@ -14,7 +14,7 @@ public class ControllerUtils extends Controller {
 			List<Post> boardPosts) {
 		ArrayList<SerializablePost> out = new ArrayList<SerializablePost>();
 		for (Post p : boardPosts) {
-			SerializablePost s = p.getSerializablePost();
+			SerializablePost s = p.toSerializablePost();
 			out.add(s);
 		}
 		return out;

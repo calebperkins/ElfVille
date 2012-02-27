@@ -2,7 +2,6 @@ package elfville.protocol;
 
 import java.util.List;
 
-import elfville.protocol.Response.Status;
 import elfville.protocol.models.SerializableClan;
 
 public class ClanListingResponse extends Response {

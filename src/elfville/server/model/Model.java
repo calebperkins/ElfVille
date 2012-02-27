@@ -12,7 +12,7 @@ public abstract class Model implements Serializable {
 	static Database database = Database.DB;
 
 	private final Date createdAt;
-	private final int modelID;
+	protected final int modelID;
 	Date updatedAt; // Not used
 
 	public Model() {
@@ -35,4 +35,10 @@ public abstract class Model implements Serializable {
 	public Date getCreatedAt() {
 		return createdAt;
 	}
+	
+	/**
+	 * Save this model object, inserting a new one if this object has not been saved before.
+	 * @return true if successful
+	 */
+	public abstract boolean save();
 }
