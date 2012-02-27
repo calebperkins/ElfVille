@@ -15,7 +15,6 @@ public class SerializableClan extends SerializableModel {
 	public List<SerializableElf> members;
 	public List<SerializableElf> applicants;
 	public List<SerializablePost> posts;
-	public List<SerializableElf> applicants;
 
 	public SerializableClan() {
 		super();
