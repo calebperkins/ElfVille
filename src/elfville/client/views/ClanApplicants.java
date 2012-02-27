@@ -42,6 +42,10 @@ public class ClanApplicants extends JPanel {
 					req.requestType = ModClan.DENY;
 				}
 				// TODO this breaks everything (though DENY not implemented so does nothing)
+				// but I have no idea why... server gets a null pointer error
+				// or something. Only thing left blank in the send though is
+				// a post, and I know another modify clan request also leaves
+				// post blank, and does not crash.
 				Response resp = board.getSocketController().send(req);
 				if (resp.isOK()) {
 					board.refresh();
