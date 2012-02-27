@@ -12,27 +12,45 @@ public class User extends Model {
 
 	// auto generated getters and setters
 	public String getUsername() {
-		return username;
+		String n;
+		synchronized(this) {
+			n = username;
+		}
+		return n;
 	}
 
 	public void setUsername(String username) {
-		this.username = username;
+		synchronized (this) {
+			this.username = username;
+		}
 	}
 
 	public String getPassword() {
-		return password;
+		String p;
+		synchronized (this) {
+			p = password;
+		}
+		return p;
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		synchronized (this) {
+			this.password = password;
+		}
 	}
 
 	public Elf getElf() {
-		return elf;
+		Elf e;
+		synchronized (this) {
+			e = elf;
+		}
+		return e;
 	}
 
 	public void setElf(Elf elf) {
-		this.elf = elf;
+		synchronized (this) {
+			this.elf = elf;
+		}
 	}
 
 }

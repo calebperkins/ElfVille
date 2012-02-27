@@ -9,7 +9,7 @@ public abstract class Model {
 	static Database database = Database.DB;
 
 	private final Date createdAt;
-	final int modelID;
+	private final int modelID;
 	Date updatedAt; // Not used
 
 	public Model() {

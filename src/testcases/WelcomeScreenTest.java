@@ -15,7 +15,7 @@ import elfville.protocol.SignUpRequest;
 import elfville.protocol.Response.Status;
 import elfville.server.Server;
 
-public class AuthenticationTest {
+public class WelcomeScreenTest {
 
 	@Test
 	public void signUpTest() throws UnknownHostException, IOException {
@@ -26,7 +26,7 @@ public class AuthenticationTest {
 	}
 
 	@Test
-	public void multipleSignUpTest() throws UnknownHostException, IOException {
+	public void signUpDuplicateTest() throws UnknownHostException, IOException {
 		// should fail because we signed up the same username once above
 		SignUpRequest req = new SignUpRequest("user1");
 		Response resp = (Response) SocketController.send(req);
@@ -34,11 +34,19 @@ public class AuthenticationTest {
 		assertEquals(resp.status, Status.FAILURE);
 	}
 
-	// @Test
+	@Test
+	public void signInWrongTest() throws UnknownHostException, IOException {
+		SignInRequest req = new SignInRequest("user2");
+		Response resp = (Response) SocketController.send(req);
+		System.out.println(resp.status.toString());
+		assertEquals(resp.status, Status.FAILURE);
+	}
+
+	@Test
 	public void signInTest() throws UnknownHostException, IOException {
-		// SignInRequest req = new SignInRequest("user1");
-		// Response resp = (Response) SocketController.send(req);
-		// System.out.println(resp.status.toString());
-		// assertEquals(resp.status, Status.FAILURE);
+		SignInRequest req = new SignInRequest("user1");
+		Response resp = (Response) SocketController.send(req);
+		System.out.println(resp.status.toString());
+		assertEquals(resp.status, Status.SUCCESS);
 	}
 }

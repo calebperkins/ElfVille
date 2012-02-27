@@ -1,17 +1,10 @@
 package elfville.server;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import elfville.protocol.*;
-import elfville.protocol.models.*;
 import elfville.server.controller.AuthenticationControl;
 import elfville.server.controller.CentralBoardControl;
 import elfville.server.controller.ClanBoardControl;
-import elfville.server.model.Clan;
-import elfville.server.model.Elf;
-import elfville.server.model.Post;
-import elfville.server.model.User;
+import elfville.server.controller.ClanDirectoryControl;
 
 public class Routes {
 
@@ -39,41 +32,33 @@ public class Routes {
 			CurrentUserProfile currentUser) {
 		return ClanBoardControl.modifyClan(r, currentUser);
 	}
-
-	private static Response respond(VoteRequest r,
-			CurrentUserProfile currentUser) {
-		Response resp = new Response();
-		User user = Database.DB.userDB.findUserByModelID(currentUser
-				.getCurrentUserId());
-		if (user == null) {
-			return resp;
-		}
-		Elf e = user.getElf();
-		if (e == null) {
-			return resp;
-		}
-		Post post = Database.DB.postDB.findByEncryptedModelID(r.modelID);
-
-		if (r.upsock && post.upsock(e)) {
-			resp.status = Response.Status.SUCCESS;
-		} else if (!r.upsock && post.downsock(e)) {
-			resp.status = Response.Status.SUCCESS;
-		}
-		return resp;
+	
+	private static ClanListingResponse respond(ClanListingRequest r, CurrentUserProfile currentUser){
+		return ClanDirectoryControl.getClanListing(r, currentUser);
+	}
+	
+	private static Response respond(CreateClanRequest r, CurrentUserProfile currentUser){
+		return ClanDirectoryControl.createClan(r, currentUser);
+	}
+	
+	private static ClanBoardResponse respond(ClanBoardRequest r, CurrentUserProfile
+			currentUser){
+		return ClanBoardControl.getClanBoard(r, currentUser);
+	}
+	
+	private static Response respond(PostClanBoardRequest r, CurrentUserProfile currentUser){
+		return ClanBoardControl.postClanBoard(r, currentUser);
 	}
 
-	private static ClanListingResponse respond(ClanListingRequest req,
-			CurrentUserProfile user) {
-		ClanListingResponse resp = new ClanListingResponse(
-				Response.Status.SUCCESS);
-		List<Clan> clans = Database.DB.clanDB.getClans();
-		ArrayList<SerializableClan> sclans = new ArrayList<SerializableClan>();
-		for (Clan c : clans) {
-			sclans.add(c.getSerializableClan());
-		}
-		resp.clans = sclans;
-		return resp;
+	private static Response respond(VoteRequest r, CurrentUserProfile currentUser){
+		return  CentralBoardControl.votePost(r, currentUser);
 	}
+	
+	private static Response respond(DeleteCentralBoardRequest r, CurrentUserProfile currentUser){
+		return CentralBoardControl.deletePost(r, currentUser);
+	}
+
+	
 
 	public static Response processRequest(Request r,
 			CurrentUserProfile currentUser) {
@@ -91,6 +76,16 @@ public class Routes {
 			return respond((ModifyClanRequest) r, currentUser);
 		} else if (r instanceof ClanListingRequest) {
 			return respond((ClanListingRequest) r, currentUser);
+		} else if (r instanceof CreateClanRequest){
+			return respond((CreateClanRequest) r, currentUser);
+		} else if (r instanceof ClanBoardRequest){
+			return respond((ClanBoardRequest) r, currentUser);
+		} else if (r instanceof PostClanBoardRequest){
+			return respond ((PostClanBoardRequest) r, currentUser);
+		} else if (r instanceof VoteRequest){
+			return respond ((VoteRequest) r, currentUser);
+		} else if (r instanceof DeleteCentralBoardRequest){
+			return respond ((DeleteCentralBoardRequest) r, currentUser);
 		}
 		return null; // TODO: implement rest
 	}

@@ -26,6 +26,7 @@ public class ClanDB extends DB {
 	}
 
 	public Clan findByEncryptedModelID(String encID) {
+		//TODO: security issue here.  it is possible to break the server by sending garbage as the encID
 		int modelID = SecurityUtils.decryptStringToInt(encID);
 		return findByModelID(modelID);
 	}
@@ -36,6 +37,10 @@ public class ClanDB extends DB {
 	}
 
 	public void delete(Clan clan) {
+		idMap.remove(clan.getModelID());
+		nameMap.remove(clan.getName());
+
+		/*
 		// delete all posts of the clan
 		for (Post post : clan.getPosts()) {
 			post.delete();
@@ -46,10 +51,13 @@ public class ClanDB extends DB {
 				database.clanElfDB.delete(clanElf);
 			}
 		}
+		*/
 	}
 
+	
 	public Clan findByName(String clanName) {
 		return nameMap.get(clanName);
 	}
+	
 
 }

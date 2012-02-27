@@ -19,8 +19,8 @@ public class ClanDirectoryControl extends Controller {
 			return resp;
 		}
 
-		List<SerializableClan> clans = ControllerUtils
-				.buildBoardList(database.clanDB.getClans());
+		List<SerializableClan> clans = 
+				ControllerUtils .buildBoardList(database.clanDB.getClans());
 
 		resp.status = Status.SUCCESS;
 		resp.clans = clans;
@@ -47,20 +47,21 @@ public class ClanDirectoryControl extends Controller {
 		if (createRequest.clan == null) {
 			return resp;
 		}
-
-		if (database.clanDB.findByName(createRequest.clan.clanName) == null) {
+		
+		//make sure there is not already a clan with this name
+		if (database.clanDB.findByName(createRequest.clan.clanName) != null) {
 			return resp;
 		}
 
 		// require the clan name to have at least one character
 		if (createRequest.clan.clanName == null
-				|| createRequest.clan.clanName == "") {
+				|| createRequest.clan.clanName.equals("")) {
 			return resp;
 		}
 
 		// require the clan description to have at least one character
 		if (createRequest.clan.clanDescription == null
-				|| createRequest.clan.clanDescription == "") {
+				|| createRequest.clan.clanDescription.equals("")) {
 			return resp;
 		}
 

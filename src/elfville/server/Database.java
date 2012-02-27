@@ -24,7 +24,7 @@ public class Database implements Serializable {
 	public ClanDB clanDB;
 	public PostDB postDB;
 	public ElfDB elfDB;
-	public ClanElfDB clanElfDB;
+	// public ClanElfDB clanElfDB;
 	public UserDB userDB;
 
 	private int countID;
@@ -34,7 +34,7 @@ public class Database implements Serializable {
 		clanDB = new ClanDB();
 		postDB = new PostDB();
 		elfDB = new ElfDB();
-		clanElfDB = new ClanElfDB();
+		// clanElfDB = new ClanElfDB();
 		userDB = new UserDB();
 		countID = -1;
 

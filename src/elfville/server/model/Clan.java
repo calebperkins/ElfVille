@@ -1,8 +1,8 @@
 package elfville.server.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import elfville.protocol.models.SerializableClan;
+import elfville.server.SecurityUtils;
 
 /*
  * Clan Model.
@@ -11,13 +11,20 @@ public class Clan extends Model {
 
 	private String name;
 	private String description;
-	private List<Post> posts;
+	private ConcurrentHashMap<Integer, Post> posts;
+	
+	private Elf leader;
+	private ConcurrentHashMap<Integer, Elf> applicants;
+	private ConcurrentHashMap<Integer, Elf> members;
+	// private List<Post> posts;
 
 	public Clan(String name, String description) {
 		super();
 		this.name = name;
 		this.description = description;
-		this.posts = new ArrayList<Post>();
+		posts = new ConcurrentHashMap<Integer, Post>();
+		members = new ConcurrentHashMap<Integer, Elf>();
+		applicants = new ConcurrentHashMap<Integer, Elf>();
 	}
 
 	public Clan() {
@@ -27,67 +34,60 @@ public class Clan extends Model {
 	// make a serializable clan object out of this clan
 	public SerializableClan getSerializableClan() {
 		SerializableClan sClan = new SerializableClan();
-		sClan.clanName = name;
-		sClan.clanDescription = description;
+		sClan.clanName = getName();
+		sClan.clanDescription = getDescription();
 		sClan.numSocks = getNumSock();
-		for (Post post : posts) {
-			sClan.posts.add(post.getSerializablePost());
+		sClan.modelID = SecurityUtils.encryptIntToString(this.getModelID());
+		for (ConcurrentHashMap.Entry<Integer, Post> post : posts.entrySet()) {
+			sClan.posts.add(post.getValue().getSerializablePost());
 		}
 		sClan.leader = getLeader().getSerializableElf();
-		for (Elf elf : getMembers()) {
-			sClan.members.add(elf.getSerializableElf());
+		for (ConcurrentHashMap.Entry<Integer, Elf> member : members.entrySet()) {
+			sClan.members.add(member.getValue().getSerializableElf());
 		}
 		return sClan;
-	}
-
-	// returns a list of elves who are either member or leader of the clan
-	public List<Elf> getMembers() {
-		return database.clanElfDB.getElvesForClan(this);
-	}
-
-	public List<Elf> getApplicants() {
-		return database.clanElfDB.getApplicantsForClan(this);
 	}
 
 	/* The number of socks owned by all clan members combined */
 	public int getNumSock() {
 		int numSock = 0;
-		for (Elf elf : getMembers()) {
-			numSock += elf.getNumSocks();
+		for (ConcurrentHashMap.Entry<Integer, Elf> member : members.entrySet()) {
+			numSock += member.getValue().getNumSocks();
 		}
 		return numSock;
 	}
 
 	public Elf getLeader() {
-		return database.clanElfDB.getClanLeader(this);
+		Elf l;
+		synchronized(this) {
+			l = leader;
+		}
+		return l;
 	}
 
 	public void setLeader(Elf elf) {
-		// TODO: what if there is a former relationship between this elf and
-		// this clan?
-		ClanElf clanElf = new ClanElf(this, elf,
-				Model.ClanElfRelationship.LEADER);
-		database.clanElfDB.insert(clanElf);
+		if (leader != null) {
+			// TODO: throws some errors!
+		}
+		synchronized (this) {
+			leader = elf;
+		}
+		members.put(elf.getModelID(), elf);
 	}
 
+	// A stranger becomes an applicant
 	public void applyClan(Elf elf) {
-		// TODO: what if there is a former relationship between this elf and
-		// this clan?
-		if (database.clanElfDB.getApplicantsForClan(this).contains(elf))
+		if (applicants.contains(elf.getModelID()) || members.contains(elf.getModelID())) {
 			return;
-		if (database.clanElfDB.getElvesForClan(this).contains(elf))
-			return;
-		ClanElf clanElf = new ClanElf(this, elf,
-				Model.ClanElfRelationship.APPLICANT);
-		database.clanElfDB.insert(clanElf);
+		}
+		applicants.put(elf.getModelID(), elf);
 	}
 
+	// An applicant becomes a member
 	public void joinClan(Elf elf) {
-		// TODO: what if there is a former relationship between this elf and
-		// this clan?
-		ClanElf clanElf = new ClanElf(this, elf,
-				Model.ClanElfRelationship.MEMBER);
-		database.clanElfDB.insert(clanElf);
+		if (applicants.contains(elf.getModelID()) && !members.contains(elf.getModelID())) {
+			members.put(elf.getModelID(), elf);
+		}
 	}
 
 	// the database takes care of cascading delete
@@ -97,13 +97,15 @@ public class Clan extends Model {
 
 	// The clan leader cannot do this operation
 	public void leaveClan(Elf elf) {
-		// delete all posts from this elf in this clan
-		for (Post post : posts) {
-			if (post.getElf() == elf) {
-				post.delete();
+		if (elf == getLeader()) {
+			return;
+		}
+		for (ConcurrentHashMap.Entry<Integer, Post> post : posts.entrySet()) {
+			if (post.getValue().getElf() == elf) {
+				posts.remove(post.getValue().getModelID());
 			}
 		}
-		database.clanElfDB.deleteElf(elf);
+		members.remove(elf.getModelID());
 	}
 
 	public boolean isLeader(Elf elf) {
@@ -115,47 +117,65 @@ public class Clan extends Model {
 
 	// also true if the elf is the leader
 	public boolean isMember(Elf elf) {
-		List<Elf> elves = getMembers();
-		if (elves.contains(elf)) {
-			return true;
-		}
-		return false;
+		return members.contains(elf.getModelID());
 	}
 
 	public boolean isApplicant(Elf elf) {
-		List<Elf> elves = getApplicants();
-		if (elves.contains(elf)) {
-			return true;
-		}
-		return false;
+		return applicants.contains(elf.getModelID());
 	}
 
-	public List<Post> getPosts() {
-		return posts;
+	public Post getPostFromEncrpytedModelID (String encryptedModelID) {
+		return posts.get(SecurityUtils.decryptStringToInt(encryptedModelID));
 	}
-
+	
 	public void createPost(Post post) {
-		posts.add(post);
+		posts.put(post.getModelID(), post);
 	}
-
+	
+	public boolean hasPost(Post post) {
+		return posts.contains(post.getModelID());
+	}
+	
+	public boolean hasPost(String encryptedModelID) {
+		return hasPost(getPostFromEncrpytedModelID(encryptedModelID));
+	}
+	
 	public void deletePost(Post post) {
-		database.postDB.delete(post);
+		if (posts.contains(post.getModelID())) {
+			posts.remove(post.getModelID());
+		}
+	}
+	
+	public void deletePost(String encryptedModelID) {
+		deletePost(getPostFromEncrpytedModelID(encryptedModelID));
 	}
 
 	// auto generated getters and setters
 	public String getName() {
-		return name;
+		String n;
+		synchronized (this) {
+			n = name;
+		}
+		return n;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		synchronized(this) {
+			this.name = name;
+		}
 	}
 
 	public String getDescription() {
-		return description;
+		String d;
+		synchronized (this) {
+			d = description;
+		}
+		return d;
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		synchronized(this) {
+			this.description = description;
+		}
 	}
 }

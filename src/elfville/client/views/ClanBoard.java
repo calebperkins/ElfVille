@@ -1,11 +1,15 @@
 package elfville.client.views;
 
+import java.awt.BorderLayout;
 import java.io.IOException;
 
 import javax.swing.*;
 
 import elfville.client.ClientWindow;
 import elfville.client.SocketController;
+import elfville.client.views.subcomponents.ClanDetails;
+import elfville.client.views.subcomponents.ClanMembers;
+import elfville.client.views.subcomponents.ClanPosts;
 import elfville.client.views.subcomponents.CreatePostPanel;
 import elfville.protocol.*;
 
@@ -17,28 +21,27 @@ import elfville.protocol.*;
  */
 public class ClanBoard extends JPanel implements Refreshable {
 	private static final long serialVersionUID = 1L;
-	private final JLabel title;
-	private CreatePostPanel postPanel;
 	private String clanID;
 	private String clanName;
 
-	public ClanBoard(String clanID, String clanName, ClanBoardResponse resp) {
+	public ClanBoard(ClanBoardResponse response) {
 		super();
-		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		this.clanID = clanID;
-		this.clanName = clanName;
-		title = new JLabel("Board of the " + clanName);
-		add(title);
-		// TODO add clan summary? Member listing? (will need to change layout)
-		title.setText(clanName + "'s Board");
-		add(title);
-		postPanel = new CreatePostPanel(this, clanID);
-		add(postPanel);
-
-		/*
-		 * TODO: why was this removed? for (SerializablePost post :
-		 * response.getPosts()) { add(Post(post)); }
-		 */
+		this.clanID = response.clan.modelID;
+		this.clanName = response.clan.clanName;
+		
+		this.setLayout(new BorderLayout());
+		
+		ClanDetails details = new ClanDetails(response, this);
+		add(details, BorderLayout.PAGE_START);
+		
+		ClanMembers members = new ClanMembers(response);
+		add(members, BorderLayout.LINE_END);
+		
+		CreatePostPanel createPost = new CreatePostPanel(this, clanID);
+		add(createPost, BorderLayout.LINE_START);
+		
+		ClanPosts posts = new ClanPosts(response);
+		add(posts, BorderLayout.CENTER);
 	}
 
 	@Override
@@ -52,7 +55,7 @@ public class ClanBoard extends JPanel implements Refreshable {
 					.send(new ClanBoardRequest(clanID));
 			if (resp.status == Response.Status.SUCCESS) {
 				ClientWindow
-						.switchScreen(new ClanBoard(clanID, clanName, resp));
+						.switchScreen(new ClanBoard(resp));
 			} else {
 				ClientWindow.showError(resp.message,
 						"Error retrieving clan board.");

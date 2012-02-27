@@ -1,5 +1,6 @@
 package elfville.client.views.subcomponents;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -37,18 +38,27 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 		button.addActionListener(this);
 
 		add(titleLabel);
+		//title.setMinimumSize(new Dimension(300, 20));
+		//title.setPreferredSize(new Dimension(300, 20));
 		add(title);
 		add(textLabel);
-		add(text);
+		text.setLineWrap(true);
+		text.setWrapStyleWord(true);
+		JScrollPane scrollableText = new JScrollPane(text);
+		scrollableText.setPreferredSize(new Dimension(300,80));
+		scrollableText.setMinimumSize(new Dimension(200, 40));
+		add(scrollableText);
 		add(button);
+		//setMaximumSize(new Dimension(380, 500));
+		//setMinimumSize(new Dimension(380, 470));
+		//TODO: fix the code duplication between create clan panel and create post panel
 	}
 
 	// Post the message
-	// TODO finish.... Actually, I think I have now finished it (Aaron), but I'm
-	// not sure enough to remove this TODO myself
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Force there to be a title? Force there to be text? Both?
+		// TODO Nice helpful "need to entire title" or "need to enter text" messages
+		// but these are enforced by server anyway, just not a helpful error message.
 		try {
 			Response resp;
 			if (clanID == null) {
