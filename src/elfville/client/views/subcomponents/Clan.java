@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import elfville.client.ClientWindow;
+import elfville.client.SocketController;
 import elfville.client.views.ClanBoard;
 import elfville.protocol.models.SerializableClan;
 
@@ -14,33 +16,19 @@ public class Clan extends JPanel {
 	private JTextArea clanDescription;
 	private JButton leaderName;
 
-	// TODO: perhaps add leader name with a link to profile
-
-	private class ClanHandler implements ActionListener {
-		private String modelID;
-		private String clanName;
-
-		public ClanHandler(String modelID, String clanName) {
-			this.modelID = modelID;
-			this.clanName = clanName;
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			ClanBoard.showClanBoard(modelID, clanName);
-		}
-
-	}
-
-	
+	private ClientWindow clientWindow;
+	private SocketController socketController;
 
 	/**
 	 * Create the panel.
 	 */
-	public Clan(SerializableClan c) {
+	public Clan(SerializableClan c, ClientWindow clientWindow, SocketController socketController) {
 		super();
 		// TODO: possible to maybe deduplicate code between this and Post.java
 
+		this.clientWindow = clientWindow;
+		this.socketController = socketController;
+		
 		clanName = new JButton(c.clanName);
 		clanDescription = new JTextArea(c.clanDescription);
 		clanDescription.setLineWrap(true);
@@ -53,6 +41,22 @@ public class Clan extends JPanel {
 		add(leaderName); // TODO we need a way to distinguish between clan and
 							// leader names
 		add(new JScrollPane(clanDescription));
+	}
+	
+
+
+	private class ClanHandler implements ActionListener {
+		private String modelID;
+
+		public ClanHandler(String modelID, String clanName) {
+			this.modelID = modelID;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new ClanBoard(clientWindow, socketController, modelID);
+		}
+
 	}
 
 }

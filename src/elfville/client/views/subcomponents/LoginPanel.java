@@ -24,17 +24,22 @@ public class LoginPanel extends JPanel implements ActionListener {
 	private JButton loginButton;
 	private JLabel usernameLabel;
 	private JLabel passwordLabel;
-
+	private SocketController socketController;
+	private ClientWindow clientWindow;
+	
 	/**
 	 * Create the panel.
 	 */
-	public LoginPanel() {
+	public LoginPanel(SocketController socketController, ClientWindow clientWindow) {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createTitledBorder("Login"),
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
+		this.socketController = socketController;
+		this.clientWindow = clientWindow;
+		
 		usernameField = new JTextField();
 		passwordField = new JPasswordField();
 		loginButton = new JButton("Login");
@@ -62,14 +67,14 @@ public class LoginPanel extends JPanel implements ActionListener {
 		SignInRequest req = new SignInRequest(usernameField.getText());
 
 		try {
-			Response m = SocketController.send(req);
+			Response m = socketController.send(req);
 			if (m.status == Response.Status.SUCCESS) {
-				CentralBoard.showCentralBoard();
+				new CentralBoard(clientWindow, socketController);
 			} else {
-				ClientWindow.showError(m.message, "Login error");
+				clientWindow.showError(m.message, "Login error");
 			}
 		} catch (IOException e1) {
-			ClientWindow.showConnectionError();
+			clientWindow.showConnectionError();
 		}
 	}
 

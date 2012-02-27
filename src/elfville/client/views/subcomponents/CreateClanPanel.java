@@ -9,7 +9,8 @@ import javax.swing.*;
 
 import elfville.client.ClientWindow;
 import elfville.client.SocketController;
-import elfville.client.views.Refreshable;
+import elfville.client.views.ClanDirectory;
+import elfville.client.views.Board;
 import elfville.protocol.*;
 import elfville.protocol.models.SerializableClan;
 
@@ -20,11 +21,11 @@ public class CreateClanPanel extends JPanel implements ActionListener {
 	private final JButton button = new JButton("Create Clan");
 	private final JLabel nameLabel = new JLabel("Name");
 	private final JLabel descriptionLabel = new JLabel("Description");
-	private final Refreshable board;
+	private final ClanDirectory clanDirectory;
 
-	public CreateClanPanel(Refreshable board) {
+	public CreateClanPanel(ClanDirectory board) {
 		super();
-		this.board = board;
+		this.clanDirectory = board;
 		makeThePanel();
 	}
 
@@ -63,14 +64,14 @@ public class CreateClanPanel extends JPanel implements ActionListener {
 				clan.clanName = name.getText();
 				clan.clanDescription = description.getText();
 				CreateClanRequest req = new CreateClanRequest(clan);
-				Response resp = SocketController.send(req);
+				Response resp = clanDirectory.getSocketController().send(req);
 				if (resp.isOK()) {
-					board.refresh();
+					clanDirectory.refresh();
 				} else {
 					System.err.println("Posting failed.");
 				}
 			} catch (IOException e1) {
-				ClientWindow.showConnectionError();
+				clanDirectory.getClientWindow().showConnectionError();
 			}
 		}
 	}

@@ -7,6 +7,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import elfville.client.ClientWindow;
+import elfville.client.SocketController;
 import elfville.client.views.CentralBoard;
 import elfville.client.views.ClanDirectory;
 
@@ -14,6 +16,8 @@ public class NavigationScreen extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JButton centralBoard;
 	private JButton clanDirectory;
+	private ClientWindow clientWindow;
+	private SocketController socketController;
 
 	private class ButtonHandler implements ActionListener {
 		private boolean centralBoard;
@@ -25,16 +29,18 @@ public class NavigationScreen extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (centralBoard) {
-				CentralBoard.showCentralBoard();
+				new CentralBoard(clientWindow, socketController);
 			} else {
-				ClanDirectory.showClanDirectory();
+				new ClanDirectory(clientWindow, socketController);
 			}
 		}
 	}
 
-	public NavigationScreen() {
+	public NavigationScreen(ClientWindow clientWindow, SocketController socketController) {
 		super();
 
+		this.clientWindow = clientWindow;
+		this.socketController = socketController;
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
 		centralBoard = new JButton("Central Board");

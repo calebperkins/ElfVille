@@ -11,46 +11,57 @@ import elfville.client.views.subcomponents.CreateClanPanel;
 import elfville.protocol.*;
 import elfville.protocol.models.SerializableClan;
 
-public class ClanDirectory extends JPanel implements Refreshable {
+public class ClanDirectory extends JPanel implements Board {
 	private static final long serialVersionUID = 1L;
-	private static final JLabel title = new JLabel("Clan Directory");
-	private final JPanel createClan = new CreateClanPanel(this);
+	private final JLabel title;
+	private final JPanel createClan;
 
-	/**
-	 * Create the panel.
-	 */
-	public ClanDirectory(ClanListingResponse response) {
+	private ClientWindow clientWindow;
+	private SocketController socketController;
+
+	public ClanDirectory(ClientWindow clientWindow, SocketController socketController) {
 		super();
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add(title);
-		add(createClan);
-		JPanel clanPanel = new JPanel();
-		clanPanel.setLayout(new BoxLayout(clanPanel, BoxLayout.Y_AXIS));
-		for (SerializableClan clan : response.clans) {
-			clanPanel.add(new Clan(clan));
+
+		this.clientWindow = clientWindow;
+		this.socketController = socketController;
+		
+		title = new JLabel("Clan Directory");
+		createClan = new CreateClanPanel(this);
+
+		try {
+			ClanListingResponse response = socketController.send(new ClanListingRequest());
+			if (response.status == Response.Status.SUCCESS) {
+				setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+				add(title);
+				add(createClan);
+				JPanel clanPanel = new JPanel();
+				clanPanel.setLayout(new BoxLayout(clanPanel, BoxLayout.Y_AXIS));
+				for (SerializableClan clan : response.clans) {
+					clanPanel.add(new Clan(clan, clientWindow, socketController));
+				}
+				JScrollPane scroll = new JScrollPane(clanPanel);
+				add(scroll);
+				clientWindow.switchScreen(this);
+			} else {
+				clientWindow.showError(response.message, "Error retrieving list of clans");
+			}
+
+		} catch (IOException e) {
+			clientWindow.showConnectionError();
 		}
-		JScrollPane scroll = new JScrollPane(clanPanel);
-		add(scroll);
 	}
 
 	@Override
 	public void refresh() {
-		showClanDirectory();
+		new ClanDirectory(clientWindow, socketController);
 	}
 
-	public static void showClanDirectory() {
-		try {
-			ClanListingResponse resp = SocketController
-					.send(new ClanListingRequest());
-			if (resp.status == Response.Status.SUCCESS) {
-				ClanDirectory d = new ClanDirectory(resp);
-				ClientWindow.switchScreen(d);
-			} else {
-				ClientWindow.showError(resp.message,
-						"Error retrieving list of clans");
-			}
-		} catch (IOException e) {
-			ClientWindow.showConnectionError();
-		}
+	public ClientWindow getClientWindow() {
+		return clientWindow;
 	}
+
+	public SocketController getSocketController() {
+		return socketController;
+	}
+
 }

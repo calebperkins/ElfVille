@@ -16,17 +16,17 @@ import elfville.protocol.*;
  * 
  */
 public class SocketController {
-	private static Socket socket;
-	private static ObjectOutputStream out;
-	private static ObjectInputStream in;
+	private Socket socket;
+	private ObjectOutputStream out;
+	private ObjectInputStream in;
 
-	public static void initialize() throws UnknownHostException, IOException {
-		socket = new Socket("localhost", 8444);
+	SocketController(String host, int port) throws UnknownHostException, IOException {
+		socket = new Socket(host, port);
 		out = new ObjectOutputStream(socket.getOutputStream());
 		in = new ObjectInputStream(socket.getInputStream());
 	}
 
-	private static Response write(Request req) throws IOException {
+	private Response write(Request req) throws IOException {
 		out.writeObject(req);
 		out.flush();
 		try {
@@ -36,46 +36,46 @@ public class SocketController {
 		}
 	}
 
-	public static CentralBoardResponse send(CentralBoardRequest req)
+	public CentralBoardResponse send(CentralBoardRequest req)
 			throws IOException {
 		return (CentralBoardResponse) write(req);
 	}
 
-	public static Response send(SignInRequest req) throws IOException {
+	public Response send(SignInRequest req) throws IOException {
 		return write(req);
 	}
 
-	public static Response send(SignUpRequest req) throws IOException {
+	public Response send(SignUpRequest req) throws IOException {
 		return write(req);
 	}
 
-	public static Response send(PostCentralBoardRequest req) throws IOException {
+	public Response send(PostCentralBoardRequest req) throws IOException {
 		return write(req);
 	}
 
-	public static Response send(PostClanBoardRequest req) throws IOException {
+	public Response send(PostClanBoardRequest req) throws IOException {
 		return write(req);
 	}
 
-	public static Response send(VoteRequest req) throws IOException {
+	public Response send(VoteRequest req) throws IOException {
 		return write(req);
 	}
 
-	public static ClanBoardResponse send(ClanBoardRequest req)
+	public ClanBoardResponse send(ClanBoardRequest req)
 			throws IOException {
 		return (ClanBoardResponse) write(req);
 	}
 
-	public static Response send(CreateClanRequest req) throws IOException {
+	public Response send(CreateClanRequest req) throws IOException {
 		return write(req);
 	}
 
-	public static ClanListingResponse send(ClanListingRequest req)
+	public ClanListingResponse send(ClanListingRequest req)
 			throws IOException {
 		return (ClanListingResponse) write(req);
 	}
 
-	public static Response send(ModifyClanRequest req) throws IOException {
+	public Response send(ModifyClanRequest req) throws IOException {
 		return write(req);
 	}
 }

@@ -9,56 +9,66 @@ import elfville.client.views.subcomponents.NavigationScreen;
 
 public class ClientWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
-
+	
 	// TODO - remove global variable, or at least find a way to make it final
-	public static ClientWindow window;
-
-	private static final JPanel navigation = new NavigationScreen();
-	private static JPanel main = new JPanel();
+	private final JPanel navigation;
+	private JPanel main;
 	private JPanel current;
-
-	public static void switchScreen(JPanel next) {
-		window.getContentPane().removeAll();
-		main = new JPanel();
-		main.setLayout(new BorderLayout());
-		window.getContentPane().add(main);
-		// following line only needed if we implement logout
-		//if (!(next instanceof WelcomeScreen)){
-		main.add(navigation, BorderLayout.PAGE_START);
-		//}
-		main.add(next, BorderLayout.CENTER);
-		window.current = next;
-		window.validate();
-	}
+	private SocketController socketController;
 
 	/**
 	 * Create the frame.
 	 */
-	public ClientWindow() {
+	public ClientWindow(SocketController socketController) {
 		super("ElfVille");
 		setBounds(100, 100, 800, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		current = new WelcomeScreen();
+		this.socketController = socketController;
+		
+		current = new WelcomeScreen(socketController, this);
+		navigation = new NavigationScreen(this, socketController);
+		main = new JPanel();
 
 		main.setLayout(new BorderLayout());
 		this.getContentPane().add(main);
 		//main.add(navigation, BorderLayout.PAGE_START);
 		main.add(current, BorderLayout.CENTER);
-		window = this;
+	}
+	
+	public void switchScreen(JPanel next) {
+		getContentPane().removeAll();
+		main = new JPanel();
+		main.setLayout(new BorderLayout());
+		getContentPane().add(main);
+		// following line only needed if we implement logout
+		//if (!(next instanceof WelcomeScreen)){
+		main.add(navigation, BorderLayout.PAGE_START);
+		//}
+		main.add(next, BorderLayout.CENTER);
+		current = next;
+		validate();
 	}
 
 	/**
 	 * Used when a socket error occurs. Shows an alert dialog.
 	 */
-	public static void showConnectionError() {
+	public void showConnectionError() {
 		showError("Socket connection broke. Try again.", "Connection error");
 		System.exit(-1);
 	}
 
-	public static void showError(String msg, String title) {
+	public void showError(String msg, String title) {
 		JOptionPane.showMessageDialog(null, msg, title,
 				JOptionPane.ERROR_MESSAGE);
+	}
+
+	public SocketController getSocketController() {
+		return socketController;
+	}
+
+	public void setSocketController(SocketController socketController) {
+		this.socketController = socketController;
 	}
 
 }
