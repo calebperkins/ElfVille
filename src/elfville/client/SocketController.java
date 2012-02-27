@@ -20,7 +20,7 @@ public class SocketController {
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
 
-	SocketController(String host, int port) throws UnknownHostException, IOException {
+	public SocketController(String host, int port) throws UnknownHostException, IOException {
 		socket = new Socket(host, port);
 		out = new ObjectOutputStream(socket.getOutputStream());
 		in = new ObjectInputStream(socket.getInputStream());

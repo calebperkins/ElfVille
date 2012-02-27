@@ -1,14 +1,16 @@
 package testcases;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
 import elfville.client.SocketController;
 import elfville.server.Server;
 
-public class ServerStart {
-
+public class ServerStart extends TestBase {
+	
 	public class ServerThread extends Thread {
 		@Override
 		public void run() {
@@ -26,7 +28,7 @@ public class ServerStart {
 		@Override
 		public void run() {
 			try {
-				Server.main(null);
+				socketControllers.add(new SocketController("localhost", 8444));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -39,7 +41,9 @@ public class ServerStart {
 	public void test() throws IOException, InterruptedException {
 		new ServerThread().start();
 		Thread.sleep(500); // sleep for 0.5 second to wait for the server start
-		SocketController.initialize();
+		for (int i = 0; i < 10; i++) {
+			new ClientThread().start();
+		}
 	}
 
 }
