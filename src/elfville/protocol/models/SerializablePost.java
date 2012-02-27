@@ -11,4 +11,6 @@ public class SerializablePost extends SerializableModel {
 	public String content;
 	public Date createdAt;
 	public String elfID;
+	public boolean myPost;
+	public boolean iVoted;
 }
