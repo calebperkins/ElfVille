@@ -3,11 +3,20 @@ package elfville.server;
 import java.net.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.io.*;
 
 public class Server {
 
-	public static void main(String[] args) throws IOException {
+	/**
+	 * Starts a server. Use the first argument to provide a path to the database
+	 * file.
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
+	public static void main(String[] args) throws Exception {
 		ServerSocket serverSocket = null;
 		boolean listening = true;
 
@@ -18,10 +27,19 @@ public class Server {
 			System.exit(-1);
 		}
 
+		ScheduledExecutorService scheduler = Executors
+				.newSingleThreadScheduledExecutor();
+
 		// Initialize database
-		Database.DB = new Database();
-		// Read database from Disk
-		// Database.db = new Database("OnDiskLocation");
+		if (args.length > 0) {
+			Database.DB = Database.load(args[0]);
+			scheduler.scheduleAtFixedRate(new DatabaseBackup(args[0]), 30, 30,
+					TimeUnit.SECONDS);
+		} else {
+			Database.DB = new Database();
+			System.out
+					.println("No database specified. Creating an empty one with no persistance.");
+		}
 
 		ExecutorService pool = Executors.newCachedThreadPool();
 
@@ -29,9 +47,6 @@ public class Server {
 
 		// Support Multiple Clients
 		while (listening) {
-			// Socket acceptedSocket = serverSocket.accept();
-			// System.out.println("Accepted a cennection from: " +
-			// acceptedSocket.getInetAddress());
 			pool.execute(new Session(serverSocket.accept()));
 		}
 

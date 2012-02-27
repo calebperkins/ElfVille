@@ -1,7 +1,6 @@
 package elfville.server;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -14,6 +13,8 @@ import elfville.server.database.*;
  * Contains data structures that represent the server's database
  */
 public class Database implements Serializable {
+
+	private static final long serialVersionUID = -4429813192513967745L;
 
 	/*
 	 * A static database used for controllers. Server.java initialize this.
@@ -48,10 +49,10 @@ public class Database implements Serializable {
 	// Read the database from disk
 	static public Database load(String dbLocation) throws Exception {
 		FileInputStream fin = new FileInputStream("/tmp/elfville.db");
-	    ObjectInputStream ois = new ObjectInputStream(fin);
-	    Database db = (Database)ois.readObject();
-	    ois.close();
-	    return db;
+		ObjectInputStream ois = new ObjectInputStream(fin);
+		Database db = (Database) ois.readObject();
+		ois.close();
+		return db;
 	}
 
 	public synchronized int getAndIncrementCountID() {
@@ -59,8 +60,8 @@ public class Database implements Serializable {
 		return countID;
 	}
 
-	public void writeToDisk() throws IOException {
-		FileOutputStream fout = new FileOutputStream("/tmp/elfville.db");
+	public void writeToDisk(String path) throws IOException {
+		FileOutputStream fout = new FileOutputStream(path);
 		ObjectOutputStream oos = new ObjectOutputStream(fout);
 		oos.writeObject(this);
 		oos.close();

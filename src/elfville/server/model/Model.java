@@ -1,11 +1,14 @@
 package elfville.server.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import elfville.server.Database;
 import elfville.server.SecurityUtils;
 
-public abstract class Model {
+public abstract class Model implements Serializable {
+	private static final long serialVersionUID = -3671088963465928601L;
+
 	static Database database = Database.DB;
 
 	private final Date createdAt;
