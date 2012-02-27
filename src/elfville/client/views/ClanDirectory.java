@@ -11,7 +11,7 @@ import elfville.client.views.subcomponents.CreateClanPanel;
 import elfville.protocol.*;
 import elfville.protocol.models.SerializableClan;
 
-public class ClanDirectory extends JPanel implements Board {
+public class ClanDirectory extends Board {
 	private static final long serialVersionUID = 1L;
 	private final JLabel title;
 	private final JPanel createClan;
@@ -20,7 +20,7 @@ public class ClanDirectory extends JPanel implements Board {
 	private SocketController socketController;
 
 	public ClanDirectory(ClientWindow clientWindow, SocketController socketController) {
-		super();
+		super(clientWindow, socketController);
 
 		this.clientWindow = clientWindow;
 		this.socketController = socketController;
@@ -54,14 +54,6 @@ public class ClanDirectory extends JPanel implements Board {
 	@Override
 	public void refresh() {
 		new ClanDirectory(clientWindow, socketController);
-	}
-
-	public ClientWindow getClientWindow() {
-		return clientWindow;
-	}
-
-	public SocketController getSocketController() {
-		return socketController;
 	}
 
 }

@@ -2,7 +2,6 @@ package elfville.client;
 
 import java.awt.*;
 import java.io.IOException;
-import java.net.Socket;
 
 /**
  * Main entry point for client.
