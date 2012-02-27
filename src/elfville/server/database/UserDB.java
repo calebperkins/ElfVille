@@ -6,7 +6,7 @@ import elfville.server.SecurityUtils;
 import elfville.server.model.User;
 
 public class UserDB extends DB {
-
+	private static final long serialVersionUID = 7533814115667398893L;
 	private ConcurrentHashMap<Integer, User> id_map;
 	private ConcurrentHashMap<String, User> username_map;
 
