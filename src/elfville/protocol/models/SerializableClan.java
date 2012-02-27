@@ -13,6 +13,7 @@ public class SerializableClan extends SerializableModel {
 	public int numSocks;
 	public SerializableElf leader;
 	public List<SerializableElf> members;
+	public List<SerializableElf> applicants;
 	public List<SerializablePost> posts;
 	public List<SerializableElf> applicants;
 

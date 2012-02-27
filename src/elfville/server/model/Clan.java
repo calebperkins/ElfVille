@@ -1,7 +1,11 @@
 package elfville.server.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import elfville.protocol.models.SerializableClan;
+import elfville.protocol.models.SerializableElf;
+import elfville.protocol.models.SerializablePost;
 import elfville.server.Database;
 import elfville.server.SecurityUtils;
 
@@ -40,16 +44,37 @@ public class Clan extends Model {
 		sClan.clanDescription = getDescription();
 		sClan.numSocks = getNumSock();
 		sClan.modelID = SecurityUtils.encryptIntToString(this.getModelID());
-		for (ConcurrentHashMap.Entry<Integer, Post> post : posts.entrySet()) {
-			sClan.posts.add(post.getValue().toSerializablePost());
-		}
+		sClan.applicants = getApplicants();
+		sClan.members = getMembers();
+		sClan.posts = getPosts();
 		sClan.leader = getLeader().getSerializableElf();
-		for (ConcurrentHashMap.Entry<Integer, Elf> member : members.entrySet()) {
-			sClan.members.add(member.getValue().getSerializableElf());
-		}
 		return sClan;
 	}
 
+	public List<SerializablePost> getPosts() {
+		List<SerializablePost> postList = new ArrayList<SerializablePost>();
+		for (ConcurrentHashMap.Entry<Integer, Post> post : posts.entrySet()) {
+			postList.add(post.getValue().toSerializablePost());
+		}
+		return postList;
+	}
+	
+	public List<SerializableElf> getApplicants() {
+		List<SerializableElf> applicantList = new ArrayList<SerializableElf>();
+		for (ConcurrentHashMap.Entry<Integer, Elf> applicant : applicants.entrySet()) {
+			applicantList.add(applicant.getValue().getSerializableElf());
+		}
+		return applicantList;
+	}
+
+	public List<SerializableElf> getMembers() {
+		List<SerializableElf> memberList = new ArrayList<SerializableElf>();
+		for (ConcurrentHashMap.Entry<Integer, Elf> member : members.entrySet()) {
+			memberList.add(member.getValue().getSerializableElf());
+		}
+		return memberList;
+	}
+	
 	/* The number of socks owned by all clan members combined */
 	public int getNumSock() {
 		int numSock = 0;

@@ -9,7 +9,7 @@ import elfville.protocol.models.SerializablePost;
 /*
  * Post Model
  */
-public class Post extends Model {
+public class Post extends Model implements Comparable<Post> {
 	private static final long serialVersionUID = 6422767335685038776L;
 	private Elf elf;
 	private String title;
@@ -107,5 +107,17 @@ public class Post extends Model {
 	public boolean save() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public int compareTo(Post arg0) {
+		// TODO Auto-generated method stub
+		if (getNumSock() > arg0.getNumSock()) {
+			return -1;
+		} else if (getNumSock() > arg0.getNumSock()) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 }
