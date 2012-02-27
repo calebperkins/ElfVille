@@ -10,7 +10,6 @@ import elfville.client.views.subcomponents.NavigationScreen;
 public class ClientWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
-	// TODO - remove global variable, or at least find a way to make it final
 	private final JPanel navigation;
 	private JPanel main;
 	private JPanel current;

@@ -33,13 +33,12 @@ public class Clan extends JPanel {
 		clanDescription = new JTextArea(c.clanDescription);
 		clanDescription.setLineWrap(true);
 		clanDescription.setWrapStyleWord(true);
-		leaderName = new JButton(c.leader.elfName);
+		leaderName = new JButton("Leader: " + c.leader.elfName);
 
 		clanName.addActionListener(new ClanHandler(c.modelID, c.clanName));
 		leaderName.addActionListener(new ElfHandler(c.leader.modelID));
 		add(clanName);
-		add(leaderName); // TODO we need a way to distinguish between clan and
-							// leader names
+		add(leaderName);
 		add(new JScrollPane(clanDescription));
 	}
 	

@@ -20,7 +20,7 @@ public class ClanDirectory extends Board {
 	private SocketController socketController;
 
 	public ClanDirectory(ClientWindow clientWindow, SocketController socketController) {
-		super();
+		super(clientWindow, socketController);
 
 		this.clientWindow = clientWindow;
 		this.socketController = socketController;

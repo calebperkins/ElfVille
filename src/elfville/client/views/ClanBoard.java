@@ -22,7 +22,7 @@ public class ClanBoard extends Board {
 	private SocketController socketController;
 
 	public ClanBoard(ClientWindow clientWindow, SocketController socketController, String clanID) {
-		super();
+		super(clientWindow, socketController);
 		this.clanID = clanID;
 
 		try {

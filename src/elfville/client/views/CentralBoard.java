@@ -25,7 +25,7 @@ public class CentralBoard extends Board {
 
 	public CentralBoard(ClientWindow clientWindow, 
 			SocketController socketController) {
-		super();
+		super(clientWindow, socketController);
 		CentralBoardResponse response;
 		try {
 			response = socketController.send(new CentralBoardRequest());
