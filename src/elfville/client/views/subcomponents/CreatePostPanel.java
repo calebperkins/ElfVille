@@ -38,16 +38,19 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 		button.addActionListener(this);
 
 		add(titleLabel);
+		//title.setMinimumSize(new Dimension(300, 20));
+		//title.setPreferredSize(new Dimension(300, 20));
 		add(title);
 		add(textLabel);
 		text.setLineWrap(true);
 		text.setWrapStyleWord(true);
 		JScrollPane scrollableText = new JScrollPane(text);
-		scrollableText.setPreferredSize(new Dimension(300,100));
-		scrollableText.setMinimumSize(new Dimension(300, 40));
+		scrollableText.setPreferredSize(new Dimension(300,80));
+		scrollableText.setMinimumSize(new Dimension(200, 40));
 		add(scrollableText);
 		add(button);
-		setMaximumSize(new Dimension(300, 150));
+		//setMaximumSize(new Dimension(380, 500));
+		//setMinimumSize(new Dimension(380, 470));
 		//TODO: fix the code duplication between create clan panel and create post panel
 	}
 

@@ -74,4 +74,8 @@ public class SocketController {
 			throws IOException {
 		return (ClanListingResponse) write(req);
 	}
+
+	public static Response send(ModifyClanRequest req) throws IOException {
+		return (Response) write(req);
+	}
 }
