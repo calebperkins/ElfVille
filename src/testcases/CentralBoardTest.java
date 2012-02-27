@@ -10,7 +10,7 @@ import elfville.protocol.*;
 import elfville.protocol.Response.Status;
 import elfville.protocol.models.SerializablePost;
 
-public class CentralBoardTest extends TestBase {
+public class CentralBoardTest {
 
 	@Test
 	public void test1post() throws IOException {

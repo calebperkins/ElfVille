@@ -1,6 +1,7 @@
 package elfville.server;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -28,7 +29,7 @@ public class Database implements Serializable {
 	// public ClanElfDB clanElfDB;
 	public UserDB userDB;
 
-	// Determines the modelID of all model objects. 
+	// Determines the modelID of all model objects.
 	// getAndIncrementCountID() will increment this by 1.
 	private int countID;
 
@@ -50,11 +51,16 @@ public class Database implements Serializable {
 
 	// Read the database from disk
 	static public Database load(String dbLocation) throws Exception {
-		FileInputStream fin = new FileInputStream(dbLocation);
-		ObjectInputStream ois = new ObjectInputStream(fin);
-		Database db = (Database) ois.readObject();
-		ois.close();
-		return db;
+		try {
+			FileInputStream fin = new FileInputStream(dbLocation);
+			ObjectInputStream ois = new ObjectInputStream(fin);
+			Database db = (Database) ois.readObject();
+			ois.close();
+			return db;
+		} catch (FileNotFoundException ex) {
+			System.err.println(dbLocation + " not found. Creating...");
+			return new Database();
+		}
 	}
 
 	public synchronized int getAndIncrementCountID() {

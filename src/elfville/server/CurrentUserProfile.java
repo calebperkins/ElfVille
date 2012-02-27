@@ -1,4 +1,5 @@
 package elfville.server;
+import elfville.server.model.*;
 
 public class CurrentUserProfile {
 	private int currentUserId;
@@ -13,6 +14,14 @@ public class CurrentUserProfile {
 
 	public void setCurrentUserId(int currentUserId) {
 		this.currentUserId = currentUserId;
+	}
+	
+	public User getUser() {
+		return Database.DB.userDB.findUserByModelID(currentUserId);
+	}
+	
+	public Elf getElf() {
+		return getUser().getElf();
 	}
 
 }
