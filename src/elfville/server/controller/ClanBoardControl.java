@@ -162,7 +162,7 @@ public class ClanBoardControl extends Controller {
 				return resp;
 			}
 			
-			Elf applicant= database.elfDB.findByEncryptedID(req.applicant.elfID);
+			Elf applicant= database.elfDB.findByEncryptedID(req.applicant.modelID);
 			
 			if(applicant == null){
 				return resp;

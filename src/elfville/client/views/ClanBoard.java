@@ -28,7 +28,6 @@ public class ClanBoard extends JPanel implements Board {
 
 	public ClanBoard(ClientWindow clientWindow, SocketController socketController, String clanID) {
 		super();
-
 		this.clanID = clanID;
 
 		try {
@@ -51,6 +50,10 @@ public class ClanBoard extends JPanel implements Board {
 
 				ClanPosts posts = new ClanPosts(response);
 				add(posts, BorderLayout.CENTER);
+				
+				ClanApplicants applicants = new ClanApplicants(this, response);
+				add(applicants, BorderLayout.PAGE_END);
+				
 				clientWindow.switchScreen(this);
 			} else {
 				clientWindow.showError(response.message, "Error retrieving clan board.");

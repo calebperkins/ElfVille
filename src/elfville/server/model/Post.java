@@ -37,7 +37,7 @@ public class Post extends Model implements Comparable<Post> {
 		sPost.upvotes = getNumUpsock();
 		sPost.downvotes = getNumDownsock();
 		sPost.username = elf.getElfName();
-		sPost.elfID = elf.getEncryptedModelID();
+		sPost.elfModelID = elf.getEncryptedModelID();
 		sPost.modelID = getEncryptedModelID();
 		return sPost;
 	}

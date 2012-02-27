@@ -150,6 +150,10 @@ public class Clan extends Model {
 	}
 
 	public boolean isApplicant(Elf elf) {
+		//TODO this function returns the wrong thing.
+		// this is why I can't accept applicants (because they
+		// appear to not be applicants) and it is why an applicant
+		// doesn't appear as an applicant to the client.
 		return applicants.contains(elf.getModelID());
 	}
 
