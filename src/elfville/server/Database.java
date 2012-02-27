@@ -28,6 +28,8 @@ public class Database implements Serializable {
 	// public ClanElfDB clanElfDB;
 	public UserDB userDB;
 
+	// Determines the modelID of all model objects. 
+	// getAndIncrementCountID() will increment this by 1.
 	private int countID;
 
 	// Initiate a new Database object

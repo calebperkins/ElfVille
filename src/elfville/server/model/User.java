@@ -34,7 +34,7 @@ public class User extends Model {
 	public synchronized void setElf(Elf elf) {
 		this.elf = elf;
 	}
-
+	
 	@Override
 	public boolean save() {
 		// TODO Auto-generated method stub

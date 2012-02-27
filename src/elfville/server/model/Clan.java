@@ -155,32 +155,19 @@ public class Clan extends Model {
 	}
 
 	// auto generated getters and setters
-	public String getName() {
-		String n;
-		synchronized (this) {
-			n = name;
-		}
-		return n;
+	public synchronized String getName() {
+		return name;
+	}
+	public synchronized void setName(String name) {
+		this.name = name;
 	}
 
-	public void setName(String name) {
-		synchronized (this) {
-			this.name = name;
-		}
+	public synchronized String getDescription() {
+		return description;
 	}
 
-	public String getDescription() {
-		String d;
-		synchronized (this) {
-			d = description;
-		}
-		return d;
-	}
-
-	public void setDescription(String description) {
-		synchronized (this) {
-			this.description = description;
-		}
+	public synchronized void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override
