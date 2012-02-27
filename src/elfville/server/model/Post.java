@@ -78,45 +78,27 @@ public class Post extends Model {
 
 	/* auto generated getters and setters */
 
-	public Elf getElf() {
-		Elf e;
-		synchronized (this) {
-			e = elf;
-		}
-		return e;
+	public synchronized Elf getElf() {
+		return elf;
 	}
 
-	public void setElf(Elf elf) {
-		synchronized (this) {
-			this.elf = elf;
-		}
+	public synchronized void setElf(Elf elf) {
+		this.elf = elf;
 	}
 
-	public String getTitle() {
-		String t;
-		synchronized (this) {
-			t = title;
-		}
-		return t;
+	public synchronized String getTitle() {
+		return title;
 	}
 
-	public void setTitle(String title) {
-		synchronized (this) {
-			this.title = title;
-		}
+	public synchronized void setTitle(String title) {
+		this.title = title;
 	}
 
-	public String getContent() {
-		String c;
-		synchronized (this) {
-			c = content;
-		}
-		return c;
+	public synchronized String getContent() {
+		return content;
 	}
 
-	public void setContent(String content) {
-		synchronized (this) {
-			this.content = content;
-		}
+	public synchronized void setContent(String content) {
+		this.content = content;
 	}
 }

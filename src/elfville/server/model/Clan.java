@@ -12,7 +12,7 @@ public class Clan extends Model {
 	private String name;
 	private String description;
 	private ConcurrentHashMap<Integer, Post> posts;
-	
+
 	private Elf leader;
 	private ConcurrentHashMap<Integer, Elf> applicants;
 	private ConcurrentHashMap<Integer, Elf> members;
@@ -127,55 +127,43 @@ public class Clan extends Model {
 	public Post getPostFromEncrpytedModelID (String encryptedModelID) {
 		return posts.get(SecurityUtils.decryptStringToInt(encryptedModelID));
 	}
-	
+
 	public void createPost(Post post) {
 		posts.put(post.getModelID(), post);
 	}
-	
+
 	public boolean hasPost(Post post) {
 		return posts.contains(post.getModelID());
 	}
-	
+
 	public boolean hasPost(String encryptedModelID) {
 		return hasPost(getPostFromEncrpytedModelID(encryptedModelID));
 	}
-	
+
 	public void deletePost(Post post) {
 		if (posts.contains(post.getModelID())) {
 			posts.remove(post.getModelID());
 		}
 	}
-	
+
 	public void deletePost(String encryptedModelID) {
 		deletePost(getPostFromEncrpytedModelID(encryptedModelID));
 	}
 
 	// auto generated getters and setters
-	public String getName() {
-		String n;
-		synchronized (this) {
-			n = name;
-		}
-		return n;
+	public synchronized String getName() {
+		return name;
 	}
 
-	public void setName(String name) {
-		synchronized(this) {
-			this.name = name;
-		}
+	public synchronized void setName(String name) {
+		this.name = name;
 	}
 
-	public String getDescription() {
-		String d;
-		synchronized (this) {
-			d = description;
-		}
-		return d;
+	public synchronized String getDescription() {
+		return description;
 	}
 
-	public void setDescription(String description) {
-		synchronized(this) {
-			this.description = description;
-		}
+	public synchronized void setDescription(String description) {
+		this.description = description;
 	}
 }
