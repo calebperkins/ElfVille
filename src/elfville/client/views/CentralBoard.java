@@ -17,12 +17,11 @@ import elfville.protocol.models.SerializablePost;
  * @author Caleb Perkins
  * 
  */
-public class CentralBoard extends JPanel implements Board {
+public class CentralBoard extends Board {
 	private static final long serialVersionUID = 1L;
 	private final JLabel title = new JLabel("Central Board");
 	private final JPanel createPost = new CreatePostPanel(this, null);
-	private ClientWindow clientWindow;
-	private SocketController socketController;
+	
 
 	public CentralBoard(ClientWindow clientWindow, 
 			SocketController socketController) {
@@ -55,17 +54,8 @@ public class CentralBoard extends JPanel implements Board {
 		}
 	}
 
-	public ClientWindow getClientWindow() {
-		return clientWindow;
-	}
-
-	public SocketController getSocketController() {
-		return socketController;
-	}
-
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
 		new CentralBoard(clientWindow, socketController);
 	}
 

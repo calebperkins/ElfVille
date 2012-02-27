@@ -1,13 +1,23 @@
 package elfville.client.views;
 
+import javax.swing.JPanel;
+
 import elfville.client.ClientWindow;
 import elfville.client.SocketController;
 
-public interface Board {
-	public void refresh();
+public abstract class Board extends JPanel {
+	private static final long serialVersionUID = 1L;
+	protected ClientWindow clientWindow;
+	protected SocketController socketController;
+	
+	public abstract void refresh();
 
-	public ClientWindow getClientWindow();
+	public ClientWindow getClientWindow() {
+		return clientWindow;
+	}
 
-	public SocketController getSocketController();
+	public SocketController getSocketController() {
+		return socketController;
+	}
 
 }

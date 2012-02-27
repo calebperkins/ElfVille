@@ -1,4 +1,4 @@
-package elfville.client.views;
+package elfville.client.views.subcomponents;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import javax.swing.*;
 
-import elfville.client.views.subcomponents.Elf;
+import elfville.client.views.Board;
 import elfville.protocol.ClanBoardResponse;
 import elfville.protocol.ModifyClanRequest;
 import elfville.protocol.ModifyClanRequest.ModClan;
@@ -41,11 +41,6 @@ public class ClanApplicants extends JPanel {
 				} else {
 					req.requestType = ModClan.DENY;
 				}
-				// TODO this breaks everything (though DENY not implemented so does nothing)
-				// but I have no idea why... server gets a null pointer error
-				// or something. Only thing left blank in the send though is
-				// a post, and I know another modify clan request also leaves
-				// post blank, and does not crash.
 				Response resp = board.getSocketController().send(req);
 				if (resp.isOK()) {
 					board.refresh();
@@ -59,10 +54,8 @@ public class ClanApplicants extends JPanel {
 	}
 
 	public ClanApplicants(Board board, ClanBoardResponse response) {
-		//setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		this.board = board;
 		JPanel allApplicantsPanel = new JPanel();
-		//panel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
 		for (SerializableElf applicant : response.clan.applicants) {
 			JPanel applicantPanel = new JPanel();
 			applicantPanel.add(new Elf(applicant));
@@ -79,7 +72,6 @@ public class ClanApplicants extends JPanel {
 		}
 		JScrollPane scroll = new JScrollPane(allApplicantsPanel);
 		add(scroll);
-		//add(allApplicantsPanel);
 	}
 
 }

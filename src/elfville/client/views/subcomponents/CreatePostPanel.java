@@ -7,8 +7,6 @@ import java.io.IOException;
 
 import javax.swing.*;
 
-import elfville.client.ClientWindow;
-import elfville.client.SocketController;
 import elfville.client.views.Board;
 import elfville.protocol.*;
 
