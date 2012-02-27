@@ -17,44 +17,56 @@ import elfville.protocol.models.SerializablePost;
  * @author Caleb Perkins
  * 
  */
-public class CentralBoard extends JPanel implements Refreshable {
+public class CentralBoard extends JPanel implements Board {
 	private static final long serialVersionUID = 1L;
 	private final JLabel title = new JLabel("Central Board");
 	private final JPanel createPost = new CreatePostPanel(this, null);
+	private ClientWindow clientWindow;
+	private SocketController socketController;
 
-	public CentralBoard(CentralBoardResponse response) {
+	public CentralBoard(ClientWindow clientWindow, 
+			SocketController socketController) {
 		super();
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add(title);
-		add(createPost);
-		JPanel postPanel = new JPanel();
-		postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
-		for (SerializablePost post : response.posts) {
-			postPanel.add(new VotablePost(post, this));
+		CentralBoardResponse response;
+		try {
+			response = socketController.send(new CentralBoardRequest());
+			if (response.status == Response.Status.SUCCESS) {
+
+				this.clientWindow = clientWindow;
+				this.socketController = socketController;
+				setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+				add(title);
+				add(createPost);
+				JPanel postPanel = new JPanel();
+				postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
+				for (SerializablePost post : response.posts) {
+					postPanel.add(new VotablePost(post, this));
+				}
+				JScrollPane scroll = new JScrollPane(postPanel);
+				add(scroll);
+
+				clientWindow.switchScreen(this);
+			} else {
+				clientWindow.showError(response.message,
+						"Error retrieving central board");
+			}
+		} catch (IOException e) {
+			clientWindow.showConnectionError();
 		}
-		JScrollPane scroll = new JScrollPane(postPanel);
-		add(scroll);
+	}
+
+	public ClientWindow getClientWindow() {
+		return clientWindow;
+	}
+
+	public SocketController getSocketController() {
+		return socketController;
 	}
 
 	@Override
 	public void refresh() {
-		showCentralBoard();
-	}
-
-	public static void showCentralBoard() {
-		try {
-			CentralBoardResponse resp = SocketController
-					.send(new CentralBoardRequest());
-			if (resp.status == Response.Status.SUCCESS) {
-				CentralBoard b = new CentralBoard(resp);
-				ClientWindow.switchScreen(b);
-			} else {
-				ClientWindow.showError(resp.message,
-						"Error retrieving central board");
-			}
-		} catch (IOException e) {
-			ClientWindow.showConnectionError();
-		}
+		// TODO Auto-generated method stub
+		new CentralBoard(clientWindow, socketController);
 	}
 
 }

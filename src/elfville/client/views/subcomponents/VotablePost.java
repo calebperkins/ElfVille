@@ -8,14 +8,15 @@ import javax.swing.JButton;
 
 import elfville.client.ClientWindow;
 import elfville.client.SocketController;
-import elfville.client.views.Refreshable;
+import elfville.client.views.CentralBoard;
+import elfville.client.views.Board;
 import elfville.protocol.Response;
 import elfville.protocol.VoteRequest;
 import elfville.protocol.models.SerializablePost;
 
 public class VotablePost extends Post {
 	private static final long serialVersionUID = 1L;
-	private final Refreshable board;
+	private final CentralBoard board;
 	
 	private class VoteHandler implements ActionListener {
 		private boolean upsock;
@@ -30,19 +31,19 @@ public class VotablePost extends Post {
 		public void actionPerformed(ActionEvent e) {
 			VoteRequest req = new VoteRequest(postID, upsock);
 			try {
-				Response resp = SocketController.send(req);
+				Response resp = board.getSocketController().send(req);
 				if (!resp.isOK()) {
 					System.err.println("Did not vote!");
 				} else {
 					board.refresh();
 				}
 			} catch (IOException e1) {
-				ClientWindow.showConnectionError();
+				board.getClientWindow().showConnectionError();
 			}
 		}
 	}
 
-	public VotablePost(SerializablePost p, Refreshable board) {
+	public VotablePost(SerializablePost p, CentralBoard board) {
 		super(p);
 		// TODO have some indication of whether (and how) the user has voted on
 		// this post.

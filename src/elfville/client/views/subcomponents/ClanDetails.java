@@ -7,8 +7,9 @@ import java.io.IOException;
 import javax.swing.*;
 
 import elfville.client.*;
+import elfville.client.views.ClanBoard;
 import elfville.client.views.ClanDirectory;
-import elfville.client.views.Refreshable;
+import elfville.client.views.Board;
 import elfville.protocol.*;
 import elfville.protocol.ModifyClanRequest.ModClan;
 import elfville.protocol.models.SerializableClan;
@@ -20,9 +21,9 @@ public class ClanDetails extends JPanel implements ActionListener {
 	private final SerializableClan clan;
 	//private final String elfModelID;
 	private final ModClan action;
-	Refreshable board;
+	ClanBoard board;
 	
-	public ClanDetails(ClanBoardResponse response, Refreshable board){
+	public ClanDetails(ClanBoardResponse response, ClanBoard board){
 		super();
 		this.board = board;
 		//elfModelID = response.
@@ -74,17 +75,17 @@ public class ClanDetails extends JPanel implements ActionListener {
 			ModifyClanRequest req = new ModifyClanRequest();
 			req.clan = clan;
 			req.requestType = action;
-			Response resp = SocketController.send(req);
+			Response resp = board.getSocketController().send(req);
 			
 			if (resp.isOK() && (action == ModClan.LEAVE || action == ModClan.DELETE)) {
-				ClanDirectory.showClanDirectory();
+				new ClanDirectory(board.getClientWindow(), board.getSocketController());
 			} else if (resp.isOK()) {
 				board.refresh();
 			} else {
 				System.err.println("Not posted!");
 			}
 		} catch (IOException e1) {
-			ClientWindow.showConnectionError();
+			board.getClientWindow().showConnectionError();
 		}
 	}
 }

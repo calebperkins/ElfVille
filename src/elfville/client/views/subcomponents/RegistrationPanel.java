@@ -17,16 +17,22 @@ public class RegistrationPanel extends JPanel implements ActionListener {
 	private final JTextField usernameField = new JTextField();
 	private final JButton registerButton = new JButton("Register");
 	private final JLabel usernameLabel = new JLabel("Username");
-
+	private SocketController socketController;
+	private ClientWindow clientWindow;
+	
 	/**
 	 * Create the panel.
 	 */
-	public RegistrationPanel() {
+	public RegistrationPanel(SocketController socketController, ClientWindow clientWindow) {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createTitledBorder("Register"),
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
+
+		this.socketController = socketController;
+		this.clientWindow = clientWindow;
 
 		usernameLabel.setLabelFor(usernameField);
 		registerButton.addActionListener(this);
@@ -43,14 +49,14 @@ public class RegistrationPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		SignUpRequest req = new SignUpRequest(usernameField.getText());
 		try {
-			Response resp = SocketController.send(req);
+			Response resp = socketController.send(req);
 			if (resp.status == Response.Status.SUCCESS) {
-				CentralBoard.showCentralBoard();
+				new CentralBoard(clientWindow, socketController);
 			} else {
-				ClientWindow.showError(resp.message, "Registration error:");
+				clientWindow.showError(resp.message, "Registration error:");
 			}
 		} catch (IOException e) {
-			ClientWindow.showConnectionError();
+			clientWindow.showConnectionError();
 		}
 	}
 

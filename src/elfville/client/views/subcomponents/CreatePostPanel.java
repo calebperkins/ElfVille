@@ -9,7 +9,7 @@ import javax.swing.*;
 
 import elfville.client.ClientWindow;
 import elfville.client.SocketController;
-import elfville.client.views.Refreshable;
+import elfville.client.views.Board;
 import elfville.protocol.*;
 
 public class CreatePostPanel extends JPanel implements ActionListener {
@@ -20,9 +20,9 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 	private final String clanID;
 	private final JLabel titleLabel = new JLabel("Title");
 	private final JLabel textLabel = new JLabel("Text");
-	private final Refreshable board;
+	private final Board board;
 
-	public CreatePostPanel(Refreshable board, String clanID) {
+	public CreatePostPanel(Board board, String clanID) {
 		super();
 		this.clanID = clanID;
 		this.board = board;
@@ -64,12 +64,12 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 			if (clanID == null) {
 				PostCentralBoardRequest req = new PostCentralBoardRequest(
 						text.getText(), title.getText());
-				resp = SocketController.send(req); // returns
+				resp = board.getSocketController().send(req); // returns
 													// PostCentralBoardResponse
 			} else {
 				PostClanBoardRequest req = new PostClanBoardRequest(
 						text.getText(), title.getText(), clanID);
-				resp = SocketController.send(req); // returns
+				resp = board.getSocketController().send(req); // returns
 													// PostClanlBoardResponse
 			}
 
@@ -79,7 +79,7 @@ public class CreatePostPanel extends JPanel implements ActionListener {
 				System.err.println("Not posted!");
 			}
 		} catch (IOException e1) {
-			ClientWindow.showConnectionError();
+			board.getClientWindow().showConnectionError();
 		}
 	}
 

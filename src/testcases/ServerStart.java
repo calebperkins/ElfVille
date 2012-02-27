@@ -21,6 +21,19 @@ public class ServerStart {
 		}
 	}
 
+	public class ClientThread extends Thread {
+		@Override
+		public void run() {
+			try {
+				Server.main(null);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
 	@Test
 	public void test() throws IOException, InterruptedException {
 		new ServerThread().start();
