@@ -31,6 +31,10 @@ public class ClanBoard extends JPanel implements Refreshable {
 		
 		this.setLayout(new BorderLayout());
 		
+		//TODO might be worth passing more restricted things to each of these
+		// constructors, they don't need the entire response, and might be
+		// more readable.
+		
 		ClanDetails details = new ClanDetails(response, this);
 		add(details, BorderLayout.PAGE_START);
 		
@@ -42,6 +46,9 @@ public class ClanBoard extends JPanel implements Refreshable {
 		
 		ClanPosts posts = new ClanPosts(response);
 		add(posts, BorderLayout.CENTER);
+		
+		ClanApplicants applicants = new ClanApplicants(this, response);
+		add(applicants, BorderLayout.PAGE_END);
 	}
 
 	@Override
