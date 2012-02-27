@@ -2,13 +2,14 @@ package elfville.server.model;
 
 import java.util.concurrent.ConcurrentHashMap;
 import elfville.protocol.models.SerializableClan;
+import elfville.server.Database;
 import elfville.server.SecurityUtils;
 
 /*
  * Clan Model.
  */
 public class Clan extends Model {
-
+	private static final long serialVersionUID = -696380887203611286L;
 	private String name;
 	private String description;
 	private ConcurrentHashMap<Integer, Post> posts;
@@ -16,6 +17,7 @@ public class Clan extends Model {
 	private Elf leader;
 	private ConcurrentHashMap<Integer, Elf> applicants;
 	private ConcurrentHashMap<Integer, Elf> members;
+
 	// private List<Post> posts;
 
 	public Clan(String name, String description) {
@@ -39,7 +41,7 @@ public class Clan extends Model {
 		sClan.numSocks = getNumSock();
 		sClan.modelID = SecurityUtils.encryptIntToString(this.getModelID());
 		for (ConcurrentHashMap.Entry<Integer, Post> post : posts.entrySet()) {
-			sClan.posts.add(post.getValue().getSerializablePost());
+			sClan.posts.add(post.getValue().toSerializablePost());
 		}
 		sClan.leader = getLeader().getSerializableElf();
 		for (ConcurrentHashMap.Entry<Integer, Elf> member : members.entrySet()) {
@@ -59,7 +61,7 @@ public class Clan extends Model {
 
 	public Elf getLeader() {
 		Elf l;
-		synchronized(this) {
+		synchronized (this) {
 			l = leader;
 		}
 		return l;
@@ -77,7 +79,8 @@ public class Clan extends Model {
 
 	// A stranger becomes an applicant
 	public void applyClan(Elf elf) {
-		if (applicants.contains(elf.getModelID()) || members.contains(elf.getModelID())) {
+		if (applicants.contains(elf.getModelID())
+				|| members.contains(elf.getModelID())) {
 			return;
 		}
 		applicants.put(elf.getModelID(), elf);
@@ -85,7 +88,8 @@ public class Clan extends Model {
 
 	// An applicant becomes a member
 	public void joinClan(Elf elf) {
-		if (applicants.contains(elf.getModelID()) && !members.contains(elf.getModelID())) {
+		if (applicants.contains(elf.getModelID())
+				&& !members.contains(elf.getModelID())) {
 			members.put(elf.getModelID(), elf);
 		}
 	}
@@ -124,7 +128,7 @@ public class Clan extends Model {
 		return applicants.contains(elf.getModelID());
 	}
 
-	public Post getPostFromEncrpytedModelID (String encryptedModelID) {
+	public Post getPostFromEncrpytedModelID(String encryptedModelID) {
 		return posts.get(SecurityUtils.decryptStringToInt(encryptedModelID));
 	}
 
@@ -154,7 +158,6 @@ public class Clan extends Model {
 	public synchronized String getName() {
 		return name;
 	}
-
 	public synchronized void setName(String name) {
 		this.name = name;
 	}
@@ -165,5 +168,14 @@ public class Clan extends Model {
 
 	public synchronized void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Override
+	public boolean save() {
+		// TODO add validations
+		if (Database.DB.clanDB.findByModelID(modelID) == null) {
+			Database.DB.clanDB.insert(this);
+		}
+		return true;
 	}
 }

@@ -50,7 +50,7 @@ public class Database implements Serializable {
 
 	// Read the database from disk
 	static public Database load(String dbLocation) throws Exception {
-		FileInputStream fin = new FileInputStream("/tmp/elfville.db");
+		FileInputStream fin = new FileInputStream(dbLocation);
 		ObjectInputStream ois = new ObjectInputStream(fin);
 		Database db = (Database) ois.readObject();
 		ois.close();

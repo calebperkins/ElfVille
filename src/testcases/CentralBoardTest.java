@@ -3,9 +3,6 @@ package testcases;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
-
 import org.junit.Test;
 
 import elfville.client.SocketController;
@@ -21,7 +18,7 @@ public class CentralBoardTest {
 			String title = "title-" + i;
 			String content = "content-" + i;
 			PostCentralBoardRequest req = new PostCentralBoardRequest(content, title);
-			Response resp = (Response) SocketController.send(req);
+			Response resp = SocketController.send(req);
 			System.out.println(resp.status.toString());
 			assertEquals(resp.status, Status.SUCCESS);
 		}
@@ -31,7 +28,7 @@ public class CentralBoardTest {
 	public void test2get() throws IOException {
 		System.out.println("getTesting");
 		CentralBoardRequest req = new CentralBoardRequest();
-		CentralBoardResponse resp = (CentralBoardResponse) SocketController.send(req);
+		CentralBoardResponse resp = SocketController.send(req);
 		System.out.println(resp.status.toString());
 		assertEquals(resp.status, Status.SUCCESS);
 		System.out.println(resp.posts.size());

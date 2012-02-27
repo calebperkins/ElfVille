@@ -3,12 +3,13 @@ package elfville.server.model;
 import java.util.List;
 
 import elfville.protocol.models.SerializableElf;
+import elfville.server.Database;
 
 /*
  * Elf Model.
  */
 public class Elf extends Model {
-
+	private static final long serialVersionUID = 4948830835289818367L;
 	private String elfName;
 	private String description;
 
@@ -53,5 +54,14 @@ public class Elf extends Model {
 
 	public synchronized void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Override
+	public boolean save() {
+		// TODO add validations
+		if (Database.DB.elfDB.findByID(modelID) == null) {
+			Database.DB.elfDB.insert(this);
+		}
+		return true;
 	}
 }

@@ -5,7 +5,7 @@ package elfville.server.model;
  * Contains authentication information.
  */
 public class User extends Model {
-
+	private static final long serialVersionUID = -5955064170275055506L;
 	private String username;
 	private String password;
 	private Elf elf;
@@ -33,6 +33,12 @@ public class User extends Model {
 
 	public synchronized void setElf(Elf elf) {
 		this.elf = elf;
+	}
+	
+	@Override
+	public boolean save() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

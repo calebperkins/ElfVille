@@ -10,6 +10,7 @@ import elfville.server.Server;
 public class ServerStart {
 
 	public class ServerThread extends Thread {
+		@Override
 		public void run() {
 			try {
 				Server.main(null);
