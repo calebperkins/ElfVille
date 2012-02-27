@@ -14,11 +14,13 @@ public class SerializableClan extends SerializableModel {
 	public SerializableElf leader;
 	public List<SerializableElf> members;
 	public List<SerializablePost> posts;
+	public List<SerializableElf> applicants;
 
 	public SerializableClan() {
 		super();
 		members = new ArrayList<SerializableElf>();
 		posts = new ArrayList<SerializablePost>();
+		applicants = new ArrayList<SerializableElf>();
 	}
 
 }

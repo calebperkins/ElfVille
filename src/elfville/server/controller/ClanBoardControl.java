@@ -1,7 +1,10 @@
 package elfville.server.controller;
 
+import java.util.ArrayList;
+
 import elfville.protocol.*;
 import elfville.protocol.Response.Status;
+import elfville.protocol.models.SerializablePost;
 import elfville.server.CurrentUserProfile;
 import elfville.server.model.*;
 
@@ -35,6 +38,8 @@ public class ClanBoardControl extends Controller {
 		if (clan.isMember(elf) || clan.isLeader(elf)) {
 			if (clan.isLeader(elf)) {
 				outM.elfStatus = ClanBoardResponse.ElfClanRelationship.LEADER;
+				//add the list of applicants
+				outM.clan.applicants= clan.getApplicants();
 			} else {
 				outM.elfStatus = ClanBoardResponse.ElfClanRelationship.MEMBER;
 			}
@@ -44,8 +49,8 @@ public class ClanBoardControl extends Controller {
 			} else {
 				outM.elfStatus = ClanBoardResponse.ElfClanRelationship.OUTSIDER;
 			}
-			// Posts are only visible to clan members
-			outM.clan.posts = null;
+			// Posts are only visible to clan members, but client requires a non-null object.
+			outM.clan.posts = new ArrayList<SerializablePost>();
 		}
 
 		return outM;
