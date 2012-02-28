@@ -5,6 +5,7 @@ import elfville.server.controller.AuthenticationControl;
 import elfville.server.controller.CentralBoardControl;
 import elfville.server.controller.ClanBoardControl;
 import elfville.server.controller.ClanDirectoryControl;
+import elfville.server.controller.ElfBoardControl;
 
 public class Routes {
 
@@ -62,6 +63,11 @@ public class Routes {
 			CurrentUserProfile currentUser) {
 		return CentralBoardControl.deletePost(r, currentUser);
 	}
+	
+	private static ProfileResponse respond(ProfileRequest r,
+			CurrentUserProfile currentUser) {
+		return ElfBoardControl.getProfile(r, currentUser);
+	}
 
 	public static Response processRequest(Request r,
 			CurrentUserProfile currentUser) {
@@ -89,6 +95,8 @@ public class Routes {
 			return respond((VoteRequest) r, currentUser);
 		} else if (r instanceof DeleteCentralBoardRequest) {
 			return respond((DeleteCentralBoardRequest) r, currentUser);
+		} else if (r instanceof ProfileRequest){
+			return respond((ProfileRequest) r, currentUser);
 		}
 		return new Response(Response.Status.FAILURE, "Unknown request.");
 	}

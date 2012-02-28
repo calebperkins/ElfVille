@@ -27,6 +27,7 @@ public class Elf extends Model {
 		elf.elfName = elfName;
 		elf.modelID = getEncryptedModelID();
 		elf.numSocks = getNumSocks();
+		elf.description = description;
 		return elf;
 	}
 
