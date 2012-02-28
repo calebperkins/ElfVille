@@ -32,16 +32,16 @@ Running the server
 
 1. Open up a command prompt and "cd" to the ElfVille directory to use our provided JAR, or to the directory where you exported a server JAR if you built from source.
 
-2. Execute `java -jar server.jar /path/to/elfville.db`, where `/path/to/elfville.db` is where you would like to load an existing database or store a new one. If the file cannot be found, the server will create it for you, but be sure the file location is writable!
+2. Execute `java -jar server.jar /path/to/elfville.db 8444`, where `/path/to/elfville.db` is where you would like to load an existing database or store a new one. If the file cannot be found, the server will create it for you, but be sure the file location is writable! The `8444` refers to the port to listen on.
 
-3. Ensure port 8444 is available for your server, and open firewalls if needed.
+3. Ensure port 8444 is available for your server, and open firewalls if needed. You should now have a server running on "localhost", port "8444."
 
 Running a client
 ================
 
 1. Open up a command prompt and "cd" to the ElfVille directory to use our provided JAR, or to the directory where you exported a client JAR if you built from source.
 
-2. Execute `java -jar client.jar`. A Swing window will appear.
+2. Execute `java -jar client.jar localhost 8444`. (The two arguments refer to the server you started in the previous section.) A Swing window will appear.
 
 Client Tutorial
 ===============
