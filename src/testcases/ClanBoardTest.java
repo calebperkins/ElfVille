@@ -5,11 +5,9 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import org.junit.Test;
 
-import elfville.client.SocketController;
 import elfville.protocol.*;
 import elfville.protocol.Response.Status;
 import elfville.protocol.models.SerializableClan;
-import elfville.protocol.models.SerializablePost;
 
 public class ClanBoardTest extends TestBase {
 	@Test

@@ -7,7 +7,6 @@ import java.net.UnknownHostException;
 
 import org.junit.Test;
 
-import elfville.client.SocketController;
 import elfville.protocol.Response;
 import elfville.protocol.SignInRequest;
 import elfville.protocol.SignUpRequest;
