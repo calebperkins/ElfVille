@@ -5,5 +5,9 @@ I made the first prototype of the Client and devised the overall architecture, w
 
 I helped devise the communication protocol between the Client and Server. On the Server side, I refactored the database code to use more efficient / thread-safe data structures. I also implemented the database backup/restore mechanism. I also wrote the README.txt. Time taken: 12 hours
 
+Brian Toth (bdt25)
+==============
+I implemented the entirety of the controller, except for the method getClanBoard. The controller is the core of the server; handling the requests sent by clients 
+
 Your name here
 ==============
