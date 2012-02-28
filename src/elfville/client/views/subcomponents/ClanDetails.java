@@ -38,7 +38,7 @@ public class ClanDetails extends JPanel implements ActionListener {
 		String buttonLabel;
 		if (response.elfStatus == ClanBoardResponse.ElfClanRelationship.OUTSIDER) {
 			buttonLabel = "Request to Join";
-			action = ModClan.JOIN;
+			action = ModClan.APPLY;
 		} else if (response.elfStatus == ClanBoardResponse.ElfClanRelationship.APPLICANT) {
 			buttonLabel = "Application Processing";
 			action = null;

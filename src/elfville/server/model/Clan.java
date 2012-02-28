@@ -104,17 +104,19 @@ public class Clan extends Model {
 
 	// A stranger becomes an applicant
 	public void applyClan(Elf elf) {
-		if (applicants.contains(elf.getModelID())
-				|| members.contains(elf.getModelID())) {
+		if (applicants.containsKey(elf.getModelID())
+				|| members.containsKey(elf.getModelID())) {
 			return;
 		}
-		applicants.put(elf.getModelID(), elf);
+		while(applicants.get(elf.getModelID()) == null){
+			applicants.put(elf.getModelID(), elf);
+		}
 	}
 
 	// An applicant becomes a member
 	public void joinClan(Elf elf) {
-		if (applicants.contains(elf.getModelID())
-				&& !members.contains(elf.getModelID())) {
+		if (applicants.containsKey(elf.getModelID())
+				&& !members.containsKey(elf.getModelID())) {
 			members.put(elf.getModelID(), elf);
 		}
 	}
@@ -146,7 +148,7 @@ public class Clan extends Model {
 
 	// also true if the elf is the leader
 	public boolean isMember(Elf elf) {
-		return members.contains(elf.getModelID());
+		return members.containsValue(elf);
 	}
 
 	public boolean isApplicant(Elf elf) {
@@ -154,7 +156,7 @@ public class Clan extends Model {
 		// this is why I can't accept applicants (because they
 		// appear to not be applicants) and it is why an applicant
 		// doesn't appear as an applicant to the client.
-		return applicants.contains(elf.getModelID());
+		return applicants.containsValue(elf);
 	}
 
 	public Post getPostFromEncrpytedModelID(String encryptedModelID) {
@@ -166,7 +168,7 @@ public class Clan extends Model {
 	}
 
 	public boolean hasPost(Post post) {
-		return posts.contains(post.getModelID());
+		return posts.containsKey(post.getModelID());
 	}
 
 	public boolean hasPost(String encryptedModelID) {
@@ -174,7 +176,7 @@ public class Clan extends Model {
 	}
 
 	public void deletePost(Post post) {
-		if (posts.contains(post.getModelID())) {
+		if (posts.containsKey(post.getModelID())) {
 			posts.remove(post.getModelID());
 		}
 	}
@@ -206,5 +208,12 @@ public class Clan extends Model {
 			Database.DB.clanDB.insert(this);
 		}
 		return true;
+	}
+
+	public void deny(Elf elf) {
+		if (applicants.containsKey(elf.getModelID())
+				&& !members.containsKey(elf.getModelID())) {
+			applicants.remove(elf.getModelID());
+		}
 	}
 }
