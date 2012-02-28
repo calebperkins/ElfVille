@@ -4,10 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ElfHandler implements ActionListener {
-	private String elfID;
+	private String elfModelID;
 	
-	public ElfHandler(String elfID) {
-		this.elfID = elfID;
+	public ElfHandler(String elfModelID) {
+		this.elfModelID = elfModelID;
 	}
 	
 	@Override

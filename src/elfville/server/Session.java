@@ -15,19 +15,16 @@ public class Session implements Runnable {
 
 	public Session(Socket client) {
 		clientSocket = client;
-		currentUser = new CurrentUserProfile();
-		//-1 denotes a user that is not logged in
-		currentUser.setCurrentUserId(-1);
+		currentUser = new CurrentUserProfile(); // a new user, not logged in
 		try {
 			ois = new ObjectInputStream(clientSocket.getInputStream());
 			oos = new ObjectOutputStream(clientSocket.getOutputStream());
-		} catch (Exception e1) {
+		} catch (IOException e1) {
 			try {
 				clientSocket.close();
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
+			} catch (IOException e2) {
+				System.err.println(e2.getMessage());
 			}
-			return;
 		}
 	}
 
@@ -42,10 +39,8 @@ public class Session implements Runnable {
 				if ((request instanceof SignUpRequest)
 						|| (request instanceof SignInRequest)) {
 					if (response.isOK())
-						System.out.printf("the current user's id is: %d",
+						System.out.printf("the current user's id is: %d\n",
 								currentUser.getCurrentUserId());
-
-					// currentUserId = 1; // TODO: real user ID
 				}
 
 				oos.writeObject(response);
@@ -53,9 +48,11 @@ public class Session implements Runnable {
 			} catch (EOFException e) {
 				System.out.println("Client disconnected.");
 				break;
-			} catch (Exception e) {
-				// Catch client errors
-				e.printStackTrace();
+			} catch (IOException e) {
+				System.err.println("Client connection broke.");
+				break;
+			} catch (ClassNotFoundException e) {
+				System.out.println("Client sent malformed request.");
 				break;
 			}
 		}

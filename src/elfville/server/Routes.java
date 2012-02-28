@@ -10,17 +10,17 @@ public class Routes {
 
 	private static Response respond(SignInRequest r,
 			CurrentUserProfile currentUser) {
-		return AuthenticationControl.signIn(r, currentUser); // TODO
+		return AuthenticationControl.signIn(r, currentUser);
 	}
 
 	private static Response respond(SignUpRequest r,
 			CurrentUserProfile currentUser) {
-		return AuthenticationControl.signUp(r, currentUser); // TODO
+		return AuthenticationControl.signUp(r, currentUser);
 	}
 
 	private static CentralBoardResponse respond(CentralBoardRequest r,
 			CurrentUserProfile currentUser) {
-		return CentralBoardControl.getAllPosts(r);
+		return CentralBoardControl.getAllPosts(r, currentUser);
 	}
 
 	private static Response respond(PostCentralBoardRequest r,
@@ -32,33 +32,36 @@ public class Routes {
 			CurrentUserProfile currentUser) {
 		return ClanBoardControl.modifyClan(r, currentUser);
 	}
-	
-	private static ClanListingResponse respond(ClanListingRequest r, CurrentUserProfile currentUser){
+
+	private static ClanListingResponse respond(ClanListingRequest r,
+			CurrentUserProfile currentUser) {
 		return ClanDirectoryControl.getClanListing(r, currentUser);
 	}
-	
-	private static Response respond(CreateClanRequest r, CurrentUserProfile currentUser){
+
+	private static Response respond(CreateClanRequest r,
+			CurrentUserProfile currentUser) {
 		return ClanDirectoryControl.createClan(r, currentUser);
 	}
-	
-	private static ClanBoardResponse respond(ClanBoardRequest r, CurrentUserProfile
-			currentUser){
+
+	private static ClanBoardResponse respond(ClanBoardRequest r,
+			CurrentUserProfile currentUser) {
 		return ClanBoardControl.getClanBoard(r, currentUser);
 	}
-	
-	private static Response respond(PostClanBoardRequest r, CurrentUserProfile currentUser){
+
+	private static Response respond(PostClanBoardRequest r,
+			CurrentUserProfile currentUser) {
 		return ClanBoardControl.postClanBoard(r, currentUser);
 	}
 
-	private static Response respond(VoteRequest r, CurrentUserProfile currentUser){
-		return  CentralBoardControl.votePost(r, currentUser);
-	}
-	
-	private static Response respond(DeleteCentralBoardRequest r, CurrentUserProfile currentUser){
-		return CentralBoardControl.deletePost(r, currentUser);
+	private static Response respond(VoteRequest r,
+			CurrentUserProfile currentUser) {
+		return CentralBoardControl.votePost(r, currentUser);
 	}
 
-	
+	private static Response respond(DeleteCentralBoardRequest r,
+			CurrentUserProfile currentUser) {
+		return CentralBoardControl.deletePost(r, currentUser);
+	}
 
 	public static Response processRequest(Request r,
 			CurrentUserProfile currentUser) {
@@ -76,17 +79,17 @@ public class Routes {
 			return respond((ModifyClanRequest) r, currentUser);
 		} else if (r instanceof ClanListingRequest) {
 			return respond((ClanListingRequest) r, currentUser);
-		} else if (r instanceof CreateClanRequest){
+		} else if (r instanceof CreateClanRequest) {
 			return respond((CreateClanRequest) r, currentUser);
-		} else if (r instanceof ClanBoardRequest){
+		} else if (r instanceof ClanBoardRequest) {
 			return respond((ClanBoardRequest) r, currentUser);
-		} else if (r instanceof PostClanBoardRequest){
-			return respond ((PostClanBoardRequest) r, currentUser);
-		} else if (r instanceof VoteRequest){
-			return respond ((VoteRequest) r, currentUser);
-		} else if (r instanceof DeleteCentralBoardRequest){
-			return respond ((DeleteCentralBoardRequest) r, currentUser);
+		} else if (r instanceof PostClanBoardRequest) {
+			return respond((PostClanBoardRequest) r, currentUser);
+		} else if (r instanceof VoteRequest) {
+			return respond((VoteRequest) r, currentUser);
+		} else if (r instanceof DeleteCentralBoardRequest) {
+			return respond((DeleteCentralBoardRequest) r, currentUser);
 		}
-		return null; // TODO: implement rest
+		return new Response(Response.Status.FAILURE, "Unknown request.");
 	}
 }

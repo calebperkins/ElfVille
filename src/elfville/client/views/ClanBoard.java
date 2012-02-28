@@ -3,14 +3,9 @@ package elfville.client.views;
 import java.awt.BorderLayout;
 import java.io.IOException;
 
-import javax.swing.*;
-
 import elfville.client.ClientWindow;
 import elfville.client.SocketController;
-import elfville.client.views.subcomponents.ClanDetails;
-import elfville.client.views.subcomponents.ClanMembers;
-import elfville.client.views.subcomponents.ClanPosts;
-import elfville.client.views.subcomponents.CreatePostPanel;
+import elfville.client.views.subcomponents.*;
 import elfville.protocol.*;
 
 /**
@@ -19,7 +14,7 @@ import elfville.protocol.*;
  * @author aaron
  * 
  */
-public class ClanBoard extends JPanel implements Board {
+public class ClanBoard extends Board {
 	private static final long serialVersionUID = 1L;
 	private String clanID;
 
@@ -27,8 +22,7 @@ public class ClanBoard extends JPanel implements Board {
 	private SocketController socketController;
 
 	public ClanBoard(ClientWindow clientWindow, SocketController socketController, String clanID) {
-		super();
-
+		super(clientWindow, socketController);
 		this.clanID = clanID;
 
 		try {
@@ -51,6 +45,10 @@ public class ClanBoard extends JPanel implements Board {
 
 				ClanPosts posts = new ClanPosts(response);
 				add(posts, BorderLayout.CENTER);
+				
+				ClanApplicants applicants = new ClanApplicants(this, response);
+				add(applicants, BorderLayout.PAGE_END);
+				
 				clientWindow.switchScreen(this);
 			} else {
 				clientWindow.showError(response.message, "Error retrieving clan board.");
@@ -64,15 +62,6 @@ public class ClanBoard extends JPanel implements Board {
 	@Override
 	public void refresh() {
 		new ClanBoard(clientWindow, socketController, clanID);
-	}
-
-
-	public ClientWindow getClientWindow() {
-		return clientWindow;
-	}
-
-	public SocketController getSocketController() {
-		return socketController;
 	}
 
 }

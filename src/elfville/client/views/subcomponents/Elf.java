@@ -12,7 +12,7 @@ public class Elf extends JPanel {
 		super();
 		JButton elfButton = new JButton(elf.elfName + 
 				", " + Integer.toString(elf.numSocks));
-		elfButton.addActionListener(new ElfHandler(elf.elfID));
+		elfButton.addActionListener(new ElfHandler(elf.modelID));
 		add(elfButton);
 	}
 
