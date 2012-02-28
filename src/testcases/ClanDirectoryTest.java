@@ -9,7 +9,6 @@ import elfville.client.SocketController;
 import elfville.protocol.*;
 import elfville.protocol.Response.Status;
 import elfville.protocol.models.SerializableClan;
-import elfville.protocol.models.SerializablePost;
 
 public class ClanDirectoryTest {
 

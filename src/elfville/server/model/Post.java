@@ -41,6 +41,13 @@ public class Post extends Model implements Comparable<Post> {
 		sPost.modelID = getEncryptedModelID();
 		return sPost;
 	}
+	
+	public SerializablePost toSerializablePost(Elf elf){
+		SerializablePost sPost= toSerializablePost();
+		sPost.iVoted= this.downsockedElves.contains(elf) || this.upsock(elf);
+		sPost.myPost= elf.equals(this.elf);
+		return sPost;
+	}
 
 	public void delete() {
 		database.postDB.delete(this);

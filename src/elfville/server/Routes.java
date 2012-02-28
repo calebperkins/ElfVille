@@ -20,7 +20,7 @@ public class Routes {
 
 	private static CentralBoardResponse respond(CentralBoardRequest r,
 			CurrentUserProfile currentUser) {
-		return CentralBoardControl.getAllPosts(r);
+		return CentralBoardControl.getAllPosts(r, currentUser);
 	}
 
 	private static Response respond(PostCentralBoardRequest r,

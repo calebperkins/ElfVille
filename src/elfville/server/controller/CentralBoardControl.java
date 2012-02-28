@@ -12,13 +12,20 @@ import elfville.protocol.Response.Status;
  */
 public class CentralBoardControl extends Controller {
 
-	public static CentralBoardResponse getAllPosts(CentralBoardRequest inM) {
-		//TODO: add some checks here
-		CentralBoardResponse outM = new CentralBoardResponse(Status.SUCCESS,
-				"whatever", ControllerUtils.buildPostList(database.postDB
-						.getCentralPosts()));
-		outM.message = "Valentine's day surprise!";
-		return outM;
+	public static CentralBoardResponse getAllPosts(CentralBoardRequest inM, CurrentUserProfile currentUser) {
+		
+		CentralBoardResponse resp= new CentralBoardResponse(Status.FAILURE, "failure", null);
+		User user = database.userDB.findUserByModelID(currentUser.getCurrentUserId());
+		
+		if (user == null) {
+			return resp;
+		}
+		
+		Elf elf= user.getElf();
+		
+		resp.posts= ControllerUtils.buildPostList(database.postDB.getCentralPosts(), elf);
+		resp.status= Status.SUCCESS;
+		return resp;
 	}
 
 	public static Response addPost(PostCentralBoardRequest postRequest,

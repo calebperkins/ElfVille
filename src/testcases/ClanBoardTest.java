@@ -9,8 +9,8 @@ import elfville.client.SocketController;
 import elfville.protocol.*;
 import elfville.protocol.Response.Status;
 import elfville.protocol.models.SerializableClan;
-import elfville.protocol.models.SerializablePost;
 
+//TODO: actual tests
 public class ClanBoardTest {
 	@Test
 	public void test1CreateClan() throws IOException {
