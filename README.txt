@@ -46,6 +46,18 @@ Running a client
 Client Tutorial
 ===============
 
-1. Once you have a Client running, type in a username and click Register. You will be taken to the Central Board, a place where Elves may post messages, and "like" or "dislike" posts.
+1. Once you have a Client running, type in a username and click Register.
 
-2. FINISH ME....
+2. You will be taken to the Central Board, a place where Elves may post messages, and "like" or "dislike" posts with the entire social network. Go ahead and enter a post title and message. Click Post. You should see your post appear on the bottom of the screen!
+
+3. Click on Clan Directory. That is where elves can create Clans, which are groups of like-minded elves. Go ahead and create a clan of your own, and you will see it appear below.
+
+4. When you create a clan, you are the leader. Click on the Clan you created to be taken to the Clan Board.
+
+5. On the Clan Board screen, you will see the Clan name and description at the top. You will see the create post form on the left, a list of message in the center, and a list of clan members in the right. As leader of the clan, you can disband the clan by clicking Disband.
+
+6. You can join clans created by other users. Fire up another Client and register as a different user. Create a clan as that user. As the first user you created, go to the Clan Directory and click on a clan that isn't yours. You will see a "Request to Join" button on their clan board. Click that.
+
+7. If someone applies to your clan, you will see their name at the bottom of your clan board. You can then press Accept or Decline for that user.
+
+8. To log out, simply close the Client window.
