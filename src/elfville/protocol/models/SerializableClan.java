@@ -23,4 +23,9 @@ public class SerializableClan extends SerializableModel {
 		applicants = new ArrayList<SerializableElf>();
 	}
 
+	public SerializableClan(String name, String description) {
+		clanName = name;
+		clanDescription = description;
+	}
+
 }
