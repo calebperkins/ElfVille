@@ -8,7 +8,9 @@ I helped devise the communication protocol between the Client and Server. On the
 Brian Toth (bdt25)
 ==============
 
-I implemented the entirety of the controller, except for the method getClanBoard. The controller is the core of the server, parsing the requsts sent by clients, determining how to respond to them, and generating responses by querying the server.
+I implemented the entirety of the controller, except for the method getClanBoard. The controller is the core of the server, parsing the requests sent by clients, determining how to respond to them, and generating responses by querying the server.  In the process of doing this, I also modified the database occasionally and filled out much of the protocol.  As the largest part of what I did, this took about 17 hours.
+
+I fixed most of the bugs found by users of the client, and wrote some test classes to fit in Paul's JUnit testing framework.  Specifically, I wrote ClanBoardTest, ClanDirectoryTest, and ElfProfileTest.  This took about 7 hours.
 
 Your name here
 ==============
