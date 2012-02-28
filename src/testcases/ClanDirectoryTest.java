@@ -5,12 +5,11 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import org.junit.Test;
 
-import elfville.client.SocketController;
 import elfville.protocol.*;
 import elfville.protocol.Response.Status;
 import elfville.protocol.models.SerializableClan;
 
-public class ClanDirectoryTest {
+public class ClanDirectoryTest extends TestBase {
 
 	@Test
 	public void test1CreateClan() throws IOException {
@@ -21,7 +20,7 @@ public class ClanDirectoryTest {
 			clan.clanName= clanName;
 			clan.clanDescription= description;
 			CreateClanRequest req= new CreateClanRequest(clan);
-			Response resp = SocketController.send(req);
+			Response resp = socketControllers.get(0).send(req);
 			System.out.println(resp.status.toString());
 			assertEquals(resp.status, Status.SUCCESS);
 		}
@@ -31,7 +30,7 @@ public class ClanDirectoryTest {
 	public void test2getClans() throws IOException {
 		System.out.println("getClansTesting");
 		ClanListingRequest req = new ClanListingRequest();
-		ClanListingResponse resp = SocketController.send(req);
+		ClanListingResponse resp = socketControllers.get(0).send(req);
 		System.out.println(resp.status.toString());
 		assertEquals(resp.status, Status.SUCCESS);
 		System.out.println(resp.clans.size());

@@ -16,7 +16,7 @@ public class PostClanBoardRequest extends Request {
 		clan.modelID= clanID;
 	}
 
-	public PostClanBoardRequest(String content, String title, String clanID) {
+	public PostClanBoardRequest(String title, String content, String clanID) {
 		post = new SerializablePost();
 		post.content = content;
 		post.title = title;

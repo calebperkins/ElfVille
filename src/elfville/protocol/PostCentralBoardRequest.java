@@ -11,7 +11,7 @@ public class PostCentralBoardRequest extends Request {
 		this.post = post;
 	}
 
-	public PostCentralBoardRequest(String content, String title) {
+	public PostCentralBoardRequest(String title, String content) {
 		post = new SerializablePost();
 		post.content = content;
 		post.title = title;

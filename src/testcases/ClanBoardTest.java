@@ -5,13 +5,12 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import org.junit.Test;
 
-import elfville.client.SocketController;
 import elfville.protocol.*;
 import elfville.protocol.Response.Status;
 import elfville.protocol.models.SerializableClan;
 
 //TODO: actual tests
-public class ClanBoardTest {
+public class ClanBoardTest extends TestBase {
 	@Test
 	public void test1CreateClan() throws IOException {
 		for (int i = 0; i < 50; i++) {
@@ -21,7 +20,7 @@ public class ClanBoardTest {
 			clan.clanName= clanName;
 			clan.clanDescription= description;
 			CreateClanRequest req= new CreateClanRequest(clan);
-			Response resp = SocketController.send(req);
+			Response resp = socketControllers.get(0).send(req);
 			System.out.println(resp.status.toString());
 			assertEquals(resp.status, Status.SUCCESS);
 		}
@@ -31,7 +30,7 @@ public class ClanBoardTest {
 	public void test2getClans() throws IOException {
 		System.out.println("getClansTesting");
 		ClanListingRequest req = new ClanListingRequest();
-		ClanListingResponse resp = SocketController.send(req);
+		ClanListingResponse resp = socketControllers.get(0).send(req);
 		System.out.println(resp.status.toString());
 		assertEquals(resp.status, Status.SUCCESS);
 		System.out.println(resp.clans.size());

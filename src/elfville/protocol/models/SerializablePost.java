@@ -10,7 +10,7 @@ public class SerializablePost extends SerializableModel {
 	public int downvotes;
 	public String content;
 	public Date createdAt;
-	public String elfID;
+	public String elfModelID;
 	public boolean myPost;
 	public boolean iVoted;
 }

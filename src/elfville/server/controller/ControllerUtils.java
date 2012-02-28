@@ -11,11 +11,20 @@ import elfville.server.model.Post;
 
 public class ControllerUtils extends Controller {
 
+	/**
+	 * Pass null if you don't care about elf
+	 * @param boardPosts
+	 * @param currentElf
+	 * @return
+	 */
 	public static ArrayList<SerializablePost> buildPostList(
 			List<Post> boardPosts, Elf currentElf) {
 		ArrayList<SerializablePost> out = new ArrayList<SerializablePost>();
 		for (Post p : boardPosts) {
-			SerializablePost s = p.toSerializablePost(currentElf);
+			SerializablePost s = p.toSerializablePost();
+			if (currentElf != null && currentElf.equals(p.getElf())) {
+				s.myPost = true;
+			}
 			out.add(s);
 		}
 		return out;

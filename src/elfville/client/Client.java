@@ -19,11 +19,12 @@ public class Client {
 			@Override
 			public void run() {
 				try {
-					ClientWindow window = new ClientWindow();
-					SocketController.initialize();
+					SocketController socketController = new SocketController("localhost", 8444);
+					ClientWindow window = new ClientWindow(socketController);
 					window.setVisible(true);
 				} catch (IOException e) {
-					ClientWindow.showConnectionError();
+					ClientWindow window = new ClientWindow(null);
+					window.showConnectionError();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

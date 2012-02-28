@@ -3,14 +3,9 @@ package elfville.client.views;
 import java.awt.BorderLayout;
 import java.io.IOException;
 
-import javax.swing.*;
-
 import elfville.client.ClientWindow;
 import elfville.client.SocketController;
-import elfville.client.views.subcomponents.ClanDetails;
-import elfville.client.views.subcomponents.ClanMembers;
-import elfville.client.views.subcomponents.ClanPosts;
-import elfville.client.views.subcomponents.CreatePostPanel;
+import elfville.client.views.subcomponents.*;
 import elfville.protocol.*;
 
 /**
@@ -19,49 +14,54 @@ import elfville.protocol.*;
  * @author aaron
  * 
  */
-public class ClanBoard extends JPanel implements Refreshable {
+public class ClanBoard extends Board {
 	private static final long serialVersionUID = 1L;
 	private String clanID;
-	private String clanName;
 
-	public ClanBoard(ClanBoardResponse response) {
-		super();
-		this.clanID = response.clan.modelID;
-		this.clanName = response.clan.clanName;
-		
-		this.setLayout(new BorderLayout());
-		
-		ClanDetails details = new ClanDetails(response, this);
-		add(details, BorderLayout.PAGE_START);
-		
-		ClanMembers members = new ClanMembers(response);
-		add(members, BorderLayout.LINE_END);
-		
-		CreatePostPanel createPost = new CreatePostPanel(this, clanID);
-		add(createPost, BorderLayout.LINE_START);
-		
-		ClanPosts posts = new ClanPosts(response);
-		add(posts, BorderLayout.CENTER);
+	private ClientWindow clientWindow;
+	private SocketController socketController;
+
+	public ClanBoard(ClientWindow clientWindow, SocketController socketController, String clanID) {
+		super(clientWindow, socketController);
+		this.clanID = clanID;
+
+		try {
+			ClanBoardResponse response = socketController.send(new ClanBoardRequest(clanID));
+			if (response.status == Response.Status.SUCCESS) {
+
+				this.clientWindow = clientWindow;
+				this.socketController = socketController;
+
+				this.setLayout(new BorderLayout());
+
+				ClanDetails details = new ClanDetails(response, this);
+				add(details, BorderLayout.PAGE_START);
+
+				ClanMembers members = new ClanMembers(response);
+				add(members, BorderLayout.LINE_END);
+
+				CreatePostPanel createPost = new CreatePostPanel(this, clanID);
+				add(createPost, BorderLayout.LINE_START);
+
+				ClanPosts posts = new ClanPosts(response);
+				add(posts, BorderLayout.CENTER);
+				
+				ClanApplicants applicants = new ClanApplicants(this, response);
+				add(applicants, BorderLayout.PAGE_END);
+				
+				clientWindow.switchScreen(this);
+			} else {
+				clientWindow.showError(response.message, "Error retrieving clan board.");
+			}
+
+		} catch (IOException e1) {
+			clientWindow.showConnectionError();
+		}
 	}
 
 	@Override
 	public void refresh() {
-		showClanBoard(clanID, clanName);
+		new ClanBoard(clientWindow, socketController, clanID);
 	}
 
-	public static void showClanBoard(String clanID, String clanName) {
-		try {
-			ClanBoardResponse resp = SocketController
-					.send(new ClanBoardRequest(clanID));
-			if (resp.status == Response.Status.SUCCESS) {
-				ClientWindow
-						.switchScreen(new ClanBoard(resp));
-			} else {
-				ClientWindow.showError(resp.message,
-						"Error retrieving clan board.");
-			}
-		} catch (IOException e1) {
-			ClientWindow.showConnectionError();
-		}
-	}
 }
