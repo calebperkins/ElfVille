@@ -63,18 +63,18 @@ public class ClanDetails extends JPanel implements ActionListener {
 		add(clanAction);
 		
 		JTextArea description = new JTextArea(response.clan.clanDescription);
+		description.setEditable(false);
 		add(description);
 	}
 
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		ModifyClanRequest req = new ModifyClanRequest();
+		req.clan = clan;
+		req.requestType = action;
 		try {
-			ModifyClanRequest req = new ModifyClanRequest();
-			req.clan = clan;
-			req.requestType = action;
 			Response resp = board.getSocketController().send(req);
-			
 			if (resp.isOK() && (action == ModClan.LEAVE || action == ModClan.DELETE)) {
 				new ClanDirectory(board.getClientWindow(), board.getSocketController());
 			} else if (resp.isOK()) {

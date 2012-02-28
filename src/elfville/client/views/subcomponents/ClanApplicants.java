@@ -32,15 +32,15 @@ public class ClanApplicants extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			ModifyClanRequest req = new ModifyClanRequest();
+			req.applicant = elf;
+			req.clan = clan;
+			if (accept) {
+				req.requestType = ModClan.ACCEPT;
+			} else {
+				req.requestType = ModClan.DENY;
+			}
 			try {
-				ModifyClanRequest req = new ModifyClanRequest();
-				req.applicant = elf;
-				req.clan = clan;
-				if (accept) {
-					req.requestType = ModClan.ACCEPT;
-				} else {
-					req.requestType = ModClan.DENY;
-				}
 				Response resp = board.getSocketController().send(req);
 				if (resp.isOK()) {
 					board.refresh();

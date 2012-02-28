@@ -6,10 +6,7 @@ import java.io.IOException;
 
 import javax.swing.JButton;
 
-import elfville.client.ClientWindow;
-import elfville.client.SocketController;
 import elfville.client.views.CentralBoard;
-import elfville.client.views.Board;
 import elfville.protocol.Response;
 import elfville.protocol.VoteRequest;
 import elfville.protocol.models.SerializablePost;
@@ -29,6 +26,8 @@ public class VotablePost extends Post {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			//TODO the following bit of code is duplicated in many areas
+			// perhaps refactor it by creating a function for it.			VoteRequest req = new VoteRequest(postID, upsock);
 			VoteRequest req = new VoteRequest(postID, upsock);
 			try {
 				Response resp = board.getSocketController().send(req);
@@ -44,7 +43,7 @@ public class VotablePost extends Post {
 	}
 
 	public VotablePost(SerializablePost p, CentralBoard board) {
-		super(p);
+		super(p, false);
 		// TODO have some indication of whether (and how) the user has voted on
 		// this post.
 		this.board = board;
