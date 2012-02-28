@@ -10,14 +10,15 @@ import elfville.protocol.*;
 import elfville.protocol.Response.Status;
 import elfville.protocol.models.SerializablePost;
 
-public class CentralBoardTest {
+public class CentralBoardTest extends TestBase {
 
 	@Test
 	public void test1post() throws IOException {
 		for (int i = 0; i < 50; i++) {
 			String title = "title-" + i;
 			String content = "content-" + i;
-			PostCentralBoardRequest req = new PostCentralBoardRequest(content, title);
+			PostCentralBoardRequest req = new PostCentralBoardRequest(content,
+					title);
 			Response resp = socketControllers.get(0).send(req);
 			System.out.println(resp.status.toString());
 			assertEquals(resp.status, Status.SUCCESS);
@@ -32,7 +33,7 @@ public class CentralBoardTest {
 		System.out.println(resp.status.toString());
 		assertEquals(resp.status, Status.SUCCESS);
 		System.out.println(resp.posts.size());
-		
+
 		for (int i = 0; i < 50; i++) {
 			SerializablePost post = resp.posts.get(i);
 			System.out.println("what?");
@@ -41,7 +42,7 @@ public class CentralBoardTest {
 			assertEquals("title-" + i, post.title);
 			assertEquals("content-" + i, post.content);
 		}
-		
+
 	}
 
 }
