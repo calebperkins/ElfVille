@@ -118,6 +118,7 @@ public class Clan extends Model {
 		if (applicants.containsKey(elf.getModelID())
 				&& !members.containsKey(elf.getModelID())) {
 			members.put(elf.getModelID(), elf);
+			applicants.remove(elf.getModelID());
 		}
 	}
 

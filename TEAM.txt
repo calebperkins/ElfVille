@@ -7,7 +7,8 @@ I helped devise the communication protocol between the Client and Server. On the
 
 Brian Toth (bdt25)
 ==============
-I implemented the entirety of the controller, except for the method getClanBoard. The controller is the core of the server; handling the requests sent by clients 
+
+I implemented the entirety of the controller, except for the method getClanBoard. The controller is the core of the server, parsing the requsts sent by clients, determining how to respond to them, and generating responses by querying the server.
 
 Your name here
 ==============
