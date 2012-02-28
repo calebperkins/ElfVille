@@ -139,7 +139,7 @@ public class ClanBoardControl extends Controller {
 			clan.deleteClan();
 			break;
 
-		case JOIN:
+		case APPLY:
 			// see if this elf has not already applied or is in the clan
 			if (clan.isApplicant(elf) || clan.isLeader(elf)
 					|| clan.isMember(elf)) {
@@ -179,6 +179,30 @@ public class ClanBoardControl extends Controller {
 			
 			clan.joinClan(applicant);
 			
+			break;
+			
+		case DENY:
+			
+			if(req.applicant == null){
+				return resp;
+			}
+			
+			Elf applicant2= database.elfDB.findByEncryptedID(req.applicant.modelID);
+			
+			if(applicant2 == null){
+				return resp;
+			}
+			
+			//make sure that the denier is actually the leader
+			if(!clan.isLeader(elf)){
+				return resp;
+			}
+			//make sure that the elf being accepted is actually an applicant
+			if(!clan.isApplicant(applicant2)){
+				return resp;
+			}
+			
+			clan.deny(applicant2);
 			break;
 			
 		case DELETEPOST:

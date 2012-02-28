@@ -11,7 +11,7 @@ public class ModifyClanRequest extends Request {
 	private static final long serialVersionUID = 1L;
 
 	public enum ModClan {
-		JOIN, LEAVE, DELETE, ACCEPT, DENY, DELETEPOST
+		LEAVE, DELETE, ACCEPT, DENY, DELETEPOST, APPLY
 	}
 	
 	//TODO needs a contstructor (also fix clandetails.java if we add this)
