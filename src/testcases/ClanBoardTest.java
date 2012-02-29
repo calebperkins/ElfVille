@@ -15,6 +15,7 @@ import elfville.protocol.models.SerializablePost;
 public class ClanBoardTest extends TestBase {
 	
 	@Test
+	// 10 clients create one clan each.
 	public void test1CreateClan() throws IOException {
 		// Assert you can save clans successfully
 		for (int i = 0; i < clientNum; i++) {
@@ -190,6 +191,17 @@ public class ClanBoardTest extends TestBase {
 				System.out.println("leave clan: " + k + " " + i + " " + modRes.isOK()); 
 				assertTrue(modRes.isOK() == (k < i) );
 			}
+		}
+
+
+		req = new ClanListingRequest();
+		resp = socketControllers.get(0).send(req);
+		assertEquals(resp.status, Status.SUCCESS);
+
+		// Double check if all member sizes are 1
+		for (int i = 0; i < clientNum; i++) {
+			SerializableClan clan = resp.clans.get(i);
+			assertTrue(clan.members.size() == 1);
 		}
 		
 	}
