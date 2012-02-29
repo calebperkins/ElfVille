@@ -8,7 +8,15 @@ import javax.swing.*;
 
 import elfville.client.views.Board;
 
-
+/**
+ * This panel provides the basis for requesting the server creates a clan
+ * or a post for this user. Provides a bit of abstraction, but
+ * basically provides a text field, a text area, and a button to send a
+ * request. Create clan panel and create post panel then only
+ * need to send some names to this class and implement an action listener
+ * to actually send the request.
+ *
+ */
 public abstract class CreatePanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	protected final JTextArea textArea = new JTextArea();

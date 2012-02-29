@@ -12,6 +12,11 @@ import elfville.client.views.CentralBoard;
 import elfville.protocol.Response;
 import elfville.protocol.SignUpRequest;
 
+/**
+ * Provides the user with the ability to request the server
+ * register a new elf with a new name and description. 
+ *
+ */
 public class RegistrationPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private final JTextField usernameField = new JTextField();

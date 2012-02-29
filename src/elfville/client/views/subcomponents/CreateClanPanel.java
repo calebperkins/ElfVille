@@ -6,6 +6,13 @@ import elfville.client.views.ClanDirectory;
 import elfville.protocol.*;
 import elfville.protocol.models.SerializableClan;
 
+/**
+ * This panel (for use in clan listing page) allows the
+ * user to create a new clan (providing room for 
+ * clan name and description, and a button to request
+ * that the server create it). 
+ *
+ */
 public class CreateClanPanel extends CreatePanel {
 	private static final long serialVersionUID = 1L;
 

@@ -11,6 +11,12 @@ import elfville.protocol.ModifyClanRequest;
 import elfville.protocol.models.SerializableClan;
 import elfville.protocol.models.SerializableElf;
 
+/**
+ * A panel that shows the list of applicants to the leader
+ * and provides buttons to view the applicants page as well as to
+ * accept or reject the applicant. 
+ *
+ */
 public class ClanApplicants extends JPanel {
 	private static final long serialVersionUID = 1L;
 

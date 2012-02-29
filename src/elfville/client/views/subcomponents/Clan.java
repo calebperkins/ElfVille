@@ -18,7 +18,9 @@ public class Clan extends JPanel {
 	Board board;
 
 	/**
-	 * Create the panel.
+	 * Displays the summary of a clan on the clan directory board
+	 * specifically its name (with link to page), its leader (with
+	 * link to its page), and its description.
 	 */
 	public Clan(Board board, SerializableClan c) { 
 		super();

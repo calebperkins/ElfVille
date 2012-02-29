@@ -14,6 +14,12 @@ public class ClanDirectory extends Board {
 	private final JLabel title = new JLabel("Clan Directory");
 	private final JPanel createClan = new CreateClanPanel(this);
 
+	/**
+	 * Creates a new ClanDirectory pane (with updated information)
+	 * to display to the user.
+	 * @param clientWindow
+	 * @param socketController
+	 */
 	public ClanDirectory(ClientWindow clientWindow, SocketController socketController) {
 		super(clientWindow, socketController);
 		ClanListingRequest req = new ClanListingRequest();

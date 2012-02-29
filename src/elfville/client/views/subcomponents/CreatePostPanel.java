@@ -5,6 +5,11 @@ import java.awt.event.ActionEvent;
 import elfville.client.views.Board;
 import elfville.protocol.*;
 
+/**
+ * Using create panel allows users to request the server
+ * create a post (in their name). 
+ *
+ */
 public class CreatePostPanel extends CreatePanel {
 	private static final long serialVersionUID = 1L;
 	private final String clanID;
