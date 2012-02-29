@@ -15,12 +15,11 @@ public class CentralBoardTest extends TestBase {
 	// clientNum clients create clientNum posts. Check if all posts succeeded.
 	public void test1post() throws IOException {
 		for (int i = 0; i < clientNum; i++) {
-			System.out.println(i);
 			String title = "title-" + i;
 			String content = "content-" + i;
 			PostCentralBoardRequest req = new PostCentralBoardRequest(content, title);
 			Response resp = socketControllers.get(i).send(req);
-			System.out.println("test1post() " + i + " " + resp.status.toString());
+			// System.out.println("test1post() " + i + " " + resp.status.toString());
 			assertEquals(resp.status, Status.SUCCESS);
 		}
 	}
@@ -39,6 +38,7 @@ public class CentralBoardTest extends TestBase {
 
 		for (int i = 0; i < clientNum; i++) {
 			SerializablePost post = resp.posts.get(clientNum - i - 1);  // the latest comes first
+			System.out.println("get " + i);
 			System.out.println(post.title);
 			System.out.println(post.content);
 			assertEquals("title-" + i, post.title);

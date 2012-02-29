@@ -123,7 +123,7 @@ public class Post extends Model implements Comparable<Post> {
 		} else if (getNumSock() < arg0.getNumSock()) {
 			return 1;
 		} else {
-			return new Integer(modelID).compareTo(arg0.getModelID());
+			return new Integer(arg0.getModelID()).compareTo(modelID);
 		}
 	}
 }
