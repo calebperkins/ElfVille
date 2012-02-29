@@ -41,6 +41,7 @@ public class ServerStart extends TestBase {
 		for (int i = 0; i < clientNum; i++) {
 			new ClientThread().start();
 		}
+		Thread.sleep(100);
 	}
 
 }
