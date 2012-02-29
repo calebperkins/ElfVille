@@ -37,16 +37,20 @@ public class ClanBoardControl extends Controller {
 		outM.clan = clan.getSerializableClan();
 		
 		if (clan.isMember(elf) || clan.isLeader(elf)) {
+			ArrayList<SerializablePost> posts= 
+					ControllerUtils.buildPostList( clan.getPosts(), elf);
+			outM.clan.posts = posts;
 			if (clan.isLeader(elf)) {
 				outM.elfStatus = ClanBoardResponse.ElfClanRelationship.LEADER;
+				//the leader can delete any post, so set all of the posts as being his
+				for(SerializablePost ppp : outM.clan.posts){
+					ppp.myPost= true;
+				}
 			} else {
 				outM.elfStatus = ClanBoardResponse.ElfClanRelationship.MEMBER;
 				//applicants are only visible to the clan leader
 				outM.clan.applicants = new ArrayList<SerializableElf>();
 			}
-			ArrayList<SerializablePost> posts= 
-					ControllerUtils.buildPostList( clan.getPosts(), elf);
-			outM.clan.posts = posts;
 		} else {
 			if (clan.isApplicant(elf)) {
 				outM.elfStatus = ClanBoardResponse.ElfClanRelationship.APPLICANT;

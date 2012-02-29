@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import elfville.protocol.models.SerializableClan;
 import elfville.protocol.models.SerializableElf;
-import elfville.protocol.models.SerializablePost;
 import elfville.server.Database;
 import elfville.server.SecurityUtils;
 

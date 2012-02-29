@@ -50,7 +50,7 @@ public class Post extends Model implements Comparable<Post> {
 	}
 
 	public void delete() {
-		database.postDB.delete(this);
+		database.postDB.delete(this.getModelID());
 	}
 
 	public boolean upsock(Elf upsockingElf) {

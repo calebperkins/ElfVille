@@ -17,7 +17,7 @@ public class CentralBoardTest extends TestBase {
 		for (int i = 0; i < clientNum; i++) {
 			String title = "title-" + i;
 			String content = "content-" + i;
-			PostCentralBoardRequest req = new PostCentralBoardRequest(content, title);
+			PostCentralBoardRequest req = new PostCentralBoardRequest(title, content);
 			Response resp = socketControllers.get(i).send(req);
 			// System.out.println("test1post() " + i + " " + resp.status.toString());
 			assertEquals(resp.status, Status.SUCCESS);
@@ -52,7 +52,7 @@ public class CentralBoardTest extends TestBase {
 		// make post
 		PostCentralBoardRequest req = new PostCentralBoardRequest("a message",
 				"a title");
-		Response resp = socketControllers.get(0).send(req);
+		socketControllers.get(0).send(req);
 		
 		// get posts
 		CentralBoardRequest req2 = new CentralBoardRequest();
@@ -66,7 +66,7 @@ public class CentralBoardTest extends TestBase {
 		
 		// ensure you cannot vote on same post twice
 		Response voteResp2 = socketControllers.get(0).send(voteReq);
-		assertFalse(voteResp.isOK());
+		assertFalse(voteResp2.isOK());
 	}
 
 	@Test
@@ -91,9 +91,9 @@ public class CentralBoardTest extends TestBase {
 		for (int i = 0; i < clientNum; i++) {
 			SerializablePost post = resp.posts.get(i);
 			if (i / 2 == 0) {
-				assertEquals(post.upvotes, 1);
+				assertEquals(1, post.upvotes);
 			} else {
-				assertEquals(post.downvotes, 1);
+				assertEquals(1, post.downvotes);
 			}
 		}
 	}	
@@ -131,8 +131,7 @@ public class CentralBoardTest extends TestBase {
 
 		for (int i = 0; i < clientNum; i++) {
 			SerializablePost post = resp.posts.get(i);
-			DeleteCentralBoardRequest deleteReq = new DeleteCentralBoardRequest();
-			deleteReq.post = post;
+			DeleteCentralBoardRequest deleteReq = new DeleteCentralBoardRequest(post);
 			Response deleteRes = socketControllers.get(i).send(deleteReq);
 			assertEquals(deleteRes.status, Status.SUCCESS);
 		}
