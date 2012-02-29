@@ -5,8 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import elfville.client.ClientWindow;
-import elfville.client.SocketController;
+import elfville.client.views.Board;
 import elfville.client.views.ClanBoard;
 import elfville.protocol.models.SerializableClan;
 
@@ -16,19 +15,16 @@ public class Clan extends JPanel {
 	private JTextArea clanDescription;
 	private JButton leaderName;
 
-	private ClientWindow clientWindow;
-	private SocketController socketController;
+	Board board;
 
 	/**
 	 * Create the panel.
 	 */
-	public Clan(SerializableClan c, ClientWindow clientWindow, SocketController socketController) {
+	public Clan(Board board, SerializableClan c) { 
 		super();
 		// TODO: possible to maybe deduplicate code between this and Post.java
+		this.board = board;
 
-		this.clientWindow = clientWindow;
-		this.socketController = socketController;
-		
 		clanName = new JButton(c.clanName);
 		clanDescription = new JTextArea(c.clanDescription);
 		clanDescription.setEditable(false);
@@ -37,7 +33,7 @@ public class Clan extends JPanel {
 		leaderName = new JButton("Leader: " + c.leader.elfName);
 
 		clanName.addActionListener(new ClanHandler(c.modelID, c.clanName));
-		leaderName.addActionListener(new ElfHandler(c.leader.modelID));
+		leaderName.addActionListener(new ElfHandler(board, c.leader.modelID));
 		add(clanName);
 		add(leaderName);
 		add(new JScrollPane(clanDescription));
@@ -54,7 +50,7 @@ public class Clan extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new ClanBoard(clientWindow, socketController, modelID);
+			new ClanBoard(board.getClientWindow(), board.getSocketController(), modelID);
 		}
 
 	}
