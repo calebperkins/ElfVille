@@ -75,8 +75,16 @@ public class Post extends JPanel {
 		deleteButton.addActionListener(new DeleteHandler(board, p, response));
 
 		add(username);
-		add(new JScrollPane(title));
-		add(new JScrollPane(content));
+		JScrollPane scroll = new JScrollPane(title);
+		JLabel label = new JLabel("Title");
+		label.setLabelFor(scroll);
+		add(label);
+		add(scroll);
+		scroll = new JScrollPane(content);
+		label = new JLabel("Content");
+		label.setLabelFor(scroll);
+		add(label);
+		add(scroll);
 		if (p.myPost || (null != response && response.elfStatus ==
 				ClanBoardResponse.ElfClanRelationship.LEADER)) {
 			add(deleteButton);

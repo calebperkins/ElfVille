@@ -37,6 +37,7 @@ public class ElfBoardControl extends Controller {
 		profile.elfName= elf.getElfName();
 		profile.centralBoardPosts= ControllerUtils.
 				buildPostList(database.postDB.getCentralPosts(), elf);
+		profile.numSocks = elf.getNumSocks();
 		
 		resp.status= Status.SUCCESS;
 		resp.elf = profile;

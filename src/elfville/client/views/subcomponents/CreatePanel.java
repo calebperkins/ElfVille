@@ -37,11 +37,15 @@ public abstract class CreatePanel extends JPanel implements ActionListener {
 		JButton button = new JButton(buttonLabel);
 		button.addActionListener(this);
 		
-		add(new JLabel(textFieldLabel));
+		JLabel label = new JLabel(textFieldLabel);
+		label.setLabelFor(textField);
+		add(label);
 		//name.setMinimumSize(new Dimension(300, 20));
 		//name.setPreferredSize(new Dimension(300, 20));
 		add(textField);
-		add(new JLabel(textAreaLabel));
+		label = new JLabel(textAreaLabel);
+		label.setLabelFor(textArea);
+		add(label);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		JScrollPane scrollabletextArea = new JScrollPane(textArea);
