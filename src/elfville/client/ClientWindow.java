@@ -7,6 +7,10 @@ import javax.swing.*;
 import elfville.client.views.WelcomeScreen;
 import elfville.client.views.subcomponents.NavigationScreen;
 
+/**
+ * The JFrame that everything is displayed on. 
+ *
+ */
 public class ClientWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
@@ -16,7 +20,7 @@ public class ClientWindow extends JFrame {
 	private SocketController socketController;
 
 	/**
-	 * Create the frame.
+	 * Create the (only) frame.
 	 */
 	public ClientWindow(SocketController socketController) {
 		super("ElfVille");
@@ -35,6 +39,10 @@ public class ClientWindow extends JFrame {
 		main.add(current, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * Switches from one Board to another (i.e., client views).
+	 * @param next the JPanel (always a Board) to switch to
+	 */
 	public void switchScreen(JPanel next) {
 		getContentPane().removeAll();
 		main = new JPanel();
@@ -57,6 +65,11 @@ public class ClientWindow extends JFrame {
 		System.exit(-1);
 	}
 
+	/**
+	 * Used when the server responds with failure. 
+	 * @param msg
+	 * @param title
+	 */
 	public void showError(String msg, String title) {
 		JOptionPane.showMessageDialog(null, msg, title,
 				JOptionPane.ERROR_MESSAGE);

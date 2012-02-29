@@ -11,7 +11,7 @@ public class WelcomeScreen extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Create the panel.
+	 * Creates a panel with login and registration options.
 	 */
 	public WelcomeScreen(SocketController socketController, ClientWindow clientWindow) {
 		super();

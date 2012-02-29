@@ -14,8 +14,6 @@ import java.io.IOException;
 /**
  * Collection of controls to allow user to login.
  * 
- * @author Caleb Perkins
- * 
  */
 public class LoginPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;

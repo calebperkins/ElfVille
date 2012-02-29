@@ -19,9 +19,6 @@ import elfville.protocol.models.SerializablePost;
 /**
  * Displays an individual post.
  * 
- * @author Caleb Perkins
- * @author Aaron Martinez
- * 
  */
 public class Post extends JPanel {
 	private static final long serialVersionUID = 1L;

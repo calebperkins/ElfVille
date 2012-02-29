@@ -8,15 +8,20 @@ import elfville.client.views.subcomponents.*;
 import elfville.protocol.*;
 
 /**
- * Renders the central board using the central board request.
- * 
- * @author aaron
+ * Renders the clan board using the central board request.
  * 
  */
 public class ClanBoard extends Board {
 	private static final long serialVersionUID = 1L;
 	private String clanID;
 
+	/**
+	 * Creates a new ClanBoard pane (with updated information)
+	 * to display to the user.
+	 * @param clientWindow
+	 * @param socketController
+	 * @param clanID
+	 */
 	public ClanBoard(ClientWindow clientWindow, SocketController socketController, String clanID) {
 		super(clientWindow, socketController);
 		this.clanID = clanID;

@@ -12,6 +12,13 @@ public class ElfProfile extends Board {
 	private static final long serialVersionUID = 1L;
 	String elf;
 	
+	/**
+	 * Creates a new ElfProfile pane (with updated information)
+	 * to display to the user.
+	 * @param clientWindow
+	 * @param socketController
+	 * @param elf
+	 */
 	public ElfProfile(ClientWindow clientWindow, SocketController socketController, String elf) {
 		super(clientWindow, socketController);
 		this.elf = elf;

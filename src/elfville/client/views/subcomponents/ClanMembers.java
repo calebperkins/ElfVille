@@ -8,7 +8,11 @@ import elfville.client.views.Board;
 import elfville.protocol.ClanBoardResponse;
 import elfville.protocol.models.SerializableElf;
 
-
+/**
+ * This creates a panel that lists the members in a clan with links
+ * to their profiles. 
+ *
+ */
 public class ClanMembers extends JPanel {
 	private static final long serialVersionUID = 1L;
 
