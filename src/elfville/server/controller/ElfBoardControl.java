@@ -20,14 +20,14 @@ public class ElfBoardControl extends Controller {
 			return resp;
 		}
 
-		// check to make sure that we were sent an elf
-		if (r.elf == null) {
+		// check to make sure that we weren't sent modelID
+		if (r.modelID == null) {
 			return resp;
 		}
 
-		Elf elf= database.elfDB.findByEncryptedID(r.elf.modelID);
+		Elf elf= database.elfDB.findByEncryptedID(r.modelID);
 
-		// check to see that the requested clan actually exists
+		// check to see that the requested elf actually exists
 		if (elf == null) {
 			return resp;
 		}
@@ -39,6 +39,7 @@ public class ElfBoardControl extends Controller {
 				buildPostList(database.postDB.getCentralPosts(), elf);
 		
 		resp.status= Status.SUCCESS;
+		resp.elf = profile;
 		return resp;
 	}
 

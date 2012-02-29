@@ -1,6 +1,5 @@
 package elfville.protocol;
 
-import elfville.protocol.Response.Status;
 import elfville.protocol.models.SerializableElf;
 
 public class ProfileResponse extends Response {

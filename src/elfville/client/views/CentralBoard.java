@@ -40,10 +40,11 @@ public class CentralBoard extends Board {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(title);
 		add(createPost);
+		//TODO from here to "add(scroll)" is commonly duplicated code that could use a refactor
 		JPanel postPanel = new JPanel();
 		postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
 		for (SerializablePost post : response.posts) {
-			postPanel.add(new VotablePost(post, this));
+			postPanel.add(new VotablePost(this, post));
 		}
 		JScrollPane scroll = new JScrollPane(postPanel);
 		add(scroll);

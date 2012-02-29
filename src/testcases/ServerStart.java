@@ -38,7 +38,7 @@ public class ServerStart extends TestBase {
 	public void test() throws IOException, InterruptedException {
 		new ServerThread().start();
 		Thread.sleep(500); // sleep for 0.5 second to wait for the server start
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < clientNum; i++) {
 			new ClientThread().start();
 		}
 	}
