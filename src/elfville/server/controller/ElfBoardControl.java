@@ -4,7 +4,6 @@ import elfville.protocol.ProfileRequest;
 import elfville.protocol.ProfileResponse;
 import elfville.protocol.Response.Status;
 import elfville.protocol.models.SerializableElf;
-import elfville.protocol.models.SerializablePost;
 import elfville.server.CurrentUserProfile;
 import elfville.server.model.Elf;
 import elfville.server.model.User;

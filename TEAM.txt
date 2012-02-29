@@ -21,5 +21,6 @@ Later I coded up the database and model functions/objects to support the control
 
 In the end I initiated and designed the multi-client testing framework and documented the test cases. Time taken: 12 hours.
 
-Your name here
+Aaron Martinez (amm257)
 ==============
+During the beginning of this phase, I was sick and did very little. After I recovered I took over the client from Caleb. The vast majority of my time was spent on writing the client, communicating with Brian about protocols and reporting things that were right on my end but were nonetheless not working, and fixing the occasional controller or protocol (or making protocls). I also implemented a test case, as well as helped write the README and reviwed the testing document. All told 32 hours give or take a couple hours; probably 20 to 25 hours spent on the client and the rest spent primarily on protocls with the occasional controller bugfix.
