@@ -7,8 +7,13 @@ import java.io.IOException;
 import javax.swing.*;
 
 import elfville.client.views.Board;
+import elfville.protocol.ClanBoardResponse;
+import elfville.protocol.DeleteCentralBoardRequest;
+import elfville.protocol.ModifyClanRequest;
+import elfville.protocol.Request;
 import elfville.protocol.Response;
 import elfville.protocol.VoteRequest;
+import elfville.protocol.models.SerializableClan;
 import elfville.protocol.models.SerializablePost;
 
 /**
@@ -26,15 +31,25 @@ public class Post extends JPanel {
 	private JTextArea title;
 
 	public class DeleteHandler implements ActionListener {
-		private String postModelID;
+		private SerializablePost post;
+		private Board board;
+		ClanBoardResponse response;
 		
-		public DeleteHandler(String postModelID) {
-			this.postModelID = postModelID;
+		public DeleteHandler(Board board, SerializablePost post, ClanBoardResponse response) {
+			this.post = post;
+			this.board = board;
+			this.response = response;
 		}
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			//TODO write this
+			Request req;
+			if (null == response) {
+				req = new DeleteCentralBoardRequest(post);
+			} else {
+				req = new ModifyClanRequest(response.clan, post);
+			}
+			board.getSocketController().sendRequest(req, board, "Failed to delete post.", null);
 		}
 	}
 
@@ -42,7 +57,7 @@ public class Post extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Post(Board board, SerializablePost p, boolean viewerIsClanLeader) {
+	public Post(Board board, SerializablePost p, ClanBoardResponse response) {
 		super();
 		
 		// setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -57,12 +72,13 @@ public class Post extends JPanel {
 		title.setWrapStyleWord(true);
 		title.setEditable(false);
 		deleteButton = new JButton("Delete");
-		deleteButton.addActionListener(new DeleteHandler(p.modelID));
+		deleteButton.addActionListener(new DeleteHandler(board, p, response));
 
 		add(username);
 		add(new JScrollPane(title));
 		add(new JScrollPane(content));
-		if (p.myPost || viewerIsClanLeader) {
+		if (p.myPost || (null != response && response.elfStatus ==
+				ClanBoardResponse.ElfClanRelationship.LEADER)) {
 			add(deleteButton);
 		}
 	}

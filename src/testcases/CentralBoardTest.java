@@ -69,9 +69,9 @@ public class CentralBoardTest extends TestBase {
 		for (int i = 0; i < clientNum; i++) {
 			SerializablePost post = resp.posts.get(i);
 			if (i / 2 == 0) {
-				assertEquals(post.upvotes, 1);
+				assertEquals(1, post.upvotes);
 			} else {
-				assertEquals(post.downvotes, 1);
+				assertEquals(1, post.downvotes);
 			}
 		}
 	}	
@@ -101,17 +101,20 @@ public class CentralBoardTest extends TestBase {
 	}
 
 	@Test
-	// Clients delete their votes. Check SUCCEED
-	public void test5DeleteVote() throws IOException {
+	// Clients delete their posts. Check SUCCEED
+	public void test5DeletePost() throws IOException {
 		CentralBoardRequest req = new CentralBoardRequest();
 		CentralBoardResponse resp = socketControllers.get(0).send(req);
 		assertEquals(resp.status, Status.SUCCESS);
 
 		for (int i = 0; i < clientNum; i++) {
-			SerializablePost post = resp.posts.get(i);
-			DeleteCentralBoardRequest deleteReq = new DeleteCentralBoardRequest();
-			deleteReq.post = post;
+			SerializablePost post = resp.posts.get(clientNum - i - 1);
+			System.out.println("deleting post is: " + post.title);
+			DeleteCentralBoardRequest deleteReq = new DeleteCentralBoardRequest(post);
+			
 			Response deleteRes = socketControllers.get(i).send(deleteReq);
+			
+			System.out.println("delete::: " + i + " " + post.elfModelID + " " + post.myPost + " " + deleteRes.status.toString());
 			assertTrue(deleteRes.isOK());
 		}
 	}

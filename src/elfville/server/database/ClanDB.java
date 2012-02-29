@@ -1,6 +1,7 @@
 package elfville.server.database;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -13,7 +14,9 @@ public class ClanDB extends DB {
 	private ConcurrentHashMap<String, Clan> nameMap;
 
 	public List<Clan> getClans() {
-		return new ArrayList<Clan>(nameMap.values());
+		ArrayList<Clan> clans = new ArrayList<Clan>(nameMap.values());
+		Collections.sort(clans);
+		return clans;
 	}
 
 	public ClanDB() {

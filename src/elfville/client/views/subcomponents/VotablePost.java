@@ -30,7 +30,7 @@ public class VotablePost extends Post {
 	}
 
 	public VotablePost(Board board, SerializablePost p) {
-		super(board, p, false);
+		super(board, p, null);
 		// TODO have some indication of whether (and how) the user has voted on
 		// this post.
 		this.board = board;
