@@ -1,6 +1,7 @@
 package elfville.server.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import elfville.protocol.models.SerializableClan;
@@ -46,16 +47,14 @@ public class Clan extends Model {
 		sClan.modelID = SecurityUtils.encryptIntToString(this.getModelID());
 		sClan.applicants = getApplicants();
 		sClan.members = getMembers();
-		sClan.posts = getPosts();
 		sClan.leader = getLeader().getSerializableElf();
 		return sClan;
 	}
 
 	public List<SerializablePost> getPosts() {
 		List<SerializablePost> postList = new ArrayList<SerializablePost>();
-		for (ConcurrentHashMap.Entry<Integer, Post> post : posts.entrySet()) {
-			postList.add(post.getValue().toSerializablePost());
-		}
+		List<Post> postsList = new ArrayList<Post>(posts.values());
+		Collections.sort(postList);
 		return postList;
 	}
 	
