@@ -11,7 +11,7 @@ public class CreateClanRequest extends Request {
 	}
 	
 	public CreateClanRequest(String name, String description) {
-		SerializableClan clan = new SerializableClan();
+		clan = new SerializableClan();
 		clan.clanName = name;
 		clan.clanDescription = description;
 	}
