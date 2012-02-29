@@ -6,7 +6,8 @@ public class SignUpRequest extends Request {
 	// public String password;
 	public String description;
 
-	public SignUpRequest(String u) {
+	public SignUpRequest(String u, String string) {
 		username = u;
+		description = string;
 	}
 }

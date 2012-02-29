@@ -34,8 +34,8 @@ public class VotablePost extends Post {
 		// TODO have some indication of whether (and how) the user has voted on
 		// this post.
 		this.board = board;
-		JButton upvote = new JButton("Likes: " + Integer.toString(p.upvotes));
-		JButton downvote = new JButton("Dislikes: " + Integer.toString(p.downvotes));
+		JButton upvote = new JButton("Upsocks: " + Integer.toString(p.upvotes));
+		JButton downvote = new JButton("Downsocks: " + Integer.toString(p.downvotes));
 		upvote.addActionListener(new VoteHandler(p.modelID, true, this));
 		downvote.addActionListener(new VoteHandler(p.modelID, false, this));
 		add(upvote);

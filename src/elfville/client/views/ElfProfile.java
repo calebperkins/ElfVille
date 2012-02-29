@@ -35,7 +35,7 @@ public class ElfProfile extends Board {
 		
 		JTextArea description = new JTextArea(response.elf.description);
 		description.setEditable(false);
-		add(description);
+		add(new JScrollPane(description));
 		
 		JPanel postPanel = new JPanel();
 		postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));

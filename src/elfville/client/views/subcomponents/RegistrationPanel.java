@@ -15,8 +15,10 @@ import elfville.protocol.SignUpRequest;
 public class RegistrationPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private final JTextField usernameField = new JTextField();
+	private final JTextArea descriptionArea = new JTextArea();
 	private final JButton registerButton = new JButton("Register");
 	private final JLabel usernameLabel = new JLabel("Username");
+	private final JLabel descriptionLabel = new JLabel("Elf Description");
 	private SocketController socketController;
 	private ClientWindow clientWindow;
 	
@@ -35,10 +37,13 @@ public class RegistrationPanel extends JPanel implements ActionListener {
 		this.clientWindow = clientWindow;
 
 		usernameLabel.setLabelFor(usernameField);
+		descriptionLabel.setLabelFor(descriptionArea);
 		registerButton.addActionListener(this);
 
 		add(usernameLabel);
 		add(usernameField);
+		add(descriptionLabel);
+		add(descriptionArea);
 		add(registerButton);
 	}
 
@@ -47,7 +52,7 @@ public class RegistrationPanel extends JPanel implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		SignUpRequest req = new SignUpRequest(usernameField.getText());
+		SignUpRequest req = new SignUpRequest(usernameField.getText(), descriptionArea.getText());
 		try {
 			Response resp = socketController.send(req);
 			if (resp.status == Response.Status.SUCCESS) {
