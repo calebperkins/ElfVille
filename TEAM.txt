@@ -6,11 +6,20 @@ I made the first prototype of the Client and devised the overall architecture, w
 I helped devise the communication protocol between the Client and Server. On the Server side, I refactored the database code to use more efficient / thread-safe data structures. I also implemented the database backup/restore mechanism. I also wrote the README.txt. Time taken: 12 hours
 
 Brian Toth (bdt25)
-==============
+=================
 
 I implemented the entirety of the controller, except for the method getClanBoard. The controller is the core of the server, parsing the requests sent by clients, determining how to respond to them, and generating responses by querying the server.  In the process of doing this, I also modified the database occasionally and filled out much of the protocol.  As the largest part of what I did, this took about 17 hours.
 
 I fixed most of the bugs found by users of the client, and wrote some test classes to fit in Paul's JUnit testing framework.  Specifically, I worked on ClanDirectoryTest, ClanBoardTest, and WelcomeScreenTest.  This took about 7 hours.
+
+Heran Yang (hy279)
+==================
+
+During the beginning phase of the project, I defined and programmed the general code structure: making client and server with socket connections, defining shared protocols and routes, splitting the server side into MVC, making sample code and conventions for each of the above components, demonstrating a sample flow to the team members, and documenting the specification. Time taken: 8 hours.
+
+Later I coded up the database and model functions/objects to support the controller functions, constantly modifying both client and server to maintain the code structure and convention. Time taken: 10 hours.
+
+In the end I initiated and designed the multi-client testing framework and documented the test cases. Time taken: 12 hours.
 
 Your name here
 ==============

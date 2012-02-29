@@ -24,10 +24,6 @@ public class CentralBoardTest extends TestBase {
 		}
 	}
 
-	/**
-	 * Test that all submitted posts can be retrieved.
-	 * @throws IOException
-	 */
 	@Test
 	// One single client gets all posts from the central board. The returned posts should be the
 	// same as those that were inserted earlier, ordered by created dates.

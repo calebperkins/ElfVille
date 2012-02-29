@@ -193,7 +193,6 @@ public class ClanBoardTest extends TestBase {
 			}
 		}
 
-
 		req = new ClanListingRequest();
 		resp = socketControllers.get(0).send(req);
 		assertEquals(resp.status, Status.SUCCESS);

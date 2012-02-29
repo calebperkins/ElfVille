@@ -1,5 +1,6 @@
 Welcome to ElfVille, the ultimate social network for house elves.
 
+==================
 Directory contents
 ==================
 
@@ -22,6 +23,7 @@ elville
 * protocol - These are the classes sent back and forth between the client and the server (all are serializable). This has the subpackage "models" which contains classes that contain information that is data (and not merely a signalt to the server (or client) of what to do with the received message).
 * server - code for the server. Includes the database classes (storing and retrieving information), the model classes (the data objects), and the controller classes (deal with incoming requests (and sending responses back)).
 
+==================================================
 Compiling and running the software from source code
 ===================================================
 
@@ -53,6 +55,7 @@ Running a client
 
 2. Execute `java -jar client.jar localhost 8444`. (The two arguments refer to the server you started in the previous section.) A Swing window will appear.
 
+===============
 Client Tutorial
 ===============
 
@@ -72,17 +75,24 @@ Client Tutorial
 
 8. To log out, simply close the Client window.
 
+=====================================
 General description of code structure
 =====================================
 
 The toplevel packages are divided into "client", "server", and "protocol."
 
-"elfville.protocol" is code that is common to both the server and client; it consists of Request and Response classes that define what the client can request, and what the server will respond with.
+"elfville.server" and "elfville.client" are separate packages which will be delivered to server and client. "elfville.protocol" is common to both the server and client; it consists of Request and Response classes that define what the client can request, and what the server will respond with.
+
+Server
+======
 
 The server follows the model-view-controller paradigm. The "elfville.server.model" package is server objects such as Posts, Clans, and Elves. The "elfville.server.database" package provides an interface to save these models to the database.
 
-At a high-level, the server starts running in Server.java, and kicks off a Session class to handle each new socket connection.
+The "elfville.server.controller" package is an interface to the models, as in typical MVC. Routes.java redirects all requests to the corresponding controllers and retunes the responses.
 
-The "elfville.server.controller" package is an interface to the models, as in typical MVC.
+At a high-level, the server starts running in Server.java, and kicks off multiple Session object to handle each new socket connection.
 
-The client follows a similar MVC pattern. All the communication to the server takes place in SocketController class, the only needed controller. To handle button clicks and the like, some of the views implement ActionListener, which invoke the SocketController.
+Client
+======
+
+The client follows a similar MVC pattern. All the communication to the server takes place in SocketController class, the only needed controller. To handle button clicks and the like, some of the views implement ActionListener, which invoke the SocketController. The client is implemented in Java Swing.
