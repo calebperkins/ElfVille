@@ -121,7 +121,7 @@ public class CentralBoardTest extends TestBase {
 	
 	@Test
 	// Multiple clients vote on different posts. Check if the returned posts are ordered correctly.
-	public void test6VoteOrder() throws IOException {
+	public void test6VoteOrderAndProfiles() throws IOException {
 		test1post();
 
 		CentralBoardRequest req = new CentralBoardRequest();
@@ -146,6 +146,14 @@ public class CentralBoardTest extends TestBase {
 			SerializablePost post = resp.posts.get(i);  // reordered now. the first comes first
 			System.out.println(post.title);
 			System.out.println(post.content);
+			ProfileRequest elfreq= new ProfileRequest(post.elfModelID);
+			ProfileResponse elfresp= socketControllers.get(i).send(elfreq);
+			assertEquals(elfresp.status, Status.SUCCESS);
+			if(i != 0){
+				assertEquals(WelcomeScreenTest.descriptions.get(i), elfresp.elf.description);
+			}
+			assertEquals(10 - i, elfresp.elf.numSocks);
+				
 			assertEquals("title-" + i, post.title);
 			assertEquals("content-" + i, post.content);
 		}

@@ -71,3 +71,18 @@ Client Tutorial
 7. If someone applies to your clan, you will see their name at the bottom of your clan board. You can then press Accept or Decline for that user.
 
 8. To log out, simply close the Client window.
+
+General description of code structure
+=====================================
+
+The toplevel packages are divided into "client", "server", and "protocol."
+
+"elfville.protocol" is code that is common to both the server and client; it consists of Request and Response classes that define what the client can request, and what the server will respond with.
+
+The server follows the model-view-controller paradigm. The "elfville.server.model" package is server objects such as Posts, Clans, and Elves. The "elfville.server.database" package provides an interface to save these models to the database.
+
+At a high-level, the server starts running in Server.java, and kicks off a Session class to handle each new socket connection.
+
+The "elfville.server.controller" package is an interface to the models, as in typical MVC.
+
+The client follows a similar MVC pattern. All the communication to the server takes place in SocketController class, the only needed controller. To handle button clicks and the like, some of the views implement ActionListener, which invoke the SocketController.

@@ -111,4 +111,8 @@ public class SocketController {
 	public Response send(Request req) throws IOException {
 		return write(req);
 	}
+	
+	public ProfileResponse send(ProfileRequest req) throws IOException {
+		return (ProfileResponse) write(req);
+	}
 }
