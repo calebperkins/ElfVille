@@ -44,6 +44,9 @@ public class ClanBoardControl extends Controller {
 				//applicants are only visible to the clan leader
 				outM.clan.applicants = new ArrayList<SerializableElf>();
 			}
+			ArrayList<SerializablePost> posts= 
+					ControllerUtils.buildPostList( clan.getPosts(), elf);
+			outM.clan.posts = posts;
 		} else {
 			if (clan.isApplicant(elf)) {
 				outM.elfStatus = ClanBoardResponse.ElfClanRelationship.APPLICANT;
