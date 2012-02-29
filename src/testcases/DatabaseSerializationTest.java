@@ -35,7 +35,6 @@ public class DatabaseSerializationTest {
 			assertEquals("Elfs persist", e.getElfName(), Database.DB.elfDB.findByID(e.getModelID()).getElfName());
 			assertEquals("Clans persist", c.getName(), Database.DB.clanDB.findByModelID(c.getModelID()).getName());
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			fail("Could not restore database: " + e1.getMessage());
 		}
 	}
