@@ -51,9 +51,8 @@ public class Clan extends Model {
 		return sClan;
 	}
 
-	public List<SerializablePost> getPosts() {
-		List<SerializablePost> postList = new ArrayList<SerializablePost>();
-		List<Post> postsList = new ArrayList<Post>(posts.values());
+	public List<Post> getPosts() {
+		List<Post> postList = new ArrayList<Post>(posts.values());
 		Collections.sort(postList);
 		return postList;
 	}
