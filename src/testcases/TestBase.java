@@ -7,4 +7,5 @@ import elfville.client.SocketController;
 
 public class TestBase {
 	static List<SocketController> socketControllers = new ArrayList<SocketController>();
+	static final int clientNum = 10;
 }
