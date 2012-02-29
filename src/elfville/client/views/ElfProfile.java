@@ -30,7 +30,7 @@ public class ElfProfile extends Board {
 		ProfileResponse response = (ProfileResponse) resp;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		JLabel title = new JLabel("Profile of " + response.elf.elfName + ", " + response.elf.numSocks);
+		JLabel title = new JLabel("Profile of " + response.elf.elfName + ", " + Integer.toString(response.elf.numSocks));
 		add(title);
 		
 		JTextArea description = new JTextArea(response.elf.description);
