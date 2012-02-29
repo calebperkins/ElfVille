@@ -4,6 +4,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import elfville.client.views.Board;
 import elfville.protocol.ClanBoardResponse;
 import elfville.protocol.models.SerializablePost;
 
@@ -11,12 +12,12 @@ import elfville.protocol.models.SerializablePost;
 public class ClanPosts extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	public ClanPosts(ClanBoardResponse response) {
+	public ClanPosts(Board board, ClanBoardResponse response) {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		JPanel postPanel = new JPanel();
 		postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
 		for (SerializablePost post : response.clan.posts) {
-			postPanel.add(new Post(post,
+			postPanel.add(new Post(board, post,
 					response.elfStatus ==
 					ClanBoardResponse.ElfClanRelationship.LEADER));
 		}

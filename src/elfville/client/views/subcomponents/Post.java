@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.swing.*;
 
+import elfville.client.views.Board;
 import elfville.protocol.Response;
 import elfville.protocol.VoteRequest;
 import elfville.protocol.models.SerializablePost;
@@ -41,12 +42,12 @@ public class Post extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Post(SerializablePost p, boolean viewerIsClanLeader) {
+	public Post(Board board, SerializablePost p, boolean viewerIsClanLeader) {
 		super();
 		
 		// setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		username = new JButton(p.username);
-		username.addActionListener(new ElfHandler(p.elfModelID));
+		username.addActionListener(new ElfHandler(board, p.elfModelID));
 		content = new JTextArea(p.content);
 		content.setLineWrap(true);
 		content.setWrapStyleWord(true);

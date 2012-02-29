@@ -5,13 +5,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import elfville.client.views.CentralBoard;
+import elfville.client.views.Board;
 import elfville.protocol.VoteRequest;
 import elfville.protocol.models.SerializablePost;
 
 public class VotablePost extends Post {
 	private static final long serialVersionUID = 1L;
-	private final CentralBoard board;
+	private final Board board;
 	
 	private class VoteHandler implements ActionListener {
 		private boolean upsock;
@@ -29,8 +29,8 @@ public class VotablePost extends Post {
 		}
 	}
 
-	public VotablePost(SerializablePost p, CentralBoard board) {
-		super(p, false);
+	public VotablePost(Board board, SerializablePost p) {
+		super(board, p, false);
 		// TODO have some indication of whether (and how) the user has voted on
 		// this post.
 		this.board = board;

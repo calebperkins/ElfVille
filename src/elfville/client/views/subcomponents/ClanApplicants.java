@@ -39,7 +39,7 @@ public class ClanApplicants extends JPanel {
 		JPanel allApplicantsPanel = new JPanel();
 		for (SerializableElf applicant : response.clan.applicants) {
 			JPanel applicantPanel = new JPanel();
-			applicantPanel.add(new Elf(applicant));
+			applicantPanel.add(new Elf(board, applicant));
 			
 			JButton accept = new JButton("Accept");
 			accept.addActionListener(new ApplicantHandler(response.clan, applicant, true));
