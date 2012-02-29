@@ -31,6 +31,7 @@ public class Clan extends JPanel {
 		
 		clanName = new JButton(c.clanName);
 		clanDescription = new JTextArea(c.clanDescription);
+		clanDescription.setEditable(false);
 		clanDescription.setLineWrap(true);
 		clanDescription.setWrapStyleWord(true);
 		leaderName = new JButton("Leader: " + c.leader.elfName);

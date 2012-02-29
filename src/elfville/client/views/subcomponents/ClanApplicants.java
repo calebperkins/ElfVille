@@ -2,15 +2,12 @@ package elfville.client.views.subcomponents;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import javax.swing.*;
 
 import elfville.client.views.Board;
 import elfville.protocol.ClanBoardResponse;
 import elfville.protocol.ModifyClanRequest;
-import elfville.protocol.ModifyClanRequest.ModClan;
-import elfville.protocol.Response;
 import elfville.protocol.models.SerializableClan;
 import elfville.protocol.models.SerializableElf;
 
@@ -32,24 +29,8 @@ public class ClanApplicants extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			try {
-				ModifyClanRequest req = new ModifyClanRequest();
-				req.applicant = elf;
-				req.clan = clan;
-				if (accept) {
-					req.requestType = ModClan.ACCEPT;
-				} else {
-					req.requestType = ModClan.DENY;
-				}
-				Response resp = board.getSocketController().send(req);
-				if (resp.isOK()) {
-					board.refresh();
-				} else {
-					System.err.println("Failed to decide applicant.");
-				}
-			} catch (IOException e1) {
-				board.getClientWindow().showConnectionError();
-			}
+			ModifyClanRequest req = new ModifyClanRequest(elf, clan, accept);
+			board.getSocketController().sendRequest(req, board, "Failed to decide applicant.", null);
 		}
 	}
 

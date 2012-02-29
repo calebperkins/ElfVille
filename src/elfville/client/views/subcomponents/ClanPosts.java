@@ -16,7 +16,9 @@ public class ClanPosts extends JPanel {
 		JPanel postPanel = new JPanel();
 		postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
 		for (SerializablePost post : response.clan.posts) {
-			postPanel.add(new Post(post));
+			postPanel.add(new Post(post,
+					response.elfStatus ==
+					ClanBoardResponse.ElfClanRelationship.LEADER));
 		}
 		JScrollPane scroll = new JScrollPane(postPanel);
 		add(scroll);

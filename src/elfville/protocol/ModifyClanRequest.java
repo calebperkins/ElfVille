@@ -5,18 +5,27 @@ import elfville.protocol.models.SerializableElf;
 import elfville.protocol.models.SerializablePost;
 
 public class ModifyClanRequest extends Request {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public enum ModClan {
 		LEAVE, DELETE, ACCEPT, DENY, DELETEPOST, APPLY
 	}
 	
-	//TODO needs a contstructor (also fix clandetails.java if we add this)
-	// (though this request is used for so many things a constructor may be
-	// difficult)
+	public ModifyClanRequest(SerializableElf elf, SerializableClan clan,
+			boolean accept) {
+		this.applicant = elf;
+		this.clan = clan;
+		if (accept) {
+			this.requestType = ModClan.ACCEPT;
+		} else {
+			this.requestType = ModClan.DENY;
+		}
+	}
+	
+	public ModifyClanRequest(SerializableClan clan, ModClan action) {
+		this.clan = clan;
+		this.requestType = action;
+	}
 
 	public ModClan requestType;
 	public SerializableClan clan;

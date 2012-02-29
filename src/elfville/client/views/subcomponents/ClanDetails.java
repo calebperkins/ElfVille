@@ -2,10 +2,10 @@ package elfville.client.views.subcomponents;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import javax.swing.*;
 
+import elfville.client.SocketController;
 import elfville.client.views.ClanBoard;
 import elfville.client.views.ClanDirectory;
 import elfville.protocol.*;
@@ -13,7 +13,8 @@ import elfville.protocol.ModifyClanRequest.ModClan;
 import elfville.protocol.models.SerializableClan;
 
 
-public class ClanDetails extends JPanel implements ActionListener {
+public class ClanDetails extends JPanel
+implements ActionListener, SocketController.SuccessFunction {
 	private static final long serialVersionUID = 1L;
 	//private final String clanModelID;
 	private final SerializableClan clan;
@@ -63,27 +64,25 @@ public class ClanDetails extends JPanel implements ActionListener {
 		add(clanAction);
 		
 		JTextArea description = new JTextArea(response.clan.clanDescription);
+		description.setEditable(false);
 		add(description);
 	}
 
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		try {
-			ModifyClanRequest req = new ModifyClanRequest();
-			req.clan = clan;
-			req.requestType = action;
-			Response resp = board.getSocketController().send(req);
-			
-			if (resp.isOK() && (action == ModClan.LEAVE || action == ModClan.DELETE)) {
-				new ClanDirectory(board.getClientWindow(), board.getSocketController());
-			} else if (resp.isOK()) {
-				board.refresh();
-			} else {
-				System.err.println("Not posted!");
-			}
-		} catch (IOException e1) {
-			board.getClientWindow().showConnectionError();
+		ModifyClanRequest req = new ModifyClanRequest(clan, action);
+		board.getSocketController().sendRequest(req, board,
+				"Action failed.", this);
+	}
+
+
+	@Override
+	public void handleRequestSuccess(Response resp) {
+		if (action == ModClan.LEAVE || action == ModClan.DELETE) {
+			new ClanDirectory(board.getClientWindow(), board.getSocketController());
+		} else {
+			board.refresh();
 		}
 	}
 }
