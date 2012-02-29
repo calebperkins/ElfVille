@@ -17,7 +17,7 @@ public class CentralBoardTest extends TestBase {
 		for (int i = 0; i < clientNum; i++) {
 			String title = "title-" + i;
 			String content = "content-" + i;
-			PostCentralBoardRequest req = new PostCentralBoardRequest(content, title);
+			PostCentralBoardRequest req = new PostCentralBoardRequest(title, content);
 			Response resp = socketControllers.get(i).send(req);
 			// System.out.println("test1post() " + i + " " + resp.status.toString());
 			assertEquals(resp.status, Status.SUCCESS);
@@ -39,36 +39,14 @@ public class CentralBoardTest extends TestBase {
 		for (int i = 0; i < clientNum; i++) {
 			SerializablePost post = resp.posts.get(clientNum - i - 1);  // the latest comes first
 			System.out.println("get " + i);
-			System.out.println(post.title);
-			System.out.println(post.content);
+			System.out.println("title is: " + post.title);
+			System.out.println("content is: " + post.content);
 			assertEquals("title-" + i, post.title);
 			assertEquals("content-" + i, post.content);
 		}
 
 	}
 	
-	@Test
-	public void testVoting() throws IOException {
-		// make post
-		PostCentralBoardRequest req = new PostCentralBoardRequest("a message",
-				"a title");
-		Response resp = socketControllers.get(0).send(req);
-		
-		// get posts
-		CentralBoardRequest req2 = new CentralBoardRequest();
-		CentralBoardResponse resp2 = socketControllers.get(0).send(req2);
-		
-		// ensure you can vote
-		String postA = resp2.posts.get(0).modelID;
-		VoteRequest voteReq = new VoteRequest(postA, true);
-		Response voteResp = socketControllers.get(0).send(voteReq);
-		assertTrue(voteResp.isOK());
-		
-		// ensure you cannot vote on same post twice
-		Response voteResp2 = socketControllers.get(0).send(voteReq);
-		assertFalse(voteResp.isOK());
-	}
-
 	@Test
 	// A single client votes either Upsock or Downsock on posts. 
 	// Check if SUCCESS is returned. Check if the returned posts get
