@@ -1,6 +1,6 @@
 package testcases;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -8,11 +8,10 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import elfville.protocol.ProfileRequest;
 import elfville.protocol.Response;
+import elfville.protocol.Response.Status;
 import elfville.protocol.SignInRequest;
 import elfville.protocol.SignUpRequest;
-import elfville.protocol.Response.Status;
 
 public class WelcomeScreenTest extends TestBase {
 	
