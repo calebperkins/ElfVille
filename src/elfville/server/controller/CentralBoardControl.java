@@ -80,9 +80,10 @@ public class CentralBoardControl extends Controller {
 
 		if (r.upsock && post.upsock(e)) {
 			resp.status = Response.Status.SUCCESS;
-		}
-		if (!r.upsock && post.downsock(e)) {
+		} else if (!r.upsock && post.downsock(e)) {
 			resp.status = Response.Status.SUCCESS;
+		} else {
+			resp.message = "You already voted on this post.";
 		}
 
 		return resp;
