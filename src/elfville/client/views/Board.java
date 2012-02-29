@@ -5,7 +5,8 @@ import javax.swing.JPanel;
 import elfville.client.ClientWindow;
 import elfville.client.SocketController;
 
-public abstract class Board extends JPanel {
+public abstract class Board 
+extends JPanel implements SocketController.SuccessFunction {
 	private static final long serialVersionUID = 1L;
 	protected ClientWindow clientWindow;
 	protected SocketController socketController;

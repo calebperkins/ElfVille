@@ -1,7 +1,5 @@
 package elfville.client.views;
 
-import java.io.IOException;
-
 import javax.swing.*;
 
 import elfville.client.ClientWindow;
@@ -26,37 +24,31 @@ public class CentralBoard extends Board {
 	public CentralBoard(ClientWindow clientWindow, 
 			SocketController socketController) {
 		super(clientWindow, socketController);
-		CentralBoardResponse response;
-		try {
-			response = socketController.send(new CentralBoardRequest());
-			if (response.status == Response.Status.SUCCESS) {
-
-				this.clientWindow = clientWindow;
-				this.socketController = socketController;
-				setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-				add(title);
-				add(createPost);
-				JPanel postPanel = new JPanel();
-				postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
-				for (SerializablePost post : response.posts) {
-					postPanel.add(new VotablePost(post, this));
-				}
-				JScrollPane scroll = new JScrollPane(postPanel);
-				add(scroll);
-
-				clientWindow.switchScreen(this);
-			} else {
-				clientWindow.showError(response.message,
-						"Error retrieving central board");
-			}
-		} catch (IOException e) {
-			clientWindow.showConnectionError();
-		}
+		CentralBoardRequest req = new CentralBoardRequest();
+		getSocketController().sendRequest(req, this,
+				"Error retrieving central board.", this);
 	}
 
 	@Override
 	public void refresh() {
 		new CentralBoard(clientWindow, socketController);
+	}
+
+	@Override
+	public void handleRequestSuccess(Response resp) {
+		CentralBoardResponse response = (CentralBoardResponse) resp;
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		add(title);
+		add(createPost);
+		JPanel postPanel = new JPanel();
+		postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
+		for (SerializablePost post : response.posts) {
+			postPanel.add(new VotablePost(post, this));
+		}
+		JScrollPane scroll = new JScrollPane(postPanel);
+		add(scroll);
+
+		clientWindow.switchScreen(this);
 	}
 
 }

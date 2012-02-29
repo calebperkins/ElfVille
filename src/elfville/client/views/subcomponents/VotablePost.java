@@ -2,12 +2,10 @@ package elfville.client.views.subcomponents;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import javax.swing.JButton;
 
 import elfville.client.views.CentralBoard;
-import elfville.protocol.Response;
 import elfville.protocol.VoteRequest;
 import elfville.protocol.models.SerializablePost;
 
@@ -26,19 +24,8 @@ public class VotablePost extends Post {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			//TODO the following bit of code is duplicated in many areas
-			// perhaps refactor it by creating a function for it.			VoteRequest req = new VoteRequest(postID, upsock);
 			VoteRequest req = new VoteRequest(postID, upsock);
-			try {
-				Response resp = board.getSocketController().send(req);
-				if (!resp.isOK()) {
-					System.err.println("Did not vote!");
-				} else {
-					board.refresh();
-				}
-			} catch (IOException e1) {
-				board.getClientWindow().showConnectionError();
-			}
+			board.getSocketController().sendRequest(req, board, "Did not vote!", null);
 		}
 	}
 

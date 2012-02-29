@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import elfville.client.views.Board;
 import elfville.protocol.*;
 
 /**
@@ -19,6 +20,29 @@ public class SocketController {
 	private Socket socket;
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
+	
+	public interface SuccessFunction {
+		public void handleRequestSuccess(Response resp);
+	}
+	
+	public void sendRequest(Request req, Board board,
+			String failMessage, SuccessFunction fun) {
+		try {
+			Response resp = board.getSocketController().send(req);
+			if (resp.isOK()) {
+				if (null == fun) {
+					board.refresh();
+				} else {
+					fun.handleRequestSuccess(resp);
+				}
+			} else {
+				board.getClientWindow().showError(
+						resp.message, failMessage);
+			}
+		} catch (IOException e1) {
+			board.getClientWindow().showConnectionError();
+		}
+	}
 
 	public SocketController(String host, int port) throws UnknownHostException, IOException {
 		socket = new Socket(host, port);
@@ -76,6 +100,10 @@ public class SocketController {
 	}
 
 	public Response send(ModifyClanRequest req) throws IOException {
+		return write(req);
+	}
+	
+	public Response send(Request req) throws IOException {
 		return write(req);
 	}
 }
