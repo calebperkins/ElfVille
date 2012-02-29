@@ -35,16 +35,16 @@ public class ClanBoard extends Board {
 		ClanBoardResponse response = (ClanBoardResponse) resp;
 		this.setLayout(new BorderLayout());
 
-		ClanDetails details = new ClanDetails(response, this);
+		ClanDetails details = new ClanDetails(this, response);
 		add(details, BorderLayout.PAGE_START);
 
-		ClanMembers members = new ClanMembers(response);
+		ClanMembers members = new ClanMembers(this, response);
 		add(members, BorderLayout.LINE_END);
 
 		CreatePostPanel createPost = new CreatePostPanel(this, clanID);
 		add(createPost, BorderLayout.LINE_START);
 
-		ClanPosts posts = new ClanPosts(response);
+		ClanPosts posts = new ClanPosts(this, response);
 		add(posts, BorderLayout.CENTER);
 		
 		ClanApplicants applicants = new ClanApplicants(this, response);

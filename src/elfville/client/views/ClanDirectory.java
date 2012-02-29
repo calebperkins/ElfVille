@@ -35,7 +35,7 @@ public class ClanDirectory extends Board {
 		JPanel clanPanel = new JPanel();
 		clanPanel.setLayout(new BoxLayout(clanPanel, BoxLayout.Y_AXIS));
 		for (SerializableClan clan : response.clans) {
-			clanPanel.add(new Clan(clan, clientWindow, socketController));
+			clanPanel.add(new Clan(this, clan));
 		}
 		JScrollPane scroll = new JScrollPane(clanPanel);
 		add(scroll);

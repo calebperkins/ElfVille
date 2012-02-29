@@ -25,6 +25,10 @@ public class CentralBoardTest extends TestBase {
 		}
 	}
 
+	/**
+	 * Test that all submitted posts can be retrieved.
+	 * @throws IOException
+	 */
 	@Test
 	// One single client gets all posts from the central board. The returned posts should be the
 	// same as those that were inserted earlier, ordered by created dates.
@@ -41,6 +45,28 @@ public class CentralBoardTest extends TestBase {
 			assertEquals("content-" + i, post.content);
 		}
 
+	}
+	
+	@Test
+	public void testVoting() throws IOException {
+		// make post
+		PostCentralBoardRequest req = new PostCentralBoardRequest("a message",
+				"a title");
+		Response resp = socketControllers.get(0).send(req);
+		
+		// get posts
+		CentralBoardRequest req2 = new CentralBoardRequest();
+		CentralBoardResponse resp2 = socketControllers.get(0).send(req2);
+		
+		// ensure you can vote
+		String postA = resp2.posts.get(0).modelID;
+		VoteRequest voteReq = new VoteRequest(postA, true);
+		Response voteResp = socketControllers.get(0).send(voteReq);
+		assertTrue(voteResp.isOK());
+		
+		// ensure you cannot vote on same post twice
+		Response voteResp2 = socketControllers.get(0).send(voteReq);
+		assertFalse(voteResp.isOK());
 	}
 
 	@Test

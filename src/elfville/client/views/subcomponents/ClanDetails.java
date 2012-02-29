@@ -22,7 +22,7 @@ implements ActionListener, SocketController.SuccessFunction {
 	private final ModClan action;
 	ClanBoard board;
 	
-	public ClanDetails(ClanBoardResponse response, ClanBoard board){
+	public ClanDetails(ClanBoard board, ClanBoardResponse response) {
 		super();
 		this.board = board;
 		//elfModelID = response.
@@ -33,7 +33,7 @@ implements ActionListener, SocketController.SuccessFunction {
 		add(title);
 		
 		JButton leaderName = new JButton(response.clan.leader.elfName);
-		leaderName.addActionListener(new ElfHandler(response.clan.leader.modelID));
+		leaderName.addActionListener(new ElfHandler(board, response.clan.leader.modelID));
 		add(leaderName);
 		
 		String buttonLabel;
