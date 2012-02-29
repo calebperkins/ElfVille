@@ -50,7 +50,7 @@ Client Tutorial
 
 2. You will be taken to the Central Board, a place where Elves may post messages, and "like" or "dislike" posts with the entire social network. Go ahead and enter a post title and message. Click Post. You should see your post appear on the bottom of the screen!
 
-3. Click on Clan Directory. That is where elves can create Clans, which are groups of like-minded elves. Go ahead and create a clan of your own, and you will see it appear below.
+3. Click on Clan Directory in the top navigation bar. That is where elves can create Clans, which are groups of like-minded elves. Go ahead and create a clan of your own, and you will see it appear below.
 
 4. When you create a clan, you are the leader. Click on the Clan you created to be taken to the Clan Board.
 
