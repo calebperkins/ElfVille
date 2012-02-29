@@ -3,6 +3,10 @@ package testcases;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Hashtable;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -62,9 +66,11 @@ public class ClanBoardTest extends TestBase {
 			ClanBoardRequest clanReq = new ClanBoardRequest(clan.modelID);
 			ClanBoardResponse clanRes = socketControllers.get(i).send(clanReq);
 			assertTrue(clanRes.isOK());
+			
 			for (int k = 0; k < clanRes.clan.applicants.size(); k++) {
 				SerializableElf elf = clanRes.clan.applicants.get(k);
 				ModifyClanRequest modReq = new ModifyClanRequest(elf, clan, k<i);
+				System.out.println("giving access to: " + elf.modelID + " " + k + " " + i);
 				Response modRes = socketControllers.get(i).send(modReq);
 				assertTrue(modRes.isOK());
 			}
@@ -120,6 +126,24 @@ public class ClanBoardTest extends TestBase {
 	// Outsiders leave clan, check FAILURE
 	// Leader leaves clan, check FAILURE
 	public void test7LeaveClan() throws IOException {
+		ClanListingRequest req = new ClanListingRequest();
+		ClanListingResponse resp = socketControllers.get(0).send(req);
+		assertEquals(resp.status, Status.SUCCESS);
+
+		for (int i = 0; i < clientNum; i++) {
+			SerializableClan clan = resp.clans.get(i);
+			
+			for (SerializableElf memberElf : clan.members) {
+				System.out.println("member elf: " + memberElf.elfName);
+			}
+			
+			for (int k = 0; k < clientNum; k++) {
+				ModifyClanRequest modReq = new ModifyClanRequest(clan, ModifyClanRequest.ModClan.LEAVE);
+				Response modRes = socketControllers.get(k).send(modReq);
+				System.out.println("leave clan: " + k + " " + i + " " + modRes.isOK()); 
+				assertTrue(modRes.isOK() == (k < i) );
+			}
+		}
 		
 	}
 	

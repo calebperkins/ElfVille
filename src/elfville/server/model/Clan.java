@@ -3,6 +3,7 @@ package elfville.server.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import elfville.protocol.models.SerializableClan;
 import elfville.protocol.models.SerializableElf;
@@ -58,8 +59,14 @@ public class Clan extends Model implements Comparable<Clan> {
 	
 	public List<SerializableElf> getApplicants() {
 		List<SerializableElf> applicantList = new ArrayList<SerializableElf>();
-		for (ConcurrentHashMap.Entry<Integer, Elf> applicant : applicants.entrySet()) {
-			applicantList.add(applicant.getValue().getSerializableElf());
+		Set<Integer> applicantIDs = applicants.keySet();
+		List<Integer> applicantIDlist = new ArrayList<Integer>(); 
+		for (Integer id : applicantIDs) {
+			applicantIDlist.add(id);
+		}
+		Collections.sort(applicantIDlist);
+		for (Integer id : applicantIDlist) {
+			applicantList.add(applicants.get(id).getSerializableElf());
 		}
 		return applicantList;
 	}
