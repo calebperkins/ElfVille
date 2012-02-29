@@ -15,15 +15,15 @@ import elfville.protocol.Response.Status;
 public class WelcomeScreenTest extends TestBase {
 
 	@Test
-	public void signUpTest() throws UnknownHostException, IOException {
+	public void test1SignUp() throws UnknownHostException, IOException {
 		SignUpRequest req = new SignUpRequest("user1");
 		Response resp = socketControllers.get(0).send(req);
-		System.out.println(resp.status.toString());
+		System.out.println("signUpTest: " + resp.status.toString());
 		assertEquals(resp.status, Status.SUCCESS);
 	}
 
 	@Test
-	public void signUpDuplicateTest() throws UnknownHostException, IOException {
+	public void test2SignUpDuplicate() throws UnknownHostException, IOException {
 		// should fail because we signed up the same username once above
 		SignUpRequest req = new SignUpRequest("user1");
 		Response resp = socketControllers.get(0).send(req);
@@ -32,7 +32,7 @@ public class WelcomeScreenTest extends TestBase {
 	}
 
 	@Test
-	public void signInWrongTest() throws UnknownHostException, IOException {
+	public void test3SignInWrong() throws UnknownHostException, IOException {
 		SignInRequest req = new SignInRequest("user2");
 		Response resp = socketControllers.get(0).send(req);
 		System.out.println(resp.status.toString());
@@ -40,7 +40,7 @@ public class WelcomeScreenTest extends TestBase {
 	}
 
 	@Test
-	public void signInTest() throws UnknownHostException, IOException {
+	public void test4SignIn() throws UnknownHostException, IOException {
 		SignInRequest req = new SignInRequest("user1");
 		Response resp = socketControllers.get(0).send(req);
 		System.out.println(resp.status.toString());
