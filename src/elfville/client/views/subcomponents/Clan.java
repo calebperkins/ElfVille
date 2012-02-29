@@ -25,7 +25,7 @@ public class Clan extends JPanel {
 		// TODO: possible to maybe deduplicate code between this and Post.java
 		this.board = board;
 
-		clanName = new JButton(c.clanName);
+		clanName = new JButton(c.clanName + ", " + c.numSocks);
 		clanDescription = new JTextArea(c.clanDescription);
 		clanDescription.setEditable(false);
 		clanDescription.setLineWrap(true);
@@ -36,7 +36,11 @@ public class Clan extends JPanel {
 		leaderName.addActionListener(new ElfHandler(board, c.leader.modelID));
 		add(clanName);
 		add(leaderName);
-		add(new JScrollPane(clanDescription));
+		JScrollPane scroll = new JScrollPane(clanDescription);
+		JLabel label = new JLabel("Description");
+		label.setLabelFor(scroll);
+		add(label);
+		add(scroll);
 	}
 	
 

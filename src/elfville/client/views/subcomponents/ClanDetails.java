@@ -65,7 +65,13 @@ implements ActionListener, SocketController.SuccessFunction {
 		
 		JTextArea description = new JTextArea(response.clan.clanDescription);
 		description.setEditable(false);
-		add(description);
+		description.setLineWrap(true);
+		description.setWrapStyleWord(true);
+		JScrollPane scroll = new JScrollPane(description);
+		JLabel label = new JLabel("Description");
+		label.setLabelFor(scroll);
+		add(label);
+		add(scroll);
 	}
 
 
