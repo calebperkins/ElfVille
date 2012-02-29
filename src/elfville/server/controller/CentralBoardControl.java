@@ -119,7 +119,7 @@ public class CentralBoardControl extends Controller {
 			return resp;
 		}
 
-		Database.DB.postDB.delete(post.getModelID());
+		post.delete();
 
 		resp.status = Status.SUCCESS;
 		return resp;
