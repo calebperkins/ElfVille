@@ -4,6 +4,7 @@ import elfville.protocol.ProfileRequest;
 import elfville.protocol.ProfileResponse;
 import elfville.protocol.Response.Status;
 import elfville.protocol.models.SerializableElf;
+import elfville.protocol.models.SerializablePost;
 import elfville.server.CurrentUserProfile;
 import elfville.server.model.Elf;
 import elfville.server.model.User;
@@ -36,7 +37,7 @@ public class ElfBoardControl extends Controller {
 		profile.description= elf.getDescription();
 		profile.elfName= elf.getElfName();
 		profile.centralBoardPosts= ControllerUtils.
-				buildPostList(database.postDB.getCentralPosts(), user.getElf());
+				buildPostList(database.postDB.findCentralPostsByElf(elf), user.getElf());
 		profile.numSocks = elf.getNumSocks();
 		
 		resp.status= Status.SUCCESS;

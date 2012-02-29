@@ -1,0 +1,63 @@
+We have two sets of tests: those that test the server and those that test the client.
+
+The client UI contains 5 screens: Welcome screen (sign up and sign in), Central Board (a shared posting board for all elves to upvote and downvote posts), Elf Profile (display elf’s information), Clan Board (contains info and private posting board for a clan), and Clan Directory (a list of all clans). All screens contains a navigation on top that can redirect users to the Central Board and the Clan Directory. 
+
+Most of the client UI testing, such as making sure buttons were clickable and text did not scroll off the edge, was done by humans; programmaticly testing Java Swing is difficult, and we did not anticipate the client GUI would need to change much, especially because it is designed to have as little state as possible.  If something works once there’s no reason it fail the next time; there are no weird edge cases because there’s only one case.
+
+We tested the UI by following all of the obvious paths that a user would encounter.  This included registering, posting on the central board, joining clans, creating clans, posting to clans, voting on posts, and other activities.  We opened multiple clients simultaneously and made sure that changes in one were reflected in the other.  Although these tests did not provide a total guarantee that all of the functions work, they provided assurance that they at least worked in the normal case.
+
+We define a Request/Response protocol that specifies what the client can send to the server, what commands the server will recognize, and the format of the data the client expects back. Responses have an attribute that indicates the intended action was a SUCCESS or FAILURE.
+
+To test server’s functionality, we follow the convention of testing functionality instead of specific functions (functional testing as opposed to unit testing). We use JUnit to mimic Requests sent by a Client and compare the server Responses to what we would expect. 
+
+A note on terminology: a client refers to a socket connection, which can be linked to a single elf. When we say a “client does X”, it refers to the elf doing X.
+
+============
+Welcome screen
+============
+* Single client request
+- Client sends SignUp request with a novel username server returns SUCCESS.
+- Client sends SignUp request with a known username, server returns FAILURE.
+- Client sends SignIn request with a unknown username, server returns FAILURE.
+- Client sends SignIn request with an existing username, server returns SUCCESS.
+
+* Multi client requests
+- 10 clients send SignUp requests with a unique user-id, server returns SUCCESS for each one.
+
+============
+Central Board
+============
+- 10 multiple clients send 1 post request each with pre-specified titles and contents. Server returns SUCCESS to all of them.
+- One single client gets all posts from the central board. The returned posts should be the same as those that were inserted earlier, ordered by created dates.
+- A single client votes either Upsock or Downsock on a post they have not voted on before. The server returns SUCCESS, and the number of upsocks or downsocks is incremented by 1.
+- A single client attempts to vote a second time (either up or down) on a post. The server returns FAILURE.
+- A client attempts to delete one of their own posts. The server returns SUCCESS.
+- A client attempts to delete another post. The server returns FAILURE.
+- Multiple clients can vote on different posts. The server should return the posts sorted by total socks, then by date.
+- Querying the elf board of any elf should give its current sock count and its description.
+
+============
+Elf Profile
+============
+- An elf updates their profile. This change is reflected to other elves.
+- An elf cannot have an empty profile.
+
+============
+Clan Board
+============
+- 10 clients each creates one clan. Server returns SUCCESS.
+- 10 clients try to apply to all other clans. Server returns SUCCESS. Clients try to apply to its own clan. Server returns FAILURE.
+- Clan owners accept and deny some of the applications. Server sends SUCCESS.
+- Clan owners and members create posts, receives SUCCESS; Outsiders create posts on the clan board, receives FAILURE.
+- All clients try to get Clan Board, receive SUCCESS. The clan board should contain name, description, and numSock. Only members can receive private board. 
+- Clan owners and members remove posts, receive SUCCESS. Outsiders remove posts on the clan board, check FAILURE.
+- Clan members leave Clan, receive SUCCESS. Also check all posts on the clan posting board is gone. Check the member list in Clan does not contain this elf. Outsiders or leader leaves clan, receives FAILURE.
+- When an outsider attempts disband a clan, properly receives FAILURE. When an applicant attempts to disband a clan, properly receives FAILURE. When a member attempts to disband a clan, properly receives FAILURE. When a leader attempts to disband a clan, properly receives SUCCESS. When the leader attempts to disband an already disbanded clan, properly receives FAILURE. In short: only a leader can disband a clan and only once.
+
+
+============
+Clan Directory
+============
+
+- 50 clients try to create unique clans; server returns SUCCESS for each one.
+- 50 clients try to read the clan directory. Clans are returned in the order of their named sorted lexicographically.
