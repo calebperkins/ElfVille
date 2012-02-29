@@ -3,12 +3,16 @@ package testcases;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import org.junit.Test;
 
+import elfville.client.views.subcomponents.ClanPosts;
 import elfville.protocol.*;
 import elfville.protocol.Response.Status;
 import elfville.protocol.models.SerializableClan;
 import elfville.protocol.models.SerializableElf;
+import elfville.protocol.models.SerializablePost;
 
 //TODO: actual tests
 public class ClanBoardTest extends TestBase {
@@ -73,7 +77,29 @@ public class ClanBoardTest extends TestBase {
 	// Clan owners and members create posts, check SUCCESS
 	// outsiders create posts on the clan board, check FAILURE
 	public void test4CreatePost() throws IOException {
+		ClanListingRequest req = new ClanListingRequest();
+		ClanListingResponse resp = socketControllers.get(0).send(req);
+		assertEquals(resp.status, Status.SUCCESS);
 		
+		for(int i = 0; i < clientNum; i++){
+			SerializableClan clan = resp.clans.get(i);
+			
+			for(int j = 0; j <clientNum; j++){
+				SerializablePost post = new SerializablePost();
+				post.title= "post on board: " +i + " by elf: " +j;
+				post.content= "lol";
+				PostClanBoardRequest postReq= new PostClanBoardRequest(post, clan.modelID);
+				Response postResp =  socketControllers.get(j).send(postReq);
+				
+				//if the client is a smaller or equal number to the owner, 
+				//the post will succeed.  otherwise, it will fail.
+				if(j <= i){
+					assertTrue(postResp.isOK());
+				} else {
+					assertFalse(postResp.isOK());
+				}
+			}
+		}
 		
 	}
 	
@@ -88,8 +114,36 @@ public class ClanBoardTest extends TestBase {
 	// Clan owners and members remove posts, check SUCCESS
 	// outsiders remove posts on the clan board, check FAILURE
 	public void test6RemovePost() throws IOException {
+		ClanListingRequest req = new ClanListingRequest();
+		ClanListingResponse resp = socketControllers.get(0).send(req);
+		assertEquals(resp.status, Status.SUCCESS);
 		
-		
+		for(int i = 0; i < clientNum; i++){
+			SerializableClan clan = resp.clans.get(i);
+			
+			for(int j = 0; j <clientNum; j++){
+				ClanBoardRequest req2 = new ClanBoardRequest(clan.modelID);
+				ClanBoardResponse resp2 = socketControllers.get(j).send(req2);
+				assertEquals(resp2.status, Status.SUCCESS);
+				ArrayList<SerializablePost> posts = (ArrayList<SerializablePost>) resp2.clan.posts;
+
+				for(int k = 0; k < posts.size(); k++){
+					SerializablePost post = posts.get(k);
+					ModifyClanRequest modReq= new ModifyClanRequest(clan, post);
+
+					//should fail if the user did not make the post.  don't let the leader 
+					//try because he can remove anything 
+					if(i != j){
+					Response deleteResp=  socketControllers.get(j).send(modReq);
+						if(post.myPost){
+							assertTrue(deleteResp.isOK());
+						} else {
+							assertFalse(deleteResp.isOK());
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	@Test
