@@ -12,7 +12,7 @@ import elfville.server.SecurityUtils;
 /*
  * Clan Model.
  */
-public class Clan extends Model {
+public class Clan extends Model implements Comparable<Clan> {
 	private static final long serialVersionUID = -696380887203611286L;
 	private String name;
 	private String description;
@@ -216,5 +216,10 @@ public class Clan extends Model {
 				&& !members.containsKey(elf.getModelID())) {
 			applicants.remove(elf.getModelID());
 		}
+	}
+
+	@Override
+	public int compareTo(Clan c) {
+		return name.compareTo(c.name);
 	}
 }

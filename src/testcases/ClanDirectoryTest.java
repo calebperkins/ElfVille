@@ -13,6 +13,7 @@ public class ClanDirectoryTest extends TestBase {
 
 	@Test
 	public void test1CreateClan() throws IOException {
+		// Assert you can save clans successfully
 		for (int i = 0; i < 50; i++) {
 			String clanName= "clan-" + i;
 			String description= "description-" + i;
