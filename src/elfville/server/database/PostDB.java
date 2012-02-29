@@ -21,8 +21,8 @@ public class PostDB extends DB {
 		idMap.put(post.getModelID(), post);
 	}
 
-	public void delete(Post post) {
-		idMap.remove(post);
+	public void delete(int i) {
+		idMap.remove(i);
 	}
 
 	public Post findByModelID(int modelID) {
