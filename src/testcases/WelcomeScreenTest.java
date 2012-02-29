@@ -7,12 +7,15 @@ import java.net.UnknownHostException;
 
 import org.junit.Test;
 
+import elfville.protocol.ProfileRequest;
 import elfville.protocol.Response;
 import elfville.protocol.SignInRequest;
 import elfville.protocol.SignUpRequest;
 import elfville.protocol.Response.Status;
 
 public class WelcomeScreenTest extends TestBase {
+	
+	public static String descriptions[]; 
 
 	@Test
 	public void test1SignUp() throws UnknownHostException, IOException {
@@ -37,6 +40,8 @@ public class WelcomeScreenTest extends TestBase {
 		for (int i = 1; i < clientNum; i++) {
 			// System.out.println("kkkkkkk " + i);
 			SignUpRequest req = new SignUpRequest("user" + i, "");
+			descriptions[i]= "sdfkjdsf"+i;
+			req.description= descriptions[i];
 			Response resp = socketControllers.get(i).send(req);
 			// System.out.println("multi signup: " + i + " " + resp.status.toString());
 			assertEquals(resp.status, Status.SUCCESS);
