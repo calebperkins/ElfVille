@@ -125,7 +125,7 @@ public class ClanBoardTest extends TestBase {
 				assertEquals("description-" + x, clanRes.clan.clanDescription);
 				assertEquals("user" + (i % clientNum), clanRes.clan.leader.elfName);
 				
-				assertTrue(clanRes.isOK() == (clanRes.clan.posts.size() == 0));
+				assertTrue((k > i) == (clanRes.clan.posts.size() == 0));
 			}
 		}
 	}
