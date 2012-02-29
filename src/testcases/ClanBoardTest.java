@@ -125,7 +125,7 @@ public class ClanBoardTest extends TestBase {
 				assertEquals("description-" + x, clanRes.clan.clanDescription);
 				assertEquals("user" + (i % clientNum), clanRes.clan.leader.elfName);
 				
-				assertTrue(clanRes.isOK() == (clanRes.clan.posts.size() == 0));
+				assertTrue((k > i) == (clanRes.clan.posts.size() == 0));
 			}
 		}
 	}
@@ -196,11 +196,57 @@ public class ClanBoardTest extends TestBase {
 	
 	@Test
 	// Leader disbands a clan, check SUCCESS. Check that Clan Directory does not contain it.
-	// Also recheck the former steps and expect FAILURE.
+	// Also recheck the former steps and expect FAILURE. (try to disband already disbanded clan)
 	// Clan members try to disband a clan, check FAILURE.
 	// Outsiders try to disband a clan, check FAILURE.
+	// Applicants try to disband a clan, check FAILURE.
 	public void test8DisbandClan() throws IOException {
+		// step 1, 0 create clan
+		CreateClanRequest createClan = new CreateClanRequest("test8 clan", "the clan used for test 8");
+		Response resp = socketControllers.get(0).send(createClan);
+		assertTrue(resp.isOK());
 		
+		// get clan we just created
+		ClanListingRequest getClans = new ClanListingRequest();
+		ClanListingResponse clans = socketControllers.get(0).send(getClans);
+		SerializableClan clan = null;
+		for (SerializableClan candidateClan : clans.clans) {
+			if (candidateClan.clanName.equals("test8 clan")) {
+				clan = candidateClan;
+			}
+		}
+		// step 2, 1 applies to clan
+		ModifyClanRequest apply = new ModifyClanRequest(clan, ModifyClanRequest.ModClan.APPLY);
+		socketControllers.get(1).send(apply);
+		// step 6, 2 applies to clan
+		socketControllers.get(2).send(apply);
+		// step 7, 0 accepts 1
+		ClanBoardRequest clanBoardReq = new ClanBoardRequest(clan.modelID);
+		ClanBoardResponse clanBoard = socketControllers.get(0).send(clanBoardReq);
+		SerializableElf elf = null;
+		for (SerializableElf elfCandidate : clanBoard.clan.members) {
+			if (elfCandidate.elfName.equals("user1")) {
+				elf = elfCandidate;
+			}
+		}
+		ModifyClanRequest accept = new ModifyClanRequest(elf, clan, true);
+		socketControllers.get(0).send(accept);
+		// step 8, 3 disband clan
+		ModifyClanRequest disband = new ModifyClanRequest(clan, ModifyClanRequest.ModClan.DELETE);
+		resp = socketControllers.get(3).send(disband);
+		assertTrue(!resp.isOK());
+		// step 9, 2 disband clan
+		resp = socketControllers.get(2).send(disband);
+		assertTrue(!resp.isOK());
+		// step 10, 1 disband clan
+		resp = socketControllers.get(1).send(disband);
+		assertTrue(!resp.isOK());
+		// step 2, 0 disband clan
+		resp = socketControllers.get(0).send(disband);
+		assertTrue(resp.isOK());
+		// step 3, 0 disband clan
+		resp = socketControllers.get(1).send(disband);
+		assertTrue(!resp.isOK());
 	}
 	
 }
