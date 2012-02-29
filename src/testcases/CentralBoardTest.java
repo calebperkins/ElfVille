@@ -38,37 +38,15 @@ public class CentralBoardTest extends TestBase {
 
 		for (int i = 0; i < clientNum; i++) {
 			SerializablePost post = resp.posts.get(clientNum - i - 1);  // the latest comes first
-			System.out.println("get " + i);
-			System.out.println(post.title);
-			System.out.println(post.content);
+			// System.out.println("get " + i);
+			// System.out.println("title is: " + post.title);
+			// System.out.println("content is: " + post.content);
 			assertEquals("title-" + i, post.title);
 			assertEquals("content-" + i, post.content);
 		}
 
 	}
 	
-	@Test
-	public void testVoting() throws IOException {
-		// make post
-		PostCentralBoardRequest req = new PostCentralBoardRequest("a message",
-				"a title");
-		socketControllers.get(0).send(req);
-		
-		// get posts
-		CentralBoardRequest req2 = new CentralBoardRequest();
-		CentralBoardResponse resp2 = socketControllers.get(0).send(req2);
-		
-		// ensure you can vote
-		String postA = resp2.posts.get(0).modelID;
-		VoteRequest voteReq = new VoteRequest(postA, true);
-		Response voteResp = socketControllers.get(0).send(voteReq);
-		assertTrue(voteResp.isOK());
-		
-		// ensure you cannot vote on same post twice
-		Response voteResp2 = socketControllers.get(0).send(voteReq);
-		assertFalse(voteResp2.isOK());
-	}
-
 	@Test
 	// A single client votes either Upsock or Downsock on posts. 
 	// Check if SUCCESS is returned. Check if the returned posts get
@@ -81,8 +59,8 @@ public class CentralBoardTest extends TestBase {
 		for (int i = 0; i < clientNum; i++) {
 			SerializablePost post = resp.posts.get(i);
 			VoteRequest voteReq = new VoteRequest(post.modelID, i / 2 == 0);
-			Response voteRes = socketControllers.get(0).send(req);
-			assertEquals(voteRes.status, Status.SUCCESS);
+			Response voteRes = socketControllers.get(0).send(voteReq);
+			assertTrue(voteRes.isOK());
 		}
 
 		resp = socketControllers.get(0).send(req);
@@ -108,32 +86,36 @@ public class CentralBoardTest extends TestBase {
 		for (int i = 0; i < clientNum; i++) {
 			SerializablePost post = resp.posts.get(i);
 			VoteRequest voteReq = new VoteRequest(post.modelID, i / 2 == 0);
-			Response voteRes = socketControllers.get(0).send(req);
-			assertEquals(voteRes.status, Status.FAILURE);
+			Response voteRes = socketControllers.get(0).send(voteReq);
+			assertFalse(voteRes.isOK());
 		}
 
 
 		for (int i = 0; i < clientNum; i++) {
 			SerializablePost post = resp.posts.get(i);
 			VoteRequest voteReq = new VoteRequest(post.modelID, i / 2 != 0);
-			Response voteRes = socketControllers.get(0).send(req);
-			assertEquals(voteRes.status, Status.FAILURE);
+			Response voteRes = socketControllers.get(0).send(voteReq);
+			assertFalse(voteRes.isOK());
 		}
 
 	}
 
 	@Test
-	// Clients delete their votes. Check SUCCEED
-	public void test5DeleteVote() throws IOException {
+	// Clients delete their posts. Check SUCCEED
+	public void test5DeletePost() throws IOException {
 		CentralBoardRequest req = new CentralBoardRequest();
 		CentralBoardResponse resp = socketControllers.get(0).send(req);
 		assertEquals(resp.status, Status.SUCCESS);
 
 		for (int i = 0; i < clientNum; i++) {
-			SerializablePost post = resp.posts.get(i);
+			SerializablePost post = resp.posts.get(clientNum - i - 1);
+			System.out.println("deleting post is: " + post.title);
 			DeleteCentralBoardRequest deleteReq = new DeleteCentralBoardRequest(post);
+			
 			Response deleteRes = socketControllers.get(i).send(deleteReq);
-			assertEquals(deleteRes.status, Status.SUCCESS);
+			
+			System.out.println("delete::: " + i + " " + post.elfModelID + " " + post.myPost + " " + deleteRes.status.toString());
+			assertTrue(deleteRes.isOK());
 		}
 	}
 	
@@ -144,14 +126,15 @@ public class CentralBoardTest extends TestBase {
 
 		CentralBoardRequest req = new CentralBoardRequest();
 		CentralBoardResponse resp = socketControllers.get(0).send(req);
-		assertEquals(resp.status, Status.SUCCESS);
+		assertTrue(resp.isOK());
 		
 		// Vote in the descending order, i.e. vote clientNum gets 
 		for (int i = 0; i < clientNum; i++) {
 			for (int k = i; k < clientNum; k++) {
 				VoteRequest voteReq = new VoteRequest(resp.posts.get(k).modelID, true);
-				Response voteRes = socketControllers.get(i).send(req);
-				assertEquals(voteRes.status, Status.SUCCESS);
+				Response voteRes = socketControllers.get(i).send(voteReq);
+				System.out.println("voted once: " + voteRes.status.toString());
+				assertTrue(voteRes.isOK());
 			}
 		}
 		
