@@ -13,6 +13,7 @@ public class ClanDirectoryTest extends TestBase {
 
 	@Test
 	public void test1CreateClan() throws IOException {
+		// Assert you can save clans successfully
 		for (int i = 0; i < 50; i++) {
 			String clanName= "clan-" + i;
 			String description= "description-" + i;
@@ -21,7 +22,7 @@ public class ClanDirectoryTest extends TestBase {
 			clan.clanDescription= description;
 			CreateClanRequest req= new CreateClanRequest(clan);
 			Response resp = socketControllers.get(0).send(req);
-			System.out.println(resp.status.toString());
+			System.out.println(resp.status);
 			assertEquals(resp.status, Status.SUCCESS);
 		}
 	}
@@ -31,7 +32,7 @@ public class ClanDirectoryTest extends TestBase {
 		System.out.println("getClansTesting");
 		ClanListingRequest req = new ClanListingRequest();
 		ClanListingResponse resp = socketControllers.get(0).send(req);
-		System.out.println(resp.status.toString());
+		System.out.println(resp.status);
 		assertEquals(resp.status, Status.SUCCESS);
 		System.out.println(resp.clans.size());
 
