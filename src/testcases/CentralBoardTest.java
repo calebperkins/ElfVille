@@ -38,9 +38,9 @@ public class CentralBoardTest extends TestBase {
 
 		for (int i = 0; i < clientNum; i++) {
 			SerializablePost post = resp.posts.get(clientNum - i - 1);  // the latest comes first
-			System.out.println("get " + i);
-			System.out.println("title is: " + post.title);
-			System.out.println("content is: " + post.content);
+			// System.out.println("get " + i);
+			// System.out.println("title is: " + post.title);
+			// System.out.println("content is: " + post.content);
 			assertEquals("title-" + i, post.title);
 			assertEquals("content-" + i, post.content);
 		}
@@ -59,8 +59,8 @@ public class CentralBoardTest extends TestBase {
 		for (int i = 0; i < clientNum; i++) {
 			SerializablePost post = resp.posts.get(i);
 			VoteRequest voteReq = new VoteRequest(post.modelID, i / 2 == 0);
-			Response voteRes = socketControllers.get(0).send(req);
-			assertEquals(voteRes.status, Status.SUCCESS);
+			Response voteRes = socketControllers.get(0).send(voteReq);
+			assertTrue(voteRes.isOK());
 		}
 
 		resp = socketControllers.get(0).send(req);
@@ -86,16 +86,16 @@ public class CentralBoardTest extends TestBase {
 		for (int i = 0; i < clientNum; i++) {
 			SerializablePost post = resp.posts.get(i);
 			VoteRequest voteReq = new VoteRequest(post.modelID, i / 2 == 0);
-			Response voteRes = socketControllers.get(0).send(req);
-			assertEquals(voteRes.status, Status.FAILURE);
+			Response voteRes = socketControllers.get(0).send(voteReq);
+			assertFalse(voteRes.isOK());
 		}
 
 
 		for (int i = 0; i < clientNum; i++) {
 			SerializablePost post = resp.posts.get(i);
 			VoteRequest voteReq = new VoteRequest(post.modelID, i / 2 != 0);
-			Response voteRes = socketControllers.get(0).send(req);
-			assertEquals(voteRes.status, Status.FAILURE);
+			Response voteRes = socketControllers.get(0).send(voteReq);
+			assertFalse(voteRes.isOK());
 		}
 
 	}
@@ -112,7 +112,7 @@ public class CentralBoardTest extends TestBase {
 			DeleteCentralBoardRequest deleteReq = new DeleteCentralBoardRequest();
 			deleteReq.post = post;
 			Response deleteRes = socketControllers.get(i).send(deleteReq);
-			assertEquals(deleteRes.status, Status.SUCCESS);
+			assertTrue(deleteRes.isOK());
 		}
 	}
 	
@@ -123,14 +123,15 @@ public class CentralBoardTest extends TestBase {
 
 		CentralBoardRequest req = new CentralBoardRequest();
 		CentralBoardResponse resp = socketControllers.get(0).send(req);
-		assertEquals(resp.status, Status.SUCCESS);
+		assertTrue(resp.isOK());
 		
 		// Vote in the descending order, i.e. vote clientNum gets 
 		for (int i = 0; i < clientNum; i++) {
 			for (int k = i; k < clientNum; k++) {
 				VoteRequest voteReq = new VoteRequest(resp.posts.get(k).modelID, true);
-				Response voteRes = socketControllers.get(i).send(req);
-				assertEquals(voteRes.status, Status.SUCCESS);
+				Response voteRes = socketControllers.get(i).send(voteReq);
+				System.out.println("voted once: " + voteRes.status.toString());
+				assertTrue(voteRes.isOK());
 			}
 		}
 		
