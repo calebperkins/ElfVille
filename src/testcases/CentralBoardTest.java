@@ -148,7 +148,7 @@ public class CentralBoardTest extends TestBase {
 			if(i != 0){
 				assertEquals(WelcomeScreenTest.descriptions.get(i), elfresp.elf.description);
 			}
-			assertEquals(10 - i, elfresp.elf.numSocks);
+			assertEquals(clientNum - i, elfresp.elf.numSocks);
 				
 			assertEquals("title-" + i, post.title);
 			assertEquals("content-" + i, post.content);
