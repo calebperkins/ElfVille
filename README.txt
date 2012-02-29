@@ -3,6 +3,7 @@ Welcome to ElfVille, the ultimate social network for house elves.
 Directory contents
 ==================
 
+root
 * src - all files in here are *.java files, needed to compile the software
 * bin - this is where generated *.class files can go, and also *.jar files
 * README.txt - this file!
@@ -11,6 +12,15 @@ Directory contents
 * .classpath, .project - files needed if you use Eclipse to build
 * server.jar - a precompiled Server
 * client.jar - a precompiled Client
+
+src (and bin)
+* elfville - the code for both the server and the client
+* testcases - source for junit testing code
+
+elville
+* client - code for the client; includes views which are the high level "pages" that you see (views is legacy name from when we were using a cardlayout); and views in turn has the sub package "subcomponents" which are generally JPanel elements on the view jpanel "pages".
+* protocol - These are the classes sent back and forth between the client and the server (all are serializable). This has the subpackage "models" which contains classes that contain information that is data (and not merely a signalt to the server (or client) of what to do with the received message).
+* server - code for the server. Includes the database classes (storing and retrieving information), the model classes (the data objects), and the controller classes (deal with incoming requests (and sending responses back)).
 
 Compiling and running the software from source code
 ===================================================
@@ -21,11 +31,11 @@ Compiling and running the software from source code
 
 3. For "Select root directory", select the directory in which you downloaded ElfVille. Select to import ElfVille. Click Finish.
 
-4. Eclipse will generate and compile all the .class files for you. Right-click the project and select Export. Select Java -> JAR file -> Next. Select where you want to save the JAR file and click Next. Click Next again.
+4. Eclipse will generate and compile all the .class files for you. Right-click the project and select Export. Select Java -> JAR file -> Next. Select where you want to save the JAR file (name this one server.jar) and click Next. Click Next again.
 
 5. Under "Main class:", select "Server." Click Finish.
 
-6. To build the client jar, repeat step 4, and for step 5, select "Client."
+6. To build the client jar, repeat step 4 (but name it client.jar), and for step 5, select "Client."
 
 Running the server
 ==================
