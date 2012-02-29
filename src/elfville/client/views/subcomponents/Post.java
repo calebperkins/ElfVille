@@ -2,8 +2,6 @@ package elfville.client.views.subcomponents;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-
 import javax.swing.*;
 
 import elfville.client.views.Board;
@@ -11,16 +9,10 @@ import elfville.protocol.ClanBoardResponse;
 import elfville.protocol.DeleteCentralBoardRequest;
 import elfville.protocol.ModifyClanRequest;
 import elfville.protocol.Request;
-import elfville.protocol.Response;
-import elfville.protocol.VoteRequest;
-import elfville.protocol.models.SerializableClan;
 import elfville.protocol.models.SerializablePost;
 
 /**
  * Displays an individual post.
- * 
- * @author Caleb Perkins
- * @author Aaron Martinez
  * 
  */
 public class Post extends JPanel {

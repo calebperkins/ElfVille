@@ -13,6 +13,18 @@ import elfville.protocol.ModifyClanRequest.ModClan;
 import elfville.protocol.models.SerializableClan;
 
 
+/**
+ * Provides a summary of the clan at the top of a clan page,
+ * including the name of the clan, a link to the leader's page,
+ * the description of a clan, and a button taht does different
+ * things depending on the user's relationship with the clan.
+ * If the user is an outsider it allows them to ask to join.
+ * If the user is an applicant (asked to join) it's greyed out
+ * and indicates that they're still waiting for the leader's decision.
+ * If the user is the leader it allows the leader to disband/delete the clan.
+ * if the user is a member it allows the member to leave the clan.
+ *
+ */
 public class ClanDetails extends JPanel
 implements ActionListener, SocketController.SuccessFunction {
 	private static final long serialVersionUID = 1L;

@@ -10,10 +10,7 @@ import elfville.client.views.Board;
 import elfville.protocol.*;
 
 /**
- * Generic class for sending socket requests. Most methods are static. Why? Why
- * not?
- * 
- * @author Caleb Perkins
+ * Generic class for sending socket requests. * 
  * 
  */
 public class SocketController {
@@ -21,6 +18,14 @@ public class SocketController {
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
 	
+	/**
+	 * Used to tell the sendRequest method how to respond
+	 * to a success message from the server (e.g., how to
+	 * create a new central board given that the server
+	 * responded with the current contents a central board
+	 * should display). 
+	 *
+	 */
 	public interface SuccessFunction {
 		public void handleRequestSuccess(Response resp);
 	}

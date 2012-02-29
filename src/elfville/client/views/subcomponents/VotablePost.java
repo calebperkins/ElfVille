@@ -9,6 +9,11 @@ import elfville.client.views.Board;
 import elfville.protocol.VoteRequest;
 import elfville.protocol.models.SerializablePost;
 
+/**
+ * Not only shows a post, but also shows two buttons
+ * that allow the user to vote on the merits of the post.
+ *
+ */
 public class VotablePost extends Post {
 	private static final long serialVersionUID = 1L;
 	private final Board board;

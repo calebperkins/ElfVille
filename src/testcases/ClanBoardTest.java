@@ -7,15 +7,14 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import elfville.client.views.subcomponents.ClanPosts;
 import elfville.protocol.*;
 import elfville.protocol.Response.Status;
 import elfville.protocol.models.SerializableClan;
 import elfville.protocol.models.SerializableElf;
 import elfville.protocol.models.SerializablePost;
 
-//TODO: actual tests
 public class ClanBoardTest extends TestBase {
+	
 	@Test
 	public void test1CreateClan() throws IOException {
 		// Assert you can save clans successfully
@@ -64,6 +63,7 @@ public class ClanBoardTest extends TestBase {
 			
 			ClanBoardRequest clanReq = new ClanBoardRequest(clan.modelID);
 			ClanBoardResponse clanRes = socketControllers.get(i).send(clanReq);
+			assertTrue(clanRes.isOK());
 			for (int k = 0; k < clanRes.clan.applicants.size(); k++) {
 				SerializableElf elf = clanRes.clan.applicants.get(k);
 				ModifyClanRequest modReq = new ModifyClanRequest(elf, clan, k<i);
@@ -107,7 +107,26 @@ public class ClanBoardTest extends TestBase {
 	// Clan owners and member get Clan Board, check SUCCESS. The clan page should contain name, description, numSock, and private board. 
 	// Outsider get Clan Board, check SUCCESS. The clan page should contain everything except private board.
 	public void test5GetClanBoard() throws IOException {
-		
+		ClanListingRequest req = new ClanListingRequest();
+		ClanListingResponse resp = socketControllers.get(0).send(req);
+		assertEquals(resp.status, Status.SUCCESS);
+
+		for (int i = 0; i < clientNum; i++) {
+			SerializableClan clan = resp.clans.get(i);
+			String x = String.format("%2d", i); // needed to ensure lexographic order
+
+			for (int k = 0; k < clientNum; k++) {
+				ClanBoardRequest clanReq = new ClanBoardRequest(clan.modelID);
+				ClanBoardResponse clanRes = socketControllers.get(k).send(clanReq);
+				System.out.println("getclanboard: " + k + i + " " + clanRes.isOK());
+				// Check if clan page contains name, description, numSock
+				assertEquals("clan-" + x, clanRes.clan.clanName);
+				assertEquals("description-" + x, clanRes.clan.clanDescription);
+				assertEquals("user" + (i % clientNum), clanRes.clan.leader.elfName);
+				
+				assertTrue(clanRes.isOK() == (clanRes.clan.posts.size() == 0));
+			}
+		}
 	}
 	
 	@Test

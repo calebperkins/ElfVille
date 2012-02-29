@@ -12,8 +12,6 @@ import elfville.protocol.models.SerializablePost;
 /**
  * Renders the central board using the central board request.
  * 
- * @author Caleb Perkins
- * 
  */
 public class CentralBoard extends Board {
 	private static final long serialVersionUID = 1L;
@@ -21,6 +19,12 @@ public class CentralBoard extends Board {
 	private final JPanel createPost = new CreatePostPanel(this, null);
 	
 
+	/**
+	 * Creates a new CentralBoard pane (with updated information)
+	 * to display to the user.
+	 * @param clientWindow
+	 * @param socketController
+	 */
 	public CentralBoard(ClientWindow clientWindow, 
 			SocketController socketController) {
 		super(clientWindow, socketController);
