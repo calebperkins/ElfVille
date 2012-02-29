@@ -131,8 +131,7 @@ public class CentralBoardTest extends TestBase {
 
 		for (int i = 0; i < clientNum; i++) {
 			SerializablePost post = resp.posts.get(i);
-			DeleteCentralBoardRequest deleteReq = new DeleteCentralBoardRequest();
-			deleteReq.post = post;
+			DeleteCentralBoardRequest deleteReq = new DeleteCentralBoardRequest(post);
 			Response deleteRes = socketControllers.get(i).send(deleteReq);
 			assertEquals(deleteRes.status, Status.SUCCESS);
 		}
