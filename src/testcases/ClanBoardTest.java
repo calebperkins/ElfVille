@@ -1,6 +1,6 @@
 package testcases;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import org.junit.Test;
@@ -8,6 +8,7 @@ import org.junit.Test;
 import elfville.protocol.*;
 import elfville.protocol.Response.Status;
 import elfville.protocol.models.SerializableClan;
+import elfville.protocol.models.SerializableElf;
 
 //TODO: actual tests
 public class ClanBoardTest extends TestBase {
@@ -23,7 +24,7 @@ public class ClanBoardTest extends TestBase {
 			clan.clanDescription= description;
 			CreateClanRequest req= new CreateClanRequest(clan);
 			Response resp = socketControllers.get(i % clientNum).send(req);
-			assertEquals(resp.status, Status.SUCCESS);
+			assertTrue(resp.isOK());
 		}
 	}
 	
@@ -31,14 +32,41 @@ public class ClanBoardTest extends TestBase {
 	// All clients try to apply to all other clans. Check if this SUCCEED.
 	// Client try to apply to its own clan. Check if this FAIL.
 	public void test2ApplyClan() throws IOException {
-		
+
+		ClanListingRequest req = new ClanListingRequest();
+		ClanListingResponse resp = socketControllers.get(0).send(req);
+		assertEquals(resp.status, Status.SUCCESS);
+
+		for (int i = 0; i < clientNum; i++) {
+			for (int k = 0; k < clientNum; k ++) {
+				SerializableClan clan = resp.clans.get(k);
+				ModifyClanRequest modReq = new ModifyClanRequest(clan, ModifyClanRequest.ModClan.APPLY);
+				Response modRes = socketControllers.get(i).send(modReq);
+				assertEquals(modRes.isOK(), i != k);
+			}
+		}
 	}
 	
 	@Test
 	// Clan owners accept half of the applications to check SUCCESS.
 	// CLan owners deny the other half of the applicants to check SUCCESS
 	public void test3ReplyApplicant() throws IOException {
-		
+		ClanListingRequest req = new ClanListingRequest();
+		ClanListingResponse resp = socketControllers.get(0).send(req);
+		assertEquals(resp.status, Status.SUCCESS);
+
+		for (int i = 0; i < clientNum; i++) {
+			SerializableClan clan = resp.clans.get(i);
+			
+			ClanBoardRequest clanReq = new ClanBoardRequest(clan.modelID);
+			ClanBoardResponse clanRes = socketControllers.get(i).send(clanReq);
+			for (int k = 0; k < clanRes.clan.applicants.size(); k++) {
+				SerializableElf elf = clanRes.clan.applicants.get(k);
+				ModifyClanRequest modReq = new ModifyClanRequest(elf, clan, k<i);
+				Response modRes = socketControllers.get(i).send(modReq);
+				assertTrue(modRes.isOK());
+			}
+		}
 	}
 	
 	@Test
@@ -83,26 +111,4 @@ public class ClanBoardTest extends TestBase {
 		
 	}
 	
-	@Test
-	public void test9getClans() throws IOException {
-		System.out.println("getClansTesting");
-		ClanListingRequest req = new ClanListingRequest();
-		ClanListingResponse resp = socketControllers.get(0).send(req);
-		System.out.println(resp.status);
-		assertEquals(resp.status, Status.SUCCESS);
-		System.out.println(resp.clans.size());
-
-		for (int i = 0; i < clientNum; i++) {
-			String x = String.format("%2d", i); // needed to ensure lexographic order
-			SerializableClan clan = resp.clans.get(i);
-			System.out.println("what?");
-			System.out.println(clan.clanName);
-			System.out.println(clan.clanDescription);
-			System.out.println(clan.leader.elfName);
-			assertEquals("clan-" + x, clan.clanName);
-			assertEquals("description-" + x, clan.clanDescription);
-			assertEquals("user" + (i % clientNum), clan.leader.elfName);
-		}
-
-	}
 }
