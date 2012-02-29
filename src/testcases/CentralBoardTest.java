@@ -121,7 +121,7 @@ public class CentralBoardTest extends TestBase {
 	
 	@Test
 	// Multiple clients vote on different posts. Check if the returned posts are ordered correctly.
-	public void test6VoteOrder() throws IOException {
+	public void test6VoteOrderAndProfiles() throws IOException {
 		test1post();
 
 		CentralBoardRequest req = new CentralBoardRequest();
@@ -149,42 +149,11 @@ public class CentralBoardTest extends TestBase {
 			ProfileRequest elfreq= new ProfileRequest(post.elfModelID);
 			ProfileResponse elfresp= socketControllers.get(i).send(elfreq);
 			assertEquals(elfresp.status, Status.SUCCESS);
-			assertEquals(elfresp.elf.description, WelcomeScreenTest.descriptions[i]);
-				
-			assertEquals("title-" + i, post.title);
-			assertEquals("content-" + i, post.content);
-		}
-		
-		
-	}
-	
-	@Test
-	// Multiple clients vote on different posts. Check if the returned posts are ordered correctly.
-	public void testProfileViewing() throws IOException {
-		test1post();
-
-		CentralBoardRequest req = new CentralBoardRequest();
-		CentralBoardResponse resp = socketControllers.get(0).send(req);
-		assertTrue(resp.isOK());
-		
-		// Vote in the descending order, i.e. vote clientNum gets 
-		for (int i = 0; i < clientNum; i++) {
-			for (int k = i; k < clientNum; k++) {
-				VoteRequest voteReq = new VoteRequest(resp.posts.get(k).modelID, true);
-				Response voteRes = socketControllers.get(i).send(voteReq);
-				System.out.println("voted once: " + voteRes.status.toString());
-				assertTrue(voteRes.isOK());
+			if(i != 0){
+				assertEquals(WelcomeScreenTest.descriptions.get(i), elfresp.elf.description);
 			}
-		}
-		
-		req = new CentralBoardRequest();
-		resp = socketControllers.get(0).send(req);
-		assertEquals(resp.status, Status.SUCCESS);
-
-		for (int i = 0; i < clientNum; i++) {
-			SerializablePost post = resp.posts.get(i);  // reordered now. the first comes first
-			System.out.println(post.title);
-			System.out.println(post.content);
+			assertEquals(10 - i, elfresp.elf.numSocks);
+				
 			assertEquals("title-" + i, post.title);
 			assertEquals("content-" + i, post.content);
 		}

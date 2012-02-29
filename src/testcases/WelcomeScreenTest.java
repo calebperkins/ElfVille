@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ import elfville.protocol.Response.Status;
 
 public class WelcomeScreenTest extends TestBase {
 	
-	public static String descriptions[]; 
+	public static ArrayList<String> descriptions = new ArrayList<String>();
 
 	@Test
 	public void test1SignUp() throws UnknownHostException, IOException {
@@ -37,11 +38,12 @@ public class WelcomeScreenTest extends TestBase {
 
 	@Test
 	public void test3MultiSignUp() throws UnknownHostException, IOException {
+		descriptions.add("sdfkjdsf");
 		for (int i = 1; i < clientNum; i++) {
 			// System.out.println("kkkkkkk " + i);
 			SignUpRequest req = new SignUpRequest("user" + i, "");
-			descriptions[i]= "sdfkjdsf"+i;
-			req.description= descriptions[i];
+			descriptions.add("sdfkjdsf"+i);
+			req.description= descriptions.get(i);
 			Response resp = socketControllers.get(i).send(req);
 			// System.out.println("multi signup: " + i + " " + resp.status.toString());
 			assertEquals(resp.status, Status.SUCCESS);
