@@ -2,6 +2,7 @@ package elfville.protocol.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class SerializableClan extends SerializableModel {
 	/**
@@ -12,13 +13,12 @@ public class SerializableClan extends SerializableModel {
 	public String clanDescription;
 	public int numSocks;
 	public SerializableElf leader;
-	public List<SerializableElf> members;
+	public Set<SerializableElf> members;
 	public List<SerializableElf> applicants;
 	public List<SerializablePost> posts;
 
 	public SerializableClan() {
 		super();
-		members = new ArrayList<SerializableElf>();
 		posts = new ArrayList<SerializablePost>();
 		applicants = new ArrayList<SerializableElf>();
 	}

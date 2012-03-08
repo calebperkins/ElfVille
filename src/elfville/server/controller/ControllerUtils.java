@@ -33,7 +33,7 @@ public class ControllerUtils extends Controller {
 	public static ArrayList<SerializableClan> buildBoardList(List<Clan> clans) {
 		ArrayList<SerializableClan> out = new ArrayList<SerializableClan>();
 		for (Clan q : clans) {
-			SerializableClan c = q.getSerializableClan();
+			SerializableClan c = q.toSerializableClan();
 			// wipe the posts so that the user can't look at them
 			c.posts = null;
 			out.add(c);

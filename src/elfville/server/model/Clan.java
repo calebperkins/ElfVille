@@ -2,12 +2,13 @@ package elfville.server.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import elfville.protocol.models.SerializableClan;
 import elfville.protocol.models.SerializableElf;
-import elfville.server.Database;
 import elfville.server.SecurityUtils;
 
 /*
@@ -17,11 +18,11 @@ public class Clan extends Model implements Comparable<Clan> {
 	private static final long serialVersionUID = -696380887203611286L;
 	private final String name;
 	private final String description;
-	private ConcurrentHashMap<Integer, Post> posts;
+	private final List<Post> posts;
 
 	private final Elf leader;
-	private final ConcurrentHashMap<Integer, Elf> applicants;
-	private final ConcurrentHashMap<Integer, Elf> members;
+	private final SortedSet<Elf> applicants = Collections.synchronizedSortedSet(new TreeSet<Elf>());
+	private final SortedSet<Elf> members = Collections.synchronizedSortedSet(new TreeSet<Elf>());;
 
 	// private List<Post> posts;
 
@@ -29,20 +30,18 @@ public class Clan extends Model implements Comparable<Clan> {
 		super();
 		this.name = name;
 		this.description = description;
-		posts = new ConcurrentHashMap<Integer, Post>();
-		members = new ConcurrentHashMap<Integer, Elf>();
-		applicants = new ConcurrentHashMap<Integer, Elf>();
+		posts = Collections.synchronizedList(new ArrayList<Post>());
 		this.leader = leader;
-		members.put(leader.getModelID(), leader);
+		members.add(leader);
 	}
 
 	// make a serializable clan object out of this clan
-	public SerializableClan getSerializableClan() {
+	public SerializableClan toSerializableClan() {
 		SerializableClan sClan = new SerializableClan();
 		sClan.clanName = getName();
 		sClan.clanDescription = getDescription();
 		sClan.numSocks = getNumSock();
-		sClan.modelID = SecurityUtils.encryptIntToString(this.getModelID());
+		sClan.modelID = getEncryptedModelID();
 		sClan.applicants = getApplicants();
 		sClan.members = getMembers();
 		sClan.leader = getLeader().toSerializableElf();
@@ -50,29 +49,22 @@ public class Clan extends Model implements Comparable<Clan> {
 	}
 
 	public List<Post> getPosts() {
-		List<Post> postList = new ArrayList<Post>(posts.values());
-		Collections.sort(postList);
-		return postList;
+		Collections.sort(posts);
+		return posts;
 	}
 	
 	public List<SerializableElf> getApplicants() {
 		List<SerializableElf> applicantList = new ArrayList<SerializableElf>();
-		Set<Integer> applicantIDs = applicants.keySet();
-		List<Integer> applicantIDlist = new ArrayList<Integer>(); 
-		for (Integer id : applicantIDs) {
-			applicantIDlist.add(id);
-		}
-		Collections.sort(applicantIDlist);
-		for (Integer id : applicantIDlist) {
-			applicantList.add(applicants.get(id).toSerializableElf());
+		for (Elf e : applicants) {
+			applicantList.add(e.toSerializableElf());
 		}
 		return applicantList;
 	}
 
-	public List<SerializableElf> getMembers() {
-		List<SerializableElf> memberList = new ArrayList<SerializableElf>();
-		for (ConcurrentHashMap.Entry<Integer, Elf> member : members.entrySet()) {
-			memberList.add(member.getValue().toSerializableElf());
+	public Set<SerializableElf> getMembers() {
+		Set<SerializableElf> memberList = new HashSet<SerializableElf>();
+		for (Elf member : members) {
+			memberList.add(member.toSerializableElf());
 		}
 		return memberList;
 	}
@@ -80,8 +72,8 @@ public class Clan extends Model implements Comparable<Clan> {
 	/* The number of socks owned by all clan members combined */
 	public int getNumSock() {
 		int numSock = 0;
-		for (ConcurrentHashMap.Entry<Integer, Elf> member : members.entrySet()) {
-			numSock += member.getValue().getNumSocks();
+		for (Elf e : members) {
+			numSock += e.getNumSocks();
 		}
 		return numSock;
 	}
@@ -91,53 +83,48 @@ public class Clan extends Model implements Comparable<Clan> {
 	}
 	
 	// A stranger becomes an applicant
-	public void applyClan(Elf elf) {
-		if (applicants.containsKey(elf.getModelID())
-				|| members.containsKey(elf.getModelID())) {
+	public void apply(Elf elf) {
+		if (applicants.contains(elf)
+				|| members.contains(elf)) {
 			return;
 		}
-		while(applicants.get(elf.getModelID()) == null){
-			applicants.put(elf.getModelID(), elf);
-		}
+			applicants.add(elf);
 	}
 
 	// An applicant becomes a member
-	public void joinClan(Elf elf) {
-		if (applicants.containsKey(elf.getModelID())
-				&& !members.containsKey(elf.getModelID())) {
-			members.put(elf.getModelID(), elf);
-			applicants.remove(elf.getModelID());
+	public void join(Elf elf) {
+		if (applicants.contains(elf)
+				&& !members.contains(elf)) {
+			members.add(elf);
+			applicants.remove(elf);
 		}
 	}
 
 	// the database takes care of cascading delete
-	public void deleteClan() {
+	public void delete() {
 		database.clanDB.delete(this);
 	}
 
 	// The clan leader cannot do this operation
 	public void leaveClan(Elf elf) {
-		if (elf == getLeader()) {
+		if (isLeader(elf)) {
 			return;
 		}
-		for (ConcurrentHashMap.Entry<Integer, Post> post : posts.entrySet()) {
-			if (post.getValue().getElf() == elf) {
-				posts.remove(post.getValue().getModelID());
+		for (Post p : posts) {
+			if (p.getElf().equals(elf)) {
+				posts.remove(p);
 			}
 		}
-		members.remove(elf.getModelID());
+		members.remove(elf);
 	}
 
 	public boolean isLeader(Elf elf) {
-		if (elf == getLeader()) {
-			return true;
-		}
-		return false;
+		return elf.equals(leader);
 	}
 
 	// also true if the elf is the leader
 	public boolean isMember(Elf elf) {
-		return members.containsValue(elf);
+		return members.contains(elf);
 	}
 
 	public boolean isApplicant(Elf elf) {
@@ -145,37 +132,31 @@ public class Clan extends Model implements Comparable<Clan> {
 		// this is why I can't accept applicants (because they
 		// appear to not be applicants) and it is why an applicant
 		// doesn't appear as an applicant to the client.
-		return applicants.containsValue(elf);
+		return applicants.contains(elf);
 	}
 
 	public Post getPostFromEncrpytedModelID(String encryptedModelID) {
-		return posts.get(SecurityUtils.decryptStringToInt(encryptedModelID));
+		int id = SecurityUtils.decryptStringToInt(encryptedModelID);
+		for (Post p : posts) {
+			if (p.modelID == id)
+				return p;
+		}
+		return null;
 	}
 
 	public void createPost(Post post) {
-		posts.put(post.getModelID(), post);
-	}
-
-	public boolean hasPost(Post post) {
-		return posts.containsKey(post.getModelID());
-	}
-
-	public boolean hasPost(String encryptedModelID) {
-		return hasPost(getPostFromEncrpytedModelID(encryptedModelID));
+		posts.add(post);
 	}
 
 	public void deletePost(Post post) {
-		if (posts.containsKey(post.getModelID())) {
-			posts.remove(post.getModelID());
-		}
+		posts.remove(post);
 	}
 
 	public void deletePost(String encryptedModelID) {
 		deletePost(getPostFromEncrpytedModelID(encryptedModelID));
 	}
-
-	// auto generated getters and setters
-	public  String getName() {
+	
+	public String getName() {
 		return name;
 	}
 
@@ -186,17 +167,21 @@ public class Clan extends Model implements Comparable<Clan> {
 	@Override
 	public boolean save() {
 		// TODO add validations
-		if (Database.DB.clanDB.findByModelID(modelID) == null) {
-			Database.DB.clanDB.insert(this);
+		if (database.clanDB.findByModelID(modelID) == null) {
+			database.clanDB.insert(this);
 		}
 		return true;
 	}
 
 	public void deny(Elf elf) {
-		if (applicants.containsKey(elf.getModelID())
-				&& !members.containsKey(elf.getModelID())) {
-			applicants.remove(elf.getModelID());
+		if (applicants.contains(elf)
+				&& !members.contains(elf)) {
+			applicants.remove(elf);
 		}
+	}
+	
+	public static Clan get(String name) {
+		return database.clanDB.findByName(name);
 	}
 
 	@Override

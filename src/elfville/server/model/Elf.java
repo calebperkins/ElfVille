@@ -7,7 +7,7 @@ import elfville.protocol.models.SerializableElf;
 /*
  * Elf Model.
  */
-public class Elf extends Model {
+public class Elf extends Model implements Comparable<Elf> {
 	private static final long serialVersionUID = 4948830835289818367L;
 	private String name;
 	private String description;
@@ -17,6 +17,22 @@ public class Elf extends Model {
 		this.name = name;
 		this.description = description;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Elf) {
+			Elf other = (Elf) obj;
+			return other.getModelID() == modelID;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return modelID;
+	}
+
+
 
 	public List<Post> getPosts() {
 		return database.postDB.findCentralPostsByElf(this);
@@ -72,5 +88,10 @@ public class Elf extends Model {
 	
 	public static Elf get(int id) {
 		return database.elfDB.findByID(id);
+	}
+
+	@Override
+	public int compareTo(Elf other) {
+		return name.compareTo(other.name);
 	}
 }

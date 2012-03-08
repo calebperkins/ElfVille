@@ -34,7 +34,7 @@ public class ClanBoardControl extends Controller {
 		ClanBoardResponse outM = new ClanBoardResponse(Status.SUCCESS);
 
 		// Basic board info that is visible to all elves
-		outM.clan = clan.getSerializableClan();
+		outM.clan = clan.toSerializableClan();
 		
 		if (clan.isMember(elf) || clan.isLeader(elf)) {
 			ArrayList<SerializablePost> posts= 
@@ -143,7 +143,7 @@ public class ClanBoardControl extends Controller {
 			if (!clan.isLeader(elf)) {
 				return resp;
 			}
-			clan.deleteClan();
+			clan.delete();
 			break;
 
 		case APPLY:
@@ -152,7 +152,7 @@ public class ClanBoardControl extends Controller {
 					|| clan.isMember(elf)) {
 				return resp;
 			}
-			clan.applyClan(elf);
+			clan.apply(elf);
 			break;
 
 		case LEAVE:
@@ -184,7 +184,7 @@ public class ClanBoardControl extends Controller {
 				return resp;
 			}
 			
-			clan.joinClan(applicant);
+			clan.join(applicant);
 			
 			break;
 			

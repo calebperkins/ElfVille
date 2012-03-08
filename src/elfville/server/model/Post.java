@@ -108,13 +108,13 @@ public class Post extends Model implements Comparable<Post> {
 	}
 
 	@Override
-	public int compareTo(Post arg0) {
-		if (getNumSock() > arg0.getNumSock()) {
+	public int compareTo(Post other) {
+		if (getNumSock() > other.getNumSock()) {
 			return -1;
-		} else if (getNumSock() < arg0.getNumSock()) {
+		} else if (getNumSock() < other.getNumSock()) {
 			return 1;
 		} else {
-			return new Integer(arg0.getModelID()).compareTo(modelID);
+			return new Integer(other.getModelID()).compareTo(modelID);
 		}
 	}
 }
