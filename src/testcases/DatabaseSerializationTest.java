@@ -15,13 +15,10 @@ public class DatabaseSerializationTest {
 	public void testDBrestore() {
 		Database.DB = new Database();
 		
-		Elf e = new Elf();
-		e.setDescription("Likes pork");
-		e.setElfName("Larry");
+		Elf e = new Elf("Larry", "Likes pork");
 		e.save();
 		
-		Clan c = new Clan("Pork Lovers", "Clan of Larry");
-		c.setLeader(e);
+		Clan c = new Clan("Pork Lovers", "Clan of Larry", e);
 		c.save();
 		
 		try {
@@ -32,7 +29,7 @@ public class DatabaseSerializationTest {
 		
 		try {
 			Database.DB = Database.load("/tmp/elfville-test.db");
-			assertEquals("Elfs persist", e.getElfName(), Database.DB.elfDB.findByID(e.getModelID()).getElfName());
+			assertEquals("Elfs persist", e.getName(), Elf.get(e.getModelID()).getName());
 			assertEquals("Clans persist", c.getName(), Database.DB.clanDB.findByModelID(c.getModelID()).getName());
 		} catch (Exception e1) {
 			fail("Could not restore database: " + e1.getMessage());

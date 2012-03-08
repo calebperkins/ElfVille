@@ -34,7 +34,7 @@ public class ElfBoardControl extends Controller {
 		
 		SerializableElf profile= new SerializableElf();
 		profile.description= elf.getDescription();
-		profile.elfName= elf.getElfName();
+		profile.elfName= elf.getName();
 		profile.centralBoardPosts= ControllerUtils.
 				buildPostList(database.postDB.findCentralPostsByElf(elf), user.getElf());
 		profile.numSocks = elf.getNumSocks();

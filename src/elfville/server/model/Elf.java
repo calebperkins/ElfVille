@@ -3,28 +3,28 @@ package elfville.server.model;
 import java.util.List;
 
 import elfville.protocol.models.SerializableElf;
-import elfville.server.Database;
 
 /*
  * Elf Model.
  */
 public class Elf extends Model {
 	private static final long serialVersionUID = 4948830835289818367L;
-	private String elfName;
+	private String name;
 	private String description;
+	
+	public Elf(String name, String description) {
+		super();
+		this.name = name;
+		this.description = description;
+	}
 
 	public List<Post> getPosts() {
 		return database.postDB.findCentralPostsByElf(this);
 	}
 
-	public List<Clan> getClans() {
-		// TODO: haven't been implemented yet
-		return null;
-	}
-
-	public SerializableElf getSerializableElf() {
+	public SerializableElf toSerializableElf() {
 		SerializableElf elf = new SerializableElf();
-		elf.elfName = elfName;
+		elf.elfName = name;
 		elf.modelID = getEncryptedModelID();
 		elf.numSocks = getNumSocks();
 		elf.description = description;
@@ -40,16 +40,15 @@ public class Elf extends Model {
 		return numPost;
 	}
 
-	/* auto generated getter and setter functions */
-	public synchronized String getElfName() {
-		return elfName;
+	public String getName() {
+		return name;
 	}
 
-	public synchronized void setElfName(String elfName) {
-		this.elfName = elfName;
+	public synchronized void setName(String elfName) {
+		this.name = elfName;
 	}
 
-	public synchronized String getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
@@ -59,10 +58,19 @@ public class Elf extends Model {
 
 	@Override
 	public boolean save() {
-		// TODO add validations
-		if (Database.DB.elfDB.findByID(modelID) == null) {
-			Database.DB.elfDB.insert(this);
+		if (isValid()) {
+			if (get(modelID) == null)
+				database.elfDB.insert(this);
+			return true;
 		}
-		return true;
+		return false;
+	}
+	
+	private boolean isValid() {
+		return !name.isEmpty() && !description.isEmpty();
+	}
+	
+	public static Elf get(int id) {
+		return database.elfDB.findByID(id);
 	}
 }

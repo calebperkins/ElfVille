@@ -11,12 +11,12 @@ import elfville.protocol.models.SerializablePost;
  */
 public class Post extends Model implements Comparable<Post> {
 	private static final long serialVersionUID = 6422767335685038776L;
-	private Elf elf;
-	private String title;
-	private String content;
+	private final Elf elf;
+	private final String title;
+	private final String content;
 
-	private Set<Elf> upsockedElves;
-	private Set<Elf> downsockedElves;
+	private final Set<Elf> upsockedElves = Collections.synchronizedSet(new HashSet<Elf>());
+	private final Set<Elf> downsockedElves = Collections.synchronizedSet(new HashSet<Elf>());
 
 	//TODO: this should not take a serializable post as an argument.  code must be refactored
 	public Post(SerializablePost postRequest, Elf elf) {
@@ -25,8 +25,6 @@ public class Post extends Model implements Comparable<Post> {
 		title = postRequest.title;
 		content = postRequest.content;
 		this.elf = elf;
-		upsockedElves = Collections.synchronizedSet(new HashSet<Elf>());
-		downsockedElves = Collections.synchronizedSet(new HashSet<Elf>());
 	}
 
 	public SerializablePost toSerializablePost() {
@@ -36,7 +34,7 @@ public class Post extends Model implements Comparable<Post> {
 		sPost.createdAt = getCreatedAt();
 		sPost.upvotes = getNumUpsock();
 		sPost.downvotes = getNumDownsock();
-		sPost.username = elf.getElfName();
+		sPost.username = elf.getName();
 		sPost.elfModelID = elf.getEncryptedModelID();
 		sPost.modelID = getEncryptedModelID();
 		return sPost;
@@ -86,29 +84,22 @@ public class Post extends Model implements Comparable<Post> {
 
 	/* auto generated getters and setters */
 
-	public synchronized Elf getElf() {
+	public Elf getElf() {
 		return elf;
 	}
 
-	public synchronized void setElf(Elf elf) {
-		this.elf = elf;
-	}
-
-	public synchronized String getTitle() {
+	public String getTitle() {
 		return title;
 	}
 
-	public synchronized void setTitle(String title) {
-		this.title = title;
-	}
-
-	public synchronized String getContent() {
+	public String getContent() {
 		return content;
 	}
-
-	public synchronized void setContent(String content) {
-		this.content = content;
+	
+	public static Post get(String encID) {
+		return database.postDB.findByEncryptedModelID(encID);
 	}
+
 
 	@Override
 	public boolean save() {

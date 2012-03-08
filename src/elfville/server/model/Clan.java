@@ -15,27 +15,25 @@ import elfville.server.SecurityUtils;
  */
 public class Clan extends Model implements Comparable<Clan> {
 	private static final long serialVersionUID = -696380887203611286L;
-	private String name;
-	private String description;
+	private final String name;
+	private final String description;
 	private ConcurrentHashMap<Integer, Post> posts;
 
-	private Elf leader;
-	private ConcurrentHashMap<Integer, Elf> applicants;
-	private ConcurrentHashMap<Integer, Elf> members;
+	private final Elf leader;
+	private final ConcurrentHashMap<Integer, Elf> applicants;
+	private final ConcurrentHashMap<Integer, Elf> members;
 
 	// private List<Post> posts;
 
-	public Clan(String name, String description) {
+	public Clan(String name, String description, Elf leader) {
 		super();
 		this.name = name;
 		this.description = description;
 		posts = new ConcurrentHashMap<Integer, Post>();
 		members = new ConcurrentHashMap<Integer, Elf>();
 		applicants = new ConcurrentHashMap<Integer, Elf>();
-	}
-
-	public Clan() {
-		super();
+		this.leader = leader;
+		members.put(leader.getModelID(), leader);
 	}
 
 	// make a serializable clan object out of this clan
@@ -47,7 +45,7 @@ public class Clan extends Model implements Comparable<Clan> {
 		sClan.modelID = SecurityUtils.encryptIntToString(this.getModelID());
 		sClan.applicants = getApplicants();
 		sClan.members = getMembers();
-		sClan.leader = getLeader().getSerializableElf();
+		sClan.leader = getLeader().toSerializableElf();
 		return sClan;
 	}
 
@@ -66,7 +64,7 @@ public class Clan extends Model implements Comparable<Clan> {
 		}
 		Collections.sort(applicantIDlist);
 		for (Integer id : applicantIDlist) {
-			applicantList.add(applicants.get(id).getSerializableElf());
+			applicantList.add(applicants.get(id).toSerializableElf());
 		}
 		return applicantList;
 	}
@@ -74,7 +72,7 @@ public class Clan extends Model implements Comparable<Clan> {
 	public List<SerializableElf> getMembers() {
 		List<SerializableElf> memberList = new ArrayList<SerializableElf>();
 		for (ConcurrentHashMap.Entry<Integer, Elf> member : members.entrySet()) {
-			memberList.add(member.getValue().getSerializableElf());
+			memberList.add(member.getValue().toSerializableElf());
 		}
 		return memberList;
 	}
@@ -89,23 +87,9 @@ public class Clan extends Model implements Comparable<Clan> {
 	}
 
 	public Elf getLeader() {
-		Elf l;
-		synchronized (this) {
-			l = leader;
-		}
-		return l;
+		return leader;
 	}
-
-	public void setLeader(Elf elf) {
-		if (leader != null) {
-			// TODO: throws some errors!
-		}
-		synchronized (this) {
-			leader = elf;
-		}
-		members.put(elf.getModelID(), elf);
-	}
-
+	
 	// A stranger becomes an applicant
 	public void applyClan(Elf elf) {
 		if (applicants.containsKey(elf.getModelID())
@@ -191,19 +175,12 @@ public class Clan extends Model implements Comparable<Clan> {
 	}
 
 	// auto generated getters and setters
-	public synchronized String getName() {
+	public  String getName() {
 		return name;
 	}
-	public synchronized void setName(String name) {
-		this.name = name;
-	}
 
-	public synchronized String getDescription() {
+	public String getDescription() {
 		return description;
-	}
-
-	public synchronized void setDescription(String description) {
-		this.description = description;
 	}
 
 	@Override

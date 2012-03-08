@@ -108,7 +108,7 @@ public class CentralBoardControl extends Controller {
 			return resp;
 		}
 
-		Post post = Database.DB.postDB.findByEncryptedModelID(req.post.modelID);
+		Post post = Post.get(req.post.modelID);
 
 		if (post == null) {
 			return resp;

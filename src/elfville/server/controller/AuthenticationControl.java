@@ -29,22 +29,17 @@ public class AuthenticationControl extends Controller {
 			CurrentUserProfile currentUser) {
 		System.out.println("Sign up is called!");
 		Response outM;
-		User user = database.userDB.findUserByUsername(inM.username);
-		Elf elf;
+		User user = User.get(inM.username);
 		if (user != null) {
 			// username is taken
 			outM = new Response(Status.FAILURE, "The username is already taken");
 			System.out.println("The username is already taken");
 		} else {
-			elf = new Elf();
-			elf.setElfName(inM.username);
-			elf.setDescription(inM.description);
-			database.elfDB.insert(elf);
-			user = new User();
-			user.setElf(elf);
+			Elf elf = new Elf(inM.username, inM.description);
+			elf.save();
+			user = new User(elf, inM.username);
 			// user.setPassword("lolskates"); //TODO: password
-			user.setUsername(inM.username);
-			database.userDB.insert(user);
+			user.save();
 			// sign the user in
 			currentUser.setCurrentUserId(user.getModelID());
 

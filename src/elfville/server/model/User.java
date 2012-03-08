@@ -8,9 +8,14 @@ public class User extends Model {
 	private static final long serialVersionUID = -5955064170275055506L;
 	private String username;
 	private String password;
-	private Elf elf;
+	private final Elf elf;
+	
+	public User(Elf e, String uname) {
+		super();
+		elf = e;
+		username = uname;
+	}
 
-	// auto generated getters and setters
 	public synchronized String getUsername() {
 		return username;
 	}
@@ -27,18 +32,19 @@ public class User extends Model {
 		this.password = password;
 	}
 
-	public synchronized Elf getElf() {
+	public Elf getElf() {
 		return elf;
 	}
-
-	public synchronized void setElf(Elf elf) {
-		this.elf = elf;
+	
+	public static User get(String username) {
+		return database.userDB.findUserByUsername(username);
 	}
 	
 	@Override
 	public boolean save() {
-		// TODO Auto-generated method stub
-		return false;
+		// TODO: add validations
+		database.userDB.insert(this);
+		return true;
 	}
 
 }
