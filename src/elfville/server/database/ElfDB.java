@@ -7,11 +7,7 @@ import elfville.server.model.Elf;
 
 public class ElfDB extends DB {
 	private static final long serialVersionUID = 2139777693898457296L;
-	private ConcurrentHashMap<Integer, Elf> elves;
-
-	public ElfDB() {
-		elves = new ConcurrentHashMap<Integer, Elf>();
-	}
+	private final ConcurrentHashMap<Integer, Elf> elves = new ConcurrentHashMap<Integer, Elf>();
 
 	public void insert(Elf elf) {
 		elves.put(elf.getModelID(), elf);

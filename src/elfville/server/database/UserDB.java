@@ -7,13 +7,8 @@ import elfville.server.model.User;
 
 public class UserDB extends DB {
 	private static final long serialVersionUID = 7533814115667398893L;
-	private ConcurrentHashMap<Integer, User> id_map;
-	private ConcurrentHashMap<String, User> username_map;
-
-	public UserDB() {
-		id_map = new ConcurrentHashMap<Integer, User>();
-		username_map = new ConcurrentHashMap<String, User>();
-	}
+	private final ConcurrentHashMap<Integer, User> id_map = new ConcurrentHashMap<Integer, User>();
+	private final ConcurrentHashMap<String, User> username_map = new ConcurrentHashMap<String, User>();
 
 	public User findUserByModelID(int modelID) {
 		return id_map.get(modelID);

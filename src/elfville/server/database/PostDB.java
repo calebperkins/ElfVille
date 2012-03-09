@@ -11,11 +11,7 @@ import elfville.server.model.*;
 
 public class PostDB extends DB {
 	private static final long serialVersionUID = -5939983651247977959L;
-	private ConcurrentHashMap<Integer, Post> idMap;
-
-	public PostDB() {
-		idMap = new ConcurrentHashMap<Integer, Post>();
-	}
+	private final ConcurrentHashMap<Integer, Post> idMap = new ConcurrentHashMap<Integer, Post>();
 
 	public void insert(Post post) {
 		idMap.put(post.getModelID(), post);

@@ -10,18 +10,13 @@ import elfville.server.model.*;
 
 public class ClanDB extends DB {
 	private static final long serialVersionUID = -5780129841962632025L;
-	private ConcurrentHashMap<Integer, Clan> idMap;
-	private ConcurrentHashMap<String, Clan> nameMap;
+	private final ConcurrentHashMap<Integer, Clan> idMap = new ConcurrentHashMap<Integer, Clan>();;
+	private final ConcurrentHashMap<String, Clan> nameMap = new ConcurrentHashMap<String, Clan>();;
 
 	public List<Clan> getClans() {
 		ArrayList<Clan> clans = new ArrayList<Clan>(nameMap.values());
 		Collections.sort(clans);
 		return clans;
-	}
-
-	public ClanDB() {
-		idMap = new ConcurrentHashMap<Integer, Clan>();
-		nameMap = new ConcurrentHashMap<String, Clan>();
 	}
 
 	public Clan findByModelID(int modelID) {

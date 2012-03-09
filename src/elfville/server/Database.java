@@ -23,31 +23,14 @@ public class Database implements Serializable {
 	 */
 	public static Database DB;
 
-	public ClanDB clanDB;
-	public PostDB postDB;
-	public ElfDB elfDB;
-	// public ClanElfDB clanElfDB;
-	public UserDB userDB;
+	public final ClanDB clanDB = new ClanDB();
+	public final PostDB postDB = new PostDB();
+	public final ElfDB elfDB = new ElfDB();
+	public final UserDB userDB = new UserDB();
 
 	// Determines the modelID of all model objects.
 	// getAndIncrementCountID() will increment this by 1.
-	private int countID;
-
-	// Initiate a new Database object
-	public Database() {
-		clanDB = new ClanDB();
-		postDB = new PostDB();
-		elfDB = new ElfDB();
-		// clanElfDB = new ClanElfDB();
-		userDB = new UserDB();
-		countID = -1;
-
-		// TODO: testing. deleted later!
-		// Post p = new Post();
-		// p.setContent("this post is created in Database.java just to test");
-		// postDB.insert(p);
-
-	}
+	private int countID = -1;
 
 	// Read the database from disk
 	static public Database load(String dbLocation) throws Exception {
