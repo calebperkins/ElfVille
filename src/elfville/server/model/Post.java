@@ -14,9 +14,11 @@ public class Post extends Model implements Comparable<Post> {
 	private final int elfID;
 	private final String title;
 	private final String content;
+	
+	public int clanID = 0;
 
-	private final Set<Integer> upsockedElves = Collections.synchronizedSet(new HashSet<Integer>());
-	private final Set<Integer> downsockedElves = Collections.synchronizedSet(new HashSet<Integer>());
+	private final Set<Integer> upsocks = Collections.synchronizedSet(new HashSet<Integer>());
+	private final Set<Integer> downsocks = Collections.synchronizedSet(new HashSet<Integer>());
 
 	//TODO: this should not take a serializable post as an argument.  code must be refactored
 	public Post(SerializablePost postRequest, Elf elf) {
@@ -42,7 +44,7 @@ public class Post extends Model implements Comparable<Post> {
 	public SerializablePost toSerializablePost(Elf elf){
 		SerializablePost sPost= toSerializablePost();
 		Integer id = elf.modelID;
-		sPost.iVoted= this.downsockedElves.contains(id) || this.upsock(elf);
+		sPost.iVoted= this.downsocks.contains(id) || this.upsock(elf);
 		sPost.myPost= elf.modelID == elfID;
 		return sPost;
 	}
@@ -54,8 +56,8 @@ public class Post extends Model implements Comparable<Post> {
 	public boolean upsock(Elf upsockingElf) {
 		//each elf can only upsock OR downsock a single post
 		Integer id = upsockingElf.modelID;
-		if (!upsockedElves.contains(id) && !downsockedElves.contains(id)) {
-			upsockedElves.add(id);
+		if (!upsocks.contains(id) && !downsocks.contains(id)) {
+			upsocks.add(id);
 			return true;
 		}
 		return false;
@@ -65,23 +67,23 @@ public class Post extends Model implements Comparable<Post> {
 	public boolean downsock(Elf downsockingElf) {
 		Integer id = downsockingElf.modelID;
 		//each elf can only upsock OR downsock a single post
-		if (!downsockedElves.contains(id) && !upsockedElves.contains(id)) {
-			downsockedElves.add(id);
+		if (!downsocks.contains(id) && !upsocks.contains(id)) {
+			downsocks.add(id);
 			return true;
 		}
 		return false;
 	}
 
 	public int getNumUpsock() {
-		return upsockedElves.size();
+		return upsocks.size();
 	}
 
 	public int getNumDownsock() {
-		return downsockedElves.size();
+		return downsocks.size();
 	}
 
 	public int getNumSock() {
-		return upsockedElves.size() - downsockedElves.size();
+		return upsocks.size() - downsocks.size();
 	}
 
 	/* auto generated getters and setters */

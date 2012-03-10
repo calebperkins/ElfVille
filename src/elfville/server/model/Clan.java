@@ -146,6 +146,7 @@ public class Clan extends Model implements Comparable<Clan> {
 	}
 
 	public void createPost(Post post) {
+		post.clanID = modelID;
 		postIDs.add(post.modelID);
 		database.postDB.insert(post);
 	}
