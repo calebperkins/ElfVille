@@ -9,13 +9,12 @@ import javax.swing.*;
 import elfville.client.views.Board;
 
 /**
- * This panel provides the basis for requesting the server creates a clan
- * or a post for this user. Provides a bit of abstraction, but
- * basically provides a text field, a text area, and a button to send a
- * request. Create clan panel and create post panel then only
- * need to send some names to this class and implement an action listener
- * to actually send the request.
- *
+ * This panel provides the basis for requesting the server creates a clan or a
+ * post for this user. Provides a bit of abstraction, but basically provides a
+ * text field, a text area, and a button to send a request. Create clan panel
+ * and create post panel then only need to send some names to this class and
+ * implement an action listener to actually send the request.
+ * 
  */
 public abstract class CreatePanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -41,15 +40,15 @@ public abstract class CreatePanel extends JPanel implements ActionListener {
 		setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createTitledBorder("Create Clan"),
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-		
+
 		JButton button = new JButton(buttonLabel);
 		button.addActionListener(this);
-		
+
 		JLabel label = new JLabel(textFieldLabel);
 		label.setLabelFor(textField);
 		add(label);
-		//name.setMinimumSize(new Dimension(300, 20));
-		//name.setPreferredSize(new Dimension(300, 20));
+		// name.setMinimumSize(new Dimension(300, 20));
+		// name.setPreferredSize(new Dimension(300, 20));
 		add(textField);
 		label = new JLabel(textAreaLabel);
 		label.setLabelFor(textArea);
@@ -57,13 +56,14 @@ public abstract class CreatePanel extends JPanel implements ActionListener {
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		JScrollPane scrollabletextArea = new JScrollPane(textArea);
-		scrollabletextArea.setPreferredSize(new Dimension(300,80));
+		scrollabletextArea.setPreferredSize(new Dimension(300, 80));
 		scrollabletextArea.setMinimumSize(new Dimension(300, 40));
 		add(scrollabletextArea);
 		add(button);
-		//setMaximumSize(new Dimension(400, 470));
-		//setMinimumSize(new Dimension(400, 470));
-		//TODO: fix the code duplication between create clan panel and create post panel
+		// setMaximumSize(new Dimension(400, 470));
+		// setMinimumSize(new Dimension(400, 470));
+		// TODO: fix the code duplication between create clan panel and create
+		// post panel
 	}
 
 	@Override

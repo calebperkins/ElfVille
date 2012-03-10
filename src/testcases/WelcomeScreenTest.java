@@ -14,7 +14,7 @@ import elfville.protocol.SignInRequest;
 import elfville.protocol.SignUpRequest;
 
 public class WelcomeScreenTest extends TestBase {
-	
+
 	public static ArrayList<String> descriptions = new ArrayList<String>();
 
 	@Test
@@ -41,14 +41,15 @@ public class WelcomeScreenTest extends TestBase {
 		for (int i = 1; i < clientNum; i++) {
 			// System.out.println("kkkkkkk " + i);
 			SignUpRequest req = new SignUpRequest("user" + i, "");
-			descriptions.add("sdfkjdsf"+i);
-			req.description= descriptions.get(i);
+			descriptions.add("sdfkjdsf" + i);
+			req.description = descriptions.get(i);
 			Response resp = socketControllers.get(i).send(req);
-			// System.out.println("multi signup: " + i + " " + resp.status.toString());
+			// System.out.println("multi signup: " + i + " " +
+			// resp.status.toString());
 			assertEquals(resp.status, Status.SUCCESS);
 		}
 	}
-	
+
 	@Test
 	public void test4SignInWrong() throws UnknownHostException, IOException {
 		SignInRequest req = new SignInRequest("user");

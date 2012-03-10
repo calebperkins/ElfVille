@@ -12,19 +12,23 @@ import elfville.protocol.Response.Status;
  */
 public class CentralBoardControl extends Controller {
 
-	public static CentralBoardResponse getAllPosts(CentralBoardRequest inM, CurrentUserProfile currentUser) {
-		
-		CentralBoardResponse resp= new CentralBoardResponse(Status.FAILURE, "failure", null);
-		User user = database.userDB.findUserByModelID(currentUser.getCurrentUserId());
-		
+	public static CentralBoardResponse getAllPosts(CentralBoardRequest inM,
+			CurrentUserProfile currentUser) {
+
+		CentralBoardResponse resp = new CentralBoardResponse(Status.FAILURE,
+				"failure", null);
+		User user = database.userDB.findUserByModelID(currentUser
+				.getCurrentUserId());
+
 		if (user == null) {
 			return resp;
 		}
-		
-		Elf elf= user.getElf();
-		
-		resp.posts= ControllerUtils.buildPostList(database.postDB.getCentralPosts(), elf);
-		resp.status= Status.SUCCESS;
+
+		Elf elf = user.getElf();
+
+		resp.posts = ControllerUtils.buildPostList(
+				database.postDB.getCentralPosts(), elf);
+		resp.status = Status.SUCCESS;
 		return resp;
 	}
 
@@ -61,7 +65,7 @@ public class CentralBoardControl extends Controller {
 			CurrentUserProfile currentUser) {
 		Response resp = new Response(Status.FAILURE);
 
-		User user = Database.DB.userDB.findUserByModelID(currentUser
+		User user = database.userDB.findUserByModelID(currentUser
 				.getCurrentUserId());
 		if (user == null) {
 			return resp;
@@ -72,7 +76,7 @@ public class CentralBoardControl extends Controller {
 			return resp;
 		}
 
-		Post post = Database.DB.postDB.findByEncryptedModelID(r.modelID);
+		Post post = database.postDB.findByEncryptedModelID(r.modelID);
 
 		if (post == null) {
 			return resp;
@@ -93,7 +97,7 @@ public class CentralBoardControl extends Controller {
 			CurrentUserProfile currentUser) {
 		Response resp = new Response(Status.FAILURE);
 
-		User user = Database.DB.userDB.findUserByModelID(currentUser
+		User user = Database.getInstance().userDB.findUserByModelID(currentUser
 				.getCurrentUserId());
 		if (user == null) {
 			return resp;

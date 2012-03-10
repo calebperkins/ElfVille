@@ -15,13 +15,14 @@ public class ClanDirectoryTest extends TestBase {
 	public void test1CreateClan() throws IOException {
 		// Assert you can save clans successfully
 		for (int i = 0; i < 50; i++) {
-			String x = String.format("%2d", i); // needed to ensure lexographic order
-			String clanName= "clan-" + x;
-			String description= "description-" + x;
+			String x = String.format("%2d", i); // needed to ensure lexographic
+												// order
+			String clanName = "clan-" + x;
+			String description = "description-" + x;
 			SerializableClan clan = new SerializableClan();
-			clan.clanName= clanName;
-			clan.clanDescription= description;
-			CreateClanRequest req= new CreateClanRequest(clan);
+			clan.clanName = clanName;
+			clan.clanDescription = description;
+			CreateClanRequest req = new CreateClanRequest(clan);
 			Response resp = socketControllers.get(i % clientNum).send(req);
 			System.out.println(resp.status);
 			assertEquals(resp.status, Status.SUCCESS);
@@ -38,7 +39,8 @@ public class ClanDirectoryTest extends TestBase {
 		System.out.println(resp.clans.size());
 
 		for (int i = 0; i < 50; i++) {
-			String x = String.format("%2d", i); // needed to ensure lexographic order
+			String x = String.format("%2d", i); // needed to ensure lexographic
+												// order
 			SerializableClan clan = resp.clans.get(i);
 			System.out.println("what?");
 			System.out.println(clan.clanName);
@@ -52,4 +54,3 @@ public class ClanDirectoryTest extends TestBase {
 	}
 
 }
-

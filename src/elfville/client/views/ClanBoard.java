@@ -16,13 +16,15 @@ public class ClanBoard extends Board {
 	private String clanID;
 
 	/**
-	 * Creates a new ClanBoard pane (with updated information)
-	 * to display to the user.
+	 * Creates a new ClanBoard pane (with updated information) to display to the
+	 * user.
+	 * 
 	 * @param clientWindow
 	 * @param socketController
 	 * @param clanID
 	 */
-	public ClanBoard(ClientWindow clientWindow, SocketController socketController, String clanID) {
+	public ClanBoard(ClientWindow clientWindow,
+			SocketController socketController, String clanID) {
 		super(clientWindow, socketController);
 		this.clanID = clanID;
 		ClanBoardRequest req = new ClanBoardRequest(clanID);
@@ -51,10 +53,10 @@ public class ClanBoard extends Board {
 
 		ClanPosts posts = new ClanPosts(this, response);
 		add(posts, BorderLayout.CENTER);
-		
+
 		ClanApplicants applicants = new ClanApplicants(this, response);
 		add(applicants, BorderLayout.PAGE_END);
-		
+
 		clientWindow.switchScreen(this);
 	}
 

@@ -9,9 +9,9 @@ import elfville.protocol.ClanBoardResponse;
 import elfville.protocol.models.SerializableElf;
 
 /**
- * This creates a panel that lists the members in a clan with links
- * to their profiles. 
- *
+ * This creates a panel that lists the members in a clan with links to their
+ * profiles.
+ * 
  */
 public class ClanMembers extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -24,8 +24,8 @@ public class ClanMembers extends JPanel {
 			memberPanel.add(new Elf(board, elf));
 		}
 		JScrollPane scroll = new JScrollPane(memberPanel);
-		//scroll.setMinimumSize(new Dimension(100, 40));
-		//scroll.setPreferredSize(new Dimension(100, 80));
+		// scroll.setMinimumSize(new Dimension(100, 40));
+		// scroll.setPreferredSize(new Dimension(100, 80));
 		add(scroll);
 	}
 

@@ -12,8 +12,8 @@ public class ElfBoardControl extends Controller {
 
 	public static ProfileResponse getProfile(ProfileRequest r,
 			CurrentUserProfile currentUser) {
-		ProfileResponse resp= new ProfileResponse(Status.FAILURE);
-		
+		ProfileResponse resp = new ProfileResponse(Status.FAILURE);
+
 		User user = database.userDB.findUserByModelID(currentUser
 				.getCurrentUserId());
 		if (user == null) {
@@ -25,21 +25,21 @@ public class ElfBoardControl extends Controller {
 			return resp;
 		}
 
-		Elf elf= database.elfDB.findByEncryptedID(r.modelID);
+		Elf elf = database.elfDB.findByEncryptedID(r.modelID);
 
 		// check to see that the requested elf actually exists
 		if (elf == null) {
 			return resp;
 		}
-		
-		SerializableElf profile= new SerializableElf();
-		profile.description= elf.getDescription();
-		profile.elfName= elf.getName();
-		profile.centralBoardPosts= ControllerUtils.
-				buildPostList(database.postDB.findCentralPostsByElf(elf), user.getElf());
+
+		SerializableElf profile = new SerializableElf();
+		profile.description = elf.getDescription();
+		profile.elfName = elf.getName();
+		profile.centralBoardPosts = ControllerUtils.buildPostList(
+				database.postDB.findCentralPostsByElf(elf), user.getElf());
 		profile.numSocks = elf.getNumSocks();
-		
-		resp.status= Status.SUCCESS;
+
+		resp.status = Status.SUCCESS;
 		resp.elf = profile;
 		return resp;
 	}

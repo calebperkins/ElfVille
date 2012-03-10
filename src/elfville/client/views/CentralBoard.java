@@ -17,15 +17,15 @@ public class CentralBoard extends Board {
 	private static final long serialVersionUID = 1L;
 	private final JLabel title = new JLabel("Central Board");
 	private final JPanel createPost = new CreatePostPanel(this, null);
-	
 
 	/**
-	 * Creates a new CentralBoard pane (with updated information)
-	 * to display to the user.
+	 * Creates a new CentralBoard pane (with updated information) to display to
+	 * the user.
+	 * 
 	 * @param clientWindow
 	 * @param socketController
 	 */
-	public CentralBoard(ClientWindow clientWindow, 
+	public CentralBoard(ClientWindow clientWindow,
 			SocketController socketController) {
 		super(clientWindow, socketController);
 		CentralBoardRequest req = new CentralBoardRequest();
@@ -44,7 +44,8 @@ public class CentralBoard extends Board {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(title);
 		add(createPost);
-		//TODO from here to "add(scroll)" is commonly duplicated code that could use a refactor
+		// TODO from here to "add(scroll)" is commonly duplicated code that
+		// could use a refactor
 		JPanel postPanel = new JPanel();
 		postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
 		for (SerializablePost post : response.posts) {

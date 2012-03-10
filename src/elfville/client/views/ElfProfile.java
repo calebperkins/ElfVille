@@ -11,22 +11,24 @@ import elfville.protocol.models.SerializablePost;
 public class ElfProfile extends Board {
 	private static final long serialVersionUID = 1L;
 	String elf;
-	
+
 	/**
-	 * Creates a new ElfProfile pane (with updated information)
-	 * to display to the user.
+	 * Creates a new ElfProfile pane (with updated information) to display to
+	 * the user.
+	 * 
 	 * @param clientWindow
 	 * @param socketController
 	 * @param elf
 	 */
-	public ElfProfile(ClientWindow clientWindow, SocketController socketController, String elf) {
+	public ElfProfile(ClientWindow clientWindow,
+			SocketController socketController, String elf) {
 		super(clientWindow, socketController);
 		this.elf = elf;
 		ProfileRequest req = new ProfileRequest(elf);
 		getSocketController().sendRequest(req, this,
 				"Error retrieving elf profile.", this);
 	}
-	
+
 	@Override
 	public void refresh() {
 		new ElfProfile(clientWindow, socketController, elf);
@@ -36,14 +38,15 @@ public class ElfProfile extends Board {
 	public void handleRequestSuccess(Response resp) {
 		ProfileResponse response = (ProfileResponse) resp;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		
-		JLabel title = new JLabel("Profile of " + response.elf.elfName + ", " + Integer.toString(response.elf.numSocks));
+
+		JLabel title = new JLabel("Profile of " + response.elf.elfName + ", "
+				+ Integer.toString(response.elf.numSocks));
 		add(title);
-		
+
 		JTextArea description = new JTextArea(response.elf.description);
 		description.setEditable(false);
 		add(new JScrollPane(description));
-		
+
 		JPanel postPanel = new JPanel();
 		postPanel.setLayout(new BoxLayout(postPanel, BoxLayout.Y_AXIS));
 		for (SerializablePost post : response.elf.centralBoardPosts) {

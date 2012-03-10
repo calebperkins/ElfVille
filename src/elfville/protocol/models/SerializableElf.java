@@ -9,5 +9,5 @@ public class SerializableElf extends SerializableModel {
 	public int numSocks;
 	public String description;
 	public List<SerializablePost> centralBoardPosts;
-	
+
 }

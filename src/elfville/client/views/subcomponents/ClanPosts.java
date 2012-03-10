@@ -9,9 +9,8 @@ import elfville.protocol.ClanBoardResponse;
 import elfville.protocol.models.SerializablePost;
 
 /**
- * This panel provides a listing of the posts to the
- * clan's board. 
- *
+ * This panel provides a listing of the posts to the clan's board.
+ * 
  */
 public class ClanPosts extends JPanel {
 	private static final long serialVersionUID = 1L;

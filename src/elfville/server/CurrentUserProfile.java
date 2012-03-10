@@ -26,7 +26,7 @@ public class CurrentUserProfile {
 	}
 
 	public User getUser() {
-		return Database.DB.userDB.findUserByModelID(currentUserId);
+		return Database.getInstance().userDB.findUserByModelID(currentUserId);
 	}
 
 	public Elf getElf() {

@@ -35,20 +35,21 @@ public class ClanBoardControl extends Controller {
 
 		// Basic board info that is visible to all elves
 		outM.clan = clan.toSerializableClan();
-		
+
 		if (clan.isMember(elf) || clan.isLeader(elf)) {
-			ArrayList<SerializablePost> posts= 
-					ControllerUtils.buildPostList( clan.getPosts(), elf);
+			ArrayList<SerializablePost> posts = ControllerUtils.buildPostList(
+					clan.getPosts(), elf);
 			outM.clan.posts = posts;
 			if (clan.isLeader(elf)) {
 				outM.elfStatus = ClanBoardResponse.ElfClanRelationship.LEADER;
-				//the leader can delete any post, so set all of the posts as being his
-				for(SerializablePost ppp : outM.clan.posts){
-					ppp.myPost= true;
+				// the leader can delete any post, so set all of the posts as
+				// being his
+				for (SerializablePost ppp : outM.clan.posts) {
+					ppp.myPost = true;
 				}
 			} else {
 				outM.elfStatus = ClanBoardResponse.ElfClanRelationship.MEMBER;
-				//applicants are only visible to the clan leader
+				// applicants are only visible to the clan leader
 				outM.clan.applicants = new ArrayList<SerializableElf>();
 			}
 		} else {
@@ -57,19 +58,20 @@ public class ClanBoardControl extends Controller {
 			} else {
 				outM.elfStatus = ClanBoardResponse.ElfClanRelationship.OUTSIDER;
 			}
-			// Posts are only visible to clan members, but client requires a non-null object.
+			// Posts are only visible to clan members, but client requires a
+			// non-null object.
 			outM.clan.posts = new ArrayList<SerializablePost>();
-			//applicants are only visible to the clan leader
+			// applicants are only visible to the clan leader
 			outM.clan.applicants = new ArrayList<SerializableElf>();
 		}
 
 		return outM;
 	}
-	
+
 	public static Response postClanBoard(PostClanBoardRequest req,
-			CurrentUserProfile currentUser){
-		Response resp= new Response(Status.FAILURE);
-		
+			CurrentUserProfile currentUser) {
+		Response resp = new Response(Status.FAILURE);
+
 		// make sure that the current user still exists!
 		User user = database.userDB.findUserByModelID(currentUser
 				.getCurrentUserId());
@@ -89,27 +91,27 @@ public class ClanBoardControl extends Controller {
 		if (clan == null) {
 			return resp;
 		}
-		
-		if(req.post == null){
+
+		if (req.post == null) {
 			return resp;
 		}
-		
-		//make sure we were actually sent a post
-		if(req.post.content == null || req.post.content.equals("") ||
-				req.post.title == null || req.post.title.equals("")){
+
+		// make sure we were actually sent a post
+		if (req.post.content == null || req.post.content.equals("")
+				|| req.post.title == null || req.post.title.equals("")) {
 			return resp;
 		}
-		
-		//make sure that this elf is a part of the clan
+
+		// make sure that this elf is a part of the clan
 		if (!clan.isLeader(elf) && !clan.isMember(elf)) {
 			return resp;
 		}
-		
-		Post post= new Post(req.post, elf);
-		//now we can post
+
+		Post post = new Post(req.post, elf);
+		// now we can post
 		clan.createPost(post);
-		
-		resp.status= Status.SUCCESS;
+
+		resp.status = Status.SUCCESS;
 		return resp;
 	}
 
@@ -136,7 +138,7 @@ public class ClanBoardControl extends Controller {
 		if (clan == null) {
 			return resp;
 		}
-		
+
 		switch (req.requestType) {
 		case DELETE:
 			// make sure that this elf is actually the leader of the clan
@@ -162,79 +164,80 @@ public class ClanBoardControl extends Controller {
 			}
 			clan.leaveClan(elf);
 			break;
-			
+
 		case ACCEPT:
-			
-			if(req.applicant == null){
+
+			if (req.applicant == null) {
 				return resp;
 			}
-			
-			Elf applicant= database.elfDB.findByEncryptedID(req.applicant.modelID);
-			
-			if(applicant == null){
+
+			Elf applicant = database.elfDB
+					.findByEncryptedID(req.applicant.modelID);
+
+			if (applicant == null) {
 				return resp;
 			}
-			
-			//make sure that the accepter is actually the leader
-			if(!clan.isLeader(elf)){
+
+			// make sure that the accepter is actually the leader
+			if (!clan.isLeader(elf)) {
 				return resp;
 			}
-			//make sure that the elf being accepted is actually an applicant
-			if(!clan.isApplicant(applicant)){
+			// make sure that the elf being accepted is actually an applicant
+			if (!clan.isApplicant(applicant)) {
 				return resp;
 			}
-			
+
 			clan.join(applicant);
-			
+
 			break;
-			
+
 		case DENY:
-			
-			if(req.applicant == null){
+
+			if (req.applicant == null) {
 				return resp;
 			}
-			
-			Elf applicant2= database.elfDB.findByEncryptedID(req.applicant.modelID);
-			
-			if(applicant2 == null){
+
+			Elf applicant2 = database.elfDB
+					.findByEncryptedID(req.applicant.modelID);
+
+			if (applicant2 == null) {
 				return resp;
 			}
-			
-			//make sure that the denier is actually the leader
-			if(!clan.isLeader(elf)){
+
+			// make sure that the denier is actually the leader
+			if (!clan.isLeader(elf)) {
 				return resp;
 			}
-			//make sure that the elf being accepted is actually an applicant
-			if(!clan.isApplicant(applicant2)){
+			// make sure that the elf being accepted is actually an applicant
+			if (!clan.isApplicant(applicant2)) {
 				return resp;
 			}
-			
+
 			clan.deny(applicant2);
 			break;
-			
+
 		case DELETEPOST:
-			
-			if(req.post == null){
+
+			if (req.post == null) {
 				return resp;
 			}
-			
-			Post post= clan.getPostFromEncrpytedModelID(req.post.modelID);
-			
-			//make sure this post is actually a post in the clan
-			if(post == null){
+
+			Post post = clan.getPostFromEncrpytedModelID(req.post.modelID);
+
+			// make sure this post is actually a post in the clan
+			if (post == null) {
 				return resp;
 			}
-			
-			//make sure the person trying to delete the post is the clan leader
-			//or the person who created the post
-			if(!clan.isLeader(elf) && !post.getElf().equals(elf)){
+
+			// make sure the person trying to delete the post is the clan leader
+			// or the person who created the post
+			if (!clan.isLeader(elf) && !post.getElf().equals(elf)) {
 				return resp;
 			}
-			
+
 			clan.deletePost(req.post.modelID);
 			break;
 		}
-		
 
 		resp.status = Status.SUCCESS;
 

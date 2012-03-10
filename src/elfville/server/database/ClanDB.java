@@ -9,7 +9,6 @@ import elfville.server.SecurityUtils;
 import elfville.server.model.*;
 
 public class ClanDB extends DB {
-	private static final long serialVersionUID = -5780129841962632025L;
 	private final ConcurrentHashMap<Integer, Clan> idMap = new ConcurrentHashMap<Integer, Clan>();;
 	private final ConcurrentHashMap<String, Clan> nameMap = new ConcurrentHashMap<String, Clan>();;
 

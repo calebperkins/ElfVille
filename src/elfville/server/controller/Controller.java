@@ -4,6 +4,6 @@ import elfville.server.Database;
 
 public abstract class Controller {
 
-	static Database database = Database.DB;
+	static Database database = Database.getInstance();
 
 }

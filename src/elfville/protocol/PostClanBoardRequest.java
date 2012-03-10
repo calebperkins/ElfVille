@@ -12,15 +12,15 @@ public class PostClanBoardRequest extends Request {
 
 	public PostClanBoardRequest(SerializablePost post, String clanID) {
 		this.post = post;
-		this.clan= new SerializableClan();
-		clan.modelID= clanID;
+		this.clan = new SerializableClan();
+		clan.modelID = clanID;
 	}
 
 	public PostClanBoardRequest(String title, String content, String clanID) {
 		post = new SerializablePost();
 		post.content = content;
 		post.title = title;
-		this.clan= new SerializableClan();
-		clan.modelID= clanID;
+		this.clan = new SerializableClan();
+		clan.modelID = clanID;
 	}
 }

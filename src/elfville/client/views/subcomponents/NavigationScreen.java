@@ -13,13 +13,12 @@ import elfville.client.views.CentralBoard;
 import elfville.client.views.ClanDirectory;
 
 /**
- * Displays two buttons, one which directs the client to the
- * public central board (showing postings by users) and the
- * other which directs the client to the clan directory.
- * With these two buttons any elf can reach anything they
- * have authentication to access, and this panel is displayed
- * on every board/page.
- *
+ * Displays two buttons, one which directs the client to the public central
+ * board (showing postings by users) and the other which directs the client to
+ * the clan directory. With these two buttons any elf can reach anything they
+ * have authentication to access, and this panel is displayed on every
+ * board/page.
+ * 
  */
 public class NavigationScreen extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -45,7 +44,8 @@ public class NavigationScreen extends JPanel {
 		}
 	}
 
-	public NavigationScreen(ClientWindow clientWindow, SocketController socketController) {
+	public NavigationScreen(ClientWindow clientWindow,
+			SocketController socketController) {
 		super();
 
 		this.clientWindow = clientWindow;

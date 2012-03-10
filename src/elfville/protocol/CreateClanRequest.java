@@ -9,7 +9,7 @@ public class CreateClanRequest extends Request {
 	public CreateClanRequest(SerializableClan clan) {
 		this.clan = clan;
 	}
-	
+
 	public CreateClanRequest(String name, String description) {
 		clan = new SerializableClan();
 		clan.clanName = name;

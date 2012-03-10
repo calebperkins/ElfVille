@@ -10,9 +10,9 @@ import elfville.server.SecurityUtils;
 import elfville.server.model.*;
 
 public class PostDB extends DB {
-	private static final long serialVersionUID = -5939983651247977959L;
 	private final ConcurrentHashMap<Integer, Post> idMap = new ConcurrentHashMap<Integer, Post>();
-	private final List<Post> centralPosts = Collections.synchronizedList(new ArrayList<Post>());
+	private final List<Post> centralPosts = Collections
+			.synchronizedList(new ArrayList<Post>());
 
 	public void insert(Post post) {
 		idMap.put(post.getModelID(), post);

@@ -6,7 +6,6 @@ import elfville.server.SecurityUtils;
 import elfville.server.model.Elf;
 
 public class ElfDB extends DB {
-	private static final long serialVersionUID = 2139777693898457296L;
 	private final ConcurrentHashMap<Integer, Elf> elves = new ConcurrentHashMap<Integer, Elf>();
 
 	public void insert(Elf elf) {

@@ -13,6 +13,7 @@ public class ControllerUtils extends Controller {
 
 	/**
 	 * Pass null if you don't care about elf
+	 * 
 	 * @param boardPosts
 	 * @param currentElf
 	 * @return

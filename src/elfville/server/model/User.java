@@ -9,7 +9,7 @@ public class User extends Model {
 	private String username;
 	private String password;
 	private final int elfId;
-	
+
 	public User(Elf e, String uname) {
 		super();
 		elfId = e.modelID;
@@ -35,7 +35,7 @@ public class User extends Model {
 	public Elf getElf() {
 		return Elf.get(elfId);
 	}
-	
+
 	public static User get(String username) {
 		return database.userDB.findUserByUsername(username);
 	}

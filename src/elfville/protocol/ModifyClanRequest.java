@@ -10,7 +10,7 @@ public class ModifyClanRequest extends Request {
 	public enum ModClan {
 		LEAVE, DELETE, ACCEPT, DENY, DELETEPOST, APPLY
 	}
-	
+
 	// for accepting or denying applicants
 	public ModifyClanRequest(SerializableElf elf, SerializableClan clan,
 			boolean accept) {
@@ -22,13 +22,13 @@ public class ModifyClanRequest extends Request {
 			this.requestType = ModClan.DENY;
 		}
 	}
-	
+
 	// for leaving, deleting, or applying to a clan
 	public ModifyClanRequest(SerializableClan clan, ModClan action) {
 		this.clan = clan;
 		this.requestType = action;
 	}
-	
+
 	// for deleting posts on a clan board
 	public ModifyClanRequest(SerializableClan clan, SerializablePost post) {
 		this.clan = clan;

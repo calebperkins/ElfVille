@@ -7,11 +7,11 @@ import elfville.client.SocketController;
 import elfville.server.Server;
 
 public class ServerStart extends TestBase {
-	
+
 	public class ServerThread extends Thread {
 		@Override
 		public void run() {
-			String args[]= new String[0];
+			String args[] = new String[0];
 			try {
 				Server.main(args);
 			} catch (Exception e) {
@@ -32,8 +32,7 @@ public class ServerStart extends TestBase {
 			}
 		}
 	}
-	
-	
+
 	@Test
 	public void test() throws IOException, InterruptedException {
 		new ServerThread().start();
@@ -41,7 +40,8 @@ public class ServerStart extends TestBase {
 		for (int i = 0; i < clientNum; i++) {
 			new ClientThread().start();
 		}
-		Thread.sleep(500);  // sleep for 0.5 second to wait for all clients to start
+		Thread.sleep(500); // sleep for 0.5 second to wait for all clients to
+							// start
 	}
 
 }

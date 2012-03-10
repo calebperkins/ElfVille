@@ -26,13 +26,14 @@ public class Post extends JPanel {
 		private SerializablePost post;
 		private Board board;
 		ClanBoardResponse response;
-		
-		public DeleteHandler(Board board, SerializablePost post, ClanBoardResponse response) {
+
+		public DeleteHandler(Board board, SerializablePost post,
+				ClanBoardResponse response) {
 			this.post = post;
 			this.board = board;
 			this.response = response;
 		}
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Request req;
@@ -41,17 +42,17 @@ public class Post extends JPanel {
 			} else {
 				req = new ModifyClanRequest(response.clan, post);
 			}
-			board.getSocketController().sendRequest(req, board, "Failed to delete post.", null);
+			board.getSocketController().sendRequest(req, board,
+					"Failed to delete post.", null);
 		}
 	}
-
 
 	/**
 	 * Create the panel.
 	 */
 	public Post(Board board, SerializablePost p, ClanBoardResponse response) {
 		super();
-		
+
 		// setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		username = new JButton(p.username);
 		username.addActionListener(new ElfHandler(board, p.elfModelID));
@@ -77,8 +78,8 @@ public class Post extends JPanel {
 		label.setLabelFor(scroll);
 		add(label);
 		add(scroll);
-		if (p.myPost || (null != response && response.elfStatus ==
-				ClanBoardResponse.ElfClanRelationship.LEADER)) {
+		if (p.myPost
+				|| (null != response && response.elfStatus == ClanBoardResponse.ElfClanRelationship.LEADER)) {
 			add(deleteButton);
 		}
 	}

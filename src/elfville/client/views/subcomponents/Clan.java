@@ -18,11 +18,11 @@ public class Clan extends JPanel {
 	Board board;
 
 	/**
-	 * Displays the summary of a clan on the clan directory board
-	 * specifically its name (with link to page), its leader (with
-	 * link to its page), and its description.
+	 * Displays the summary of a clan on the clan directory board specifically
+	 * its name (with link to page), its leader (with link to its page), and its
+	 * description.
 	 */
-	public Clan(Board board, SerializableClan c) { 
+	public Clan(Board board, SerializableClan c) {
 		super();
 		// TODO: possible to maybe deduplicate code between this and Post.java
 		this.board = board;
@@ -44,8 +44,6 @@ public class Clan extends JPanel {
 		add(label);
 		add(scroll);
 	}
-	
-
 
 	private class ClanHandler implements ActionListener {
 		private String modelID;
@@ -56,7 +54,8 @@ public class Clan extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new ClanBoard(board.getClientWindow(), board.getSocketController(), modelID);
+			new ClanBoard(board.getClientWindow(), board.getSocketController(),
+					modelID);
 		}
 
 	}

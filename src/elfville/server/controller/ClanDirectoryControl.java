@@ -19,8 +19,8 @@ public class ClanDirectoryControl extends Controller {
 			return resp;
 		}
 
-		List<SerializableClan> clans = 
-				ControllerUtils .buildBoardList(database.clanDB.getClans());
+		List<SerializableClan> clans = ControllerUtils
+				.buildBoardList(database.clanDB.getClans());
 
 		resp.status = Status.SUCCESS;
 		resp.clans = clans;
@@ -47,8 +47,8 @@ public class ClanDirectoryControl extends Controller {
 		if (createRequest.clan == null) {
 			return resp;
 		}
-		
-		//make sure there is not already a clan with this name
+
+		// make sure there is not already a clan with this name
 		if (Clan.get(createRequest.clan.clanName) != null) {
 			return resp;
 		}

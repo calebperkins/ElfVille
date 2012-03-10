@@ -63,7 +63,7 @@ public class Routes {
 			CurrentUserProfile currentUser) {
 		return CentralBoardControl.deletePost(r, currentUser);
 	}
-	
+
 	private static ProfileResponse respond(ProfileRequest r,
 			CurrentUserProfile currentUser) {
 		return ElfBoardControl.getProfile(r, currentUser);
@@ -95,7 +95,7 @@ public class Routes {
 			return respond((VoteRequest) r, currentUser);
 		} else if (r instanceof DeleteCentralBoardRequest) {
 			return respond((DeleteCentralBoardRequest) r, currentUser);
-		} else if (r instanceof ProfileRequest){
+		} else if (r instanceof ProfileRequest) {
 			return respond((ProfileRequest) r, currentUser);
 		}
 		return new Response(Response.Status.FAILURE, "Unknown request.");

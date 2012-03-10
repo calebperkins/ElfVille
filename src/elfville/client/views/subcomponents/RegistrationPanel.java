@@ -13,9 +13,9 @@ import elfville.protocol.Response;
 import elfville.protocol.SignUpRequest;
 
 /**
- * Provides the user with the ability to request the server
- * register a new elf with a new name and description. 
- *
+ * Provides the user with the ability to request the server register a new elf
+ * with a new name and description.
+ * 
  */
 public class RegistrationPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -26,17 +26,17 @@ public class RegistrationPanel extends JPanel implements ActionListener {
 	private final JLabel descriptionLabel = new JLabel("Elf Description");
 	private SocketController socketController;
 	private ClientWindow clientWindow;
-	
+
 	/**
 	 * Create the panel.
 	 */
-	public RegistrationPanel(SocketController socketController, ClientWindow clientWindow) {
+	public RegistrationPanel(SocketController socketController,
+			ClientWindow clientWindow) {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createTitledBorder("Register"),
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-
 
 		this.socketController = socketController;
 		this.clientWindow = clientWindow;
@@ -57,7 +57,8 @@ public class RegistrationPanel extends JPanel implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		SignUpRequest req = new SignUpRequest(usernameField.getText(), descriptionArea.getText());
+		SignUpRequest req = new SignUpRequest(usernameField.getText(),
+				descriptionArea.getText());
 		try {
 			Response resp = socketController.send(req);
 			if (resp.status == Response.Status.SUCCESS) {

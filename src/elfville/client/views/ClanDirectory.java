@@ -15,12 +15,14 @@ public class ClanDirectory extends Board {
 	private final JPanel createClan = new CreateClanPanel(this);
 
 	/**
-	 * Creates a new ClanDirectory pane (with updated information)
-	 * to display to the user.
+	 * Creates a new ClanDirectory pane (with updated information) to display to
+	 * the user.
+	 * 
 	 * @param clientWindow
 	 * @param socketController
 	 */
-	public ClanDirectory(ClientWindow clientWindow, SocketController socketController) {
+	public ClanDirectory(ClientWindow clientWindow,
+			SocketController socketController) {
 		super(clientWindow, socketController);
 		ClanListingRequest req = new ClanListingRequest();
 		getSocketController().sendRequest(req, this,

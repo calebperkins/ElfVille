@@ -10,14 +10,14 @@ import elfville.protocol.VoteRequest;
 import elfville.protocol.models.SerializablePost;
 
 /**
- * Not only shows a post, but also shows two buttons
- * that allow the user to vote on the merits of the post.
- *
+ * Not only shows a post, but also shows two buttons that allow the user to vote
+ * on the merits of the post.
+ * 
  */
 public class VotablePost extends Post {
 	private static final long serialVersionUID = 1L;
 	private final Board board;
-	
+
 	private class VoteHandler implements ActionListener {
 		private boolean upsock;
 		private String postID;
@@ -30,7 +30,8 @@ public class VotablePost extends Post {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			VoteRequest req = new VoteRequest(postID, upsock);
-			board.getSocketController().sendRequest(req, board, "Did not vote!", null);
+			board.getSocketController().sendRequest(req, board,
+					"Did not vote!", null);
 		}
 	}
 
@@ -40,7 +41,8 @@ public class VotablePost extends Post {
 		// this post.
 		this.board = board;
 		JButton upvote = new JButton("Upsocks: " + Integer.toString(p.upvotes));
-		JButton downvote = new JButton("Downsocks: " + Integer.toString(p.downvotes));
+		JButton downvote = new JButton("Downsocks: "
+				+ Integer.toString(p.downvotes));
 		upvote.addActionListener(new VoteHandler(p.modelID, true, this));
 		downvote.addActionListener(new VoteHandler(p.modelID, false, this));
 		add(upvote);

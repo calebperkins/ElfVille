@@ -6,9 +6,9 @@ import elfville.client.views.Board;
 import elfville.protocol.*;
 
 /**
- * Using create panel allows users to request the server
- * create a post (in their name). 
- *
+ * Using create panel allows users to request the server create a post (in their
+ * name).
+ * 
  */
 public class CreatePostPanel extends CreatePanel {
 	private static final long serialVersionUID = 1L;
@@ -23,18 +23,19 @@ public class CreatePostPanel extends CreatePanel {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (textField.getText().equals("") || textArea.getText().equals("")) {
-			System.err.println("Need both a " + textFieldLabel +
-					" and a " + textAreaLabel + " to " + buttonLabel);
+			System.err.println("Need both a " + textFieldLabel + " and a "
+					+ textAreaLabel + " to " + buttonLabel);
 		} else {
 			Request req;
 			if (clanID == null) {
-				req = new PostCentralBoardRequest(
-						textField.getText(), textArea.getText());
+				req = new PostCentralBoardRequest(textField.getText(),
+						textArea.getText());
 			} else {
-				req = new PostClanBoardRequest(
-						textField.getText(), textArea.getText(), clanID);
+				req = new PostClanBoardRequest(textField.getText(),
+						textArea.getText(), clanID);
 			}
-			board.getSocketController().sendRequest(req, board, "Posting Failed.", null);
+			board.getSocketController().sendRequest(req, board,
+					"Posting Failed.", null);
 		}
 	}
 

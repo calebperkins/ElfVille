@@ -8,12 +8,12 @@ import elfville.client.views.WelcomeScreen;
 import elfville.client.views.subcomponents.NavigationScreen;
 
 /**
- * The JFrame that everything is displayed on. 
- *
+ * The JFrame that everything is displayed on.
+ * 
  */
 public class ClientWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
-	
+
 	private final JPanel navigation;
 	private JPanel main;
 	private JPanel current;
@@ -28,20 +28,22 @@ public class ClientWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		this.socketController = socketController;
-		
+
 		current = new WelcomeScreen(socketController, this);
 		navigation = new NavigationScreen(this, socketController);
 		main = new JPanel();
 
 		main.setLayout(new BorderLayout());
 		this.getContentPane().add(main);
-		//main.add(navigation, BorderLayout.PAGE_START);
+		// main.add(navigation, BorderLayout.PAGE_START);
 		main.add(current, BorderLayout.CENTER);
 	}
-	
+
 	/**
 	 * Switches from one Board to another (i.e., client views).
-	 * @param next the JPanel (always a Board) to switch to
+	 * 
+	 * @param next
+	 *            the JPanel (always a Board) to switch to
 	 */
 	public void switchScreen(JPanel next) {
 		getContentPane().removeAll();
@@ -49,9 +51,9 @@ public class ClientWindow extends JFrame {
 		main.setLayout(new BorderLayout());
 		getContentPane().add(main);
 		// following line only needed if we implement logout
-		//if (!(next instanceof WelcomeScreen)){
+		// if (!(next instanceof WelcomeScreen)){
 		main.add(navigation, BorderLayout.PAGE_START);
-		//}
+		// }
 		main.add(next, BorderLayout.CENTER);
 		current = next;
 		validate();
@@ -66,7 +68,8 @@ public class ClientWindow extends JFrame {
 	}
 
 	/**
-	 * Used when the server responds with failure. 
+	 * Used when the server responds with failure.
+	 * 
 	 * @param msg
 	 * @param title
 	 */

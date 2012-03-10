@@ -11,7 +11,7 @@ public class Elf extends Model implements Comparable<Elf> {
 	private static final long serialVersionUID = 4948830835289818367L;
 	private final String name;
 	private final String description;
-	
+
 	public Elf(String name, String description) {
 		super();
 		this.name = name;
@@ -31,8 +31,6 @@ public class Elf extends Model implements Comparable<Elf> {
 	public int hashCode() {
 		return modelID;
 	}
-
-
 
 	public List<Post> getPosts() {
 		return database.postDB.findCentralPostsByElf(this);

@@ -24,11 +24,12 @@ public class LoginPanel extends JPanel implements ActionListener {
 	private JLabel passwordLabel;
 	private SocketController socketController;
 	private ClientWindow clientWindow;
-	
+
 	/**
 	 * Create the panel.
 	 */
-	public LoginPanel(SocketController socketController, ClientWindow clientWindow) {
+	public LoginPanel(SocketController socketController,
+			ClientWindow clientWindow) {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createCompoundBorder(
@@ -37,7 +38,7 @@ public class LoginPanel extends JPanel implements ActionListener {
 
 		this.socketController = socketController;
 		this.clientWindow = clientWindow;
-		
+
 		usernameField = new JTextField();
 		passwordField = new JPasswordField();
 		loginButton = new JButton("Login");

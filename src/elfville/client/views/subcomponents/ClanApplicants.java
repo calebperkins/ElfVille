@@ -12,10 +12,9 @@ import elfville.protocol.models.SerializableClan;
 import elfville.protocol.models.SerializableElf;
 
 /**
- * A panel that shows the list of applicants to the leader
- * and provides buttons to view the applicants page as well as to
- * accept or reject the applicant. 
- *
+ * A panel that shows the list of applicants to the leader and provides buttons
+ * to view the applicants page as well as to accept or reject the applicant.
+ * 
  */
 public class ClanApplicants extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -27,7 +26,8 @@ public class ClanApplicants extends JPanel {
 		private SerializableElf elf;
 		private boolean accept;
 
-		public ApplicantHandler(SerializableClan clan, SerializableElf elf, boolean accept) {
+		public ApplicantHandler(SerializableClan clan, SerializableElf elf,
+				boolean accept) {
 			this.clan = clan;
 			this.elf = elf;
 			this.accept = accept;
@@ -36,7 +36,8 @@ public class ClanApplicants extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			ModifyClanRequest req = new ModifyClanRequest(elf, clan, accept);
-			board.getSocketController().sendRequest(req, board, "Failed to decide applicant.", null);
+			board.getSocketController().sendRequest(req, board,
+					"Failed to decide applicant.", null);
 		}
 	}
 
@@ -46,15 +47,17 @@ public class ClanApplicants extends JPanel {
 		for (SerializableElf applicant : response.clan.applicants) {
 			JPanel applicantPanel = new JPanel();
 			applicantPanel.add(new Elf(board, applicant));
-			
+
 			JButton accept = new JButton("Accept");
-			accept.addActionListener(new ApplicantHandler(response.clan, applicant, true));
+			accept.addActionListener(new ApplicantHandler(response.clan,
+					applicant, true));
 			applicantPanel.add(accept);
-			
+
 			JButton deny = new JButton("Deny");
-			deny.addActionListener(new ApplicantHandler(response.clan, applicant, false));
+			deny.addActionListener(new ApplicantHandler(response.clan,
+					applicant, false));
 			applicantPanel.add(deny);
-			
+
 			allApplicantsPanel.add(applicantPanel);
 		}
 		JScrollPane scroll = new JScrollPane(allApplicantsPanel);

@@ -20,13 +20,16 @@ public class Post extends Model implements Comparable<Post> {
 	private final int elfID;
 	private final String title;
 	private final String content;
-	
+
 	public int clanID = 0;
 
-	private final Set<Integer> upsocks = Collections.synchronizedSet(new HashSet<Integer>());
-	private final Set<Integer> downsocks = Collections.synchronizedSet(new HashSet<Integer>());
+	private final Set<Integer> upsocks = Collections
+			.synchronizedSet(new HashSet<Integer>());
+	private final Set<Integer> downsocks = Collections
+			.synchronizedSet(new HashSet<Integer>());
 
-	//TODO: this should not take a serializable post as an argument.  code must be refactored
+	// TODO: this should not take a serializable post as an argument. code must
+	// be refactored
 	public Post(SerializablePost postRequest, Elf elf) {
 		super();
 		title = postRequest.title;
@@ -46,12 +49,12 @@ public class Post extends Model implements Comparable<Post> {
 		sPost.modelID = getEncryptedModelID();
 		return sPost;
 	}
-	
-	public SerializablePost toSerializablePost(Elf elf){
-		SerializablePost sPost= toSerializablePost();
+
+	public SerializablePost toSerializablePost(Elf elf) {
+		SerializablePost sPost = toSerializablePost();
 		Integer id = elf.modelID;
-		sPost.iVoted= this.downsocks.contains(id) || this.upsock(elf);
-		sPost.myPost= elf.modelID == elfID;
+		sPost.iVoted = this.downsocks.contains(id) || this.upsock(elf);
+		sPost.myPost = elf.modelID == elfID;
 		return sPost;
 	}
 
@@ -60,7 +63,7 @@ public class Post extends Model implements Comparable<Post> {
 	}
 
 	public boolean upsock(Elf upsockingElf) {
-		//each elf can only upsock OR downsock a single post
+		// each elf can only upsock OR downsock a single post
 		Integer id = upsockingElf.modelID;
 		if (!upsocks.contains(id) && !downsocks.contains(id)) {
 			upsocks.add(id);
@@ -72,7 +75,7 @@ public class Post extends Model implements Comparable<Post> {
 	// Each post cannot have < 0 socks.
 	public boolean downsock(Elf downsockingElf) {
 		Integer id = downsockingElf.modelID;
-		//each elf can only upsock OR downsock a single post
+		// each elf can only upsock OR downsock a single post
 		if (!downsocks.contains(id) && !upsocks.contains(id)) {
 			downsocks.add(id);
 			return true;
@@ -105,7 +108,7 @@ public class Post extends Model implements Comparable<Post> {
 	public String getContent() {
 		return content;
 	}
-	
+
 	public static Post get(String encID) {
 		return database.postDB.findByEncryptedModelID(encID);
 	}

@@ -18,9 +18,9 @@ public class Server {
 	public static void main(String[] args) throws Exception {
 		ServerSocket serverSocket = null;
 		boolean listening = true;
-		
+
 		final int port;
-		
+
 		if (args.length > 0) {
 			port = Integer.parseInt(args[0]);
 		} else {
@@ -36,12 +36,8 @@ public class Server {
 
 		// Initialize database
 		if (args.length == 2) {
-			Database.DB = Database.load(args[1]);
-			FileOutputStream fos = new FileOutputStream(args[1]);
-			Database.Stream = new ObjectOutputStream(fos);
+			Database.load(args[1]);
 		} else {
-			Database.DB = new Database();
-			Database.Stream = null;
 			System.out
 					.println("No database specified. Creating an empty one with no persistance.");
 		}

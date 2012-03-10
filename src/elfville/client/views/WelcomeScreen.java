@@ -13,7 +13,8 @@ public class WelcomeScreen extends JPanel {
 	/**
 	 * Creates a panel with login and registration options.
 	 */
-	public WelcomeScreen(SocketController socketController, ClientWindow clientWindow) {
+	public WelcomeScreen(SocketController socketController,
+			ClientWindow clientWindow) {
 		super();
 		add(new JLabel("Welcome to Elfville"));
 		add(new LoginPanel(socketController, clientWindow));
