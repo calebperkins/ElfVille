@@ -1,5 +1,6 @@
 package elfville.server.model;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -37,8 +38,17 @@ public abstract class Model implements Serializable {
 	}
 	
 	/**
-	 * Save this model object, inserting a new one if this object has not been saved before.
-	 * @return true if successful
+	 * Write a copy of this object to the output stream.
+	 * All setters should run this to persist changes.
+	 * Controllers should only need to call this method explicitly if you have created a new object!
 	 */
-	public abstract boolean save();
+	public void save() {
+		if (Database.Stream != null) {
+			try {
+				Database.Stream.writeUnshared(this);
+			} catch (IOException e) {
+				System.err.println(this + " could not be saved.");
+			}
+		}
+	}
 }

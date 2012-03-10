@@ -9,8 +9,8 @@ import elfville.protocol.models.SerializableElf;
  */
 public class Elf extends Model implements Comparable<Elf> {
 	private static final long serialVersionUID = 4948830835289818367L;
-	private String name;
-	private String description;
+	private final String name;
+	private final String description;
 	
 	public Elf(String name, String description) {
 		super();
@@ -60,32 +60,16 @@ public class Elf extends Model implements Comparable<Elf> {
 		return name;
 	}
 
-	public synchronized void setName(String elfName) {
-		this.name = elfName;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
-	public synchronized void setDescription(String description) {
-		this.description = description;
+	@Override
+	public void save() {
+		super.save();
+		database.elfDB.insert(this);
 	}
 
-	@Override
-	public boolean save() {
-		if (isValid()) {
-			if (get(modelID) == null)
-				database.elfDB.insert(this);
-			return true;
-		}
-		return false;
-	}
-	
-	private boolean isValid() {
-		return !name.isEmpty() && !description.isEmpty();
-	}
-	
 	public static Elf get(int id) {
 		return database.elfDB.findByID(id);
 	}

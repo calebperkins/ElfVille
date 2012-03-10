@@ -39,12 +39,11 @@ public class User extends Model {
 	public static User get(String username) {
 		return database.userDB.findUserByUsername(username);
 	}
-	
+
 	@Override
-	public boolean save() {
-		// TODO: add validations
+	public void save() {
+		super.save();
 		database.userDB.insert(this);
-		return true;
 	}
 
 }

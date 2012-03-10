@@ -3,8 +3,7 @@ package elfville.server;
 import java.net.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
 import java.io.*;
 
 public class Server {
@@ -22,8 +21,8 @@ public class Server {
 		
 		final int port;
 		
-		if (args.length == 2) {
-			port = Integer.parseInt(args[1]);
+		if (args.length > 0) {
+			port = Integer.parseInt(args[0]);
 		} else {
 			port = 8444;
 		}
@@ -35,16 +34,14 @@ public class Server {
 			System.exit(-1);
 		}
 
-		ScheduledExecutorService scheduler = Executors
-				.newSingleThreadScheduledExecutor();
-
 		// Initialize database
-		if (args.length > 0) {
-			Database.DB = Database.load(args[0]);
-			scheduler.scheduleAtFixedRate(new DatabaseBackup(args[0]), 30, 30,
-					TimeUnit.SECONDS);
+		if (args.length == 2) {
+			Database.DB = Database.load(args[1]);
+			FileOutputStream fos = new FileOutputStream(args[1]);
+			Database.Stream = new ObjectOutputStream(fos);
 		} else {
 			Database.DB = new Database();
+			Database.Stream = null;
 			System.out
 					.println("No database specified. Creating an empty one with no persistance.");
 		}

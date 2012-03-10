@@ -168,10 +168,9 @@ public class Clan extends Model implements Comparable<Clan> {
 	}
 
 	@Override
-	public boolean save() {
-		// TODO add validations
+	public void save() {
+		super.save();
 		database.clanDB.insert(this);
-		return true;
 	}
 
 	public void deny(Elf elf) {
