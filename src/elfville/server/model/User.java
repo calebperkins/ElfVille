@@ -8,11 +8,11 @@ public class User extends Model {
 	private static final long serialVersionUID = -5955064170275055506L;
 	private String username;
 	private String password;
-	private final Elf elf;
+	private final int elfId;
 	
 	public User(Elf e, String uname) {
 		super();
-		elf = e;
+		elfId = e.modelID;
 		username = uname;
 	}
 
@@ -33,7 +33,7 @@ public class User extends Model {
 	}
 
 	public Elf getElf() {
-		return elf;
+		return Elf.get(elfId);
 	}
 	
 	public static User get(String username) {

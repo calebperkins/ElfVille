@@ -11,20 +11,19 @@ import elfville.protocol.models.SerializablePost;
  */
 public class Post extends Model implements Comparable<Post> {
 	private static final long serialVersionUID = 6422767335685038776L;
-	private final Elf elf;
+	private final int elfID;
 	private final String title;
 	private final String content;
 
-	private final Set<Elf> upsockedElves = Collections.synchronizedSet(new HashSet<Elf>());
-	private final Set<Elf> downsockedElves = Collections.synchronizedSet(new HashSet<Elf>());
+	private final Set<Integer> upsockedElves = Collections.synchronizedSet(new HashSet<Integer>());
+	private final Set<Integer> downsockedElves = Collections.synchronizedSet(new HashSet<Integer>());
 
 	//TODO: this should not take a serializable post as an argument.  code must be refactored
 	public Post(SerializablePost postRequest, Elf elf) {
 		super();
-		// elf= postRequest.username;
 		title = postRequest.title;
 		content = postRequest.content;
-		this.elf = elf;
+		this.elfID = elf.modelID;
 	}
 
 	public SerializablePost toSerializablePost() {
@@ -34,27 +33,29 @@ public class Post extends Model implements Comparable<Post> {
 		sPost.createdAt = getCreatedAt();
 		sPost.upvotes = getNumUpsock();
 		sPost.downvotes = getNumDownsock();
-		sPost.username = elf.getName();
-		sPost.elfModelID = elf.getEncryptedModelID();
+		sPost.username = getElf().getName();
+		sPost.elfModelID = getElf().getEncryptedModelID();
 		sPost.modelID = getEncryptedModelID();
 		return sPost;
 	}
 	
 	public SerializablePost toSerializablePost(Elf elf){
 		SerializablePost sPost= toSerializablePost();
-		sPost.iVoted= this.downsockedElves.contains(elf) || this.upsock(elf);
-		sPost.myPost= elf.equals(this.elf);
+		Integer id = elf.modelID;
+		sPost.iVoted= this.downsockedElves.contains(id) || this.upsock(elf);
+		sPost.myPost= elf.modelID == elfID;
 		return sPost;
 	}
 
 	public void delete() {
-		database.postDB.delete(this.getModelID());
+		database.postDB.delete(modelID);
 	}
 
 	public boolean upsock(Elf upsockingElf) {
 		//each elf can only upsock OR downsock a single post
-		if (!upsockedElves.contains(upsockingElf) && !downsockedElves.contains(upsockingElf)) {
-			upsockedElves.add(upsockingElf);
+		Integer id = upsockingElf.modelID;
+		if (!upsockedElves.contains(id) && !downsockedElves.contains(id)) {
+			upsockedElves.add(id);
 			return true;
 		}
 		return false;
@@ -62,9 +63,10 @@ public class Post extends Model implements Comparable<Post> {
 
 	// Each post cannot have < 0 socks.
 	public boolean downsock(Elf downsockingElf) {
+		Integer id = downsockingElf.modelID;
 		//each elf can only upsock OR downsock a single post
-		if (!downsockedElves.contains(downsockingElf) && !upsockedElves.contains(downsockingElf)) {
-			downsockedElves.add(downsockingElf);
+		if (!downsockedElves.contains(id) && !upsockedElves.contains(id)) {
+			downsockedElves.add(id);
 			return true;
 		}
 		return false;
@@ -85,7 +87,7 @@ public class Post extends Model implements Comparable<Post> {
 	/* auto generated getters and setters */
 
 	public Elf getElf() {
-		return elf;
+		return Elf.get(elfID);
 	}
 
 	public String getTitle() {
@@ -114,7 +116,7 @@ public class Post extends Model implements Comparable<Post> {
 		} else if (getNumSock() < other.getNumSock()) {
 			return 1;
 		} else {
-			return new Integer(other.getModelID()).compareTo(modelID);
+			return new Integer(other.modelID).compareTo(modelID);
 		}
 	}
 }
