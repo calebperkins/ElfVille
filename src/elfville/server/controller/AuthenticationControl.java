@@ -15,7 +15,7 @@ public class AuthenticationControl extends Controller {
 	public static Response signIn(SignInRequest r,
 			CurrentUserProfile currentUser) {
 		Response outM;
-		User user = database.userDB.findUserByUsername(r.username);
+		User user = database.userDB.findByUsername(r.username);
 		if (user != null) {
 			currentUser.setCurrentUserId(user.getModelID());
 			outM = new Response(Status.SUCCESS, "Welcome :)");

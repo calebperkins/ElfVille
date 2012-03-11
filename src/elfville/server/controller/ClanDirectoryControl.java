@@ -67,7 +67,7 @@ public class ClanDirectoryControl extends Controller {
 
 		Clan clan = new Clan(createRequest.clan.clanName,
 				createRequest.clan.clanDescription, leader);
-		database.clanDB.insert(clan);
+		clan.save();
 
 		resp.status = Status.SUCCESS;
 		return resp;

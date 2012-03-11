@@ -18,7 +18,7 @@ import elfville.server.model.*;
  */
 public class Database {
 	private static Database instance = new Database();
-	public ObjectOutputStream stream = null;
+	private ObjectOutputStream stream = null;
 	public final ClanDB clanDB = new ClanDB();
 	public final PostDB postDB = new PostDB();
 	public final ElfDB elfDB = new ElfDB();

@@ -6,7 +6,7 @@ package elfville.server.model;
  */
 public class User extends Model {
 	private static final long serialVersionUID = -5955064170275055506L;
-	private String username;
+	private final String username;
 	private String password;
 	private final int elfId;
 
@@ -16,12 +16,8 @@ public class User extends Model {
 		username = uname;
 	}
 
-	public synchronized String getUsername() {
+	public String getUsername() {
 		return username;
-	}
-
-	public synchronized void setUsername(String username) {
-		this.username = username;
 	}
 
 	public synchronized String getPassword() {
@@ -30,6 +26,7 @@ public class User extends Model {
 
 	public synchronized void setPassword(String password) {
 		this.password = password;
+		save();
 	}
 
 	public Elf getElf() {
@@ -37,7 +34,7 @@ public class User extends Model {
 	}
 
 	public static User get(String username) {
-		return database.userDB.findUserByUsername(username);
+		return database.userDB.findByUsername(username);
 	}
 
 	@Override

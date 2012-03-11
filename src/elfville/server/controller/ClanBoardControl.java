@@ -97,8 +97,8 @@ public class ClanBoardControl extends Controller {
 		}
 
 		// make sure we were actually sent a post
-		if (req.post.content == null || req.post.content.equals("")
-				|| req.post.title == null || req.post.title.equals("")) {
+		if (req.post.content == null || req.post.content.isEmpty()
+				|| req.post.title == null || req.post.title.isEmpty()) {
 			return resp;
 		}
 
@@ -222,7 +222,7 @@ public class ClanBoardControl extends Controller {
 				return resp;
 			}
 
-			Post post = clan.getPostFromEncrpytedModelID(req.post.modelID);
+			Post post = clan.getPostFromEncryptedModelID(req.post.modelID);
 
 			// make sure this post is actually a post in the clan
 			if (post == null) {

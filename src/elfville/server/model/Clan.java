@@ -10,7 +10,7 @@ import elfville.protocol.models.SerializableClan;
 import elfville.protocol.models.SerializableElf;
 import elfville.server.SecurityUtils;
 
-/*
+/**
  * Clan Model.
  */
 public class Clan extends Model implements Comparable<Clan> {
@@ -90,6 +90,7 @@ public class Clan extends Model implements Comparable<Clan> {
 	public void apply(Elf elf) {
 		if (!members.contains(elf.modelID)) {
 			applicants.add(elf.modelID);
+			save();
 		}
 	}
 
@@ -98,6 +99,7 @@ public class Clan extends Model implements Comparable<Clan> {
 		if (applicants.contains(elf.modelID)) {
 			members.add(elf.modelID);
 			applicants.remove(elf.modelID);
+			save();
 		}
 	}
 
@@ -118,6 +120,7 @@ public class Clan extends Model implements Comparable<Clan> {
 			}
 		}
 		members.remove(elf.modelID);
+		save();
 	}
 
 	public boolean isLeader(Elf elf) {
@@ -130,14 +133,10 @@ public class Clan extends Model implements Comparable<Clan> {
 	}
 
 	public boolean isApplicant(Elf elf) {
-		// TODO this function returns the wrong thing.
-		// this is why I can't accept applicants (because they
-		// appear to not be applicants) and it is why an applicant
-		// doesn't appear as an applicant to the client.
 		return applicants.contains(elf.modelID);
 	}
 
-	public Post getPostFromEncrpytedModelID(String encryptedModelID) {
+	public Post getPostFromEncryptedModelID(String encryptedModelID) {
 		int id = SecurityUtils.decryptStringToInt(encryptedModelID);
 		if (postIDs.contains(id)) {
 			return database.postDB.findByModelID(id);
@@ -149,14 +148,17 @@ public class Clan extends Model implements Comparable<Clan> {
 		post.clanID = modelID;
 		postIDs.add(post.modelID);
 		database.postDB.insert(post);
+		save();
+		post.save();
 	}
 
 	public void deletePost(Post post) {
 		postIDs.remove(post);
+		save();
 	}
 
 	public void deletePost(String encryptedModelID) {
-		deletePost(getPostFromEncrpytedModelID(encryptedModelID));
+		deletePost(getPostFromEncryptedModelID(encryptedModelID));
 	}
 
 	public String getName() {
@@ -175,6 +177,7 @@ public class Clan extends Model implements Comparable<Clan> {
 
 	public void deny(Elf elf) {
 		applicants.remove(elf.modelID);
+		save();
 	}
 
 	public static Clan get(String name) {

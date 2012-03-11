@@ -22,7 +22,7 @@ public class Elf extends Model implements Comparable<Elf> {
 	public boolean equals(Object obj) {
 		if (obj instanceof Elf) {
 			Elf other = (Elf) obj;
-			return other.getModelID() == modelID;
+			return other.modelID == modelID;
 		}
 		return false;
 	}

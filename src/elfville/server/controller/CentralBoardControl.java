@@ -56,7 +56,7 @@ public class CentralBoardControl extends Controller {
 		// yay we can actually post!
 		Elf elf = user.getElf();
 		Post post = new Post(postRequest.post, elf);
-		database.postDB.insert(post);
+		post.save();
 		resp.status = Status.SUCCESS;
 		return resp;
 	}

@@ -65,22 +65,17 @@ public class Post extends Model implements Comparable<Post> {
 	public boolean upsock(Elf upsockingElf) {
 		// each elf can only upsock OR downsock a single post
 		Integer id = upsockingElf.modelID;
-		if (!upsocks.contains(id) && !downsocks.contains(id)) {
-			upsocks.add(id);
-			return true;
-		}
-		return false;
+		boolean voted = !downsocks.contains(id) && upsocks.add(id);
+		if (voted) save();
+		return voted;
 	}
 
 	// Each post cannot have < 0 socks.
 	public boolean downsock(Elf downsockingElf) {
 		Integer id = downsockingElf.modelID;
-		// each elf can only upsock OR downsock a single post
-		if (!downsocks.contains(id) && !upsocks.contains(id)) {
-			downsocks.add(id);
-			return true;
-		}
-		return false;
+		boolean voted = !upsocks.contains(id) && downsocks.add(id);
+		if (voted) save();
+		return voted;
 	}
 
 	public int getNumUpsock() {

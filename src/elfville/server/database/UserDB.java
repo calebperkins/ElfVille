@@ -18,7 +18,7 @@ public class UserDB extends DB {
 		return findUserByModelID(modelID);
 	}
 
-	public User findUserByUsername(String username) {
+	public User findByUsername(String username) {
 		return username_map.get(username);
 	}
 
