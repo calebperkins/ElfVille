@@ -69,6 +69,8 @@ public class Database {
 						instance.postDB.insert((Post) m);
 					} else if (m instanceof User) {
 						instance.userDB.insert((User) m);
+					} else if (m instanceof Deletion) {
+						((Deletion) m).deleteObject();
 					}
 				}
 			} catch (EOFException e) {

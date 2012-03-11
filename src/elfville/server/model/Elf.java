@@ -18,20 +18,6 @@ public class Elf extends Model implements Comparable<Elf> {
 		this.description = description;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof Elf) {
-			Elf other = (Elf) obj;
-			return other.modelID == modelID;
-		}
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		return modelID;
-	}
-
 	public List<Post> getPosts() {
 		return database.postDB.findCentralPostsByElf(this);
 	}

@@ -44,4 +44,15 @@ public abstract class Model implements Serializable {
 	public void save() {
 		database.persist(this);
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (obj instanceof Model) && ((Model) obj).modelID == modelID;
+	}
+
+	@Override
+	public int hashCode() {
+		return modelID;
+	}
+
 }

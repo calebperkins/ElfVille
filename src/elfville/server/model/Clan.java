@@ -106,6 +106,7 @@ public class Clan extends Model implements Comparable<Clan> {
 	// the database takes care of cascading delete
 	public void delete() {
 		database.clanDB.delete(this);
+		database.persist(new Deletion(this));
 	}
 
 	// The clan leader cannot do this operation
