@@ -37,7 +37,6 @@ public class EncryptionService {
 		shared_decryption_cipher = Cipher.getInstance(SHARED);
 		gen = KeyGenerator.getInstance(SHARED);
 		initPublicKeyCipher(public_key_path);
-		// getNewSharedKey();
 	}
 
 	private byte[] loadKey(String filename) throws Exception {
