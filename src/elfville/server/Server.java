@@ -9,8 +9,8 @@ import java.io.*;
 public class Server {
 
 	/**
-	 * Starts a server. Use the first argument to provide a path to the database
-	 * file, the second, to provide a port.
+	 * Starts a server. Use the first argument to provide a port, the second,
+	 * the path to the database.
 	 * 
 	 * @param args
 	 * @throws Exception

@@ -13,6 +13,8 @@ public class Session implements Runnable {
 
 	private CurrentUserProfile currentUser;
 
+	// private SecretKey shared_key; // TODO
+
 	public Session(Socket client) {
 		clientSocket = client;
 		currentUser = new CurrentUserProfile(); // a new user, not logged in
