@@ -8,21 +8,24 @@ import elfville.protocol.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import elfville.client.EncryptionService;
+import elfville.client.PublicKeyCipher;
+import elfville.client.SharedKeyCipher;
 
 public class ClientEncryptionTest {
-	EncryptionService es;
+	PublicKeyCipher pk;
+	SharedKeyCipher sk;
 
 	@Before
 	public void setUp() throws Exception {
-		es = new EncryptionService("/Users/caleb/Desktop/elfville.pub.der");
+		pk = new PublicKeyCipher("/Users/caleb/Desktop/elfville.pub.der");
+		sk = new SharedKeyCipher();
 	}
 
 	@Test
 	public void testGetNewSharedKey() throws Exception {
-		SecretKey k1 = es.getNewSharedKey();
+		SecretKey k1 = sk.getNewSharedKey();
 		assertNotNull(k1);
-		SecretKey k2 = es.getNewSharedKey();
+		SecretKey k2 = sk.getNewSharedKey();
 		assertNotNull(k2);
 		assertNotSame(k1, k2);
 	}
@@ -30,14 +33,14 @@ public class ClientEncryptionTest {
 	@Test
 	public void testEncryptWithServerKey() throws Exception {
 		Request req = new CentralBoardRequest();
-		assertNotNull(es.encryptWithServerKey(req));
+		assertNotNull(pk.encrypt(req));
 	}
 
 	@Test
 	public void testEncryptWithSharedKey() throws Exception {
-		es.getNewSharedKey();
+		sk.getNewSharedKey();
 		Request req = new CentralBoardRequest();
-		assertNotNull(es.encryptWithSharedKey(req));
+		assertNotNull(sk.encrypt(req));
 	}
 
 }
