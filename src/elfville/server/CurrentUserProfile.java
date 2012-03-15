@@ -1,8 +1,14 @@
 package elfville.server;
 
+import javax.crypto.SecretKey;
+
 import elfville.server.model.*;
 
 public class CurrentUserProfile {
+	
+	private SecretKey key;
+	private int nonce;
+	
 	private int currentUserId;
 
 	public CurrentUserProfile() {
@@ -31,6 +37,22 @@ public class CurrentUserProfile {
 
 	public Elf getElf() {
 		return getUser().getElf();
+	}
+	
+	public void setSharedKey(SecretKey key){
+		this.key= key;
+	}
+	
+	public SecretKey getSecretKey(){
+		return key;
+	}
+	
+	public void setNonce(int nonce){
+		this.nonce= nonce;
+	}
+	
+	public int getNonce(){
+		return nonce;
 	}
 
 }
