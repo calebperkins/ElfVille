@@ -19,6 +19,8 @@ public class Session implements Runnable {
 
 	private static int TIMEOUT_IN_MS = 15 * 60 * 1000;
 	private static int CONSECUTIVE_FAILURE_LIMIT = 5;
+	
+	private static boolean ENCRYPTION_ENABLED = false;
 
 	private SharedKeyCipher sks = null;
 
@@ -38,11 +40,22 @@ public class Session implements Runnable {
 	public void run() {
 		while (true) {
 			try {
-				if (sks == null && false) { // TODO: enable
-					SealedObject encrypted = (SealedObject) ois.readObject();
-					sks = PKcipher.instance.decrypt(encrypted);
+				Request request;
+				
+				if (ENCRYPTION_ENABLED) {
+					SealedObject encrypted_request = (SealedObject) ois.readObject();
+					
+					if (sks == null) {
+						sks = PKcipher.instance.decrypt(encrypted_request);
+						continue; // TODO: send out response?
+					}
+					
+					request = sks.decryptWithSharedKey(encrypted_request);
+				} else {
+					request = (Request) ois.readObject();
 				}
-				Request request = (Request) ois.readObject();
+				
+				
 				Response response = Routes.processRequest(request, currentUser);
 
 				if (response.isOK()) {
@@ -61,8 +74,16 @@ public class Session implements Runnable {
 						System.out.printf("the current user's id is: %d\n",
 								currentUser.getCurrentUserId());
 				}
+				
+				
 
-				oos.writeObject(response);
+				if (ENCRYPTION_ENABLED) {
+					SealedObject encrypted_response = sks.encrypt(response);
+					oos.writeObject(encrypted_response);
+				} else {
+					oos.writeObject(response);
+				}
+				
 				oos.flush();
 			} catch (EOFException e) {
 				System.out.println("Client disconnected.");
