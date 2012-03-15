@@ -28,7 +28,7 @@ public class AuthenticationControl extends Controller {
 		}
 		
 		currentUser.setSharedKey(r.getSharedKey());
-		currentUser.setNonce(Converter.byteArrayToInt(r.shared_nonce));
+		currentUser.setNonce(Converter.byteArrayToInt(r.getNonce()));
 		resp= new Response(Status.SUCCESS);
 		currentUser.setCurrentUserId(user.getModelID());
 		return resp;

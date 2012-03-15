@@ -12,8 +12,6 @@ import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.Cipher;
 import javax.crypto.SealedObject;
 
-import elfville.protocol.Request;
-
 /**
  * Used to encrypt the initial sign in / sign up request to the server
  * @author Caleb Perkins
