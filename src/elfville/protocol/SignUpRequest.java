@@ -10,4 +10,10 @@ public class SignUpRequest extends SignInRequest {
 		super(u, p, s);
 		description = d;
 	}
+
+	// TODO delete this backwards compatibility with test code constructor
+	public SignUpRequest(String u, String d) {
+		super(u);
+		description = d;
+	}
 }

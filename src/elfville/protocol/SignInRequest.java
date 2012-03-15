@@ -20,6 +20,11 @@ public class SignInRequest extends Request {
 		// TODO send time
 	}
 
+	// TODO delete this backwards compatibility with test code constructor
+	public SignInRequest(String u) {
+		username = u;
+	}
+
 	public void zeroPasswordArray() {
 		for (int i = 0; i < password.length; i++) {
 			password[i] = 0;
