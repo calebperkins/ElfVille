@@ -1,6 +1,7 @@
 package elfville.server.controller;
 
 import elfville.protocol.Response.Status;
+import elfville.protocol.utils.Converter;
 import elfville.protocol.SignInRequest;
 import elfville.protocol.Response;
 import elfville.protocol.SignUpRequest;
@@ -13,16 +14,24 @@ import elfville.server.model.*;
 public class AuthenticationControl extends Controller {
 
 	public static Response signIn(SignInRequest r,
-			CurrentUserProfile currentUser) { // TODO: add password checking
-		Response outM;
+			CurrentUserProfile currentUser) { 
+		
+		Response resp= new Response(Status.FAILURE);
 		User user = database.userDB.findByUsername(r.getUsername());
-		if (user != null) {
-			currentUser.setCurrentUserId(user.getModelID());
-			outM = new Response(Status.SUCCESS, "Welcome :)");
-		} else {
-			outM = new Response(Status.FAILURE, "Username not found/incorrect.");
+		
+		if (user == null) {
+			return resp;
 		}
-		return outM;
+		
+		if(!r.getPassword().equals(user.getPassword())){
+			return resp;
+		}
+		
+		currentUser.setSharedKey(r.getSharedKey());
+		currentUser.setNonce(Converter.byteArrayToInt(r.shared_nonce));
+		resp= new Response(Status.SUCCESS);
+		currentUser.setCurrentUserId(user.getModelID());
+		return resp;
 	}
 
 	public static Response signUp(SignUpRequest inM,
