@@ -8,15 +8,18 @@ public class SignInRequest extends Request {
 	public char[] password;
 	public SecretKey shared_key;
 
-	// public byte[] nonce; TODO
+	public byte[] login_nonce;
+	public byte[] shared_nonce;
 
 	// TODO add time in
 
-	public SignInRequest(String u, char[] p, SecretKey s) {
+	public SignInRequest(String u, char[] p, SecretKey s, byte[] login_nonce,
+			byte[] shared_nonce) {
 		username = u;
 		password = p;
 		shared_key = s;
-		// nonce = n;
+		this.login_nonce = login_nonce;
+		this.shared_nonce = shared_nonce;
 		// TODO send time
 	}
 

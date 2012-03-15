@@ -6,8 +6,9 @@ public class SignUpRequest extends SignInRequest {
 	private static final long serialVersionUID = 1L;
 	public String description;
 
-	public SignUpRequest(String u, char[] p, SecretKey s, String d) {
-		super(u, p, s);
+	public SignUpRequest(String u, char[] p, SecretKey s, byte[] n1, byte[] n2,
+			String d) {
+		super(u, p, s, n1, n2);
 		description = d;
 	}
 

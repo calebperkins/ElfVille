@@ -1,6 +1,6 @@
 package elfville.client;
 
-import java.awt.*;
+import java.awt.EventQueue;
 import java.io.IOException;
 
 /**

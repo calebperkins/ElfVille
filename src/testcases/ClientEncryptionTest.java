@@ -1,15 +1,17 @@
 package testcases;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 
 import javax.crypto.SecretKey;
-import elfville.protocol.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import elfville.client.PublicKeyCipher;
-import elfville.client.SharedKeyCipher;
+import elfville.protocol.CentralBoardRequest;
+import elfville.protocol.Request;
+import elfville.protocol.SharedKeyCipher;
 
 public class ClientEncryptionTest {
 	PublicKeyCipher pk;

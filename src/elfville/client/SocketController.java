@@ -21,6 +21,7 @@ import elfville.protocol.ProfileRequest;
 import elfville.protocol.ProfileResponse;
 import elfville.protocol.Request;
 import elfville.protocol.Response;
+import elfville.protocol.SharedKeyCipher;
 import elfville.protocol.SignInRequest;
 import elfville.protocol.SignUpRequest;
 import elfville.protocol.VoteRequest;
