@@ -13,6 +13,7 @@ import javax.crypto.Cipher;
 import javax.crypto.SealedObject;
 
 import elfville.protocol.Request;
+import elfville.protocol.SharedKeyCipher;
 
 /**
  * Used to encrypt the initial sign in / sign up request to the server
@@ -48,6 +49,14 @@ public class PublicKeyCipher {
 
 	public SealedObject encrypt(Request req) throws GeneralSecurityException,
 			IOException {
+		SharedKeyCipher skc = new SharedKeyCipher();
+		
+		// req = new SignUpRequest("username", "password", skc.getNewSharedKey(), )
 		return new SealedObject(req, cipher);
+	}
+	
+	// Check if cipher exist. should be called by all shared key 
+	public void checkCipherExist() {
+		
 	}
 }
