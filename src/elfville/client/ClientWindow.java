@@ -2,7 +2,9 @@ package elfville.client;
 
 import java.awt.BorderLayout;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import elfville.client.views.WelcomeScreen;
 import elfville.client.views.subcomponents.NavigationScreen;
@@ -29,7 +31,7 @@ public class ClientWindow extends JFrame {
 
 		this.socketController = socketController;
 
-		current = new WelcomeScreen(socketController, this);
+		current = new WelcomeScreen(this, socketController);
 		navigation = new NavigationScreen(this, socketController);
 		main = new JPanel();
 

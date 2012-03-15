@@ -1,15 +1,20 @@
 package elfville.client.views.subcomponents;
 
-import javax.swing.*;
-
-import elfville.client.ClientWindow;
-import elfville.client.SocketController;
-import elfville.client.views.CentralBoard;
-import elfville.protocol.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
+
+import javax.crypto.SecretKey;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import elfville.client.SharedKeyCipher;
+import elfville.client.views.Board;
+import elfville.protocol.SignInRequest;
 
 /**
  * Collection of controls to allow user to login.
@@ -17,43 +22,33 @@ import java.io.IOException;
  */
 public class LoginPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	private JTextField usernameField;
-	private JPasswordField passwordField;
-	private JButton loginButton;
-	private JLabel usernameLabel;
-	private JLabel passwordLabel;
-	private SocketController socketController;
-	private ClientWindow clientWindow;
+	private JTextField usernameField = new JTextField();
+	private JPasswordField passwordField = new JPasswordField();
+	private JButton loginButton = new JButton("Login");
+	private JLabel usernameLabel = new JLabel("Username");
+	private JLabel passwordLabel = new JLabel("Password");
+	private Board board;
 
 	/**
 	 * Create the panel.
 	 */
-	public LoginPanel(SocketController socketController,
-			ClientWindow clientWindow) {
+	public LoginPanel(Board board) {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createTitledBorder("Login"),
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
-		this.socketController = socketController;
-		this.clientWindow = clientWindow;
+		this.board = board;
 
-		usernameField = new JTextField();
-		passwordField = new JPasswordField();
-		loginButton = new JButton("Login");
-		loginButton.addActionListener(this);
-
-		usernameLabel = new JLabel("Username");
 		usernameLabel.setLabelFor(usernameField);
-
-		passwordLabel = new JLabel("Password");
 		passwordLabel.setLabelFor(passwordField);
+		loginButton.addActionListener(this);
 
 		add(usernameLabel);
 		add(usernameField);
-		// add(passwordLabel);
-		// add(passwordField);
+		add(passwordLabel);
+		add(passwordField);
 		add(loginButton);
 
 	}
@@ -63,18 +58,27 @@ public class LoginPanel extends JPanel implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		SignInRequest req = new SignInRequest(usernameField.getText());
-
+		// create new secret key and nonce
+		SharedKeyCipher cipher;
+		SecretKey shared_key;
+		byte[] nonce;
 		try {
-			Response m = socketController.send(req);
-			if (m.status == Response.Status.SUCCESS) {
-				new CentralBoard(clientWindow, socketController);
-			} else {
-				clientWindow.showError(m.message, "Login error");
-			}
-		} catch (IOException e1) {
-			clientWindow.showConnectionError();
+			cipher = new SharedKeyCipher();
+			shared_key = cipher.getNewSharedKey();
+			board.getSocketController().setCipher(cipher);
+		} catch (Exception e2) {
+			// TODO Hmm... not much we really can do to recover
+			// though I guess we could report an error, and ask them
+			// to try again and refresh this "board" (welcome screen)
+			e2.printStackTrace();
+			return;
 		}
-	}
 
+		// create request
+		SignInRequest req = new SignInRequest(usernameField.getText(),
+				passwordField.getPassword(), shared_key);
+		board.getSocketController().sendRequest(req, board, "Login error",
+				board);
+		req.zeroPasswordArray();
+	}
 }

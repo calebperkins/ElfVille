@@ -5,11 +5,24 @@ import javax.crypto.SecretKey;
 public class SignInRequest extends Request {
 	private static final long serialVersionUID = 1L;
 	public String username;
-	public SecretKey shared_key; // TODO
+	public char[] password;
+	public SecretKey shared_key;
 
-	// public String password;
+	// public byte[] nonce; TODO
 
-	public SignInRequest(String u) {
+	// TODO add time in
+
+	public SignInRequest(String u, char[] p, SecretKey s) {
 		username = u;
+		password = p;
+		shared_key = s;
+		// nonce = n;
+		// TODO send time
+	}
+
+	public void zeroPasswordArray() {
+		for (int i = 0; i < password.length; i++) {
+			password[i] = 0;
+		}
 	}
 }

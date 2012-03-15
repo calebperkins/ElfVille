@@ -7,7 +7,23 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import elfville.client.views.Board;
-import elfville.protocol.*;
+import elfville.protocol.CentralBoardRequest;
+import elfville.protocol.CentralBoardResponse;
+import elfville.protocol.ClanBoardRequest;
+import elfville.protocol.ClanBoardResponse;
+import elfville.protocol.ClanListingRequest;
+import elfville.protocol.ClanListingResponse;
+import elfville.protocol.CreateClanRequest;
+import elfville.protocol.ModifyClanRequest;
+import elfville.protocol.PostCentralBoardRequest;
+import elfville.protocol.PostClanBoardRequest;
+import elfville.protocol.ProfileRequest;
+import elfville.protocol.ProfileResponse;
+import elfville.protocol.Request;
+import elfville.protocol.Response;
+import elfville.protocol.SignInRequest;
+import elfville.protocol.SignUpRequest;
+import elfville.protocol.VoteRequest;
 
 /**
  * Generic class for sending socket requests. *
@@ -17,12 +33,13 @@ public class SocketController {
 	private Socket socket;
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
+	private SharedKeyCipher cipher = null;
 
 	/**
 	 * Used to tell the sendRequest method how to respond to a success message
 	 * from the server (e.g., how to create a new central board given that the
 	 * server responded with the current contents a central board should
-	 * display).
+	 * display). Essentially a nasty but common hack to pass a function.
 	 * 
 	 */
 	public interface SuccessFunction {
@@ -52,6 +69,10 @@ public class SocketController {
 		socket = new Socket(host, port);
 		out = new ObjectOutputStream(socket.getOutputStream());
 		in = new ObjectInputStream(socket.getInputStream());
+	}
+
+	public void setCipher(SharedKeyCipher c) {
+		cipher = c;
 	}
 
 	private Response write(Request req) throws IOException {
