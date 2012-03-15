@@ -20,7 +20,7 @@ public class ClientEncryptionTest {
 
 	@Before
 	public void setUp() throws Exception {
-		pk = new PublicKeyCipher("/Users/caleb/Downloads/publickill.der");
+		pk = new PublicKeyCipher("/Users/caleb/Documents/workspace/ElfVille/src/elfville/client/elfville.pub.der");
 		sk = new SharedKeyCipher();
 	}
 

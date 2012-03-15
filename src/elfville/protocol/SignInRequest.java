@@ -8,10 +8,8 @@ public class SignInRequest extends Request {
 	private char[] username;
 	private char[] password;
 	private byte[] shared_key;
-
-	public byte[] shared_nonce;
-
-	// TODO add time in
+	private byte[] shared_nonce;
+	private long time;
 
 	public SignInRequest(String name, char[] pass, SecretKey s,
 			byte[] shared_nonce) {
@@ -19,18 +17,26 @@ public class SignInRequest extends Request {
 		password = pass;
 		shared_key = s.getEncoded();
 		this.shared_nonce = shared_nonce;
-		// TODO send time
+		time = System.currentTimeMillis();
 	}
-	
+
 	public String getUsername() {
 		return new String(username);
 	}
-	
+
 	public String getPassword() {
 		return new String(password);
 	}
-	
+
 	public SecretKey getSharedKey() {
 		return new SecretKeySpec(shared_key, 0, shared_key.length, "AES");
+	}
+
+	public byte[] getNonce() {
+		return shared_nonce;
+	}
+
+	public long getTime() {
+		return time;
 	}
 }
