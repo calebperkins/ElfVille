@@ -48,7 +48,11 @@ public class Server {
 
 		// Support Multiple Clients
 		while (listening) {
-			pool.execute(new Session(serverSocket.accept()));
+			try {
+				pool.execute(new Session(serverSocket.accept()));
+			} catch (IOException e) { // couldn't set timeout? drop them.
+				continue;
+			}
 		}
 
 		serverSocket.close();

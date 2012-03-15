@@ -13,20 +13,22 @@ public class Session implements Runnable {
 
 	private CurrentUserProfile currentUser;
 
+	private int consecutive_failures = 0;
+
+	private static int TIMEOUT_IN_MS = 15 * 60 * 1000;
+	private static int CONSECUTIVE_FAILURE_LIMIT = 5;
+
 	// private SecretKey shared_key; // TODO
 
-	public Session(Socket client) {
+	public Session(Socket client) throws IOException {
 		clientSocket = client;
+		clientSocket.setSoTimeout(TIMEOUT_IN_MS);
 		currentUser = new CurrentUserProfile(); // a new user, not logged in
 		try {
 			ois = new ObjectInputStream(clientSocket.getInputStream());
 			oos = new ObjectOutputStream(clientSocket.getOutputStream());
 		} catch (IOException e1) {
-			try {
-				clientSocket.close();
-			} catch (IOException e2) {
-				System.err.println(e2.getMessage());
-			}
+			clientSocket.close();
 		}
 	}
 
@@ -36,6 +38,15 @@ public class Session implements Runnable {
 			try {
 				Request request = (Request) ois.readObject();
 				Response response = Routes.processRequest(request, currentUser);
+
+				if (response.isOK()) {
+					consecutive_failures = 0;
+				} else {
+					consecutive_failures++;
+					if (consecutive_failures >= CONSECUTIVE_FAILURE_LIMIT) {
+						break;
+					}
+				}
 
 				// set session authentication
 				if ((request instanceof SignUpRequest)
