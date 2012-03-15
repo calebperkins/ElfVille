@@ -122,7 +122,7 @@ public class CentralBoardTest extends TestBase {
 		}
 	}
 
-	@Test
+/*	@Test
 	// Multiple clients vote on different posts. Check if the returned posts are
 	// ordered correctly.
 	public void test6VoteOrderAndProfiles() throws IOException {
@@ -165,5 +165,5 @@ public class CentralBoardTest extends TestBase {
 			assertEquals("content-" + i, post.content);
 		}
 
-	}
+	}*/
 }

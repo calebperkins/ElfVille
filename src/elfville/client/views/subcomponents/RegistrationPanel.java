@@ -91,11 +91,10 @@ public class RegistrationPanel extends JPanel implements ActionListener {
 
 		// create request
 		SignUpRequest req = new SignUpRequest(usernameField.getText(),
-				passwordField.getPassword(), shared_key, login_nonce,
-				shared_nonce, descriptionArea.getText());
+				passwordField.getPassword(), shared_key, login_nonce, descriptionArea.getText());
 		board.getSocketController().sendRequest(req, board,
 				"Registration error", board);
-		req.zeroPasswordArray();
+		//req.zeroPasswordArray(); TODO
 	}
 
 }

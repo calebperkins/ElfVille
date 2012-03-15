@@ -12,6 +12,7 @@ import elfville.client.PublicKeyCipher;
 import elfville.protocol.CentralBoardRequest;
 import elfville.protocol.Request;
 import elfville.protocol.SharedKeyCipher;
+import elfville.protocol.SignInRequest;
 
 public class ClientEncryptionTest {
 	PublicKeyCipher pk;
@@ -19,7 +20,7 @@ public class ClientEncryptionTest {
 
 	@Before
 	public void setUp() throws Exception {
-		pk = new PublicKeyCipher("/Users/caleb/Desktop/elfville.pub.der");
+		pk = new PublicKeyCipher("/Users/caleb/Downloads/publickill.der");
 		sk = new SharedKeyCipher();
 	}
 
@@ -34,7 +35,8 @@ public class ClientEncryptionTest {
 
 	@Test
 	public void testEncryptWithServerKey() throws Exception {
-		Request req = new CentralBoardRequest();
+		SignInRequest req = new SignInRequest("homie5", "you are the man".toCharArray(),
+				sk.getNewSharedKey(), "sds".getBytes());
 		assertNotNull(pk.encrypt(req));
 	}
 

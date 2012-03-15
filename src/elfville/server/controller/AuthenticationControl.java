@@ -13,9 +13,9 @@ import elfville.server.model.*;
 public class AuthenticationControl extends Controller {
 
 	public static Response signIn(SignInRequest r,
-			CurrentUserProfile currentUser) {
+			CurrentUserProfile currentUser) { // TODO: add password checking
 		Response outM;
-		User user = database.userDB.findByUsername(r.username);
+		User user = database.userDB.findByUsername(r.getUsername());
 		if (user != null) {
 			currentUser.setCurrentUserId(user.getModelID());
 			outM = new Response(Status.SUCCESS, "Welcome :)");
@@ -29,15 +29,15 @@ public class AuthenticationControl extends Controller {
 			CurrentUserProfile currentUser) {
 		System.out.println("Sign up is called!");
 		Response outM;
-		User user = User.get(inM.username);
+		User user = User.get(inM.getUsername());
 		if (user != null) {
 			// username is taken
 			outM = new Response(Status.FAILURE, "The username is already taken");
 			System.out.println("The username is already taken");
 		} else {
-			Elf elf = new Elf(inM.username, inM.description);
+			Elf elf = new Elf(inM.getUsername(), inM.description);
 			elf.save();
-			user = new User(elf, inM.username);
+			user = new User(elf, inM.getUsername());
 			// user.setPassword("lolskates"); //TODO: password
 			user.save();
 			// sign the user in
