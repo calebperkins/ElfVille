@@ -32,8 +32,9 @@ public class Session implements Runnable {
 		try {
 			ois = new ObjectInputStream(clientSocket.getInputStream());
 			oos = new ObjectOutputStream(clientSocket.getOutputStream());
-		} catch (IOException e1) {
+		} catch (IOException e) {
 			clientSocket.close();
+			throw e;
 		}
 	}
 
