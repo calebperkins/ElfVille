@@ -1,7 +1,7 @@
 package elfville.client;
 
 import java.io.DataInputStream;
-import java.io.File;
+import java.io.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -47,7 +47,7 @@ public class PublicKeyCipher {
 		return keyBytes;
 	}
 
-	public SealedObject encrypt(Request req) throws GeneralSecurityException,
+	public SealedObject encrypt(Serializable req) throws GeneralSecurityException,
 			IOException {
 		SharedKeyCipher skc = new SharedKeyCipher();
 		

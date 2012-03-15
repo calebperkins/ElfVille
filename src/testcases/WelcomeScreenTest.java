@@ -14,7 +14,7 @@ import elfville.protocol.SignInRequest;
 import elfville.protocol.SignUpRequest;
 
 public class WelcomeScreenTest extends TestBase {
-
+/*
 	public static ArrayList<String> descriptions = new ArrayList<String>();
 
 	@Test
@@ -65,5 +65,5 @@ public class WelcomeScreenTest extends TestBase {
 		Response resp = socketControllers.get(currentUser).send(req);
 		// System.out.println(resp.status.toString());
 		assertEquals(resp.status, Status.SUCCESS);
-	}
+	}*/
 }

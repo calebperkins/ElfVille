@@ -50,9 +50,8 @@ public class PKcipher {
 		private_key = loadPrivateKey(private_key_path);
 	}
 
-	public SharedKeyCipher decrypt(SealedObject obj) throws IOException, ClassNotFoundException, GeneralSecurityException {
-		SecretKey k = (SecretKey) obj.getObject(private_key);
-		return new SharedKeyCipher(k);
+	public SignInRequest decrypt(SealedObject obj) throws IOException, ClassNotFoundException, GeneralSecurityException {
+		return (SignInRequest) obj.getObject(private_key);
 	}
 
 }

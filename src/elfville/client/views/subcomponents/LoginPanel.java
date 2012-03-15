@@ -85,10 +85,10 @@ public class LoginPanel extends JPanel implements ActionListener {
 
 		// create request
 		SignInRequest req = new SignInRequest(usernameField.getText(),
-				passwordField.getPassword(), shared_key, login_nonce,
+				passwordField.getPassword(), shared_key,
 				shared_nonce);
 		board.getSocketController().sendRequest(req, board, "Login error",
 				board);
-		req.zeroPasswordArray();
+		//req.zeroPasswordArray(); TODO
 	}
 }

@@ -4,6 +4,7 @@ import java.net.*;
 import java.security.GeneralSecurityException;
 
 import java.io.*;
+
 import javax.crypto.*;
 
 import elfville.protocol.*;
@@ -19,7 +20,7 @@ public class Session implements Runnable {
 
 	private static int TIMEOUT_IN_MS = 15 * 60 * 1000;
 	private static int CONSECUTIVE_FAILURE_LIMIT = 5;
-	
+
 	private static boolean ENCRYPTION_ENABLED = false;
 
 	private SharedKeyCipher sks = null;
@@ -31,31 +32,33 @@ public class Session implements Runnable {
 		try {
 			ois = new ObjectInputStream(clientSocket.getInputStream());
 			oos = new ObjectOutputStream(clientSocket.getOutputStream());
-		} catch (IOException e1) {
+		} catch (IOException e) {
 			clientSocket.close();
+			throw e;
 		}
 	}
 
 	@Override
 	public void run() {
-		while (true) {
-			try {
+		try {
+			while (true) {
 				Request request;
-				
+
 				if (ENCRYPTION_ENABLED) {
-					SealedObject encrypted_request = (SealedObject) ois.readObject();
-					
+					SealedObject encrypted_request = (SealedObject) ois
+							.readObject();
+
 					if (sks == null) {
-						sks = PKcipher.instance.decrypt(encrypted_request);
-						continue; // TODO: send out response?
+						request = PKcipher.instance.decrypt(encrypted_request);
+						sks = new SharedKeyCipher(
+								((SignInRequest) request).getSharedKey());
 					}
-					
+
 					request = sks.decryptWithSharedKey(encrypted_request);
 				} else {
 					request = (Request) ois.readObject();
 				}
-				
-				
+
 				Response response = Routes.processRequest(request, currentUser);
 
 				if (response.isOK()) {
@@ -74,8 +77,6 @@ public class Session implements Runnable {
 						System.out.printf("the current user's id is: %d\n",
 								currentUser.getCurrentUserId());
 				}
-				
-				
 
 				if (ENCRYPTION_ENABLED) {
 					SealedObject encrypted_response = sks.encrypt(response);
@@ -83,30 +84,25 @@ public class Session implements Runnable {
 				} else {
 					oos.writeObject(response);
 				}
-				
+
 				oos.flush();
-			} catch (EOFException e) {
-				System.out.println("Client disconnected.");
-				break;
-			} catch (IOException e) {
-				System.out.println("Client connection broke.");
-				break;
-			} catch (ClassNotFoundException e) {
-				System.out.println("Client sent malformed request.");
-				break;
-			} catch (GeneralSecurityException e) {
-				System.out.println("Client sent bad key.");
-				e.printStackTrace();
 			}
+		} catch (EOFException e) {
+			System.out.println("Client disconnected.");
+		} catch (IOException e) {
+			System.out.println("Client connection broke.");
+		} catch (ClassNotFoundException e) {
+			System.out.println("Client sent malformed request.");
+		} catch (GeneralSecurityException e) {
+			System.out.println("Client sent bad key.");
+			e.printStackTrace();
 		}
 
-		try {
-			// close connections
+		try { // close connections
 			ois.close();
 			oos.close();
 			clientSocket.close();
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 }

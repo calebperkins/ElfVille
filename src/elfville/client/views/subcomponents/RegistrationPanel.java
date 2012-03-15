@@ -68,8 +68,7 @@ public class RegistrationPanel extends JPanel implements ActionListener {
 		// create new shared key
 		SharedKeyCipher cipher;
 		SecretKey shared_key;
-		byte[] login_nonce;
-		byte[] shared_nonce;
+		byte[] login_nonce = new byte[4];
 		try {
 			// create new shared key
 			cipher = new SharedKeyCipher();
@@ -77,10 +76,7 @@ public class RegistrationPanel extends JPanel implements ActionListener {
 			board.getSocketController().setCipher(cipher);
 			// create new nonces
 			SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-			login_nonce = new byte[256 / 8];
-			shared_nonce = new byte[256 / 8];
 			sr.nextBytes(login_nonce);
-			sr.nextBytes(shared_nonce);
 		} catch (Exception e2) {
 			// TODO Hmm... not much we really can do to recover
 			// though I guess we could report an error, and ask them
@@ -91,11 +87,10 @@ public class RegistrationPanel extends JPanel implements ActionListener {
 
 		// create request
 		SignUpRequest req = new SignUpRequest(usernameField.getText(),
-				passwordField.getPassword(), shared_key, login_nonce,
-				shared_nonce, descriptionArea.getText());
+				passwordField.getPassword(), shared_key, login_nonce, descriptionArea.getText());
 		board.getSocketController().sendRequest(req, board,
 				"Registration error", board);
-		req.zeroPasswordArray();
+		//req.zeroPasswordArray(); TODO
 	}
 
 }
