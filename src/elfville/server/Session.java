@@ -49,8 +49,9 @@ public class Session implements Runnable {
 							.readObject();
 
 					if (sks == null) {
-						sks = PKcipher.instance.decrypt(encrypted_request);
-						continue; // TODO: send out response?
+						request = PKcipher.instance.decrypt(encrypted_request);
+						sks = new SharedKeyCipher(
+								((SignInRequest) request).getSharedKey());
 					}
 
 					request = sks.decryptWithSharedKey(encrypted_request);
