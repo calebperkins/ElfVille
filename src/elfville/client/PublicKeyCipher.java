@@ -23,6 +23,8 @@ public class PublicKeyCipher {
 	private Cipher cipher;
 
 	private static final String PUBLIC = "RSA";
+	
+	public static PublicKeyCipher instance = null;
 
 	public PublicKeyCipher(String public_key_path) throws IOException,
 			GeneralSecurityException {

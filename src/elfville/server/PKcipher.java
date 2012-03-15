@@ -4,12 +4,14 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import javax.crypto.SealedObject;
+import javax.crypto.SecretKey;
 
 import elfville.protocol.*;
 
@@ -22,6 +24,8 @@ import elfville.protocol.*;
  */
 public class PKcipher {
 	private final PrivateKey private_key;
+	
+	public static PKcipher instance;
 
 	private static final String ALG = "RSA";
 
@@ -46,9 +50,9 @@ public class PKcipher {
 		private_key = loadPrivateKey(private_key_path);
 	}
 
-	public Request decrypt(SealedObject obj) throws InvalidKeyException,
-			NoSuchAlgorithmException, IOException, ClassNotFoundException {
-		return (Request) obj.getObject(private_key);
+	public SharedKeyCipher decrypt(SealedObject obj) throws IOException, ClassNotFoundException, GeneralSecurityException {
+		SecretKey k = (SecretKey) obj.getObject(private_key);
+		return new SharedKeyCipher(k);
 	}
 
 }

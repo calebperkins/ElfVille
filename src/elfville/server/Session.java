@@ -1,8 +1,10 @@
 package elfville.server;
 
 import java.net.*;
+import java.security.GeneralSecurityException;
 
 import java.io.*;
+import javax.crypto.*;
 
 import elfville.protocol.*;
 
@@ -18,7 +20,7 @@ public class Session implements Runnable {
 	private static int TIMEOUT_IN_MS = 15 * 60 * 1000;
 	private static int CONSECUTIVE_FAILURE_LIMIT = 5;
 
-	// private SecretKey shared_key; // TODO
+	private SharedKeyCipher sks = null;
 
 	public Session(Socket client) throws IOException {
 		clientSocket = client;
@@ -36,6 +38,10 @@ public class Session implements Runnable {
 	public void run() {
 		while (true) {
 			try {
+				if (sks == null && false) { // TODO: enable
+					SealedObject encrypted = (SealedObject) ois.readObject();
+					sks = PKcipher.instance.decrypt(encrypted);
+				}
 				Request request = (Request) ois.readObject();
 				Response response = Routes.processRequest(request, currentUser);
 
@@ -62,11 +68,14 @@ public class Session implements Runnable {
 				System.out.println("Client disconnected.");
 				break;
 			} catch (IOException e) {
-				System.err.println("Client connection broke.");
+				System.out.println("Client connection broke.");
 				break;
 			} catch (ClassNotFoundException e) {
 				System.out.println("Client sent malformed request.");
 				break;
+			} catch (GeneralSecurityException e) {
+				System.out.println("Client sent bad key.");
+				e.printStackTrace();
 			}
 		}
 

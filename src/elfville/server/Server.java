@@ -16,16 +16,16 @@ public class Server {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
+		if (args.length != 3) {
+			System.err
+					.println("Usage: port /path/to/elfville.db /path/to/private_key.der");
+			System.exit(-1);
+		}
+
+		final int port = Integer.parseInt(args[0]);
+
 		ServerSocket serverSocket = null;
 		boolean listening = true;
-
-		final int port;
-
-		if (args.length > 0) {
-			port = Integer.parseInt(args[0]);
-		} else {
-			port = 8444;
-		}
 
 		try {
 			serverSocket = new ServerSocket(port);
@@ -35,12 +35,10 @@ public class Server {
 		}
 
 		// Initialize database
-		if (args.length == 2) {
-			Database.load(args[1]);
-		} else {
-			System.out
-					.println("No database specified. Creating an empty one with no persistance.");
-		}
+		Database.load(args[1]);
+
+		// Initialize private key
+		PKcipher.instance = new PKcipher(args[2]);
 
 		ExecutorService pool = Executors.newCachedThreadPool();
 
