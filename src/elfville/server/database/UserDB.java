@@ -18,7 +18,11 @@ public class UserDB extends DB {
 		return findUserByModelID(modelID);
 	}
 	
-
+	// used by sign up controller to check
+	public User findByUsernamePassword(String username, String password) {
+		return username_map.get(username);
+	}
+	
 	public User findByUsername(String username) {
 		return username_map.get(username);
 	}
