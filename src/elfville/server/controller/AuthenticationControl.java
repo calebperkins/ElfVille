@@ -1,5 +1,8 @@
 package elfville.server.controller;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import elfville.protocol.Response;
 import elfville.protocol.Response.Status;
 import elfville.protocol.SignInRequest;
@@ -57,8 +60,51 @@ public class AuthenticationControl extends Controller {
 
 		// check to see if user already exists
 		if (user != null) {
-			return new Response(Status.FAILURE, "Username already exists");
+			return resp;
 		}
+		
+		//20 char max, 4 char min
+		if ( 20 < r.getUsername().length() || r.getUsername().length() < 4){
+			return resp;
+		}
+		
+		if(r.getUsername().contains(" ")){
+			return resp;
+		}
+		
+		//make sure the username contains only letters and numbers
+		 Pattern p = Pattern.compile("[^a-z0-9]*", Pattern.CASE_INSENSITIVE);
+		 Matcher m = p.matcher(r.getPassword());
+		 boolean b = m.matches();
+		 
+		 if(b){
+			 return resp;
+		 }
+		 
+		 //8 char min must include a number, 20 char max
+		 if(20 < r.getPassword().length() || r.getPassword().length() < 8){
+			 return resp;
+		 }
+		
+		 //make sure that the pass contains a special character or a number
+		 p = Pattern.compile("[a-z]*", Pattern.CASE_INSENSITIVE);
+		 m = p.matcher(r.getPassword());
+		 b = m.matches();
+		 
+		 if(b){
+			 return resp;
+		 }
+		 
+		 //make sure that the pass doesn't contains anything crazy
+		 p = Pattern.compile("[\\s]");
+		 m = p.matcher(r.getPassword());
+		 b = m.matches();
+		 
+		 if(b){
+			 return resp;
+		 }
+
+		
 
 		Elf elf = new Elf(r.getUsername(), r.description);
 		elf.save();
