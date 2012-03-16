@@ -1,6 +1,23 @@
 package elfville.server;
 
-import elfville.protocol.*;
+import elfville.protocol.CentralBoardRequest;
+import elfville.protocol.CentralBoardResponse;
+import elfville.protocol.ClanBoardRequest;
+import elfville.protocol.ClanBoardResponse;
+import elfville.protocol.ClanListingRequest;
+import elfville.protocol.ClanListingResponse;
+import elfville.protocol.CreateClanRequest;
+import elfville.protocol.DeleteCentralBoardRequest;
+import elfville.protocol.ModifyClanRequest;
+import elfville.protocol.PostCentralBoardRequest;
+import elfville.protocol.PostClanBoardRequest;
+import elfville.protocol.ProfileRequest;
+import elfville.protocol.ProfileResponse;
+import elfville.protocol.Request;
+import elfville.protocol.Response;
+import elfville.protocol.SignInRequest;
+import elfville.protocol.SignUpRequest;
+import elfville.protocol.VoteRequest;
 import elfville.server.controller.AuthenticationControl;
 import elfville.server.controller.CentralBoardControl;
 import elfville.server.controller.ClanBoardControl;
@@ -71,7 +88,7 @@ public class Routes {
 
 	public static Response processRequest(Request r,
 			CurrentUserProfile currentUser) {
-		//first check to see if the user should time out
+		// first check to see if the user should time out
 		if (r instanceof CentralBoardRequest) {
 			return respond((CentralBoardRequest) r, currentUser);
 		} else if (r instanceof SignUpRequest) {

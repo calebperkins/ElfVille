@@ -7,8 +7,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.SealedObject;
 
 import elfville.client.views.Board;
@@ -40,6 +38,7 @@ public class SocketController {
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
 	private SharedKeyCipher cipher = null;
+	private int nonce;
 
 	/**
 	 * Used to tell the sendRequest method how to respond to a success message
@@ -55,7 +54,7 @@ public class SocketController {
 	public void sendRequest(Request req, Board board, String failMessage,
 			SuccessFunction fun) {
 		try {
-			Response resp = board.getSocketController().send(req);
+			Response resp = this.send(req);
 			if (resp.isOK()) {
 				if (null == fun) {
 					board.refresh();
@@ -81,16 +80,31 @@ public class SocketController {
 		cipher = c;
 	}
 
+	public void setNonce(int n) {
+		nonce = n;
+	}
+
 	private Response write(Request req) throws IOException {
 		try {
-			if ((req instanceof SignUpRequest) || (req instanceof SignInRequest)) {
+			if ((req instanceof SignUpRequest)
+					|| (req instanceof SignInRequest)) {
 				out.writeObject(PublicKeyCipher.instance.encrypt(req));
 			} else {
+				nonce += 1;
+				req.setNonce(nonce);
 				out.writeObject(cipher.encrypt(req));
 			}
 			out.flush();
-			SealedObject sobj = (SealedObject) in.readObject();
-			return cipher.decrypt(sobj);
+
+			Response resp = cipher.decrypt((SealedObject) in.readObject());
+			if (resp.getNonce() != nonce + 1) {
+				// TODO make error message better, also maybe throw error
+				System.err.print("Error, unexpected nonce returned");
+				return null;
+			} else {
+				nonce += 1;
+				return resp;
+			}
 		} catch (GeneralSecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -148,4 +162,5 @@ public class SocketController {
 	public ProfileResponse send(ProfileRequest req) throws IOException {
 		return (ProfileResponse) write(req);
 	}
+
 }

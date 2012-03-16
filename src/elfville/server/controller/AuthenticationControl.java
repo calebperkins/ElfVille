@@ -1,25 +1,29 @@
 package elfville.server.controller;
 
-import javax.crypto.SecretKey;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import elfville.protocol.Response.Status;
-import elfville.protocol.utils.SharedKeyCipher;
-import elfville.protocol.SignInRequest;
 import elfville.protocol.Response;
+import elfville.protocol.Response.Status;
+import elfville.protocol.SignInRequest;
 import elfville.protocol.SignUpRequest;
 import elfville.server.CurrentUserProfile;
 import elfville.server.SecurityUtils;
-import elfville.server.model.*;
+import elfville.server.model.Elf;
+import elfville.server.model.User;
 
 /* 
  * Controls sign in, sign up
  */
 public class AuthenticationControl extends Controller {
 
-	public static Response signIn(SignInRequest r, CurrentUserProfile currentUser) { 
+	public static Response signIn(SignInRequest r,
+			CurrentUserProfile currentUser) {
 
 		Response resp= new Response(Status.FAILURE);
+		
 		User user = database.userDB.findByUsernameHashedPassword(r.getUsername(), r.getPassword());
+		System.out.println(r.getUsername());
 
 		if (user == null) {
 			return resp;
@@ -28,13 +32,15 @@ public class AuthenticationControl extends Controller {
 			return resp;
 		}
 
-		resp= new Response(Status.SUCCESS);
+		resp = new Response(Status.SUCCESS);
 		return resp;
 	}
 
-	private static boolean logInUser(User user, SignInRequest r, CurrentUserProfile currentUser) {
+	private static boolean logInUser(User user, SignInRequest r,
+			CurrentUserProfile currentUser) {
 		long currTime = System.currentTimeMillis();
-		if (!user.laterThanLastLogin(currTime) || !user.laterThanLastLogout(currTime)) {
+		if (!user.laterThanLastLogin(currTime)
+				|| !user.laterThanLastLogout(currTime)) {
 			return false;
 		}
 		user.setLastLogin(currTime);
@@ -49,21 +55,65 @@ public class AuthenticationControl extends Controller {
 
 	public static Response signUp(SignUpRequest r,
 			CurrentUserProfile currentUser) {
-		Response resp= new Response(Status.FAILURE);
+		Response resp = new Response(Status.FAILURE);
 		User user = database.userDB.findByUsername(r.getUsername());
 
-		//check to see if user already exists
+		// check to see if user already exists
 		if (user != null) {
 			System.out.println("Username already exists");
 			return new Response(Status.FAILURE, "Username already exists");
 		}
+		
+		//20 char max, 4 char min
+		if ( 20 < r.getUsername().length() || r.getUsername().length() < 4){
+			return resp;
+		}
+		
+		if(r.getUsername().contains(" ")){
+			return resp;
+		}
+		
+		//make sure the username contains only letters and numbers
+		 Pattern p = Pattern.compile("[^a-z0-9]*", Pattern.CASE_INSENSITIVE);
+		 Matcher m = p.matcher(r.getPassword());
+		 boolean b = m.matches();
+		 
+		 if(b){
+			 return resp;
+		 }
+		 
+		 //8 char min must include a number, 20 char max
+		 if(20 < r.getPassword().length() || r.getPassword().length() < 8){
+			 return resp;
+		 }
+		
+		 //make sure that the pass contains a special character or a number
+		 p = Pattern.compile("[a-z]*", Pattern.CASE_INSENSITIVE);
+		 m = p.matcher(r.getPassword());
+		 b = m.matches();
+		 
+		 if(b){
+			 return resp;
+		 }
+		 
+		 //make sure that the pass doesn't contains anything crazy
+		 p = Pattern.compile("[\\s]");
+		 m = p.matcher(r.getPassword());
+		 b = m.matches();
+		 
+		 if(b){
+			 return resp;
+		 }
+
+		
 
 		Elf elf = new Elf(r.getUsername(), r.description);
 		elf.save();
 		user = new User(elf, r.getUsername());
 		String hashedPassword;
 		try {
-			hashedPassword = SecurityUtils.generateRandomPepper(r.getPassword());
+			hashedPassword = SecurityUtils
+					.generateRandomPepper(r.getPassword());
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("generate random pepper failure");

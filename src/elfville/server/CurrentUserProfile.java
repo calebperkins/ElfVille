@@ -14,11 +14,17 @@ public class CurrentUserProfile {
 
 	private int nonce;
 	private long lastLogin;
+	private Session session;
 
 	private int currentUserId;
 
 	public CurrentUserProfile() {
 		currentUserId = -1;
+	}
+	
+	public CurrentUserProfile(Session s){
+		super();
+		this.session= s;
 	}
 
 	/*
@@ -93,6 +99,7 @@ public class CurrentUserProfile {
 	
 	// auto generated getters and setters
 
+
 	public int getNonce() {
 		return nonce;
 	}
@@ -123,6 +130,7 @@ public class CurrentUserProfile {
 			user.setLastLogout(System.currentTimeMillis());
 		}
 		this.currentUserId = -1;
+		this.session.removeCipher();
 	}
 
 }
