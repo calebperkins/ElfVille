@@ -14,4 +14,4 @@ Heran Yang (hy279)
 
 Aaron Martinez (amm257)
 ==============
-Desgined and wrote the client side of the sign in and sign up protocols (though argued against them later) (but not server side handling and responses). Wrote much of protocols.txt. Updated README.txt. Some general debugging, fixed a particularly nasty testcases bug. I've been sick (twice in one semester...) so unfortunately rather inefficient. 17 hours give or take 60 minutes.
+Desgined and wrote the client side of the sign in and sign up protocols (though argued against them later) (but not server side handling and responses). Wrote much of protocols.txt. Updated README.txt. Some general debugging, fixed a particularly nasty testcases bug. I've been sick (twice in one semester...) so unfortunately rather inefficient. 18 hours give or take 90 minutes.
