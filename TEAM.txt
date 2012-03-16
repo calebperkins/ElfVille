@@ -1,26 +1,17 @@
+PHASE 3
+
 Caleb Perkins (ctp34)
 =====================
 
-I made the first prototype of the Client and devised the overall architecture, which was later improved upon by Aaron. I created a Socket Controller to handle network communication for the Client. I created the Welcome Screen to handle registration and login, the Create Post screen Central Board. Time taken: 12 hours
-
-I helped devise the communication protocol between the Client and Server. On the Server side, I refactored the database code to use more efficient / thread-safe data structures. I also implemented the database backup/restore mechanism. I also wrote the README.txt. Time taken: 12 hours
 
 Brian Toth (bdt25)
 =================
 
-I implemented the entirety of the controller, except for the method getClanBoard. The controller is the core of the server, parsing the requests sent by clients, determining how to respond to them, and generating responses by querying the server.  In the process of doing this, I also modified the database occasionally and filled out much of the protocol.  As the largest part of what I did, this took about 17 hours.
-
-I fixed most of the bugs found by users of the client, and wrote some test classes to fit in Paul's JUnit testing framework.  Specifically, I worked on ClanDirectoryTest, ClanBoardTest, and WelcomeScreenTest.  This took about 7 hours.
 
 Heran Yang (hy279)
 ==================
 
-During the beginning phase of the project, I defined and programmed the general code structure: making client and server with socket connections, defining shared protocols and routes, splitting the server side into MVC, making sample code and conventions for each of the above components, demonstrating a sample flow to the team members, and documenting the specification. Time taken: 8 hours.
-
-Later I coded up the database and model functions/objects to support the controller functions, constantly modifying both client and server to maintain the code structure and convention. Time taken: 10 hours.
-
-In the end I initiated and designed the multi-client testing framework and documented the test cases. Time taken: 12 hours.
 
 Aaron Martinez (amm257)
 ==============
-During the beginning of this phase, I was sick and did very little. After I recovered I took over the client from Caleb. The vast majority of my time was spent on writing the client, communicating with Brian about protocols and reporting things that were right on my end but were nonetheless not working, and fixing the occasional controller or protocol (or making protocls). I also implemented a test case, as well as helped write the README and reviwed the testing document. All told 32 hours give or take a couple hours; probably 20 to 25 hours spent on the client and the rest spent primarily on protocls with the occasional controller bugfix.
+
