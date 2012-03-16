@@ -31,7 +31,7 @@ public class ClanBoardTest extends TestBase {
 		test2ApplyClan();
 		test3ReplyApplicant();
 		// test4CreatePost(); // works if I slow things down a little bit
-		// (debug)
+		// (by debugging)
 		test5GetClanBoard();
 		test6RemovePost();
 		test7LeaveClan();
