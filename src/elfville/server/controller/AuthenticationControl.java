@@ -54,13 +54,14 @@ public class AuthenticationControl extends Controller {
 
 	public static Response signUp(SignUpRequest r,
 			CurrentUserProfile currentUser) {
+<<<<<<< HEAD
 
 		Response resp= new Response(Status.FAILURE);
 		User user = database.userDB.findByUsername(r.getUsername());
 
 		//check to see if user already exists
 		if (user != null) {
-			return resp;
+			return new Response(Status.FAILURE, "Username already exists");
 		}
 
 		Elf elf = new Elf(r.getUsername(), r.description);
