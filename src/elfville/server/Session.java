@@ -9,6 +9,7 @@ import javax.crypto.*;
 
 import elfville.protocol.*;
 import elfville.protocol.utils.SharedKeyCipher;
+import elfville.server.controller.ControllerUtils;
 
 public class Session implements Runnable {
 	private Socket clientSocket;
@@ -52,7 +53,11 @@ public class Session implements Runnable {
 					sks = new SharedKeyCipher(
 							((SignInRequest) request).getSharedKey());
 				} else {
-					request = sks.decryptWithSharedKey(encrypted_request);
+					try{
+						request = sks.decryptWithSharedKey(encrypted_request);
+					} catch (javax.crypto.BadPaddingException e) {
+						break;
+					}
 				}
 
 				Response response = Routes.processRequest(request, currentUser);
@@ -82,9 +87,10 @@ public class Session implements Runnable {
 			}
 			// if the user has been idle too long, log him out
 		} catch (SocketTimeoutException e) {
-			currentUser.logOut();
+			ControllerUtils.signOut(currentUser);
 			System.out.println("User session timed out.");
 		} catch (EOFException e) {
+			ControllerUtils.signOut(currentUser);
 			System.out.println("Client disconnected.");
 		} catch (IOException e) {
 			System.out.println("Client connection broke.");

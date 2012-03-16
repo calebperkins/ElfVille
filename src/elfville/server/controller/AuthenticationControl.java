@@ -47,14 +47,10 @@ public class AuthenticationControl extends Controller {
 		return true;
 	}
 
-	public static void signOut(CurrentUserProfile currentUser) {
-		User user = database.userDB.findUserByModelID(currentUser.getCurrentUserId());
-		user.setLastLogout(System.currentTimeMillis());
-	}
+
 
 	public static Response signUp(SignUpRequest r,
 			CurrentUserProfile currentUser) {
-<<<<<<< HEAD
 
 		Response resp= new Response(Status.FAILURE);
 		User user = database.userDB.findByUsername(r.getUsername());
