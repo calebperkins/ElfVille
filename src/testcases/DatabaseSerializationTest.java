@@ -15,7 +15,7 @@ public class DatabaseSerializationTest {
 
 	@Before
 	public void setup() throws Exception {
-		Database.load("/tmp/test.db");
+		// Database.load("/tmp/test.db");
 
 		e = new Elf("Larry", "Likes pork");
 		e.save();
@@ -32,13 +32,13 @@ public class DatabaseSerializationTest {
 
 	@Test
 	public void deletedObjects() throws Exception {
-		Database.load("/tmp/test.db");
+		// Database.load("/tmp/test.db");
 		assertNull("deleted object", Clan.get(c2.getName()));
 	}
 
 	@Test
 	public void testDBrestore() throws Exception {
-		Database.load("/tmp/test.db");
+		// Database.load("/tmp/test.db");
 		assertEquals("Clans persist", c1, Clan.get(c1.getName()));
 		assertEquals("Elfs persist", e, Elf.get(e.getModelID()));
 	}

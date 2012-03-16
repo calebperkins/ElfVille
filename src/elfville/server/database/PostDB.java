@@ -26,7 +26,7 @@ public class PostDB extends DB {
 		Post p = idMap.get(i);
 		idMap.remove(i);
 		if (p.clanID == 0) {
-			centralPosts.remove(p);
+			centralPosts.remove(p.getModelID());
 		}
 	}
 

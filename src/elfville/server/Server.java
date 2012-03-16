@@ -19,14 +19,14 @@ public class Server {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		if (args.length != 1) {
-			System.err
-					.println("Usage: port");
-			System.exit(-1);
+		int port = 8444; 
+		if (args.length < 1) {
+			System.out.println("port not specified. Use 8444 as default");
+		} else {
+			port = Integer.parseInt(args[0]);
+			System.out.println("Using port " + port + " as default");
 		}
-
-		final int port = Integer.parseInt(args[0]);
-
+		
 		ServerSocket serverSocket = null;
 		boolean listening = true;
 
@@ -41,7 +41,7 @@ public class Server {
 		Database.load();
 
 		Scanner scanner = new Scanner(System.in);
-        System.out.print("Private encryption key file path (type 'resources/elfville.der' for demonstration, of course you can load one from your flash that you are inserting right now): ");
+        System.out.println("Input private encryption key file path\n (type 'resources/elfville.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
         String dbPrivateKeyPath = scanner.nextLine();
 
 		// Initialize private key
