@@ -11,7 +11,7 @@ public class SignInRequest extends Request {
 	private char[] username;
 	private char[] password;
 	private byte[] shared_key;
-	private byte[] shared_nonce;
+	private int shared_nonce;
 	private long time;
 
 	public SignInRequest(String name, char[] pass, SecretKey s) {
@@ -19,12 +19,9 @@ public class SignInRequest extends Request {
 		password = pass;
 		shared_key = s.getEncoded();
 		
-		this.shared_nonce = new byte[4];
-		
-		SecureRandom sr;
 		try {
-			sr = SecureRandom.getInstance("SHA1PRNG");
-			sr.nextBytes(shared_nonce);
+			SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+			shared_nonce = sr.nextInt();
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
@@ -44,7 +41,7 @@ public class SignInRequest extends Request {
 		return new SecretKeySpec(shared_key, 0, shared_key.length, "AES");
 	}
 
-	public byte[] getNonce() {
+	public int getNonce() {
 		return shared_nonce;
 	}
 

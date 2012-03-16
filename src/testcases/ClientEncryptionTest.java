@@ -20,7 +20,8 @@ public class ClientEncryptionTest {
 
 	@Before
 	public void setUp() throws Exception {
-		pk = new PublicKeyCipher("/Users/caleb/Documents/workspace/ElfVille/src/elfville/client/elfville.pub.der");
+		pk = new PublicKeyCipher(
+				"/Users/caleb/Documents/workspace/ElfVille/src/elfville/client/elfville.pub.der");
 		sk = new SharedKeyCipher();
 	}
 
@@ -35,8 +36,8 @@ public class ClientEncryptionTest {
 
 	@Test
 	public void testEncryptWithServerKey() throws Exception {
-		SignInRequest req = new SignInRequest("homie5", "you are the man".toCharArray(),
-				sk.getNewSharedKey(), "sds".getBytes());
+		SignInRequest req = new SignInRequest("homie5",
+				"you are the man".toCharArray(), sk.getNewSharedKey());
 		assertNotNull(pk.encrypt(req));
 	}
 
