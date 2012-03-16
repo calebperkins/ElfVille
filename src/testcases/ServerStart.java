@@ -1,5 +1,6 @@
 package testcases;
 
+import java.awt.Robot;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
@@ -14,7 +15,9 @@ public class ServerStart extends TestBase {
 	public class ServerThread extends Thread {
 		@Override
 		public void run() {
-			String args[] = new String[0];
+			String args[] = new String[2];
+			args[0] = "8444";
+			args[1] = "DEBUG";
 			try {
 				Server.main(args);
 			} catch (Exception e) {
@@ -40,7 +43,7 @@ public class ServerStart extends TestBase {
 	public void test() throws IOException, InterruptedException,
 			GeneralSecurityException {
 		new ServerThread().start();
-		String arg2 = "elfville.pub.der";
+		String arg2 = "resources/elfville.pub.der";
 		PublicKeyCipher.instance = new PublicKeyCipher(arg2);
 
 		Thread.sleep(500); // sleep for 0.5 second to wait for the server start

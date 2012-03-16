@@ -47,7 +47,7 @@ public class Database {
 	static public Database getInstance() {
 		return instance;
 	}
-	
+
 	public void persist(Serializable obj) {
 		if (stream != null) {
 			try {
@@ -61,7 +61,7 @@ public class Database {
 		}
 		flush();
 	}
-	
+
 	public void flush() {
 		if (stream != null) {
 			try {
@@ -74,17 +74,23 @@ public class Database {
 
 	// Read the database from disk
 	static public void load() throws Exception {
-		// Ask users for database shared key		
-		Scanner scanner = new Scanner(System.in);
-        System.out.println("Input Database encryption key path (type 'resources/elfville.db' for demonstration: ");
-        String dbLocation = scanner.nextLine();
-        dbLocation = "resources/elfville.db";
-        System.out.println("Input Database encryption key file path\n (type 'resources/elfville.db.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
-        String db_key_path = scanner.nextLine();
-        db_key_path = "resources/elfville.db.der";
-        
-        // Initiate database key
-        databaseSecret = SecurityUtils.getKeyFromFile(db_key_path);
+		String dbLocation;
+		String db_key_path;
+		if (Server.DEBUG) {
+			dbLocation = "resources/elfville.db";
+			db_key_path = "resources/elfville.db.der";	
+		} else {
+			// Ask users for database shared key		
+			Scanner scanner = new Scanner(System.in);
+			System.out.println("Input Database encryption key path (type 'resources/elfville.db' for demonstration: ");
+			dbLocation = scanner.nextLine();
+
+			System.out.println("Input Database encryption key file path\n (type 'resources/elfville.db.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
+			db_key_path = scanner.nextLine();
+		}
+
+		// Initiate database key
+		databaseSecret = SecurityUtils.getKeyFromFile(db_key_path);
 		enc = Cipher.getInstance("AES");
 		dec = Cipher.getInstance("AES");
 		enc.init(Cipher.ENCRYPT_MODE, databaseSecret);
@@ -97,7 +103,7 @@ public class Database {
 			// TODO: handle deleted objects
 			while ((msg = (SealedObject)ois.readObject()) != null) {
 				Serializable m = SecurityUtils.decrypt(msg, dec);
-				
+
 				if (m instanceof Clan) {
 					instance.clanDB.insert((Clan) m);
 				} else if (m instanceof Elf) {
