@@ -2,10 +2,11 @@ PHASE 3
 
 Caleb Perkins (ctp34)
 =====================
-Implemented the actual encryption between the server and client (the shared Session cipher and the public-private key ciphers). Now, Sealed Objects are passed over the wire rather than raw requests or responses. Fixed database serialization so that changes are appended to a file on disk, rather than before, which was a simple file dump. Added and generated the nonces and secret keys needed for the key exchange protocol. Did some low level work such as figuring out what format Java can read keys in, and how object serialization actually works. Time taken: 17 hours.
+Implemented the actual encryption between the server and client (the shared Session cipher and the public-private key ciphers). Now, Sealed Objects are passed over the wire rather than raw requests or responses. Fixed database serialization so that changes are appended to a file on disk, rather than before, which was a simple file dump. Added and generated the nonces and secret keys needed for the key exchange protocol. Did some low level work such as figuring out what format Java can read keys in, and how object serialization actually works. Time taken: 18 hours.
 
 Brian Toth (bdt25)
 =================
+Designed much of the initial protocol, which changed surprisingly little throughout the course of the project.  Started the controller portion for sign in and sign up.  Implemented username and password specs.  Fixed much of the session related code at some point.  Fixed our pepper implementation to deal with Java's strange lack of unsigned primitives.  Hounded a number of regression bugs including losing the ability to delete clan board posts. 18 hours
 
 
 Heran Yang (hy279)
