@@ -37,7 +37,7 @@ public class ClientEncryptionTest {
 	@Test
 	public void testEncryptWithServerKey() throws Exception {
 		SignInRequest req = new SignInRequest("homie5",
-				"you are the man".toCharArray(), sk.getNewSharedKey());
+				"you are the man".toCharArray(), sk.getNewSharedKey(), 0);
 		assertNotNull(pk.encrypt(req));
 	}
 

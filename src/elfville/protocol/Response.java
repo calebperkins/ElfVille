@@ -16,6 +16,14 @@ public class Response implements Serializable {
 		return status == Status.SUCCESS;
 	}
 
+	public int getNonce() {
+		return nonce;
+	}
+
+	public void setNonce(int n) {
+		nonce = n;
+	}
+
 	public Response() {
 		status = Status.FAILURE;
 		message = "Unknown error";

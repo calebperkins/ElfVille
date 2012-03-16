@@ -9,13 +9,15 @@ public class SignInRequest extends Request {
 	private char[] password;
 	private byte[] shared_key;
 	private long time;
+	private int shared_nonce;
 
-	public SignInRequest(String name, char[] pass, SecretKey s) {
+	public SignInRequest(String name, char[] pass, SecretKey s, int nonce) {
 		super();
 		username = name.toCharArray();
 		password = pass;
 		shared_key = s.getEncoded();
 		time = System.currentTimeMillis();
+		shared_nonce = nonce;
 	}
 
 	public String getUsername() {
@@ -32,6 +34,10 @@ public class SignInRequest extends Request {
 
 	public long getTime() {
 		return time;
+	}
+	
+	public int getSharedNonce() {
+		return shared_nonce;
 	}
 	
 	public void zeroOutPassword() {
