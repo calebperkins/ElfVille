@@ -42,7 +42,7 @@ public class Server {
 		Scanner scanner = new Scanner(System.in);
         System.out.println("Input private encryption key file path\n (type 'resources/elfville.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
         String dbPrivateKeyPath = scanner.nextLine();
-
+        dbPrivateKeyPath = "resources/elfville.der";
 		// Initialize private key
 		PKcipher.instance = new PKcipher(dbPrivateKeyPath);
 

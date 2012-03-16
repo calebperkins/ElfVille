@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
@@ -61,22 +62,22 @@ public class SecurityUtils {
 		return Integer.parseInt(str);
 	}
 	
-	public static SealedObject encrypt(Model m, Cipher enc) throws IllegalBlockSizeException,
+	public static SealedObject encrypt(Serializable m, Cipher enc) throws IllegalBlockSizeException,
 	IOException {
 		return new SealedObject(m, enc);
 	}
 	
-	public static Model decrypt(SealedObject m, Cipher dec)
+	public static Serializable decrypt(SealedObject m, Cipher dec)
 			throws IllegalBlockSizeException, BadPaddingException, IOException,
 			ClassNotFoundException {
-		return (Model) m.getObject(dec);
+		return (Serializable) m.getObject(dec);
 	}
 	
 	public static SecretKey getKeyFromFile(String filepath) throws IOException{
 		File f = new File(filepath);
 		FileInputStream fis = new FileInputStream(f);
 		DataInputStream dis = new DataInputStream(fis);
-		byte[] keyBytes = new byte[(int) f.length()];
+		byte[] keyBytes = new byte[32];
 		dis.readFully(keyBytes);
 		dis.close();
 		return new SecretKeySpec(keyBytes, "AES");	
