@@ -9,9 +9,6 @@ import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.Cipher;
 import javax.crypto.SealedObject;
 
-import elfville.protocol.Request;
-import elfville.protocol.utils.SharedKeyCipher;
-
 /**
  * Used to encrypt the initial sign in / sign up request to the server
  * @author Caleb Perkins
@@ -46,9 +43,6 @@ public class PublicKeyCipher {
 
 	public SealedObject encrypt(Serializable req) throws GeneralSecurityException,
 			IOException {
-		SharedKeyCipher skc = new SharedKeyCipher();
-		
-		// req = new SignUpRequest("username", "password", skc.getNewSharedKey(), )
 		return new SealedObject(req, cipher);
 	}
 	

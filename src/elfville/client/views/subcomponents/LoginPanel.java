@@ -71,10 +71,11 @@ public class LoginPanel extends JPanel implements ActionListener {
 					passwordField.getPassword(), shared_key);
 			board.getSocketController().sendRequest(req, board, "Login error",
 					board);
+			
+			req.zeroOutPassword();
 		} catch (Exception ex) {
 			// We can't do anything.....
 			ex.printStackTrace();
 		}
-		// req.zeroPasswordArray(); TODO
 	}
 }

@@ -74,10 +74,10 @@ public class Routes {
 		//first check to see if the user should time out
 		if (r instanceof CentralBoardRequest) {
 			return respond((CentralBoardRequest) r, currentUser);
-		} else if (r instanceof SignInRequest) {
-			return respond((SignInRequest) r, currentUser);
 		} else if (r instanceof SignUpRequest) {
 			return respond((SignUpRequest) r, currentUser);
+		} else if (r instanceof SignInRequest) {
+			return respond((SignInRequest) r, currentUser);
 		} else if (r instanceof PostCentralBoardRequest) {
 			return respond((PostCentralBoardRequest) r, currentUser);
 		} else if (r instanceof VoteRequest) {

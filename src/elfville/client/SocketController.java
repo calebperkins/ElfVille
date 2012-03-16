@@ -5,6 +5,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.security.GeneralSecurityException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.SealedObject;
 
 import elfville.client.views.Board;
 import elfville.protocol.CentralBoardRequest;
@@ -77,10 +82,18 @@ public class SocketController {
 	}
 
 	private Response write(Request req) throws IOException {
-		out.writeObject(req);
-		out.flush();
 		try {
-			return (Response) in.readObject();
+			if ((req instanceof SignUpRequest) || (req instanceof SignInRequest)) {
+				out.writeObject(PublicKeyCipher.instance.encrypt(req));
+			} else {
+				out.writeObject(cipher.encrypt(req));
+			}
+			out.flush();
+			return cipher.decrypt((SealedObject) in.readObject());
+		} catch (GeneralSecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
 		} catch (ClassNotFoundException e) {
 			return null; // shouldn't happen?
 		}
