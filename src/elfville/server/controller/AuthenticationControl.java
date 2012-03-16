@@ -66,11 +66,11 @@ public class AuthenticationControl extends Controller {
 		
 		//20 char max, 4 char min
 		if ( 20 < r.getUsername().length() || r.getUsername().length() < 4){
-			return resp;
+			 return new Response(Status.FAILURE, "User name must be between 8 and 20 characters");
 		}
 		
 		if(r.getUsername().contains(" ")){
-			return resp;
+			return new Response(Status.FAILURE, "No spaces in the username");
 		}
 		
 		//make sure the username contains only letters and numbers
@@ -79,12 +79,12 @@ public class AuthenticationControl extends Controller {
 		 boolean b = m.matches();
 		 
 		 if(b){
-			 return resp;
+			 return new Response(Status.FAILURE, "Only letters and numbers in the username");
 		 }
 		 
 		 //8 char min must include a number, 20 char max
 		 if(20 < r.getPassword().length() || r.getPassword().length() < 8){
-			 return resp;
+			 return new Response(Status.FAILURE, "Password must be between 8 and 20 characters");
 		 }
 		
 		 //make sure that the pass contains a special character or a number
@@ -93,7 +93,7 @@ public class AuthenticationControl extends Controller {
 		 b = m.matches();
 		 
 		 if(b){
-			 return resp;
+			 return new Response(Status.FAILURE, "Password must contain at least one number or special character");
 		 }
 		 
 		 //make sure that the pass doesn't contains anything crazy
@@ -102,7 +102,7 @@ public class AuthenticationControl extends Controller {
 		 b = m.matches();
 		 
 		 if(b){
-			 return resp;
+			 return new Response(Status.FAILURE, "Password may not contain whitespace");
 		 }
 
 		
