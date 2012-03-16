@@ -7,6 +7,7 @@ public class VoteRequest extends Request {
 	public boolean upsock;
 
 	public VoteRequest(String modelID, boolean upsock) {
+		super();
 		this.modelID = modelID;
 		this.upsock = upsock;
 	}

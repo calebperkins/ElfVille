@@ -40,7 +40,6 @@ public class SocketController {
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
 	private SharedKeyCipher cipher = null;
-	private int current_shared_nonce = 0;
 
 	/**
 	 * Used to tell the sendRequest method how to respond to a success message
