@@ -1,5 +1,7 @@
 package elfville.server.database;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ConcurrentHashMap;
 
 import elfville.server.SecurityUtils;
@@ -19,8 +21,22 @@ public class UserDB extends DB {
 	}
 	
 	// used by sign up controller to check
-	public User findByUsernamePassword(String username, String password) {
-		return username_map.get(username);
+	public User findByUsernameHashedPassword(String username, String password) {
+		User u = username_map.get(username);
+		boolean pwdIsRight = false;
+		if (u == null) {
+			return null;
+		}
+		try {
+			pwdIsRight = SecurityUtils.checkPepperPassword(password, u.getPassword());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		if (!pwdIsRight) {
+			return null;
+		}
+		return u;
 	}
 	
 	public User findByUsername(String username) {

@@ -7,21 +7,26 @@ import javax.crypto.SecretKey;
 import elfville.server.model.*;
 
 public class CurrentUserProfile {
-	
+
 	private final static long timeoutLength = 1000 * 60 * 20;
 
-	private static Database database = Database.getInstance();
+	private final static Database database = Database.getInstance();
 
-	private SecretKey key;
+	private SecretKey shared_key;
 	private int nonce;
-	private Date timeout;
-	private Date lastLogin;
-	
+	private long lastLogin;
+
 	private int currentUserId;
 
 	public CurrentUserProfile() {
 		currentUserId = -1;
 	}
+
+
+
+
+
+	/*
 
 	//TODO: fix this shit, it broke as hell
 	public boolean loggedIn() {
@@ -48,36 +53,36 @@ public class CurrentUserProfile {
 	public Elf getElf() {
 		return getUser().getElf();
 	}
-	
+
 	public void setSharedKey(SecretKey key){
 		this.key= key;
 	}
-	
+
 	public SecretKey getSecretKey(){
 		return key;
 	}
-	
+
 	public void setNonce(int nonce){
 		this.nonce= nonce;
 	}
-	
+
 	public int getNonce(){
 		return nonce;
 	}
-	
+
 	public void setLastLogin(Date d){
 		lastLogin= d;
 	}
-	
+
 	public boolean checkLogin(Date d){
 		return lastLogin.before(d);
 	}
-	
+
 	public void setTimeout(){
 		Date d = new Date();
 		timeout.setTime(d.getTime() + timeoutLength);
 	}
-	
+
 	/**public boolean checkTimeOut(){
 		Date d= new Date(); 
 		//check to see if this user's session has timed out.  if it has he should be logged out automatically
@@ -89,7 +94,53 @@ public class CurrentUserProfile {
 		setTimeout();
 		return false;
 	}**/
+
 	
+	// auto generated getters and setters
+	public SecretKey getSharedKey() {
+		return shared_key;
+	}
+
+	public void setSharedKey(SecretKey shared_key) {
+		this.shared_key = shared_key;
+	}
+
+	public int getNonce() {
+		return nonce;
+	}
+
+	public void setNonce(int nonce) {
+		this.nonce = nonce;
+	}
+	
+	public long getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(long lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+
+
+
+
+	public int getCurrentUserId() {
+		return currentUserId;
+	}
+
+
+
+
+
+	public void setCurrentUserId(int currentUserId) {
+		this.currentUserId = currentUserId;
+	}
+
+
+
+
+
 	public void logOut(){
 		this.currentUserId = -1;
 	}

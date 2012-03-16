@@ -9,6 +9,8 @@ public class User extends Model {
 	private final String username;
 	private String password;
 	private final int elfId;
+	private long lastLogin;
+	private long lastLogout;
 
 	public User(Elf e, String uname) {
 		super();
@@ -39,4 +41,21 @@ public class User extends Model {
 		database.userDB.insert(this);
 	}
 
+	public synchronized boolean laterThanLastLogin(long currTime) {
+		return currTime > lastLogin;
+	}
+	
+	public synchronized void setLastLogin(long lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	
+	public synchronized boolean laterThanLastLogout(long currTime) {
+		return currTime > lastLogout;
+	}
+	
+	public synchronized void setLastLogout(long lastLogout) {
+		this.lastLogout = lastLogout;
+	}
+	
 }

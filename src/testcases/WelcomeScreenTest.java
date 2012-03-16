@@ -4,23 +4,41 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+
+import javax.crypto.SecretKey;
 
 import org.junit.Test;
 
 import elfville.protocol.Response;
 import elfville.protocol.Response.Status;
+import elfville.protocol.utils.SharedKeyCipher;
 import elfville.protocol.SignInRequest;
 import elfville.protocol.SignUpRequest;
 
 public class WelcomeScreenTest extends TestBase {
-/*
+
 	public static ArrayList<String> descriptions = new ArrayList<String>();
+
+	// create new shared key
+	private SecretKey newSharedKey() {
+		SharedKeyCipher cipher;
+		SecretKey shared_key = null;
+		try {
+			cipher = new SharedKeyCipher();
+			shared_key = cipher.getNewSharedKey();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return shared_key;
+	}
 
 	@Test
 	public void test1SignUp() throws UnknownHostException, IOException {
 		int currentUser = 0;
-		SignUpRequest req = new SignUpRequest("user" + currentUser, "");
+		String password = "what is my password";
+		SignUpRequest req = new SignUpRequest("user" + currentUser, password.toCharArray(), newSharedKey(), "I am an awesome elf");
 		Response resp = socketControllers.get(currentUser).send(req);
 		// System.out.println("signUpTest: " + resp.status.toString());
 		assertEquals(resp.status, Status.SUCCESS);
@@ -29,7 +47,8 @@ public class WelcomeScreenTest extends TestBase {
 	@Test
 	public void test2SignUpDuplicate() throws UnknownHostException, IOException {
 		// should fail because we signed up the same username once above
-		SignUpRequest req = new SignUpRequest("user0", "");
+		String password = "what is my password";
+		SignUpRequest req = new SignUpRequest("user0", password.toCharArray(), newSharedKey(), "I am an awesome elf");
 		Response resp = socketControllers.get(0).send(req);
 		// System.out.println(resp.status.toString());
 		assertEquals(resp.status, Status.FAILURE);
@@ -40,7 +59,8 @@ public class WelcomeScreenTest extends TestBase {
 		descriptions.add("sdfkjdsf");
 		for (int i = 1; i < clientNum; i++) {
 			// System.out.println("kkkkkkk " + i);
-			SignUpRequest req = new SignUpRequest("user" + i, "");
+			String password = "what is my password";
+			SignUpRequest req = new SignUpRequest("user" + i, password.toCharArray(), newSharedKey(), "I am an awesome elf");
 			descriptions.add("sdfkjdsf" + i);
 			req.description = descriptions.get(i);
 			Response resp = socketControllers.get(i).send(req);
@@ -52,7 +72,9 @@ public class WelcomeScreenTest extends TestBase {
 
 	@Test
 	public void test4SignInWrong() throws UnknownHostException, IOException {
-		SignInRequest req = new SignInRequest("user");
+		String password = "what is my password";
+		SignInRequest req = new SignInRequest("user", password.toCharArray(), newSharedKey());
+		
 		Response resp = socketControllers.get(0).send(req);
 		// System.out.println(resp.status.toString());
 		assertEquals(resp.status, Status.FAILURE);
@@ -61,9 +83,12 @@ public class WelcomeScreenTest extends TestBase {
 	@Test
 	public void test5SignIn() throws UnknownHostException, IOException {
 		int currentUser = 0;
-		SignInRequest req = new SignInRequest("user" + currentUser);
+		String password = "what is my password";
+		SignInRequest req = new SignInRequest("user" + currentUser, password.toCharArray(), newSharedKey());
+		
 		Response resp = socketControllers.get(currentUser).send(req);
 		// System.out.println(resp.status.toString());
 		assertEquals(resp.status, Status.SUCCESS);
-	}*/
+	}
+
 }

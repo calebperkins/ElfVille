@@ -16,6 +16,12 @@ public class Server {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
+		if (args.length < 3) {  // TODO: delete this!
+			args = new String[3];
+			args[0] = "8444";
+			args[1] = "/Users/heranyang/Desktop/elfville.db";
+			args[2] = "/Users/heranyang/Workspace/school_work/2012SP/ElfVille/resources/elfville.der";
+		}
 		if (args.length != 3) {
 			System.err
 					.println("Usage: port /path/to/elfville.db /path/to/private_key.der");

@@ -4,8 +4,8 @@ import elfville.protocol.Response.Status;
 import elfville.protocol.SignInRequest;
 import elfville.protocol.Response;
 import elfville.protocol.SignUpRequest;
-import elfville.protocol.utils.Converter;
 import elfville.server.CurrentUserProfile;
+import elfville.server.SecurityUtils;
 import elfville.server.model.*;
 
 /* 
@@ -13,60 +13,72 @@ import elfville.server.model.*;
  */
 public class AuthenticationControl extends Controller {
 
-	public static Response signIn(SignInRequest r,
-			CurrentUserProfile currentUser) { 
-		
+	public static Response signIn(SignInRequest r, CurrentUserProfile currentUser) { 
+
 		Response resp= new Response(Status.FAILURE);
-		User user = database.userDB.findByUsername(r.getUsername());
-		
+		User user = database.userDB.findByUsernameHashedPassword(r.getUsername(), r.getPassword());
+
 		if (user == null) {
 			return resp;
 		}
-		
-		//TODO: need to check if user is already logged in.  flag in database?
-		
-		//TODO:need pepper/salt here
-		if(!r.getPassword().equals(user.getPassword())){
+		if (!logInUser(user, r, currentUser)) {
 			return resp;
 		}
-		
-		//TODO: check last login against value stored in database
-		//if(user.getLastLogin().before(r.)
-		
+
+		resp= new Response(Status.SUCCESS);
+		return resp;
+	}
+
+	private static boolean logInUser(User user, SignInRequest r, CurrentUserProfile currentUser) {
+		long currTime = System.currentTimeMillis();
+		if (!user.laterThanLastLogin(currTime) || !user.laterThanLastLogout(currTime)) {
+			return false;
+		}
+		user.setLastLogin(currTime);
+
+		// sign the user in
+		currentUser.setLastLogin(currTime);
 		currentUser.setSharedKey(r.getSharedKey());
 		currentUser.setNonce(r.getNonce());
-		resp= new Response(Status.SUCCESS);
 		currentUser.setCurrentUserId(user.getModelID());
-		return resp;
+
+		return true;
+	}
+
+	public static void signOut(CurrentUserProfile currentUser) {
+		User user = database.userDB.findUserByModelID(currentUser.getCurrentUserId());
+		user.setLastLogout(System.currentTimeMillis());
 	}
 
 	public static Response signUp(SignUpRequest r,
 			CurrentUserProfile currentUser) {
-		
+
 		Response resp= new Response(Status.FAILURE);
 		User user = database.userDB.findByUsername(r.getUsername());
-		
-		if (user == null) {
+
+		//check to see if user already exists
+		if (user != null) {
 			return resp;
 		}
-		
-		//check to see if user already exists
-		
-		currentUser.setSharedKey(r.getSharedKey());
-		currentUser.setNonce(r.getNonce());
-		currentUser.setCurrentUserId(user.getModelID());
-		
-		
+
 		Elf elf = new Elf(r.getUsername(), r.description);
 		elf.save();
 		user = new User(elf, r.getUsername());
-		// user.setPassword("lolskates"); //TODO: password
-		
-		// sign the user in
-		currentUser.setCurrentUserId(user.getModelID());
-		
+		String hashedPassword;
+		try {
+			hashedPassword = SecurityUtils.generateRandomPepper(r.getPassword());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return resp;
+		}
+		user.setPassword(hashedPassword);
+
+		if (!logInUser(user, r, currentUser)) {
+			return resp;
+		}
+
 		user.save();
-		resp= new Response(Status.SUCCESS);
+		resp = new Response(Status.SUCCESS);
 		return resp;
 	}
 
