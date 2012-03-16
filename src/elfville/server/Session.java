@@ -15,6 +15,7 @@ import elfville.protocol.Response;
 import elfville.protocol.SignInRequest;
 import elfville.protocol.SignUpRequest;
 import elfville.protocol.utils.SharedKeyCipher;
+import elfville.server.controller.ControllerUtils;
 
 public class Session implements Runnable {
 	private Socket clientSocket;
@@ -26,8 +27,8 @@ public class Session implements Runnable {
 
 	private int consecutive_failures = 0;
 
-	private static int TIMEOUT_IN_MS = 15 * 60 * 1000; // auto log out after 10
-														// seconds
+	private static int TIMEOUT_IN_MS = 10 * 1000; // auto log out after 10
+													// seconds
 	private static int CONSECUTIVE_FAILURE_LIMIT = 5;
 
 	private SharedKeyCipher sks = null;
@@ -62,7 +63,11 @@ public class Session implements Runnable {
 					nonce = ((SignInRequest) request).getSharedNonce();
 					// -1 is for compatibility with below if-statement
 				} else {
-					request = sks.decryptWithSharedKey(encrypted_request);
+					try {
+						request = sks.decryptWithSharedKey(encrypted_request);
+					} catch (javax.crypto.BadPaddingException e) {
+						break;
+					}
 					if (nonce + 1 != request.getNonce()) {
 						response = new Response(Response.Status.FAILURE,
 								"Unexpected nonce, expected " + (nonce + 1)
@@ -101,9 +106,9 @@ public class Session implements Runnable {
 			}
 			// if the user has been idle too long, log him out
 		} catch (SocketTimeoutException e) {
-			currentUser.logOut();
 			System.out.println("User session timed out.");
 		} catch (EOFException e) {
+			ControllerUtils.signOut(currentUser);
 			System.out.println("Client disconnected.");
 		} catch (IOException e) {
 			System.out.println("Client connection broke.");
@@ -112,6 +117,8 @@ public class Session implements Runnable {
 		} catch (GeneralSecurityException e) {
 			System.out.println("Client sent bad key.");
 			e.printStackTrace();
+		} finally {
+			currentUser.logOut();
 		}
 
 		try { // close connections
@@ -119,6 +126,8 @@ public class Session implements Runnable {
 			oos.close();
 			clientSocket.close();
 		} catch (IOException e) {
+		} finally {
+			currentUser.logOut();
 		}
 	}
 }

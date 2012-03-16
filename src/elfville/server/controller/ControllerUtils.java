@@ -5,9 +5,11 @@ import java.util.List;
 
 import elfville.protocol.models.SerializableClan;
 import elfville.protocol.models.SerializablePost;
+import elfville.server.CurrentUserProfile;
 import elfville.server.model.Clan;
 import elfville.server.model.Elf;
 import elfville.server.model.Post;
+import elfville.server.model.User;
 
 public class ControllerUtils extends Controller {
 
@@ -40,6 +42,12 @@ public class ControllerUtils extends Controller {
 			out.add(c);
 		}
 		return out;
+	}
+	
+	public static void signOut(CurrentUserProfile currentUser) {
+		User user = database.userDB.findUserByModelID(currentUser.getCurrentUserId());
+		user.setLastLogout(System.currentTimeMillis());
+		currentUser.logOut();
 	}
 	
 }
