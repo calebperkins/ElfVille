@@ -33,10 +33,6 @@ public class User extends Model {
 		return Elf.get(elfId);
 	}
 
-	public static User get(String username) {
-		return database.userDB.findByUsername(username);
-	}
-
 	@Override
 	public void save() {
 		super.save();
