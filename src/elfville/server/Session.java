@@ -21,7 +21,7 @@ public class Session implements Runnable {
 	private static int TIMEOUT_IN_MS = 15 * 60 * 1000;
 	private static int CONSECUTIVE_FAILURE_LIMIT = 5;
 
-	private static boolean ENCRYPTION_ENABLED = false;
+	private static boolean ENCRYPTION_ENABLED = true;
 
 	private SharedKeyCipher sks = null;
 
@@ -52,9 +52,9 @@ public class Session implements Runnable {
 						request = PKcipher.instance.decrypt(encrypted_request);
 						sks = new SharedKeyCipher(
 								((SignInRequest) request).getSharedKey());
+					} else {
+						request = sks.decryptWithSharedKey(encrypted_request);
 					}
-
-					request = sks.decryptWithSharedKey(encrypted_request);
 				} else {
 					request = (Request) ois.readObject();
 				}
