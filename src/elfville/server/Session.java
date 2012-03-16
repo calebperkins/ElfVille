@@ -87,6 +87,10 @@ public class Session implements Runnable {
 
 				oos.flush();
 			}
+			//if the user has been idle too long, log him out
+		} catch (SocketTimeoutException e){
+			currentUser.logOut();
+			System.out.println("User session timed out.");
 		} catch (EOFException e) {
 			System.out.println("Client disconnected.");
 		} catch (IOException e) {

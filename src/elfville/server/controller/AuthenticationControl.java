@@ -23,9 +23,15 @@ public class AuthenticationControl extends Controller {
 			return resp;
 		}
 		
+		//TODO: need to check if user is already logged in.  flag in database?
+		
+		//TODO:need pepper/salt here
 		if(!r.getPassword().equals(user.getPassword())){
 			return resp;
 		}
+		
+		//TODO: check last login against value stored in database
+		//if(user.getLastLogin().before(r.)
 		
 		currentUser.setSharedKey(r.getSharedKey());
 		currentUser.setNonce(Converter.byteArrayToInt(r.shared_nonce));
@@ -34,28 +40,34 @@ public class AuthenticationControl extends Controller {
 		return resp;
 	}
 
-	public static Response signUp(SignUpRequest inM,
+	public static Response signUp(SignUpRequest r,
 			CurrentUserProfile currentUser) {
-		System.out.println("Sign up is called!");
-		Response outM;
-		User user = User.get(inM.getUsername());
-		if (user != null) {
-			// username is taken
-			outM = new Response(Status.FAILURE, "The username is already taken");
-			System.out.println("The username is already taken");
-		} else {
-			Elf elf = new Elf(inM.getUsername(), inM.description);
-			elf.save();
-			user = new User(elf, inM.getUsername());
-			// user.setPassword("lolskates"); //TODO: password
-			user.save();
-			// sign the user in
-			currentUser.setCurrentUserId(user.getModelID());
-
-			System.out.println("sign up success");
-			outM = new Response(Status.SUCCESS, "word");
+		
+		Response resp= new Response(Status.FAILURE);
+		User user = database.userDB.findByUsername(r.getUsername());
+		
+		if (user == null) {
+			return resp;
 		}
-		return outM;
+		
+		//check to see if user already exists
+		
+		currentUser.setSharedKey(r.getSharedKey());
+		currentUser.setNonce(Converter.byteArrayToInt(r.shared_nonce));
+		currentUser.setCurrentUserId(user.getModelID());
+		
+		
+		Elf elf = new Elf(r.getUsername(), r.description);
+		elf.save();
+		user = new User(elf, r.getUsername());
+		// user.setPassword("lolskates"); //TODO: password
+		
+		// sign the user in
+		currentUser.setCurrentUserId(user.getModelID());
+		
+		user.save();
+		resp= new Response(Status.SUCCESS);
+		return resp;
 	}
 
 }

@@ -71,6 +71,7 @@ public class Routes {
 
 	public static Response processRequest(Request r,
 			CurrentUserProfile currentUser) {
+		//first check to see if the user should time out
 		if (r instanceof CentralBoardRequest) {
 			return respond((CentralBoardRequest) r, currentUser);
 		} else if (r instanceof SignInRequest) {
