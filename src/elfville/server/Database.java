@@ -59,11 +59,16 @@ public class Database {
 				e.printStackTrace();
 			}
 		}
+		flush();
 	}
 	
-	public void flush() throws IOException {
+	public void flush() {
 		if (stream != null) {
-			stream.flush();
+			try {
+				stream.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
