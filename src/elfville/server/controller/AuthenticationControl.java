@@ -4,6 +4,7 @@ import elfville.protocol.Response.Status;
 import elfville.protocol.SignInRequest;
 import elfville.protocol.Response;
 import elfville.protocol.SignUpRequest;
+import elfville.protocol.utils.Converter;
 import elfville.server.CurrentUserProfile;
 import elfville.server.model.*;
 
@@ -52,7 +53,7 @@ public class AuthenticationControl extends Controller {
 		//check to see if user already exists
 		
 		currentUser.setSharedKey(r.getSharedKey());
-		currentUser.setNonce(Converter.byteArrayToInt(r.shared_nonce));
+		currentUser.setNonce(r.getNonce());
 		currentUser.setCurrentUserId(user.getModelID());
 		
 		

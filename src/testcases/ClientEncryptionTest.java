@@ -11,8 +11,8 @@ import org.junit.Test;
 import elfville.client.PublicKeyCipher;
 import elfville.protocol.CentralBoardRequest;
 import elfville.protocol.Request;
-import elfville.protocol.SharedKeyCipher;
 import elfville.protocol.SignInRequest;
+import elfville.protocol.utils.SharedKeyCipher;
 
 public class ClientEncryptionTest {
 	PublicKeyCipher pk;

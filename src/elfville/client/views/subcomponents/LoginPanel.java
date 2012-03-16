@@ -12,8 +12,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import elfville.client.views.Board;
-import elfville.protocol.SharedKeyCipher;
 import elfville.protocol.SignInRequest;
+import elfville.protocol.utils.SharedKeyCipher;
 
 /**
  * Collection of controls to allow user to login.

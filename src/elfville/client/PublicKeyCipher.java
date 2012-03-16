@@ -1,9 +1,6 @@
 package elfville.client;
 
-import java.io.DataInputStream;
 import java.io.*;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.PublicKey;
@@ -13,7 +10,7 @@ import javax.crypto.Cipher;
 import javax.crypto.SealedObject;
 
 import elfville.protocol.Request;
-import elfville.protocol.SharedKeyCipher;
+import elfville.protocol.utils.SharedKeyCipher;
 
 /**
  * Used to encrypt the initial sign in / sign up request to the server

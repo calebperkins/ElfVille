@@ -8,6 +8,7 @@ import java.io.*;
 import javax.crypto.*;
 
 import elfville.protocol.*;
+import elfville.protocol.utils.SharedKeyCipher;
 
 public class Session implements Runnable {
 	private Socket clientSocket;
@@ -18,7 +19,7 @@ public class Session implements Runnable {
 
 	private int consecutive_failures = 0;
 
-	private static int TIMEOUT_IN_MS = 15 * 60 * 1000;
+	private static int TIMEOUT_IN_MS = 10 * 1000;  // auto log out after 10 seconds
 	private static int CONSECUTIVE_FAILURE_LIMIT = 5;
 
 	private static boolean ENCRYPTION_ENABLED = false;

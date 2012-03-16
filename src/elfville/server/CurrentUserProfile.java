@@ -9,7 +9,9 @@ import elfville.server.model.*;
 public class CurrentUserProfile {
 	
 	private final static long timeoutLength = 1000 * 60 * 20;
-	
+
+	private static Database database = Database.getInstance();
+
 	private SecretKey key;
 	private int nonce;
 	private Date timeout;

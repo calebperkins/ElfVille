@@ -13,8 +13,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import elfville.client.views.Board;
-import elfville.protocol.SharedKeyCipher;
 import elfville.protocol.SignUpRequest;
+import elfville.protocol.utils.SharedKeyCipher;
 
 /**
  * Provides the user with the ability to request the server register a new elf
