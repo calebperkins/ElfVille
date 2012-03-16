@@ -64,6 +64,7 @@ public class Database {
 
 	public void flush() {
 		if (stream != null) {
+			System.out.println("flush called!");
 			try {
 				stream.flush();
 			} catch (IOException e) {
@@ -78,6 +79,7 @@ public class Database {
 		String db_key_path;
 		if (Server.DEBUG) {
 			dbLocation = "resources/elfville"+System.currentTimeMillis()+".db";
+			// dbLocation = "resources/elfville.db";
 			db_key_path = "resources/elfville.db.der";	
 		} else {
 			// Ask users for database shared key		
@@ -86,7 +88,7 @@ public class Database {
 			dbLocation = scanner.nextLine();
 
 			System.out.println("Input Database encryption key file path\n (type 'resources/elfville.db.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
-			db_key_path = scanner.nextLine();
+			db_key_path = System.currentTimeMillis() + scanner.nextLine();
 		}
 
 		// Initiate database key
@@ -101,7 +103,9 @@ public class Database {
 					dbLocation));
 			SealedObject msg;
 			// TODO: handle deleted objects
-			while ((msg = (SealedObject)ois.readObject()) != null) {
+			while (true) {
+				msg = (SealedObject)ois.readObject();
+				if (msg == null) break;
 				Serializable m = SecurityUtils.decrypt(msg, dec);
 
 				if (m instanceof Clan) {
