@@ -89,7 +89,8 @@ public class SocketController {
 				out.writeObject(cipher.encrypt(req));
 			}
 			out.flush();
-			return cipher.decrypt((SealedObject) in.readObject());
+			SealedObject sobj = (SealedObject) in.readObject();
+			return cipher.decrypt(sobj);
 		} catch (GeneralSecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -36,10 +36,8 @@ public class CentralBoardTest extends TestBase {
 		assertEquals(resp.status, Status.SUCCESS);
 
 		for (int i = 0; i < clientNum; i++) {
-			SerializablePost post = resp.posts.get(clientNum - i - 1); // the
-																		// latest
-																		// comes
-																		// first
+			SerializablePost post = resp.posts.get(clientNum - i - 1); 
+			// the latest comes first
 			// System.out.println("get " + i);
 			// System.out.println("title is: " + post.title);
 			// System.out.println("content is: " + post.content);
@@ -78,7 +76,7 @@ public class CentralBoardTest extends TestBase {
 		}
 	}
 
-	@Test
+	// @Test
 	// Test if the same client can vote twice
 	public void test4VoteTwice() throws IOException {
 		CentralBoardRequest req = new CentralBoardRequest();
@@ -122,7 +120,7 @@ public class CentralBoardTest extends TestBase {
 		}
 	}
 
-/*	@Test
+	@Test
 	// Multiple clients vote on different posts. Check if the returned posts are
 	// ordered correctly.
 	public void test6VoteOrderAndProfiles() throws IOException {
@@ -165,5 +163,5 @@ public class CentralBoardTest extends TestBase {
 			assertEquals("content-" + i, post.content);
 		}
 
-	}*/
+	}
 }

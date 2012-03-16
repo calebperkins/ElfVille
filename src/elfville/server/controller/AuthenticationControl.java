@@ -47,11 +47,6 @@ public class AuthenticationControl extends Controller {
 		return true;
 	}
 
-	public static void signOut(CurrentUserProfile currentUser) {
-		User user = database.userDB.findUserByModelID(currentUser.getCurrentUserId());
-		user.setLastLogout(System.currentTimeMillis());
-	}
-
 	public static Response signUp(SignUpRequest r,
 			CurrentUserProfile currentUser) {
 		Response resp= new Response(Status.FAILURE);
@@ -59,6 +54,7 @@ public class AuthenticationControl extends Controller {
 
 		//check to see if user already exists
 		if (user != null) {
+			System.out.println("Username already exists");
 			return new Response(Status.FAILURE, "Username already exists");
 		}
 
@@ -70,11 +66,13 @@ public class AuthenticationControl extends Controller {
 			hashedPassword = SecurityUtils.generateRandomPepper(r.getPassword());
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("generate random pepper failure");
 			return resp;
 		}
 		user.setPassword(hashedPassword);
 
 		if (!logInUser(user, r, currentUser)) {
+			System.out.println("login user failed");
 			return resp;
 		}
 

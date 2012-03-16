@@ -19,7 +19,7 @@ public class Session implements Runnable {
 
 	private int consecutive_failures = 0;
 
-	private static int TIMEOUT_IN_MS = 10 * 1000; // auto log out after 10
+	private static int TIMEOUT_IN_MS = 10 * 60 * 1000; // auto log out after 10
 														// seconds
 	private static int CONSECUTIVE_FAILURE_LIMIT = 5;
 
@@ -75,7 +75,6 @@ public class Session implements Runnable {
 				}
 
 				response.nonce = request.getNonce() + 1; // increment nonce
-
 				SealedObject encrypted_response = sks.encrypt(response);
 				oos.writeObject(encrypted_response);
 				oos.flush();
@@ -83,14 +82,20 @@ public class Session implements Runnable {
 			// if the user has been idle too long, log him out
 		} catch (SocketTimeoutException e) {
 			System.out.println("User session timed out.");
+			e.printStackTrace();
 		} catch (EOFException e) {
 			System.out.println("Client disconnected.");
+			e.printStackTrace();
 		} catch (IOException e) {
 			System.out.println("Client connection broke.");
+			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			System.out.println("Client sent malformed request.");
+			e.printStackTrace();
 		} catch (GeneralSecurityException e) {
 			System.out.println("Client sent bad key.");
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			currentUser.logOut();

@@ -18,6 +18,10 @@ public class ClanDB extends DB {
 		return clans;
 	}
 
+	public boolean hasModel(Clan clan) {
+		return idMap.containsKey(clan.getModelID());
+	}
+	
 	public Clan findByModelID(int modelID) {
 		return idMap.get(modelID);
 	}

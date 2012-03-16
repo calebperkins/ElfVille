@@ -28,6 +28,10 @@ public class PostDB extends DB {
 		}
 	}
 
+	public boolean hasModel(Post post) {
+		return idMap.containsKey(post.getModelID());
+	}
+	
 	public Post findByModelID(int modelID) {
 		return idMap.get(modelID);
 	}

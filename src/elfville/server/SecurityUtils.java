@@ -12,6 +12,7 @@ public class SecurityUtils {
 	// Pepper password	
 	public static String generateRandomPepper(String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		int pepper = Converter.secureRandomInt(PEPPER_SIZE);
+		System.out.println("the pepper is: " + pepper);
 		return generatePepper(password, pepper);
 	}
 	

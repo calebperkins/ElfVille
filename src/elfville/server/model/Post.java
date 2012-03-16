@@ -13,7 +13,9 @@ public class Post extends Model implements Comparable<Post> {
 	@Override
 	public void save() {
 		super.save();
-		database.postDB.insert(this);
+		if (!database.postDB.hasModel(this)) { 
+			database.postDB.insert(this);
+		}
 	}
 
 	private static final long serialVersionUID = 6422767335685038776L;

@@ -23,4 +23,7 @@ public class ElfDB extends DB {
 		return findByID(modelID);
 	}
 
+	public boolean hasModel(Elf elf) {
+		return elves.containsKey(elf.getModelID());
+	}
 }

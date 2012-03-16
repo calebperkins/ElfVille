@@ -38,7 +38,9 @@ public class User extends Model {
 	@Override
 	public void save() {
 		super.save();
-		database.userDB.insert(this);
+		if (!database.userDB.hasModel(this)) {
+			database.userDB.insert(this);
+		}
 	}
 
 	public synchronized boolean laterThanLastLogin(long currTime) {
