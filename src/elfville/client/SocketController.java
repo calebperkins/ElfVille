@@ -96,7 +96,16 @@ public class SocketController {
 			}
 			out.flush();
 
-			Response resp = cipher.decrypt((SealedObject) in.readObject());
+			SealedObject sealedObject = null;
+
+			try {
+				sealedObject = (SealedObject) in.readObject();
+			} catch (IOException e) {
+				e.printStackTrace();
+				sealedObject = (SealedObject) in.readObject();
+			}
+			
+			Response resp = cipher.decrypt(sealedObject);
 			if (resp.getNonce() != nonce + 1) {
 				// TODO make error message better, also maybe throw error
 				System.err.print("Error, unexpected nonce returned");

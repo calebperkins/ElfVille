@@ -51,9 +51,7 @@ public class Elf extends Model implements Comparable<Elf> {
 	@Override
 	public void save() {
 		super.save();
-		if (!database.elfDB.hasModel(this)) {
-			database.elfDB.insert(this);
-		}
+		database.elfDB.insert(this);
 	}
 
 	public static Elf get(int id) {

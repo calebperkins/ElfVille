@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Scanner;
 
 import elfville.server.database.*;
 import elfville.server.model.*;
@@ -53,7 +54,14 @@ public class Database {
 	}
 
 	// Read the database from disk
-	static public void load(String dbLocation) throws Exception {
+	static public void load() throws Exception {
+		// Ask users for database shared key		
+		Scanner scanner = new Scanner(System.in);
+        System.out.print("Database encryption key path (type 'resources/elfville.db' for demonstration: ");
+        String dbLocation = scanner.nextLine();
+        System.out.print("Database encryption key file path (type 'resources/elfville.db.der' for demonstration, of course you can load one from your flash that you are inserting right now): ");
+        String db_key_path = scanner.nextLine();
+
 		try {
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(
 					dbLocation));

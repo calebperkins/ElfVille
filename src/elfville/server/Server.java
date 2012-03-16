@@ -3,6 +3,7 @@ package elfville.server;
 import java.net.*;
 import java.util.Date;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -18,19 +19,9 @@ public class Server {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		if (args.length < 3) {  // TODO: delete this!
-			args = new String[3];
-			args[0] = "8444";
-
-			args[1] = "/Users/heranyang/Desktop/elfville.db" + (new Date()).toString();
-			args[2] = "/Users/heranyang/Workspace/school_work/2012SP/ElfVille/resources/elfville.der";
-
-			// args[1] = "/home/bajaece/elfville.db";
-			// args[2] = "/home/bajaece/documents/ElfVille/resources/elfville.der";
-		}
-		if (args.length != 3) {
+		if (args.length != 1) {
 			System.err
-					.println("Usage: port /path/to/elfville.db /path/to/private_key.der");
+					.println("Usage: port");
 			System.exit(-1);
 		}
 
@@ -47,10 +38,14 @@ public class Server {
 		}
 
 		// Initialize database
-		Database.load(args[1]);
+		Database.load();
+
+		Scanner scanner = new Scanner(System.in);
+        System.out.print("Private encryption key file path (type 'resources/elfville.der' for demonstration, of course you can load one from your flash that you are inserting right now): ");
+        String dbPrivateKeyPath = scanner.nextLine();
 
 		// Initialize private key
-		PKcipher.instance = new PKcipher(args[2]);
+		PKcipher.instance = new PKcipher(dbPrivateKeyPath);
 
 		ExecutorService pool = Executors.newCachedThreadPool();
 

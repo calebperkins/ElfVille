@@ -11,13 +11,15 @@ import elfville.server.model.*;
 
 public class PostDB extends DB {
 	private final ConcurrentHashMap<Integer, Post> idMap = new ConcurrentHashMap<Integer, Post>();
-	private final List<Post> centralPosts = Collections
-			.synchronizedList(new ArrayList<Post>());
+	private final ConcurrentHashMap<Integer, Post> centralPosts = new ConcurrentHashMap<Integer, Post>();
+	// private final List<Post> centralPosts = Collections.synchronizedList(new ArrayList<Post>());
 
 	public void insert(Post post) {
+		//if (!hasModel(post)) {
 		idMap.put(post.getModelID(), post);
 		if (post.clanID == 0)
-			centralPosts.add(post);
+			centralPosts.put(post.getModelID(), post);
+		//}
 	}
 
 	public void delete(int i) {
@@ -44,7 +46,7 @@ public class PostDB extends DB {
 	// Only the elf's posts on the central board will be returned
 	public List<Post> findCentralPostsByElf(Elf elf) {
 		List<Post> posts = new ArrayList<Post>();
-		for (Post post : centralPosts) {
+		for (Post post : centralPosts.values()) {
 			if (post.getElf().equals(elf)) {
 				posts.add(post);
 			}
@@ -58,8 +60,12 @@ public class PostDB extends DB {
 	 * @return
 	 */
 	public List<Post> getCentralPosts() {
-		Collections.sort(centralPosts);
-		return centralPosts;
+		List<Post> posts = new ArrayList<Post>();
+		for (Post p : centralPosts.values()) {
+			posts.add(p);
+		}
+		Collections.sort(posts);
+		return posts;
 	}
 
 }

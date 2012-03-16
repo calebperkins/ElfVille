@@ -176,9 +176,8 @@ public class Clan extends Model implements Comparable<Clan> {
 	@Override
 	public void save() {
 		super.save();
-		if (!database.clanDB.hasModel(this)) {
-			database.clanDB.insert(this);
-		}
+		database.clanDB.insert(this);
+		
 	}
 
 	public void deny(Elf elf) {

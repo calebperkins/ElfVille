@@ -48,7 +48,9 @@ public class UserDB extends DB {
 	}
 
 	public void insert(User user) {
-		id_map.put(user.getModelID(), user);
-		username_map.put(user.getUsername(), user);
+		if (!hasModel(user)) {
+			id_map.put(user.getModelID(), user);
+			username_map.put(user.getUsername(), user);
+		}
 	}
 }

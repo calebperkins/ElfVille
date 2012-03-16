@@ -9,7 +9,9 @@ public class ElfDB extends DB {
 	private final ConcurrentHashMap<Integer, Elf> elves = new ConcurrentHashMap<Integer, Elf>();
 
 	public void insert(Elf elf) {
+		//if (!hasModel(elf)) {
 		elves.put(elf.getModelID(), elf);
+		//}
 	}
 
 	// No elf delete function
