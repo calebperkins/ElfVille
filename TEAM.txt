@@ -2,10 +2,12 @@ PHASE 3
 
 Caleb Perkins (ctp34)
 =====================
+Updated portions of the database code to support a logging-type system.  Created the shared key implementation and the public key implementation.  Set up many of the necessary changes to the protocols, and made some initial modifications to the session code in order to enable encrypted communication.  18 hours
 
 
 Brian Toth (bdt25)
 =================
+Designed much of the initial protocol, which changed surprisingly little throughout the course of the project.  Started the controller portion for sign in and sign up.  Implemented username and password specs.  Fixed much of the session related code at some point.  Fixed our pepper implementation to deal with Java's strange lack of unsigned primitives.  Hounded a number of regression bugs including losing the ability to delete clan board posts. 18 hours
 
 
 Heran Yang (hy279)
