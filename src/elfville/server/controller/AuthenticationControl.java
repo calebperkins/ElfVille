@@ -43,30 +43,27 @@ public class AuthenticationControl extends Controller {
 	public static Response signUp(SignUpRequest r,
 			CurrentUserProfile currentUser) {
 		
-		Response resp= new Response(Status.FAILURE);
-		User user = database.userDB.findByUsername(r.getUsername());
-		
-		if (user == null) {
-			return resp;
-		}
-		
 		//check to see if user already exists
-		
-		currentUser.setSharedKey(r.getSharedKey());
-		currentUser.setNonce(r.getNonce());
-		currentUser.setCurrentUserId(user.getModelID());
+		User user = database.userDB.findByUsername(r.getUsername());
+		if (user != null) {
+			return new Response(Status.FAILURE, "Username already exists");
+		}
 		
 		
 		Elf elf = new Elf(r.getUsername(), r.description);
 		elf.save();
 		user = new User(elf, r.getUsername());
+		
+		currentUser.setSharedKey(r.getSharedKey());
+		currentUser.setNonce(r.getNonce());
+		currentUser.setCurrentUserId(user.getModelID());
 		// user.setPassword("lolskates"); //TODO: password
 		
 		// sign the user in
 		currentUser.setCurrentUserId(user.getModelID());
 		
 		user.save();
-		resp= new Response(Status.SUCCESS);
+		Response resp= new Response(Status.SUCCESS);
 		return resp;
 	}
 
