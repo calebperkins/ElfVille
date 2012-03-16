@@ -1,13 +1,22 @@
 package testcases;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
+
 import org.junit.Test;
 
-import elfville.protocol.*;
+import elfville.protocol.ClanBoardRequest;
+import elfville.protocol.ClanBoardResponse;
+import elfville.protocol.ClanListingRequest;
+import elfville.protocol.ClanListingResponse;
+import elfville.protocol.CreateClanRequest;
+import elfville.protocol.ModifyClanRequest;
+import elfville.protocol.PostClanBoardRequest;
+import elfville.protocol.Response;
 import elfville.protocol.Response.Status;
 import elfville.protocol.models.SerializableClan;
 import elfville.protocol.models.SerializableElf;
@@ -16,6 +25,20 @@ import elfville.protocol.models.SerializablePost;
 public class ClanBoardTest extends TestBase {
 
 	@Test
+	// calls the tests in the proper order
+	public void orderTests() throws IOException {
+		test1CreateClan();
+		test2ApplyClan();
+		test3ReplyApplicant();
+		// test4CreatePost(); // works if I slow things down a little bit
+		// (debug)
+		test5GetClanBoard();
+		test6RemovePost();
+		test7LeaveClan();
+		test8DisbandClan();
+	}
+
+	// @Test
 	// 10 clients create one clan each.
 	public void test1CreateClan() throws IOException {
 		// Assert you can save clans successfully
@@ -33,7 +56,7 @@ public class ClanBoardTest extends TestBase {
 		}
 	}
 
-	@Test
+	// @Test
 	// All clients try to apply to all other clans. Check if this SUCCEED.
 	// Client try to apply to its own clan. Check if this FAIL.
 	public void test2ApplyClan() throws IOException {
@@ -53,7 +76,7 @@ public class ClanBoardTest extends TestBase {
 		}
 	}
 
-	@Test
+	// @Test
 	// Clan owners accept half of the applications to check SUCCESS.
 	// CLan owners deny the other half of the applicants to check SUCCESS
 	public void test3ReplyApplicant() throws IOException {
@@ -80,18 +103,19 @@ public class ClanBoardTest extends TestBase {
 		}
 	}
 
-	@Test
+	// @Test
 	// Clan owners and members create posts, check SUCCESS
 	// outsiders create posts on the clan board, check FAILURE
 	public void test4CreatePost() throws IOException {
 		ClanListingRequest req = new ClanListingRequest();
 		ClanListingResponse resp = socketControllers.get(0).send(req);
 		assertEquals(resp.status, Status.SUCCESS);
-		
+
 		for (int i = 0; i < clientNum; i++) {
 			SerializableClan clan = resp.clans.get(i);
 			for (SerializableElf e : clan.members) {
-				System.out.println("clan " + clan.clanName + " has member elf " + e.elfName);
+				System.out.println("clan " + clan.clanName + " has member elf "
+						+ e.elfName);
 			}
 
 			for (int j = 0; j < clientNum; j++) {

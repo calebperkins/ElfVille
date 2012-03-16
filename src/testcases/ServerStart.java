@@ -37,11 +37,12 @@ public class ServerStart extends TestBase {
 	}
 
 	@Test
-	public void test() throws IOException, InterruptedException, GeneralSecurityException {
+	public void test() throws IOException, InterruptedException,
+			GeneralSecurityException {
 		new ServerThread().start();
-		String arg2 = "/Users/heranyang/Workspace/school_work/2012SP/ElfVille/src/elfville/client/elfville.pub.der";
+		String arg2 = "elfville.pub.der";
 		PublicKeyCipher.instance = new PublicKeyCipher(arg2);
-		
+
 		Thread.sleep(500); // sleep for 0.5 second to wait for the server start
 		for (int i = 0; i < clientNum; i++) {
 			new ClientThread().start();
