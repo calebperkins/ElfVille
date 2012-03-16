@@ -47,7 +47,7 @@ public class WelcomeScreenTest extends TestBase {
 		// System.out.println("signUpTest: " + resp.status.toString());
 		assertEquals(resp.status, Status.SUCCESS);
 	}
-
+/*
 	@Test
 	public void test2SignUpDuplicate() throws UnknownHostException, IOException {
 		// should fail because we signed up the same username once above
@@ -59,7 +59,7 @@ public class WelcomeScreenTest extends TestBase {
 		// System.out.println(resp.status.toString());
 		assertEquals(resp.status, Status.FAILURE);
 	}
-
+*/
 	@Test
 	public void test3MultiSignUp() throws UnknownHostException, IOException {
 		descriptions.add("sdfkjdsf");
@@ -77,7 +77,7 @@ public class WelcomeScreenTest extends TestBase {
 			assertEquals(resp.status, Status.SUCCESS);
 		}
 	}
-
+/*
 	@Test
 	public void test4SignInWrong() throws UnknownHostException, IOException {
 		String password = "what is my password";
@@ -102,5 +102,5 @@ public class WelcomeScreenTest extends TestBase {
 		// System.out.println(resp.status.toString());
 		assertEquals(resp.status, Status.SUCCESS);
 	}
-
+*/
 }

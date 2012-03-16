@@ -19,7 +19,7 @@ public class Session implements Runnable {
 
 	private int consecutive_failures = 0;
 
-	private static int TIMEOUT_IN_MS = 15 * 60 * 1000; // auto log out after 10
+	private static int TIMEOUT_IN_MS = 10 * 1000; // auto log out after 10
 														// seconds
 	private static int CONSECUTIVE_FAILURE_LIMIT = 5;
 
@@ -82,7 +82,6 @@ public class Session implements Runnable {
 			}
 			// if the user has been idle too long, log him out
 		} catch (SocketTimeoutException e) {
-			currentUser.logOut();
 			System.out.println("User session timed out.");
 		} catch (EOFException e) {
 			System.out.println("Client disconnected.");
@@ -93,6 +92,8 @@ public class Session implements Runnable {
 		} catch (GeneralSecurityException e) {
 			System.out.println("Client sent bad key.");
 			e.printStackTrace();
+		} finally {
+			currentUser.logOut();
 		}
 
 		try { // close connections
@@ -100,6 +101,8 @@ public class Session implements Runnable {
 			oos.close();
 			clientSocket.close();
 		} catch (IOException e) {
+		} finally {
+			currentUser.logOut();
 		}
 	}
 }

@@ -54,8 +54,6 @@ public class AuthenticationControl extends Controller {
 
 	public static Response signUp(SignUpRequest r,
 			CurrentUserProfile currentUser) {
-<<<<<<< HEAD
-
 		Response resp= new Response(Status.FAILURE);
 		User user = database.userDB.findByUsername(r.getUsername());
 
