@@ -28,7 +28,7 @@ public class Session implements Runnable {
 	private int consecutive_failures = 0;
 
 	private static int TIMEOUT_IN_MS = 10 * 60 * 1000; // auto log out after 10
-														// seconds
+													// seconds
 	private static int CONSECUTIVE_FAILURE_LIMIT = 5;
 
 	private SharedKeyCipher sks = null;

@@ -157,7 +157,8 @@ public class Clan extends Model implements Comparable<Clan> {
 	}
 
 	public void deletePost(Post post) {
-		postIDs.remove(post);
+		postIDs.remove(postIDs.indexOf(post.modelID));
+		database.postDB.delete(post.modelID);
 		save();
 	}
 
