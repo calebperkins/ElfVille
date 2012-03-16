@@ -1,6 +1,9 @@
 package elfville.server.controller;
 
+import javax.crypto.SecretKey;
+
 import elfville.protocol.Response.Status;
+import elfville.protocol.utils.SharedKeyCipher;
 import elfville.protocol.SignInRequest;
 import elfville.protocol.Response;
 import elfville.protocol.SignUpRequest;
@@ -38,7 +41,6 @@ public class AuthenticationControl extends Controller {
 
 		// sign the user in
 		currentUser.setLastLogin(currTime);
-		currentUser.setSharedKey(r.getSharedKey());
 		currentUser.setNonce(r.getNonce());
 		currentUser.setCurrentUserId(user.getModelID());
 

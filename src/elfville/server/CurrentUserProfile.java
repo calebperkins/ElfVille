@@ -4,15 +4,14 @@ import java.util.Date;
 
 import javax.crypto.SecretKey;
 
+import elfville.protocol.utils.SharedKeyCipher;
 import elfville.server.model.*;
 
 public class CurrentUserProfile {
 
 	private final static long timeoutLength = 1000 * 60 * 20;
-
 	private final static Database database = Database.getInstance();
 
-	private SecretKey shared_key;
 	private int nonce;
 	private long lastLogin;
 
@@ -21,10 +20,6 @@ public class CurrentUserProfile {
 	public CurrentUserProfile() {
 		currentUserId = -1;
 	}
-
-
-
-
 
 	/*
 
@@ -97,13 +92,6 @@ public class CurrentUserProfile {
 
 	
 	// auto generated getters and setters
-	public SecretKey getSharedKey() {
-		return shared_key;
-	}
-
-	public void setSharedKey(SecretKey shared_key) {
-		this.shared_key = shared_key;
-	}
 
 	public int getNonce() {
 		return nonce;
@@ -121,26 +109,14 @@ public class CurrentUserProfile {
 		this.lastLogin = lastLogin;
 	}
 
-
-
-
-
 	public int getCurrentUserId() {
 		return currentUserId;
 	}
-
-
-
-
-
+	
 	public void setCurrentUserId(int currentUserId) {
 		this.currentUserId = currentUserId;
 	}
-
-
-
-
-
+	
 	public void logOut(){
 		this.currentUserId = -1;
 	}
