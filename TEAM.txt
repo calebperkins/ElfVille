@@ -2,7 +2,7 @@ PHASE 3
 
 Caleb Perkins (ctp34)
 =====================
-
+Implemented the actual encryption between the server and client (the shared Session cipher and the public-private key ciphers). Now, Sealed Objects are passed over the wire rather than raw requests or responses. Fixed database serialization so that changes are appended to a file on disk, rather than before, which was a simple file dump. Added and generated the nonces and secret keys needed for the key exchange protocol. Did some low level work such as figuring out what format Java can read keys in, and how object serialization actually works. Time taken: 17 hours.
 
 Brian Toth (bdt25)
 =================
@@ -14,4 +14,4 @@ Heran Yang (hy279)
 
 Aaron Martinez (amm257)
 ==============
-Desgined and wrote the client side of the sign in and sign up protocols (though argued against them later) (but not server side handling and responses). Wrote much of protocols.txt. Updated README.txt. Some general debugging, fixed a particularly nasty testcases bug. I've been sick (twice in one semester...) so unfortunately rather inefficient. 17 hours give or take 60 minutes.
+Desgined and wrote the client side of the sign in and sign up protocols (though argued against them later) (but not server side handling and responses). Wrote much of protocols.txt. Updated README.txt. Some general debugging, fixed a particularly nasty testcases bug. I've been sick (twice in one semester...) so unfortunately rather inefficient. 18 hours give or take 90 minutes.
