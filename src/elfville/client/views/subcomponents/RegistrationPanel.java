@@ -2,8 +2,6 @@ package elfville.client.views.subcomponents;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.security.SecureRandom;
-
 import javax.crypto.SecretKey;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -68,28 +66,23 @@ public class RegistrationPanel extends JPanel implements ActionListener {
 		// create new shared key
 		SharedKeyCipher cipher;
 		SecretKey shared_key;
-		byte[] login_nonce = new byte[4];
 		try {
 			// create new shared key
 			cipher = new SharedKeyCipher();
 			shared_key = cipher.getNewSharedKey();
 			board.getSocketController().setCipher(cipher);
-			// create new nonces
-			SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-			sr.nextBytes(login_nonce);
+			
+			// create request
+			SignUpRequest req = new SignUpRequest(usernameField.getText(),
+					passwordField.getPassword(), shared_key, descriptionArea.getText());
+			board.getSocketController().sendRequest(req, board,
+					"Registration error", board);
 		} catch (Exception e2) {
 			// TODO Hmm... not much we really can do to recover
 			// though I guess we could report an error, and ask them
 			// to try again and refresh this "board" (welcome screen)
 			e2.printStackTrace();
-			return;
 		}
-
-		// create request
-		SignUpRequest req = new SignUpRequest(usernameField.getText(),
-				passwordField.getPassword(), shared_key, login_nonce, descriptionArea.getText());
-		board.getSocketController().sendRequest(req, board,
-				"Registration error", board);
 		//req.zeroPasswordArray(); TODO
 	}
 

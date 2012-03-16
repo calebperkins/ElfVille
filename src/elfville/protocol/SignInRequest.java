@@ -1,5 +1,8 @@
 package elfville.protocol;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -11,12 +14,21 @@ public class SignInRequest extends Request {
 	private byte[] shared_nonce;
 	private long time;
 
-	public SignInRequest(String name, char[] pass, SecretKey s,
-			byte[] shared_nonce) {
+	public SignInRequest(String name, char[] pass, SecretKey s) {
 		username = name.toCharArray();
 		password = pass;
 		shared_key = s.getEncoded();
-		this.shared_nonce = shared_nonce;
+		
+		this.shared_nonce = new byte[4];
+		
+		SecureRandom sr;
+		try {
+			sr = SecureRandom.getInstance("SHA1PRNG");
+			sr.nextBytes(shared_nonce);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		
 		time = System.currentTimeMillis();
 	}
 
