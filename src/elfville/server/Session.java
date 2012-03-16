@@ -28,13 +28,13 @@ public class Session implements Runnable {
 	private int consecutive_failures = 0;
 
 	private static int TIMEOUT_IN_MS = 10 * 60 * 1000; // auto log out after 10
-													// seconds
-	private static int CONSECUTIVE_FAILURE_LIMIT = 5;
+														// seconds
+	private static int CONSECUTIVE_FAILURE_LIMIT = 11;
 
 	private SharedKeyCipher sks = null;
-	
-	public void removeCipher(){
-		sks= null;
+
+	public void removeCipher() {
+		sks = null;
 	}
 
 	public Session(Socket client) throws IOException {
@@ -87,14 +87,11 @@ public class Session implements Runnable {
 				// TODO fix my bad nonce code above because I (Aaron) don't know
 				// your server stuff. This works though.
 
-				if (response.isOK()) {
-					consecutive_failures = 0;
-				} else {
-					consecutive_failures++;
-					if (consecutive_failures >= CONSECUTIVE_FAILURE_LIMIT) {
-						break;
-					}
-				}
+				/*
+				 * if (response.isOK()) { consecutive_failures = 0; } else {
+				 * consecutive_failures++; if (consecutive_failures >=
+				 * CONSECUTIVE_FAILURE_LIMIT) { break; } }
+				 */
 
 				// set session authentication
 				if ((request instanceof SignUpRequest)
