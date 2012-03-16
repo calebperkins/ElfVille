@@ -1,7 +1,6 @@
 package elfville.server.controller;
 
 import elfville.protocol.Response.Status;
-import elfville.protocol.utils.Converter;
 import elfville.protocol.SignInRequest;
 import elfville.protocol.Response;
 import elfville.protocol.SignUpRequest;
@@ -34,7 +33,7 @@ public class AuthenticationControl extends Controller {
 		//if(user.getLastLogin().before(r.)
 		
 		currentUser.setSharedKey(r.getSharedKey());
-		currentUser.setNonce(Converter.byteArrayToInt(r.shared_nonce));
+		currentUser.setNonce(r.getNonce());
 		resp= new Response(Status.SUCCESS);
 		currentUser.setCurrentUserId(user.getModelID());
 		return resp;

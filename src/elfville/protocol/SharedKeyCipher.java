@@ -1,6 +1,7 @@
 package elfville.protocol;
 
 import java.io.IOException;
+
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -20,6 +21,7 @@ public class SharedKeyCipher {
 	private KeyGenerator gen;
 
 	private static final String SHARED = "AES";
+	private static final int SHAREDKEY_LENGTH = 128;
 
 	/*
 	 * used by client to allow creationg of a key that can be passed to server
@@ -28,6 +30,7 @@ public class SharedKeyCipher {
 		enc = Cipher.getInstance(SHARED);
 		dec = Cipher.getInstance(SHARED);
 		gen = KeyGenerator.getInstance(SHARED);
+		gen.init(SHAREDKEY_LENGTH);
 	}
 
 	/*

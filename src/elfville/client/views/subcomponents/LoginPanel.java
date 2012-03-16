@@ -2,8 +2,6 @@ package elfville.client.views.subcomponents;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.security.SecureRandom;
-
 import javax.crypto.SecretKey;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -59,36 +57,24 @@ public class LoginPanel extends JPanel implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// create new shared key and nonce
-		SharedKeyCipher cipher;
-		SecretKey shared_key;
-		byte[] login_nonce;
-		byte[] shared_nonce;
 		try {
+			// create new shared key and nonce
+			SharedKeyCipher cipher;
+			SecretKey shared_key;
 			// create new shared key
 			cipher = new SharedKeyCipher();
 			shared_key = cipher.getNewSharedKey();
 			board.getSocketController().setCipher(cipher);
-			// create new nonces
-			SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-			login_nonce = new byte[256 / 8];
-			shared_nonce = new byte[256 / 8];
-			sr.nextBytes(login_nonce);
-			sr.nextBytes(shared_nonce);
-		} catch (Exception e2) {
-			// TODO Hmm... not much we really can do to recover
-			// though I guess we could report an error, and ask them
-			// to try again and refresh this "board" (welcome screen)
-			e2.printStackTrace();
-			return;
-		}
 
-		// create request
-		SignInRequest req = new SignInRequest(usernameField.getText(),
-				passwordField.getPassword(), shared_key,
-				shared_nonce);
-		board.getSocketController().sendRequest(req, board, "Login error",
-				board);
-		//req.zeroPasswordArray(); TODO
+			// create request
+			SignInRequest req = new SignInRequest(usernameField.getText(),
+					passwordField.getPassword(), shared_key);
+			board.getSocketController().sendRequest(req, board, "Login error",
+					board);
+		} catch (Exception ex) {
+			// We can't do anything.....
+			ex.printStackTrace();
+		}
+		// req.zeroPasswordArray(); TODO
 	}
 }
