@@ -19,10 +19,9 @@ public class Session implements Runnable {
 
 	private int consecutive_failures = 0;
 
-	private static int TIMEOUT_IN_MS = 15*60 * 1000;  // auto log out after 10 seconds
+	private static int TIMEOUT_IN_MS = 15 * 60 * 1000; // auto log out after 10
+														// seconds
 	private static int CONSECUTIVE_FAILURE_LIMIT = 5;
-
-	private static boolean ENCRYPTION_ENABLED = true;
 
 	private SharedKeyCipher sks = null;
 
@@ -45,19 +44,15 @@ public class Session implements Runnable {
 			while (true) {
 				Request request;
 
-				if (ENCRYPTION_ENABLED) {
-					SealedObject encrypted_request = (SealedObject) ois
-							.readObject();
+				SealedObject encrypted_request = (SealedObject) ois
+						.readObject();
 
-					if (sks == null) {
-						request = PKcipher.instance.decrypt(encrypted_request);
-						sks = new SharedKeyCipher(
-								((SignInRequest) request).getSharedKey());
-					} else {
-						request = sks.decryptWithSharedKey(encrypted_request);
-					}
+				if (sks == null) {
+					request = PKcipher.instance.decrypt(encrypted_request);
+					sks = new SharedKeyCipher(
+							((SignInRequest) request).getSharedKey());
 				} else {
-					request = (Request) ois.readObject();
+					request = sks.decryptWithSharedKey(encrypted_request);
 				}
 
 				Response response = Routes.processRequest(request, currentUser);
@@ -79,17 +74,14 @@ public class Session implements Runnable {
 								currentUser.getCurrentUserId());
 				}
 
-				if (ENCRYPTION_ENABLED) {
-					SealedObject encrypted_response = sks.encrypt(response);
-					oos.writeObject(encrypted_response);
-				} else {
-					oos.writeObject(response);
-				}
+				response.nonce = request.getNonce() + 1; // increment nonce
 
+				SealedObject encrypted_response = sks.encrypt(response);
+				oos.writeObject(encrypted_response);
 				oos.flush();
 			}
-			//if the user has been idle too long, log him out
-		} catch (SocketTimeoutException e){
+			// if the user has been idle too long, log him out
+		} catch (SocketTimeoutException e) {
 			currentUser.logOut();
 			System.out.println("User session timed out.");
 		} catch (EOFException e) {
