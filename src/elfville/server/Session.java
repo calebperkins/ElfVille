@@ -1,13 +1,19 @@
 package elfville.server;
 
-import java.net.*;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.security.GeneralSecurityException;
 
-import java.io.*;
+import javax.crypto.SealedObject;
 
-import javax.crypto.*;
-
-import elfville.protocol.*;
+import elfville.protocol.Request;
+import elfville.protocol.Response;
+import elfville.protocol.SignInRequest;
+import elfville.protocol.SignUpRequest;
 import elfville.protocol.utils.SharedKeyCipher;
 
 public class Session implements Runnable {
@@ -16,6 +22,7 @@ public class Session implements Runnable {
 	private ObjectOutputStream oos;
 
 	private CurrentUserProfile currentUser;
+	private int nonce;
 
 	private int consecutive_failures = 0;
 
@@ -43,6 +50,7 @@ public class Session implements Runnable {
 		try {
 			while (true) {
 				Request request;
+				Response response = null;
 
 				SealedObject encrypted_request = (SealedObject) ois
 						.readObject();
@@ -51,11 +59,24 @@ public class Session implements Runnable {
 					request = PKcipher.instance.decrypt(encrypted_request);
 					sks = new SharedKeyCipher(
 							((SignInRequest) request).getSharedKey());
+					nonce = ((SignInRequest) request).getSharedNonce();
+					// -1 is for compatibility with below if-statement
 				} else {
 					request = sks.decryptWithSharedKey(encrypted_request);
+					if (nonce + 1 != request.getNonce()) {
+						response = new Response(Response.Status.FAILURE,
+								"Unexpected nonce, expected " + (nonce + 1)
+										+ ", received " + request.getNonce());
+					}
+					nonce += 1;
 				}
-
-				Response response = Routes.processRequest(request, currentUser);
+				nonce += 1;
+				if (null == response) {
+					response = Routes.processRequest(request, currentUser);
+				}
+				response.setNonce(nonce);
+				// TODO fix my bad nonce code above because I (Aaron) don't know
+				// your server stuff. This works though.
 
 				if (response.isOK()) {
 					consecutive_failures = 0;
@@ -73,8 +94,6 @@ public class Session implements Runnable {
 						System.out.printf("the current user's id is: %d\n",
 								currentUser.getCurrentUserId());
 				}
-
-				response.nonce = request.getNonce() + 1; // increment nonce
 
 				SealedObject encrypted_response = sks.encrypt(response);
 				oos.writeObject(encrypted_response);

@@ -2,6 +2,8 @@ package elfville.client.views.subcomponents;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.SecureRandom;
+
 import javax.crypto.SecretKey;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -65,10 +67,12 @@ public class LoginPanel extends JPanel implements ActionListener {
 			cipher = new SharedKeyCipher();
 			shared_key = cipher.getNewSharedKey();
 			board.getSocketController().setCipher(cipher);
+			int nonce = SecureRandom.getInstance("SHA1PRNG").nextInt();
+			board.getSocketController().setNonce(nonce);
 
 			// create request
 			SignInRequest req = new SignInRequest(usernameField.getText(),
-					passwordField.getPassword(), shared_key);
+					passwordField.getPassword(), shared_key, nonce);
 			board.getSocketController().sendRequest(req, board, "Login error",
 					board);
 			

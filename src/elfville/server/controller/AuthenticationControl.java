@@ -1,25 +1,25 @@
 package elfville.server.controller;
 
-import javax.crypto.SecretKey;
-
-import elfville.protocol.Response.Status;
-import elfville.protocol.utils.SharedKeyCipher;
-import elfville.protocol.SignInRequest;
 import elfville.protocol.Response;
+import elfville.protocol.Response.Status;
+import elfville.protocol.SignInRequest;
 import elfville.protocol.SignUpRequest;
 import elfville.server.CurrentUserProfile;
 import elfville.server.SecurityUtils;
-import elfville.server.model.*;
+import elfville.server.model.Elf;
+import elfville.server.model.User;
 
 /* 
  * Controls sign in, sign up
  */
 public class AuthenticationControl extends Controller {
 
-	public static Response signIn(SignInRequest r, CurrentUserProfile currentUser) { 
+	public static Response signIn(SignInRequest r,
+			CurrentUserProfile currentUser) {
 
-		Response resp= new Response(Status.FAILURE);
-		User user = database.userDB.findByUsernameHashedPassword(r.getUsername(), r.getPassword());
+		Response resp = new Response(Status.FAILURE);
+		User user = database.userDB.findByUsernameHashedPassword(
+				r.getUsername(), r.getPassword());
 
 		if (user == null) {
 			return resp;
@@ -28,13 +28,15 @@ public class AuthenticationControl extends Controller {
 			return resp;
 		}
 
-		resp= new Response(Status.SUCCESS);
+		resp = new Response(Status.SUCCESS);
 		return resp;
 	}
 
-	private static boolean logInUser(User user, SignInRequest r, CurrentUserProfile currentUser) {
+	private static boolean logInUser(User user, SignInRequest r,
+			CurrentUserProfile currentUser) {
 		long currTime = System.currentTimeMillis();
-		if (!user.laterThanLastLogin(currTime) || !user.laterThanLastLogout(currTime)) {
+		if (!user.laterThanLastLogin(currTime)
+				|| !user.laterThanLastLogout(currTime)) {
 			return false;
 		}
 		user.setLastLogin(currTime);
@@ -48,18 +50,17 @@ public class AuthenticationControl extends Controller {
 	}
 
 	public static void signOut(CurrentUserProfile currentUser) {
-		User user = database.userDB.findUserByModelID(currentUser.getCurrentUserId());
+		User user = database.userDB.findUserByModelID(currentUser
+				.getCurrentUserId());
 		user.setLastLogout(System.currentTimeMillis());
 	}
 
 	public static Response signUp(SignUpRequest r,
 			CurrentUserProfile currentUser) {
-<<<<<<< HEAD
-
-		Response resp= new Response(Status.FAILURE);
+		Response resp = new Response(Status.FAILURE);
 		User user = database.userDB.findByUsername(r.getUsername());
 
-		//check to see if user already exists
+		// check to see if user already exists
 		if (user != null) {
 			return new Response(Status.FAILURE, "Username already exists");
 		}
@@ -69,7 +70,8 @@ public class AuthenticationControl extends Controller {
 		user = new User(elf, r.getUsername());
 		String hashedPassword;
 		try {
-			hashedPassword = SecurityUtils.generateRandomPepper(r.getPassword());
+			hashedPassword = SecurityUtils
+					.generateRandomPepper(r.getPassword());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return resp;
