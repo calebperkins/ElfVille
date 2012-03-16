@@ -13,10 +13,11 @@ public class UserDB extends DB {
 		return id_map.get(modelID);
 	}
 
-	public User findUserByEncryptedModelID(String encID) {
+	public User findByEncryptedModelID(String encID) {
 		int modelID = SecurityUtils.decryptStringToInt(encID);
 		return findUserByModelID(modelID);
 	}
+	
 
 	public User findByUsername(String username) {
 		return username_map.get(username);
