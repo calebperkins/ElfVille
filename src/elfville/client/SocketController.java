@@ -96,7 +96,9 @@ public class SocketController {
 			}
 			out.flush();
 
-			Response resp = cipher.decrypt((SealedObject) in.readObject());
+			SealedObject blah = (SealedObject) in.readObject();
+			// can be combined into next line, split for testing.
+			Response resp = cipher.decrypt(blah);
 			if (resp.getNonce() != nonce + 1) {
 				// TODO make error message better, also maybe throw error
 				System.err.print("Error, unexpected nonce returned");
