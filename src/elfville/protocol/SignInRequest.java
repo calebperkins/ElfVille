@@ -33,4 +33,10 @@ public class SignInRequest extends Request {
 	public long getTime() {
 		return time;
 	}
+	
+	public void zeroOutPassword() {
+		for (int i = 0; i < password.length; i++) {
+			password[i] = 0;
+		}
+	}
 }

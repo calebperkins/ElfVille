@@ -77,13 +77,13 @@ public class RegistrationPanel extends JPanel implements ActionListener {
 					passwordField.getPassword(), shared_key, descriptionArea.getText());
 			board.getSocketController().sendRequest(req, board,
 					"Registration error", board);
+			req.zeroOutPassword();
 		} catch (Exception e2) {
 			// TODO Hmm... not much we really can do to recover
 			// though I guess we could report an error, and ask them
 			// to try again and refresh this "board" (welcome screen)
 			e2.printStackTrace();
 		}
-		//req.zeroPasswordArray(); TODO
 	}
 
 }
