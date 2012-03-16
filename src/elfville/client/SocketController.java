@@ -95,6 +95,7 @@ public class SocketController {
 				out.writeObject(cipher.encrypt(req));
 			}
 			out.flush();
+
 			Response resp = cipher.decrypt((SealedObject) in.readObject());
 			if (resp.getNonce() != nonce + 1) {
 				// TODO make error message better, also maybe throw error

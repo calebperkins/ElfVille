@@ -20,7 +20,7 @@ src (and bin)
 
 elville
 * client - code for the client; includes views which are the high level "pages" that you see (views is legacy name from when we were using a cardlayout); and views in turn has the sub package "subcomponents" which are generally JPanel elements on the view jpanel "pages".
-* protocol - These are the classes sent back and forth between the client and the server (all are serializable). This has the subpackage "models" which contains classes that contain information that is data (and not merely a signalt to the server (or client) of what to do with the received message).
+* protocol - These are the classes sent back and forth between the client and the server (all are serializable). This has the subpackage "models" which contains classes that contain information that is data (and not merely a signalt to the server (or client) of what to do with the received message). It also has the subpackage utils, which is contains classes for cryptography.
 * server - code for the server. Includes the database classes (storing and retrieving information), the model classes (the data objects), and the controller classes (deal with incoming requests (and sending responses back)).
 
 ==================================================
@@ -44,7 +44,7 @@ Running the server
 
 1. Open up a command prompt and "cd" to the ElfVille directory to use our provided JAR, or to the directory where you exported a server JAR if you built from source.
 
-2. Execute `java -jar server.jar /path/to/elfville.db 8444`, where `/path/to/elfville.db` is where you would like to load an existing database or store a new one. If the file cannot be found, the server will create it for you, but be sure the file location is writable! The `8444` refers to the port to listen on.
+2. Execute `java -jar server.jar 8444 /path/to/elfville.db /path/to/imitation_sysadmin.der`, where `/path/to/elfville.db` is where you would like to load an existing database or store a new one, and `/path/to/imitation_sysadmin.der` is the "very long secret" that our sysadmin will have memorized as a password of sorts (for simplification purposes). If the file cannot be found, the server will create it for you, but be sure the file location is writable! The `8444` refers to the port to listen on.
 
 3. Ensure port 8444 is available for your server, and open firewalls if needed. You should now have a server running on "localhost", port "8444."
 
@@ -53,7 +53,7 @@ Running a client
 
 1. Open up a command prompt and "cd" to the ElfVille directory to use our provided JAR, or to the directory where you exported a client JAR if you built from source.
 
-2. Execute `java -jar client.jar localhost 8444`. (The two arguments refer to the server you started in the previous section.) A Swing window will appear.
+2. Execute `java -jar client.jar localhost 8444 /path/to/elfville.pub.der`. The first two arguments refer to the server you started in the previous section. The final argument, `/path/to/elfville.pub.der` is the location of the stored public key for the server. A Swing window will appear.
 
 ===============
 Client Tutorial
@@ -81,7 +81,7 @@ General description of code structure
 
 The toplevel packages are divided into "client", "server", and "protocol."
 
-"elfville.server" and "elfville.client" are separate packages which will be delivered to server and client. "elfville.protocol" is common to both the server and client; it consists of Request and Response classes that define what the client can request, and what the server will respond with.
+"elfville.server" and "elfville.client" are separate packages which will be delivered to server and client, respectively. "elfville.protocol" is common to both the server and client; it consists of Request and Response classes that define what the client can request, and what the server will respond with.
 
 Server
 ======

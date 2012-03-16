@@ -11,6 +11,10 @@ public class UserDB extends DB {
 	private final ConcurrentHashMap<Integer, User> id_map = new ConcurrentHashMap<Integer, User>();
 	private final ConcurrentHashMap<String, User> username_map = new ConcurrentHashMap<String, User>();
 
+	public boolean hasModel(User user) {
+		return id_map.containsKey(user.getModelID());
+	}
+	
 	public User findUserByModelID(int modelID) {
 		return id_map.get(modelID);
 	}

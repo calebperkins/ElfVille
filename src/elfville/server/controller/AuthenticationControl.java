@@ -60,7 +60,8 @@ public class AuthenticationControl extends Controller {
 
 		// check to see if user already exists
 		if (user != null) {
-			return resp;
+			System.out.println("Username already exists");
+			return new Response(Status.FAILURE, "Username already exists");
 		}
 		
 		//20 char max, 4 char min
@@ -115,11 +116,13 @@ public class AuthenticationControl extends Controller {
 					.generateRandomPepper(r.getPassword());
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("generate random pepper failure");
 			return resp;
 		}
 		user.setPassword(hashedPassword);
 
 		if (!logInUser(user, r, currentUser)) {
+			System.out.println("login user failed");
 			return resp;
 		}
 

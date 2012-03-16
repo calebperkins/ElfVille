@@ -1,6 +1,7 @@
 package elfville.server.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -21,10 +22,8 @@ public class Clan extends Model implements Comparable<Clan> {
 			.synchronizedList(new ArrayList<Integer>());
 
 	private final int leaderID;
-	private final Set<Integer> applicants = Collections
-			.synchronizedSet(new HashSet<Integer>());
-	private final Set<Integer> members = Collections
-			.synchronizedSet(new HashSet<Integer>());
+	private final Set<Integer> applicants = Collections.synchronizedSet(new HashSet<Integer>());
+	private final Set<Integer> members = Collections.synchronizedSet(new HashSet<Integer>());
 
 	public Clan(String name, String description, Elf leader) {
 		super();
@@ -57,9 +56,12 @@ public class Clan extends Model implements Comparable<Clan> {
 	}
 
 	public List<SerializableElf> getApplicants() {
+		Integer[] appList = applicants.toArray(new Integer[0]);
+		Arrays.sort(appList);
+		
 		List<SerializableElf> applicantList = new ArrayList<SerializableElf>(
 				applicants.size());
-		for (Integer elfID : applicants) {
+		for (Integer elfID : appList) {
 			applicantList.add(Elf.get(elfID).toSerializableElf());
 		}
 		return applicantList;
@@ -100,6 +102,7 @@ public class Clan extends Model implements Comparable<Clan> {
 			members.add(elf.modelID);
 			applicants.remove(elf.modelID);
 			save();
+			System.out.println("elf " + elf.getName() + " is accepted at " + this.name);
 		}
 	}
 
@@ -173,7 +176,9 @@ public class Clan extends Model implements Comparable<Clan> {
 	@Override
 	public void save() {
 		super.save();
-		database.clanDB.insert(this);
+		if (!database.clanDB.hasModel(this)) {
+			database.clanDB.insert(this);
+		}
 	}
 
 	public void deny(Elf elf) {

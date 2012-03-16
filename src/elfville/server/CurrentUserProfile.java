@@ -125,6 +125,10 @@ public class CurrentUserProfile {
 	}
 	
 	public void logOut(){
+		User user = database.userDB.findUserByModelID(getCurrentUserId());
+		if (user != null) {
+			user.setLastLogout(System.currentTimeMillis());
+		}
 		this.currentUserId = -1;
 		this.session.removeCipher();
 	}
