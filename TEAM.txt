@@ -11,7 +11,7 @@ Designed much of the initial protocol, which changed surprisingly little through
 
 Heran Yang (hy279)
 ==================
-
+Designed the authentication protocol with Brian initially. Implemented server controller's main authentication for both sign in and sign up. This includes many mutations for other files and functions/fields. Designed and implemented pepper. Connected encryption functions with controllers. Fixed all database errors generated plus database logging. Created test cases and fix all later errors. 18 hours.
 
 Aaron Martinez (amm257)
 ==============

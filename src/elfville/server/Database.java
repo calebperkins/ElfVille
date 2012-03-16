@@ -77,7 +77,7 @@ public class Database {
 		String dbLocation;
 		String db_key_path;
 		if (Server.DEBUG) {
-			dbLocation = "resources/elfville.db";
+			dbLocation = "resources/elfville"+System.currentTimeMillis()+".db";
 			db_key_path = "resources/elfville.db.der";	
 		} else {
 			// Ask users for database shared key		
