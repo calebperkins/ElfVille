@@ -19,7 +19,9 @@ public class AuthenticationControl extends Controller {
 	public static Response signIn(SignInRequest r, CurrentUserProfile currentUser) { 
 
 		Response resp= new Response(Status.FAILURE);
+		
 		User user = database.userDB.findByUsernameHashedPassword(r.getUsername(), r.getPassword());
+		System.out.println(r.getUsername());
 
 		if (user == null) {
 			return resp;

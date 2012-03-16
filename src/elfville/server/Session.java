@@ -25,11 +25,15 @@ public class Session implements Runnable {
 	private static int CONSECUTIVE_FAILURE_LIMIT = 5;
 
 	private SharedKeyCipher sks = null;
+	
+	public void removeCipher(){
+		sks= null;
+	}
 
 	public Session(Socket client) throws IOException {
 		clientSocket = client;
 		clientSocket.setSoTimeout(TIMEOUT_IN_MS);
-		currentUser = new CurrentUserProfile(); // a new user, not logged in
+		currentUser = new CurrentUserProfile(this); // a new user, not logged in
 		try {
 			ois = new ObjectInputStream(clientSocket.getInputStream());
 			oos = new ObjectOutputStream(clientSocket.getOutputStream());
