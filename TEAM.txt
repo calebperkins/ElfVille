@@ -2,8 +2,7 @@ PHASE 3
 
 Caleb Perkins (ctp34)
 =====================
-Updated portions of the database code to support a logging-type system.  Created the shared key implementation and the public key implementation.  Set up many of the necessary changes to the protocols, and made some initial modifications to the session code in order to enable encrypted communication.  18 hours
-
+Implemented the actual encryption between the server and client (the shared Session cipher and the public-private key ciphers). Now, Sealed Objects are passed over the wire rather than raw requests or responses. Fixed database serialization so that changes are appended to a file on disk, rather than before, which was a simple file dump. Added and generated the nonces and secret keys needed for the key exchange protocol. Did some low level work such as figuring out what format Java can read keys in, and how object serialization actually works. Time taken: 18 hours.
 
 Brian Toth (bdt25)
 =================

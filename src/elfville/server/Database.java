@@ -10,6 +10,9 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Scanner;
 
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.SealedObject;
 import javax.crypto.SecretKey;
 
 import testcases.DatabaseSerializationTest;
@@ -28,7 +31,10 @@ public class Database {
 	public final PostDB postDB = new PostDB();
 	public final ElfDB elfDB = new ElfDB();
 	public final UserDB userDB = new UserDB();
+
 	private static SecretKey databaseSecret;
+	private static Cipher enc;
+	private static Cipher dec;
 
 	// Determines the modelID of all model objects.
 	// getAndIncrementCountID() will increment this by 1.
@@ -45,9 +51,12 @@ public class Database {
 	public void persist(Serializable obj) {
 		if (stream != null) {
 			try {
-				stream.writeUnshared(obj);
+				Serializable msg = SecurityUtils.encrypt(obj, enc);
+				stream.writeUnshared(msg);
 			} catch (IOException e) {
 				System.err.println(obj + " could not be saved.");
+			} catch (IllegalBlockSizeException e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -64,33 +73,37 @@ public class Database {
 		Scanner scanner = new Scanner(System.in);
         System.out.println("Input Database encryption key path (type 'resources/elfville.db' for demonstration: ");
         String dbLocation = scanner.nextLine();
+        dbLocation = "resources/elfville.db";
         System.out.println("Input Database encryption key file path\n (type 'resources/elfville.db.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
         String db_key_path = scanner.nextLine();
-        // databaseSecret = SecurityUtils.getKeyFromFile(db_key_path);
+        db_key_path = "resources/elfville.db.der";
         
-        
+        // Initiate database key
+        databaseSecret = SecurityUtils.getKeyFromFile(db_key_path);
+		enc = Cipher.getInstance("AES");
+		dec = Cipher.getInstance("AES");
+		enc.init(Cipher.ENCRYPT_MODE, databaseSecret);
+		dec.init(Cipher.DECRYPT_MODE, databaseSecret);
+
 		try {
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(
 					dbLocation));
-			try {
-				Object m;
-				// TODO: handle deleted objects
-				while ((m = ois.readObject()) != null) {
-					if (m instanceof Clan) {
-						instance.clanDB.insert((Clan) m);
-					} else if (m instanceof Elf) {
-						instance.elfDB.insert((Elf) m);
-					} else if (m instanceof Post) {
-						instance.postDB.insert((Post) m);
-					} else if (m instanceof User) {
-						instance.userDB.insert((User) m);
-					} else if (m instanceof Deletion) {
-						((Deletion) m).deleteObject();
-					}
+			SealedObject msg;
+			// TODO: handle deleted objects
+			while ((msg = (SealedObject)ois.readObject()) != null) {
+				Serializable m = SecurityUtils.decrypt(msg, dec);
+				
+				if (m instanceof Clan) {
+					instance.clanDB.insert((Clan) m);
+				} else if (m instanceof Elf) {
+					instance.elfDB.insert((Elf) m);
+				} else if (m instanceof Post) {
+					instance.postDB.insert((Post) m);
+				} else if (m instanceof User) {
+					instance.userDB.insert((User) m);
+				} else if (m instanceof Deletion) {
+					((Deletion) m).deleteObject();
 				}
-			} catch (EOFException e) {
-			} finally {
-				ois.close();
 			}
 		} catch (FileNotFoundException ex) {
 			System.err.println(dbLocation + " not found. Creating...");
