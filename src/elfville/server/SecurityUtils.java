@@ -1,10 +1,26 @@
 package elfville.server;
 
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.SealedObject;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import elfville.protocol.utils.Converter;
+import elfville.server.model.Model;
 
 public class SecurityUtils {
 	static final int PEPPER_SIZE = 1;  // 1 byte
@@ -43,6 +59,28 @@ public class SecurityUtils {
 
 	public static int decryptStringToInt(String str) {
 		return Integer.parseInt(str);
+	}
+	
+	public static SealedObject encrypt(Model m, Cipher enc) throws IllegalBlockSizeException,
+	IOException {
+		return new SealedObject(m, enc);
+	}
+	
+	public static Model decrypt(SealedObject m, Cipher dec)
+			throws IllegalBlockSizeException, BadPaddingException, IOException,
+			ClassNotFoundException {
+		return (Model) m.getObject(dec);
+	}
+	
+	public static SecretKey getKeyFromFile(String filepath) throws IOException{
+		File f = new File(filepath);
+		FileInputStream fis = new FileInputStream(f);
+		DataInputStream dis = new DataInputStream(fis);
+		byte[] keyBytes = new byte[(int) f.length()];
+		dis.readFully(keyBytes);
+		dis.close();
+		return new SecretKeySpec(keyBytes, "AES");	
+		
 	}
 	 
 }
