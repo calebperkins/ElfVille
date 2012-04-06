@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
 
 public class Server {
 
-	public static boolean DEBUG;
+	public static boolean DEBUG = true;
 
 	/**
 	 * Starts a server. Use the first argument to provide a port, the second,

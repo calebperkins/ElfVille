@@ -74,9 +74,8 @@ public class Session implements Runnable {
 						break;
 					}
 					if (nonce + 1 != request.getNonce()) {
-						response = new Response(Response.Status.FAILURE,
-								"Unexpected nonce, expected " + (nonce + 1)
-										+ ", received " + request.getNonce());
+						//we should not be telling the adversary what the nonce should be !
+						response = new Response(Response.Status.FAILURE, "bad nonce");
 					}
 					nonce += 1;
 				}
@@ -86,16 +85,7 @@ public class Session implements Runnable {
 				}
 				response.setNonce(nonce);
 				// TODO fix my bad nonce code above because I (Aaron) don't know
-				// your server stuff. This works though.
-
-				if (response.isOK()) {
-					consecutive_failures = 0;
-				} else {
-					consecutive_failures++;
-					if (consecutive_failures >= CONSECUTIVE_FAILURE_LIMIT) {
-						break;
-					}
-				}
+				// your server stuff. This works though
 
 				// set session authentication
 				if ((request instanceof SignUpRequest)
@@ -108,6 +98,23 @@ public class Session implements Runnable {
 				SealedObject encrypted_response = sks.encrypt(response);
 				oos.writeObject(encrypted_response);
 				oos.flush();
+				
+				if (response.isOK()) {
+					consecutive_failures = 0;
+				} else {
+					//reset the shared key if the sign up or sign in request failed.  this allows the client to retry
+					//with a new key
+					if ((request instanceof SignUpRequest)
+							|| (request instanceof SignInRequest)){
+						sks= null;
+					}
+					
+					consecutive_failures++;
+					if (consecutive_failures >= CONSECUTIVE_FAILURE_LIMIT) {
+						break;
+					}
+				}
+				
 			}
 			// if the user has been idle too long, log him out
 		} catch (SocketTimeoutException e) {

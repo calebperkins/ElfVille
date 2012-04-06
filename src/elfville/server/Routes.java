@@ -17,6 +17,7 @@ import elfville.protocol.Request;
 import elfville.protocol.Response;
 import elfville.protocol.SignInRequest;
 import elfville.protocol.SignUpRequest;
+import elfville.protocol.UpdateProfileRequest;
 import elfville.protocol.VoteRequest;
 import elfville.server.controller.AuthenticationControl;
 import elfville.server.controller.CentralBoardControl;
@@ -86,6 +87,11 @@ public class Routes {
 		return ElfBoardControl.getProfile(r, currentUser);
 	}
 
+	private static Response respond(UpdateProfileRequest r, 
+			CurrentUserProfile currentUser) {
+		return ElfBoardControl.updateProfile(r, currentUser);
+	}
+
 	public static Response processRequest(Request r,
 			CurrentUserProfile currentUser) {
 		// first check to see if the user should time out
@@ -115,6 +121,8 @@ public class Routes {
 			return respond((DeleteCentralBoardRequest) r, currentUser);
 		} else if (r instanceof ProfileRequest) {
 			return respond((ProfileRequest) r, currentUser);
+		} else if (r instanceof UpdateProfileRequest){
+			return respond((UpdateProfileRequest) r, currentUser);
 		}
 		return new Response(Response.Status.FAILURE, "Unknown request.");
 	}
