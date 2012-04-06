@@ -1,18 +1,18 @@
 package elfville.server.database;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 import elfville.server.SecurityUtils;
 import elfville.server.model.*;
 
 public class PostDB extends DB implements Iterable<Post> {
 	private final ConcurrentHashMap<Integer, Post> idMap = new ConcurrentHashMap<Integer, Post>();
-	private final ConcurrentHashMap<Integer, Post> centralPosts = new ConcurrentHashMap<Integer, Post>();
+	private final ConcurrentSkipListMap<Integer, Post> centralPosts = new ConcurrentSkipListMap<Integer, Post>();
 
 	// private final List<Post> centralPosts = Collections.synchronizedList(new
 	// ArrayList<Post>());
@@ -58,10 +58,11 @@ public class PostDB extends DB implements Iterable<Post> {
 	}
 
 	@Override
+	/**
+	 * Returns posts sorted by socks
+	 */
 	public Iterator<Post> iterator() {
-		ArrayList<Post> posts = new ArrayList<Post>(centralPosts.values());
-		Collections.sort(posts);
-		return posts.iterator();
+		return centralPosts.values().iterator();
 	}
 
 }

@@ -1,16 +1,15 @@
 package elfville.server.database;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 import elfville.server.SecurityUtils;
 import elfville.server.model.*;
 
 public class ClanDB extends DB implements Iterable<Clan> {
 	private final ConcurrentHashMap<Integer, Clan> idMap = new ConcurrentHashMap<Integer, Clan>();;
-	private final ConcurrentHashMap<String, Clan> nameMap = new ConcurrentHashMap<String, Clan>();;
+	private final ConcurrentSkipListMap<String, Clan> nameMap = new ConcurrentSkipListMap<String, Clan>();;
 
 	public boolean contains(Clan clan) {
 		return idMap.containsKey(clan.getModelID());
@@ -50,11 +49,12 @@ public class ClanDB extends DB implements Iterable<Clan> {
 		return nameMap.get(clanName);
 	}
 
+	/**
+	 * Returns clans sorted by name.
+	 */
 	@Override
 	public Iterator<Clan> iterator() {
-		ArrayList<Clan> clans = new ArrayList<Clan>(nameMap.values());
-		Collections.sort(clans);
-		return clans.iterator();
+		return nameMap.values().iterator();
 	}
 
 }
