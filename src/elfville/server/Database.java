@@ -110,13 +110,13 @@ public class Database {
 				Serializable m = SecurityUtils.decrypt(msg, dec);
 
 				if (m instanceof Clan) {
-					instance.clanDB.insert((Clan) m);
+					instance.clanDB.add((Clan) m);
 				} else if (m instanceof Elf) {
-					instance.elfDB.insert((Elf) m);
+					instance.elfDB.add((Elf) m);
 				} else if (m instanceof Post) {
-					instance.postDB.insert((Post) m);
+					instance.postDB.add((Post) m);
 				} else if (m instanceof User) {
-					instance.userDB.insert((User) m);
+					instance.userDB.add((User) m);
 				} else if (m instanceof Deletion) {
 					((Deletion) m).deleteObject();
 				}

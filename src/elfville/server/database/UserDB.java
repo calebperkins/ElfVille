@@ -9,7 +9,7 @@ public class UserDB extends DB {
 	private final ConcurrentHashMap<Integer, User> id_map = new ConcurrentHashMap<Integer, User>();
 	private final ConcurrentHashMap<String, User> username_map = new ConcurrentHashMap<String, User>();
 
-	public boolean hasModel(User user) {
+	public boolean contains(User user) {
 		return id_map.containsKey(user.getModelID());
 	}
 
@@ -46,8 +46,8 @@ public class UserDB extends DB {
 		return username_map.get(username);
 	}
 
-	public void insert(User user) {
-		if (!hasModel(user)) {
+	public void add(User user) {
+		if (!contains(user)) {
 			id_map.put(user.getModelID(), user);
 			username_map.put(user.getUsername(), user);
 		}

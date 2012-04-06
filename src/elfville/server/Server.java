@@ -47,8 +47,7 @@ public class Server {
 			dbPrivateKeyPath = "resources/elfville.der";
 		} else {
 			Scanner scanner = new Scanner(System.in);
-			System.out
-					.println("Input private encryption key file path\n (type 'resources/elfville.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
+			System.out.println("Input private encryption key file path\n (type 'resources/elfville.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
 			dbPrivateKeyPath = scanner.nextLine();
 		}
 		// Initialize private key

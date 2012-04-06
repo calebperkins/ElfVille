@@ -8,7 +8,7 @@ import elfville.server.model.Elf;
 public class ElfDB extends DB {
 	private final ConcurrentHashMap<Integer, Elf> elves = new ConcurrentHashMap<Integer, Elf>();
 
-	public void insert(Elf elf) {
+	public void add(Elf elf) {
 		// if (!hasModel(elf)) {
 		elves.put(elf.getModelID(), elf);
 		// }
@@ -25,7 +25,7 @@ public class ElfDB extends DB {
 		return findByID(modelID);
 	}
 
-	public boolean hasModel(Elf elf) {
+	public boolean contains(Elf elf) {
 		return elves.containsKey(elf.getModelID());
 	}
 }

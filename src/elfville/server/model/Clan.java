@@ -111,7 +111,7 @@ public class Clan extends Model implements Comparable<Clan> {
 
 	// the database takes care of cascading delete
 	public void delete() {
-		database.clanDB.delete(this);
+		database.clanDB.remove(this);
 		database.persist(new Deletion(this));
 	}
 
@@ -154,14 +154,14 @@ public class Clan extends Model implements Comparable<Clan> {
 	public void createPost(Post post) {
 		post.clanID = modelID;
 		postIDs.add(post.modelID);
-		database.postDB.insert(post);
+		database.postDB.add(post);
 		save();
 		post.save();
 	}
 
 	public void deletePost(Post post) {
 		postIDs.remove(postIDs.indexOf(post.modelID));
-		database.postDB.delete(post.modelID);
+		database.postDB.remove(post.modelID);
 		save();
 	}
 
@@ -180,7 +180,7 @@ public class Clan extends Model implements Comparable<Clan> {
 	@Override
 	public void save() {
 		super.save();
-		database.clanDB.insert(this);
+		database.clanDB.add(this);
 
 	}
 

@@ -27,7 +27,7 @@ public class CentralBoardControl extends Controller {
 		Elf elf = user.getElf();
 
 		resp.posts = ControllerUtils.buildPostList(
-				database.postDB.getCentralPosts(), elf);
+				database.postDB, elf);
 		resp.status = Status.SUCCESS;
 		return resp;
 	}

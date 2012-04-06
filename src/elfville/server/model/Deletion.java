@@ -21,9 +21,9 @@ public final class Deletion implements Serializable {
 
 	public void deleteObject() {
 		if (model instanceof Clan) {
-			db.clanDB.delete((Clan) model);
+			db.clanDB.remove((Clan) model);
 		} else if (model instanceof Post) {
-			db.postDB.delete(model.modelID);
+			db.postDB.remove(model.modelID);
 		}
 	}
 

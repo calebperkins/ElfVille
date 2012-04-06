@@ -2,6 +2,7 @@ package elfville.server.database;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,14 +10,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import elfville.server.SecurityUtils;
 import elfville.server.model.*;
 
-public class PostDB extends DB {
+public class PostDB extends DB implements Iterable<Post> {
 	private final ConcurrentHashMap<Integer, Post> idMap = new ConcurrentHashMap<Integer, Post>();
 	private final ConcurrentHashMap<Integer, Post> centralPosts = new ConcurrentHashMap<Integer, Post>();
 
 	// private final List<Post> centralPosts = Collections.synchronizedList(new
 	// ArrayList<Post>());
 
-	public void insert(Post post) {
+	public void add(Post post) {
 		// if (!hasModel(post)) {
 		idMap.put(post.getModelID(), post);
 		if (post.clanID == 0)
@@ -24,7 +25,7 @@ public class PostDB extends DB {
 		// }
 	}
 
-	public void delete(int i) {
+	public void remove(int i) {
 		Post p = idMap.get(i);
 		idMap.remove(i);
 		if (p.clanID == 0) {
@@ -32,7 +33,7 @@ public class PostDB extends DB {
 		}
 	}
 
-	public boolean hasModel(Post post) {
+	public boolean contains(Post post) {
 		return idMap.containsKey(post.getModelID());
 	}
 
@@ -56,18 +57,11 @@ public class PostDB extends DB {
 		return posts;
 	}
 
-	/**
-	 * Returns a list of central board posts sorted by socks.
-	 * 
-	 * @return
-	 */
-	public List<Post> getCentralPosts() {
-		List<Post> posts = new ArrayList<Post>();
-		for (Post p : centralPosts.values()) {
-			posts.add(p);
-		}
+	@Override
+	public Iterator<Post> iterator() {
+		ArrayList<Post> posts = new ArrayList<Post>(centralPosts.values());
 		Collections.sort(posts);
-		return posts;
+		return posts.iterator();
 	}
 
 }
