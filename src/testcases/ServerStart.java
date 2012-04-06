@@ -1,6 +1,5 @@
 package testcases;
 
-import java.awt.Robot;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 

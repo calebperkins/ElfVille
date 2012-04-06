@@ -1,6 +1,5 @@
 package elfville.server;
 
-import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -14,8 +13,6 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.SealedObject;
 import javax.crypto.SecretKey;
-
-import testcases.DatabaseSerializationTest;
 
 import elfville.server.database.*;
 import elfville.server.model.*;
@@ -78,16 +75,19 @@ public class Database {
 		String dbLocation;
 		String db_key_path;
 		if (Server.DEBUG) {
-			dbLocation = "resources/elfville"+System.currentTimeMillis()+".db";
+			dbLocation = "resources/elfville" + System.currentTimeMillis()
+					+ ".db";
 			// dbLocation = "resources/elfville.db";
-			db_key_path = "resources/elfville.db.der";	
+			db_key_path = "resources/elfville.db.der";
 		} else {
-			// Ask users for database shared key		
+			// Ask users for database shared key
 			Scanner scanner = new Scanner(System.in);
-			System.out.println("Input Database encryption key path (type 'resources/elfville.db' for demonstration: ");
+			System.out
+					.println("Input Database encryption key path (type 'resources/elfville.db' for demonstration: ");
 			dbLocation = scanner.nextLine();
 
-			System.out.println("Input Database encryption key file path\n (type 'resources/elfville.db.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
+			System.out
+					.println("Input Database encryption key file path\n (type 'resources/elfville.db.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
 			db_key_path = System.currentTimeMillis() + scanner.nextLine();
 		}
 
@@ -104,8 +104,9 @@ public class Database {
 			SealedObject msg;
 			// TODO: handle deleted objects
 			while (true) {
-				msg = (SealedObject)ois.readObject();
-				if (msg == null) break;
+				msg = (SealedObject) ois.readObject();
+				if (msg == null)
+					break;
 				Serializable m = SecurityUtils.decrypt(msg, dec);
 
 				if (m instanceof Clan) {
@@ -123,7 +124,8 @@ public class Database {
 		} catch (FileNotFoundException ex) {
 			System.err.println(dbLocation + " not found. Creating...");
 		}
-		instance.stream = new ObjectOutputStream(new FileOutputStream(dbLocation));
+		instance.stream = new ObjectOutputStream(new FileOutputStream(
+				dbLocation));
 	}
 
 	public synchronized int getAndIncrementCountID() {

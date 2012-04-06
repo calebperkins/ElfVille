@@ -43,11 +43,12 @@ public class ControllerUtils extends Controller {
 		}
 		return out;
 	}
-	
+
 	public static void signOut(CurrentUserProfile currentUser) {
-		User user = database.userDB.findUserByModelID(currentUser.getCurrentUserId());
+		User user = database.userDB.findUserByModelID(currentUser
+				.getCurrentUserId());
 		user.setLastLogout(System.currentTimeMillis());
 		currentUser.logOut();
 	}
-	
+
 }

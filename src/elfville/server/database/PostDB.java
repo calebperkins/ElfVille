@@ -12,14 +12,16 @@ import elfville.server.model.*;
 public class PostDB extends DB {
 	private final ConcurrentHashMap<Integer, Post> idMap = new ConcurrentHashMap<Integer, Post>();
 	private final ConcurrentHashMap<Integer, Post> centralPosts = new ConcurrentHashMap<Integer, Post>();
-	// private final List<Post> centralPosts = Collections.synchronizedList(new ArrayList<Post>());
+
+	// private final List<Post> centralPosts = Collections.synchronizedList(new
+	// ArrayList<Post>());
 
 	public void insert(Post post) {
-		//if (!hasModel(post)) {
+		// if (!hasModel(post)) {
 		idMap.put(post.getModelID(), post);
 		if (post.clanID == 0)
 			centralPosts.put(post.getModelID(), post);
-		//}
+		// }
 	}
 
 	public void delete(int i) {
@@ -33,7 +35,7 @@ public class PostDB extends DB {
 	public boolean hasModel(Post post) {
 		return idMap.containsKey(post.getModelID());
 	}
-	
+
 	public Post findByModelID(int modelID) {
 		return idMap.get(modelID);
 	}

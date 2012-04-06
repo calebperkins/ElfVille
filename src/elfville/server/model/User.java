@@ -44,18 +44,17 @@ public class User extends Model {
 	public synchronized boolean laterThanLastLogin(long currTime) {
 		return currTime > lastLogin;
 	}
-	
+
 	public synchronized void setLastLogin(long lastLogin) {
 		this.lastLogin = lastLogin;
 	}
 
-	
 	public synchronized boolean laterThanLastLogout(long currTime) {
 		return currTime > lastLogout;
 	}
-	
+
 	public synchronized void setLastLogout(long lastLogout) {
 		this.lastLogout = lastLogout;
 	}
-	
+
 }

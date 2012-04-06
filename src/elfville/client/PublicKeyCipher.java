@@ -11,14 +11,15 @@ import javax.crypto.SealedObject;
 
 /**
  * Used to encrypt the initial sign in / sign up request to the server
+ * 
  * @author Caleb Perkins
- *
+ * 
  */
 public class PublicKeyCipher {
 	private Cipher cipher;
 
 	private static final String PUBLIC = "RSA";
-	
+
 	public static PublicKeyCipher instance = null;
 
 	public PublicKeyCipher(String public_key_path) throws IOException,
@@ -41,13 +42,13 @@ public class PublicKeyCipher {
 		return keyBytes;
 	}
 
-	public SealedObject encrypt(Serializable req) throws GeneralSecurityException,
-			IOException {
+	public SealedObject encrypt(Serializable req)
+			throws GeneralSecurityException, IOException {
 		return new SealedObject(req, cipher);
 	}
-	
-	// Check if cipher exist. should be called by all shared key 
+
+	// Check if cipher exist. should be called by all shared key
 	public void checkCipherExist() {
-		
+
 	}
 }

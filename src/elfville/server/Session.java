@@ -61,7 +61,8 @@ public class Session implements Runnable {
 						.readObject();
 
 				if (sks == null) {
-					request = PKcipher.instance.decrypt(encrypted_request);
+					request = PublicKeyCipher.instance
+							.decrypt(encrypted_request);
 					sks = new SharedKeyCipher(
 							((SignInRequest) request).getSharedKey());
 					nonce = ((SignInRequest) request).getSharedNonce();
@@ -87,11 +88,14 @@ public class Session implements Runnable {
 				// TODO fix my bad nonce code above because I (Aaron) don't know
 				// your server stuff. This works though.
 
-				/*
-				 * if (response.isOK()) { consecutive_failures = 0; } else {
-				 * consecutive_failures++; if (consecutive_failures >=
-				 * CONSECUTIVE_FAILURE_LIMIT) { break; } }
-				 */
+				if (response.isOK()) {
+					consecutive_failures = 0;
+				} else {
+					consecutive_failures++;
+					if (consecutive_failures >= CONSECUTIVE_FAILURE_LIMIT) {
+						break;
+					}
+				}
 
 				// set session authentication
 				if ((request instanceof SignUpRequest)

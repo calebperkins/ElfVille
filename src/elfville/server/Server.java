@@ -2,8 +2,6 @@ package elfville.server;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.Date;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,6 +9,7 @@ import java.util.concurrent.Executors;
 public class Server {
 
 	public static boolean DEBUG;
+
 	/**
 	 * Starts a server. Use the first argument to provide a port, the second,
 	 * the path to the database.
@@ -19,7 +18,7 @@ public class Server {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		int port = 8444; 
+		int port = 8444;
 		if (args.length < 1) {
 			System.out.println("port not specified. Use 8444 as default");
 		} else {
@@ -27,9 +26,9 @@ public class Server {
 			System.out.println("Using port " + port + " as default");
 		}
 		if (args.length > 1 && args[1].equals("DEBUG")) {
-				DEBUG = true;
+			DEBUG = true;
 		}
-		
+
 		ServerSocket serverSocket = null;
 		boolean listening = true;
 
@@ -48,11 +47,12 @@ public class Server {
 			dbPrivateKeyPath = "resources/elfville.der";
 		} else {
 			Scanner scanner = new Scanner(System.in);
-			System.out.println("Input private encryption key file path\n (type 'resources/elfville.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
+			System.out
+					.println("Input private encryption key file path\n (type 'resources/elfville.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
 			dbPrivateKeyPath = scanner.nextLine();
 		}
 		// Initialize private key
-		PKcipher.instance = new PKcipher(dbPrivateKeyPath);
+		PublicKeyCipher.instance = new PublicKeyCipher(dbPrivateKeyPath);
 
 		ExecutorService pool = Executors.newCachedThreadPool();
 

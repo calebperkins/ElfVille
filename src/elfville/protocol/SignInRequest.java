@@ -35,11 +35,11 @@ public class SignInRequest extends Request {
 	public long getTime() {
 		return time;
 	}
-	
+
 	public int getSharedNonce() {
 		return shared_nonce;
 	}
-	
+
 	public void zeroOutPassword() {
 		for (int i = 0; i < password.length; i++) {
 			password[i] = 0;

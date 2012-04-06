@@ -21,7 +21,7 @@ public class ClanDB extends DB {
 	public boolean hasModel(Clan clan) {
 		return idMap.containsKey(clan.getModelID());
 	}
-	
+
 	public Clan findByModelID(int modelID) {
 		return idMap.get(modelID);
 	}
@@ -34,10 +34,10 @@ public class ClanDB extends DB {
 	}
 
 	public void insert(Clan clan) {
-		//if (!hasModel(clan)) {
+		// if (!hasModel(clan)) {
 		idMap.put(clan.getModelID(), clan);
 		nameMap.put(clan.getName(), clan);
-		//}
+		// }
 	}
 
 	public void delete(Clan clan) {

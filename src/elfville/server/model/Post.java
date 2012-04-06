@@ -12,7 +12,7 @@ import elfville.protocol.models.SerializablePost;
 public class Post extends Model implements Comparable<Post> {
 	@Override
 	public void save() {
-		super.save(); 
+		super.save();
 		database.postDB.insert(this);
 	}
 
@@ -67,7 +67,8 @@ public class Post extends Model implements Comparable<Post> {
 		// each elf can only upsock OR downsock a single post
 		Integer id = upsockingElf.modelID;
 		boolean voted = !downsocks.contains(id) && upsocks.add(id);
-		if (voted) save();
+		if (voted)
+			save();
 		return voted;
 	}
 
@@ -75,7 +76,8 @@ public class Post extends Model implements Comparable<Post> {
 	public boolean downsock(Elf downsockingElf) {
 		Integer id = downsockingElf.modelID;
 		boolean voted = !upsocks.contains(id) && downsocks.add(id);
-		if (voted) save();
+		if (voted)
+			save();
 		return voted;
 	}
 
