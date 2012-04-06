@@ -17,7 +17,21 @@
 			</classpath>
 		</javac>
 	</target>
-	
+
+	<target name="jar" depends="compile" description="Make the JARs">
+		<mkdir dir="${build}/dist" />
+		<jar destfile="${build}/dist/server.jar" basedir="${build}">
+			<manifest>
+				<attribute name="Main-Class" value="elfville.server.Server" />
+			</manifest>
+		</jar>
+		<jar destfile="${build}/dist/client.jar" basedir="${build}">
+			<manifest>
+				<attribute name="Main-Class" value="elfville.client.Client" />
+			</manifest>
+		</jar>
+	</target>
+
 	<target name="clean">
 		<delete dir="${build}" />
 	</target>
