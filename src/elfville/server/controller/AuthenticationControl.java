@@ -68,7 +68,7 @@ public class AuthenticationControl extends Controller {
 		// 20 char max, 4 char min
 		if (20 < r.getUsername().length() || r.getUsername().length() < 4) {
 			return new Response(Status.FAILURE,
-					"User name must be between 8 and 20 characters");
+					"User name must be between 4 and 20 characters");
 		}
 
 		if (r.getUsername().contains(" ")) {
@@ -77,7 +77,7 @@ public class AuthenticationControl extends Controller {
 
 		// make sure the username contains only letters and numbers
 		Pattern p = Pattern.compile("[^a-z0-9]*", Pattern.CASE_INSENSITIVE);
-		Matcher m = p.matcher(r.getPassword());
+		Matcher m = p.matcher(r.getUsername());
 		boolean b = m.matches();
 
 		if (b) {
@@ -100,11 +100,6 @@ public class AuthenticationControl extends Controller {
 			return new Response(Status.FAILURE,
 					"Password must contain at least one number or special character");
 		}
-
-		// make sure that the pass doesn't contains anything crazy
-		p = Pattern.compile("[\\s]");
-		m = p.matcher(r.getPassword());
-		b = m.matches();
 
 		if (b) {
 			return new Response(Status.FAILURE,
