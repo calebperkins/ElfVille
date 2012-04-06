@@ -17,7 +17,7 @@ public class DatabaseSerializationTest {
 	public void setup() throws Exception {
 		// Database.load("/tmp/test.db");
 
-		e = new Elf("Larry", "Likes pork");
+		e = new Elf("Larry");
 		e.save();
 
 		c1 = new Clan("Pork Lovers", "Clan of Larry", e);
