@@ -73,6 +73,9 @@ public class ElfBoardControl extends Controller {
 			resp.message= "Description is longer than 250 characters";
 			return resp;
 		}
+		
+		elf.setDescription(r.description);
+		elf.save();
 
 		resp.status = Status.SUCCESS;
 		return resp;

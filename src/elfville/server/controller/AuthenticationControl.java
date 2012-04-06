@@ -106,7 +106,8 @@ public class AuthenticationControl extends Controller {
 					"Password may not contain whitespace");
 		}
 
-		Elf elf = new Elf(r.getUsername(), r.description);
+		Elf elf = new Elf(r.getUsername());
+		elf.setDescription("");
 		elf.save();
 		user = new User(elf, r.getUsername());
 		String hashedPassword;

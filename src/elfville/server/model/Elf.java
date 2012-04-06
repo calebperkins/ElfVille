@@ -10,12 +10,11 @@ import elfville.protocol.models.SerializableElf;
 public class Elf extends Model implements Comparable<Elf> {
 	private static final long serialVersionUID = 4948830835289818367L;
 	private final String name;
-	private final String description;
+	private String description;
 
-	public Elf(String name, String description) {
+	public Elf(String name) {
 		super();
 		this.name = name;
-		this.description = description;
 	}
 
 	public List<Post> getPosts() {
@@ -61,5 +60,9 @@ public class Elf extends Model implements Comparable<Elf> {
 	@Override
 	public int compareTo(Elf other) {
 		return name.compareTo(other.name);
+	}
+	
+	public void setDescription(String description) {
+		this.description= description;
 	}
 }
