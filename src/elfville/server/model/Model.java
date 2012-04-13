@@ -1,6 +1,7 @@
 package elfville.server.model;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Date;
 
 import elfville.server.Database;
@@ -13,11 +14,40 @@ public abstract class Model implements Serializable {
 
 	private final Date createdAt;
 	protected final int modelID;
-	Date updatedAt; // Not used
+	private int checksum;
 
 	public Model() {
 		modelID = database.getAndIncrementCountID();
 		createdAt = new Date();
+	}
+
+	/**
+	 * Construct a checksum using reflection.
+	 * 
+	 * @return an XOR of all this object's field hash codes
+	 */
+	public final int getChecksum() {
+		Field[] fields = this.getClass().getDeclaredFields();
+		int c = 0;
+		for (Field f : fields) {
+			try {
+				c = c ^ f.get(this).hashCode();
+			} catch (IllegalAccessException e) {
+				// ignore it...
+			}
+		}
+		return c;
+	}
+
+	/**
+	 * Use this to enforce database integrity. If you load an object from
+	 * storage and this returns true, the object is corrupted. If you modify an
+	 * object this will return true if it has not been persisted yet.
+	 * 
+	 * @return whether this object is corrupted / hasn't been saved yet
+	 */
+	public final boolean isDirty() {
+		return checksum != getChecksum();
 	}
 
 	public enum ClanElfRelationship {
@@ -42,6 +72,7 @@ public abstract class Model implements Serializable {
 	 * explicitly if you have created a new object!
 	 */
 	public void save() {
+		checksum = getChecksum();
 		database.persist(this);
 	}
 

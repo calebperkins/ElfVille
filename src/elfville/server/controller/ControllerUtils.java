@@ -1,6 +1,7 @@
 package elfville.server.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import elfville.protocol.models.SerializableClan;
 import elfville.protocol.models.SerializablePost;
@@ -29,10 +30,12 @@ public class ControllerUtils extends Controller {
 			}
 			out.add(s);
 		}
+		Collections.sort(out);
 		return out;
 	}
 
-	public static ArrayList<SerializableClan> buildBoardList(Iterable<Clan> clans) {
+	public static ArrayList<SerializableClan> buildBoardList(
+			Iterable<Clan> clans) {
 		ArrayList<SerializableClan> out = new ArrayList<SerializableClan>();
 		for (Clan q : clans) {
 			SerializableClan c = q.toSerializableClan();

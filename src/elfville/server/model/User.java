@@ -18,6 +18,10 @@ public class User extends Model {
 		username = uname;
 	}
 
+	public static User get(int modelID) {
+		return database.userDB.findUserByModelID(modelID);
+	}
+
 	public String getUsername() {
 		return username;
 	}
