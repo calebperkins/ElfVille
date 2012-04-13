@@ -41,7 +41,6 @@ public class Post extends Model implements Comparable<Post> {
 		SerializablePost sPost = new SerializablePost();
 		sPost.title = getTitle();
 		sPost.content = getContent();
-		sPost.createdAt = getCreatedAt();
 		sPost.upvotes = getNumUpsock();
 		sPost.downvotes = getNumDownsock();
 		sPost.username = getElf().getName();
