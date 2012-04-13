@@ -181,7 +181,6 @@ public class Clan extends Model implements Comparable<Clan> {
 	public void save() {
 		super.save();
 		database.clanDB.add(this);
-
 	}
 
 	public void deny(Elf elf) {
@@ -197,4 +196,5 @@ public class Clan extends Model implements Comparable<Clan> {
 	public int compareTo(Clan c) {
 		return name.compareTo(c.name);
 	}
+
 }
