@@ -2,6 +2,7 @@ package elfville.server.model;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import elfville.protocol.models.SerializablePost;
@@ -20,6 +21,8 @@ public class Post extends Model implements Comparable<Post> {
 	private final int elfID;
 	private final String title;
 	private final String content;
+
+	private final static Random rand = new Random();
 
 	public int clanID = 0;
 
@@ -42,8 +45,12 @@ public class Post extends Model implements Comparable<Post> {
 		sPost.title = getTitle();
 		sPost.content = getContent();
 		sPost.createdAt = getCreatedAt();
-		sPost.upvotes = getNumUpsock();
-		sPost.downvotes = getNumDownsock();
+
+		// Add a small random fluctuation in votes so attacker cannot determine
+		// who upvoted/downvoted
+		sPost.upvotes = Math.max(getNumUpsock() - 1 + rand.nextInt(3), 0);
+		sPost.downvotes = Math.max(getNumDownsock() - 1 + rand.nextInt(3), 0);
+
 		sPost.username = getElf().getName();
 		sPost.elfModelID = getElf().getEncryptedModelID();
 		sPost.modelID = getEncryptedModelID();
@@ -113,12 +120,8 @@ public class Post extends Model implements Comparable<Post> {
 
 	@Override
 	public int compareTo(Post other) {
-		if (getNumSock() > other.getNumSock()) {
-			return -1;
-		} else if (getNumSock() < other.getNumSock()) {
-			return 1;
-		} else {
-			return new Integer(other.modelID).compareTo(modelID);
-		}
+		if (getNumSock() == other.getNumSock())
+			return other.modelID - modelID;
+		return other.getNumSock() - getNumSock();
 	}
 }
