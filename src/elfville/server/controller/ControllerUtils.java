@@ -47,10 +47,10 @@ public class ControllerUtils extends Controller {
 	}
 
 	public static void signOut(CurrentUserProfile currentUser) {
-		if (currentUser.loggedOut())
-			return;
 		User user = database.userDB.findUserByModelID(currentUser
 				.getCurrentUserId());
+		if (user == null) // happens if the user never logged in correctly
+			return;
 		user.setLastLogout(System.currentTimeMillis());
 		currentUser.logOut();
 	}
