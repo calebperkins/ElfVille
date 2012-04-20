@@ -84,6 +84,15 @@ public class CurrentUserProfile {
 	public void setCurrentUserId(int currentUserId) {
 		this.currentUserId = currentUserId;
 	}
+	
+	public boolean loggedOut() {
+		return currentUserId == -1;
+	}
+	
+	@Override
+	public String toString() {
+		return currentUserId == -1 ? "Anonymous user" : "User " + currentUserId;
+	}
 
 	public void logOut() {
 		User user = database.userDB.findUserByModelID(getCurrentUserId());

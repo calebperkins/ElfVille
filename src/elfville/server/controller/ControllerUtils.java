@@ -47,6 +47,8 @@ public class ControllerUtils extends Controller {
 	}
 
 	public static void signOut(CurrentUserProfile currentUser) {
+		if (currentUser.loggedOut())
+			return;
 		User user = database.userDB.findUserByModelID(currentUser
 				.getCurrentUserId());
 		user.setLastLogout(System.currentTimeMillis());
