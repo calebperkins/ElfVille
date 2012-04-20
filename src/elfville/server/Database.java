@@ -108,6 +108,12 @@ public class Database {
 				if (msg == null)
 					break;
 				Serializable m = SecurityUtils.decrypt(msg, dec);
+				
+				if (m instanceof Model) {
+					Model x = (Model) m;
+					if (x.isDirty())
+						System.err.println(x + " is corrupted.");
+				}
 
 				if (m instanceof Clan) {
 					instance.clanDB.add((Clan) m);

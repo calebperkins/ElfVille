@@ -30,11 +30,12 @@ public abstract class Model implements Serializable {
 		Field[] fields = this.getClass().getDeclaredFields();
 		int c = 0;
 		for (Field f : fields) {
-			try {
-				c = c ^ f.get(this).hashCode();
-			} catch (IllegalAccessException e) {
-				// ignore it...
-			}
+			if (!f.getName().equals("checksum"))
+				try {
+					c = c ^ f.get(this).hashCode();
+				} catch (IllegalAccessException e) {
+					// ignore it...
+				}
 		}
 		return c;
 	}
