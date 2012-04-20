@@ -3,6 +3,7 @@ package elfville.server.model;
 import java.util.List;
 
 import elfville.protocol.models.SerializableElf;
+import elfville.server.Database;
 
 /*
  * Elf Model.
@@ -18,7 +19,7 @@ public class Elf extends Model implements Comparable<Elf> {
 	}
 
 	public List<Post> getPosts() {
-		return database.postDB.findCentralPostsByElf(this);
+		return Database.getInstance().postDB.findCentralPostsByElf(this);
 	}
 
 	public SerializableElf toSerializableElf() {
@@ -50,11 +51,11 @@ public class Elf extends Model implements Comparable<Elf> {
 	@Override
 	public void save() {
 		super.save();
-		database.elfDB.add(this);
+		Database.getInstance().elfDB.add(this);
 	}
 
 	public static Elf get(int id) {
-		return database.elfDB.findByID(id);
+		return Database.getInstance().elfDB.findByID(id);
 	}
 
 	@Override

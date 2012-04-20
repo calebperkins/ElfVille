@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.Set;
 
 import elfville.protocol.models.SerializablePost;
+import elfville.server.Database;
 
 /*
  * Post Model
@@ -14,7 +15,7 @@ public class Post extends Model implements Comparable<Post> {
 	@Override
 	public void save() {
 		super.save();
-		database.postDB.add(this);
+		Database.getInstance().postDB.add(this);
 	}
 
 	private static final long serialVersionUID = 6422767335685038776L;
@@ -68,8 +69,8 @@ public class Post extends Model implements Comparable<Post> {
 	}
 
 	public void delete() {
-		database.postDB.remove(modelID);
-		database.persist(new Deletion(this));
+		Database.getInstance().postDB.remove(modelID);
+		Database.getInstance().persist(new Deletion(this));
 	}
 
 	public boolean upsock(Elf upsockingElf) {
@@ -117,7 +118,7 @@ public class Post extends Model implements Comparable<Post> {
 	}
 
 	public static Post get(String encID) {
-		return database.postDB.findByEncryptedModelID(encID);
+		return Database.getInstance().postDB.findByEncryptedModelID(encID);
 	}
 
 	@Override

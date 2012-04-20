@@ -9,6 +9,7 @@ import java.util.Set;
 
 import elfville.protocol.models.SerializableClan;
 import elfville.protocol.models.SerializableElf;
+import elfville.server.Database;
 import elfville.server.SecurityUtils;
 
 /**
@@ -52,7 +53,7 @@ public class Clan extends Model implements Comparable<Clan> {
 		Collections.sort(postIDs);
 		ArrayList<Post> posts = new ArrayList<Post>(postIDs.size());
 		for (Integer id : postIDs) {
-			posts.add(database.postDB.findByModelID(id));
+			posts.add(Database.getInstance().postDB.findByModelID(id));
 		}
 		return posts;
 	}
@@ -111,8 +112,8 @@ public class Clan extends Model implements Comparable<Clan> {
 
 	// the database takes care of cascading delete
 	public void delete() {
-		database.clanDB.remove(this);
-		database.persist(new Deletion(this));
+		Database.getInstance().clanDB.remove(this);
+		Database.getInstance().persist(new Deletion(this));
 	}
 
 	// The clan leader cannot do this operation
@@ -121,7 +122,7 @@ public class Clan extends Model implements Comparable<Clan> {
 			return;
 		}
 		for (Integer pid : postIDs) {
-			Post p = database.postDB.findByModelID(pid);
+			Post p = Database.getInstance().postDB.findByModelID(pid);
 			if (p.getElf().equals(elf)) {
 				postIDs.remove(pid);
 			}
@@ -146,7 +147,7 @@ public class Clan extends Model implements Comparable<Clan> {
 	public Post getPostFromEncryptedModelID(String encryptedModelID) {
 		int id = SecurityUtils.decryptStringToInt(encryptedModelID);
 		if (postIDs.contains(id)) {
-			return database.postDB.findByModelID(id);
+			return Database.getInstance().postDB.findByModelID(id);
 		}
 		return null;
 	}
@@ -154,14 +155,14 @@ public class Clan extends Model implements Comparable<Clan> {
 	public void createPost(Post post) {
 		post.clanID = modelID;
 		postIDs.add(post.modelID);
-		database.postDB.add(post);
+		Database.getInstance().postDB.add(post);
 		save();
 		post.save();
 	}
 
 	public void deletePost(Post post) {
 		postIDs.remove(postIDs.indexOf(post.modelID));
-		database.postDB.remove(post.modelID);
+		Database.getInstance().postDB.remove(post.modelID);
 		save();
 	}
 
@@ -180,7 +181,7 @@ public class Clan extends Model implements Comparable<Clan> {
 	@Override
 	public void save() {
 		super.save();
-		database.clanDB.add(this);
+		Database.getInstance().clanDB.add(this);
 	}
 
 	public void deny(Elf elf) {
@@ -189,7 +190,7 @@ public class Clan extends Model implements Comparable<Clan> {
 	}
 
 	public static Clan get(String name) {
-		return database.clanDB.findByName(name);
+		return Database.getInstance().clanDB.findByName(name);
 	}
 
 	@Override

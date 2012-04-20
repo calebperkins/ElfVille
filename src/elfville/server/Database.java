@@ -1,5 +1,6 @@
 package elfville.server;
 
+import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -43,6 +44,7 @@ public class Database {
 
 	protected Database(String dbLocation) throws Exception {
 		logger = Logger.getLogger(dbLocation + " database");
+		int objects_read = 0;
 
 		try {
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(
@@ -52,6 +54,7 @@ public class Database {
 				msg = (SealedObject) ois.readObject();
 				if (msg == null)
 					break;
+				objects_read++;
 				Serializable m = SecurityUtils.decrypt(msg, dec);
 
 				if (m instanceof Model) {
@@ -74,11 +77,14 @@ public class Database {
 			}
 		} catch (FileNotFoundException ex) {
 			logger.info(dbLocation + " not found. Creating...");
+		} catch (EOFException ex) {
+			logger.info("Loaded " + objects_read + " objects");
 		}
 		stream = new ObjectOutputStream(new FileOutputStream(dbLocation));
 	}
 
 	static public Database getInstance() {
+		assert instance != null;
 		return instance;
 	}
 

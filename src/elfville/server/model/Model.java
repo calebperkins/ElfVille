@@ -10,14 +10,12 @@ import elfville.server.SecurityUtils;
 public abstract class Model implements Serializable {
 	private static final long serialVersionUID = -3671088963465928601L;
 
-	protected static Database database = Database.getInstance();
-
 	private final Date createdAt;
 	protected final int modelID;
 	private int checksum;
 
 	public Model() {
-		modelID = database.getAndIncrementCountID();
+		modelID = Database.getInstance().getAndIncrementCountID();
 		createdAt = new Date();
 	}
 
@@ -74,7 +72,7 @@ public abstract class Model implements Serializable {
 	 */
 	public void save() {
 		checksum = getChecksum();
-		database.persist(this);
+		Database.getInstance().persist(this);
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package elfville.server.model;
 
+import elfville.server.Database;
+
 /*
  * User Model.
  * Contains authentication information.
@@ -19,7 +21,7 @@ public class User extends Model {
 	}
 
 	public static User get(int modelID) {
-		return database.userDB.findUserByModelID(modelID);
+		return Database.getInstance().userDB.findUserByModelID(modelID);
 	}
 
 	public String getUsername() {
@@ -42,7 +44,7 @@ public class User extends Model {
 	@Override
 	public void save() {
 		super.save();
-		database.userDB.add(this);
+		Database.getInstance().userDB.add(this);
 	}
 
 	public synchronized boolean laterThanLastLogin(long currTime) {
