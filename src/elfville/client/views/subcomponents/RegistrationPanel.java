@@ -105,6 +105,10 @@ public class RegistrationPanel extends JPanel implements ActionListener,
 			return;
 		}
 
+		if (descriptionArea.getText().length() > UpdateProfileRequest.MAX_DESCRIPTION_SIZE) {
+			System.err.println("Description cannot be longer than 250 characters");
+			return;
+		}
 		// create new shared key
 		SharedKeyCipher cipher;
 		SecretKey shared_key;

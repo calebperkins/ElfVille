@@ -44,6 +44,8 @@ public class Post extends Model implements Comparable<Post> {
 		SerializablePost sPost = new SerializablePost();
 		sPost.title = getTitle();
 		sPost.content = getContent();
+		sPost.upvotes = getNumUpsock();
+		sPost.downvotes = getNumDownsock();
 		sPost.createdAt = getCreatedAt();
 
 		// Add a small random fluctuation in votes so attacker cannot determine

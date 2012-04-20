@@ -1,5 +1,4 @@
 package elfville.protocol.models;
-
 import java.util.Date;
 
 public class SerializablePost extends SerializableModel implements Comparable<SerializablePost> {
@@ -9,10 +8,10 @@ public class SerializablePost extends SerializableModel implements Comparable<Se
 	public int upvotes;
 	public int downvotes;
 	public String content;
-	public Date createdAt;
 	public String elfModelID;
 	public boolean myPost;
 	public boolean iVoted;
+	public Date createdAt;
 	
 	public int getNumSocks() {
 		return upvotes - downvotes;
