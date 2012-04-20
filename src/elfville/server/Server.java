@@ -25,9 +25,7 @@ public class Server {
 			port = Integer.parseInt(args[0]);
 			System.out.println("Using port " + port + " as default");
 		}
-		if (args.length > 1 && args[1].equals("DEBUG")) {
-			DEBUG = true;
-		}
+		DEBUG = args.length > 1 && args[1].equals("DEBUG");
 
 		ServerSocket serverSocket = null;
 		boolean listening = true;
