@@ -54,13 +54,18 @@ public class Server {
 		ExecutorService pool = Executors.newCachedThreadPool();
 
 		System.out.println("Server now listening...");
+		
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() {
+				System.out.println("Shutting down...");
+			}
+		});
 
 		// Support Multiple Clients
 		while (listening) {
 			try {
 				pool.execute(new Session(serverSocket.accept()));
 			} catch (IOException e) { // couldn't set timeout? drop them.
-				continue;
 			}
 		}
 
