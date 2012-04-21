@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.SecureRandom;
 
-import javax.crypto.SecretKey;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -62,17 +61,15 @@ public class LoginPanel extends JPanel implements ActionListener {
 		try {
 			// create new shared key and nonce
 			SharedKeyCipher cipher;
-			SecretKey shared_key;
 			// create new shared key
 			cipher = new SharedKeyCipher();
-			shared_key = cipher.getNewSharedKey();
 			board.getSocketController().setCipher(cipher);
 			int nonce = SecureRandom.getInstance("SHA1PRNG").nextInt();
 			board.getSocketController().setNonce(nonce);
 
 			// create request
 			SignInRequest req = new SignInRequest(usernameField.getText(),
-					passwordField.getPassword(), shared_key, nonce, cipher.getIV());
+					passwordField.getPassword(), cipher, nonce);
 			board.getSocketController().sendRequest(req, board, "Login error",
 					board);
 

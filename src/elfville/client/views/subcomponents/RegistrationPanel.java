@@ -6,7 +6,6 @@ import java.security.SecureRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.crypto.SecretKey;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -100,7 +99,7 @@ public class RegistrationPanel extends JPanel implements ActionListener,
 			return;
 		}
 
-		if (descriptionArea.getText().equals("")) {
+		if (descriptionArea.getText().isEmpty()) {
 			System.err.println("Description area cannot be empty.");
 			return;
 		}
@@ -111,22 +110,16 @@ public class RegistrationPanel extends JPanel implements ActionListener,
 		}
 		// create new shared key
 		SharedKeyCipher cipher;
-		SecretKey shared_key;
 		try {
 			// create new shared key
 			cipher = new SharedKeyCipher();
-			shared_key = cipher.getNewSharedKey();
 			board.getSocketController().setCipher(cipher);
 			int nonce = SecureRandom.getInstance("SHA1PRNG").nextInt();
 			board.getSocketController().setNonce(nonce);
-			
-			byte[] iv = cipher.getIV();
-			assert iv != null;
 
 			// create request
 			SignUpRequest req = new SignUpRequest(usernameField.getText(),
-					passwordField.getPassword(), shared_key, nonce,
-					iv, descriptionArea.getText());
+					passwordField.getPassword(), cipher, nonce, descriptionArea.getText());
 			board.getSocketController().sendRequest(req, board,
 					"Registration error", this);
 			req.zeroOutPassword();

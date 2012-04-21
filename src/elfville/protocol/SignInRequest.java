@@ -6,6 +6,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import elfville.protocol.utils.SharedKeyCipher;
+
 public class SignInRequest extends Request {
 	private static final long serialVersionUID = 1L;
 	private char[] username;
@@ -15,14 +17,14 @@ public class SignInRequest extends Request {
 	private int shared_nonce;
 	private byte[] iv;
 
-	public SignInRequest(String name, char[] pass, SecretKey s, int nonce, byte[] iv) {
+	public SignInRequest(String name, char[] pass, SharedKeyCipher cipher, int nonce) {
 		super();
 		username = name.toCharArray();
 		password = pass;
-		shared_key = s.getEncoded();
+		shared_key = cipher.getSharedKey().getEncoded();
 		time = System.currentTimeMillis();
 		shared_nonce = nonce;
-		this.iv = iv;
+		this.iv = cipher.getIV();
 	}
 
 	public String getUsername() {
