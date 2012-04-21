@@ -1,6 +1,9 @@
 package elfville.protocol;
 
+import java.security.spec.AlgorithmParameterSpec;
+
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class SignInRequest extends Request {
@@ -10,14 +13,16 @@ public class SignInRequest extends Request {
 	private byte[] shared_key;
 	private long time;
 	private int shared_nonce;
+	private byte[] iv;
 
-	public SignInRequest(String name, char[] pass, SecretKey s, int nonce) {
+	public SignInRequest(String name, char[] pass, SecretKey s, int nonce, byte[] iv) {
 		super();
 		username = name.toCharArray();
 		password = pass;
 		shared_key = s.getEncoded();
 		time = System.currentTimeMillis();
 		shared_nonce = nonce;
+		this.iv = iv;
 	}
 
 	public String getUsername() {
@@ -30,6 +35,10 @@ public class SignInRequest extends Request {
 
 	public SecretKey getSharedKey() {
 		return new SecretKeySpec(shared_key, 0, shared_key.length, "AES");
+	}
+	
+	public AlgorithmParameterSpec getIV() {
+		return new IvParameterSpec(iv);
 	}
 
 	public long getTime() {

@@ -73,7 +73,7 @@ public class Session implements Runnable {
 					request = PublicKeyCipher.instance
 							.decrypt(encrypted_request);
 					sks = new SharedKeyCipher(
-							((SignInRequest) request).getSharedKey());
+							((SignInRequest) request).getSharedKey(), ((SignInRequest) request).getIV());
 					nonce = ((SignInRequest) request).getSharedNonce();
 					// -1 is for compatibility with below if-statement
 				} else {

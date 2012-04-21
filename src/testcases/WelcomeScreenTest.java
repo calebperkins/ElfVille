@@ -40,8 +40,10 @@ public class WelcomeScreenTest extends TestBase {
 		String password = "what is my password";
 		SocketController thisController = socketControllers.get(currentUser);
 		SecretKey newSharedKey = newSharedKey(thisController);
+		
+		// FIXME: IV should not be null, but this is difficult to refactor
 		SignUpRequest req = new SignUpRequest("user" + currentUser,
-				password.toCharArray(), newSharedKey, 0, "I am an awesome elf");
+				password.toCharArray(), newSharedKey, 0, null, "I am an awesome elf");
 		Response resp = thisController.send(req);
 		// System.out.println("signUpTest: " + resp.status.toString());
 		assertEquals(resp.status, Status.SUCCESS);
@@ -66,9 +68,10 @@ public class WelcomeScreenTest extends TestBase {
 			String password = "what is my password";
 			SocketController thisController = socketControllers.get(i);
 			SecretKey newSharedKey = newSharedKey(thisController);
+			// FIXME: IV should not be null!
 			SignUpRequest req = new SignUpRequest("user" + i,
 					password.toCharArray(), newSharedKey, 0,
-					"I am an awesome elf");
+					null, "I am an awesome elf");
 			descriptions.add("sdfkjdsf" + i);
 			req.description = descriptions.get(i);
 			Response resp = thisController.send(req);
