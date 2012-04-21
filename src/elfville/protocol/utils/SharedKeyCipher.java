@@ -16,9 +16,11 @@ import elfville.protocol.Request;
 import elfville.protocol.Response;
 
 public class SharedKeyCipher {
-	private Cipher enc;
-	private Cipher dec;
-	private KeyGenerator gen;
+	private final Cipher enc;
+	private final Cipher dec;
+	private final KeyGenerator gen;
+	
+	private SecretKey shared_key;
 
 	private static final String SHARED = "AES/CBC/PKCS5Padding";
 	private static final int SHAREDKEY_LENGTH = 128;
@@ -33,6 +35,14 @@ public class SharedKeyCipher {
 		// Note: key generator takes only algorithm as parameter! 
 		gen = KeyGenerator.getInstance("AES");
 		gen.init(SHAREDKEY_LENGTH);
+		
+		reinitialize();
+	}
+	
+	public void reinitialize() throws GeneralSecurityException {
+		shared_key = gen.generateKey();
+		enc.init(Cipher.ENCRYPT_MODE, shared_key);
+		dec.init(Cipher.DECRYPT_MODE, shared_key, enc.getParameters());
 	}
 
 	/*
@@ -42,6 +52,7 @@ public class SharedKeyCipher {
 			throws GeneralSecurityException {
 		enc = Cipher.getInstance(SHARED);
 		dec = Cipher.getInstance(SHARED);
+		gen = null;
 		enc.init(Cipher.ENCRYPT_MODE, shared_key, spec);
 		dec.init(Cipher.DECRYPT_MODE, shared_key, spec);
 	}
@@ -49,10 +60,7 @@ public class SharedKeyCipher {
 	/*
 	 * Used by client to generate the key
 	 */
-	public SecretKey getNewSharedKey() throws GeneralSecurityException {
-		SecretKey shared_key = gen.generateKey();
-		enc.init(Cipher.ENCRYPT_MODE, shared_key);
-		dec.init(Cipher.DECRYPT_MODE, shared_key, enc.getParameters());
+	public SecretKey getSharedKey() {
 		return shared_key;
 	}
 	

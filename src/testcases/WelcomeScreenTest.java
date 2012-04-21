@@ -5,9 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-
-import javax.crypto.SecretKey;
-
 import org.junit.Test;
 
 import elfville.client.SocketController;
@@ -20,18 +17,17 @@ public class WelcomeScreenTest extends TestBase {
 
 	public static ArrayList<String> descriptions = new ArrayList<String>();
 
-	// create new shared key
-	private SecretKey newSharedKey(SocketController sc) {
-		SharedKeyCipher cipher;
-		SecretKey shared_key = null;
+	// create new shared cipher
+	private SharedKeyCipher newSharedCipher(SocketController sc) {
 		try {
-			cipher = new SharedKeyCipher();
-			shared_key = cipher.getNewSharedKey();
+			SharedKeyCipher cipher = new SharedKeyCipher();
 			sc.setCipher(cipher);
+			return cipher;
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.exit(-1);
+			return null;
 		}
-		return shared_key;
 	}
 
 	@Test
@@ -39,11 +35,9 @@ public class WelcomeScreenTest extends TestBase {
 		int currentUser = 0;
 		String password = "what is my password";
 		SocketController thisController = socketControllers.get(currentUser);
-		SecretKey newSharedKey = newSharedKey(thisController);
-		
-		// FIXME: IV should not be null, but this is difficult to refactor
+		SharedKeyCipher newSharedCipher = newSharedCipher(thisController);
 		SignUpRequest req = new SignUpRequest("user" + currentUser,
-				password.toCharArray(), newSharedKey, 0, null, "I am an awesome elf");
+				password.toCharArray(), newSharedCipher, 0, "I am an awesome elf");
 		Response resp = thisController.send(req);
 		// System.out.println("signUpTest: " + resp.status.toString());
 		assertEquals(resp.status, Status.SUCCESS);
@@ -67,11 +61,9 @@ public class WelcomeScreenTest extends TestBase {
 			// System.out.println("kkkkkkk " + i);
 			String password = "what is my password";
 			SocketController thisController = socketControllers.get(i);
-			SecretKey newSharedKey = newSharedKey(thisController);
-			// FIXME: IV should not be null!
+			SharedKeyCipher newSharedCipher = newSharedCipher(thisController);
 			SignUpRequest req = new SignUpRequest("user" + i,
-					password.toCharArray(), newSharedKey, 0,
-					null, "I am an awesome elf");
+					password.toCharArray(), newSharedCipher, 0, "I am an awesome elf");
 			descriptions.add("sdfkjdsf" + i);
 			req.description = descriptions.get(i);
 			Response resp = thisController.send(req);

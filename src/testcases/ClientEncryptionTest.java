@@ -27,9 +27,11 @@ public class ClientEncryptionTest {
 
 	@Test
 	public void testGetNewSharedKey() throws Exception {
-		SecretKey k1 = sk.getNewSharedKey();
+		SecretKey k1 = sk.getSharedKey();
 		assertNotNull(k1);
-		SecretKey k2 = sk.getNewSharedKey();
+		
+		sk.reinitialize();
+		SecretKey k2 = sk.getSharedKey();
 		assertNotNull(k2);
 		assertNotSame(k1, k2);
 	}
@@ -37,13 +39,13 @@ public class ClientEncryptionTest {
 	@Test
 	public void testEncryptWithServerKey() throws Exception {
 		SignInRequest req = new SignInRequest("homie5",
-				"you are the man".toCharArray(), sk.getNewSharedKey(), 0, sk.getIV());
+				"you are the man".toCharArray(), sk, 0);
 		assertNotNull(pk.encrypt(req));
 	}
 
 	@Test
 	public void testEncryptWithSharedKey() throws Exception {
-		sk.getNewSharedKey();
+		sk.reinitialize();
 		Request req = new CentralBoardRequest();
 		assertNotNull(sk.encrypt(req));
 	}
