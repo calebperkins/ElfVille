@@ -25,7 +25,7 @@ public class CreatePostPanel extends CreatePanel {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		if (textField.getText().equals("") || textArea.getText().equals("")) {
+		if (textField.getText().isEmpty() || textArea.getText().isEmpty()) {
 			System.err.println("Need both a " + textFieldLabel + " and a "
 					+ textAreaLabel + " to " + buttonLabel);
 		} else {

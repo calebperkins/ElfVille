@@ -99,7 +99,7 @@ public class RegistrationPanel extends JPanel implements ActionListener,
 			return;
 		}
 
-		if (descriptionArea.getText().equals("")) {
+		if (descriptionArea.getText().isEmpty()) {
 			System.err.println("Description area cannot be empty.");
 			return;
 		}
