@@ -9,13 +9,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.SealedObject;
 import javax.crypto.SecretKey;
-
-import testcases.DatabaseSerializationTest;
 
 import elfville.server.database.*;
 import elfville.server.model.*;
@@ -25,7 +25,7 @@ import elfville.server.model.*;
  * Is a singleton.
  */
 public class Database {
-	private static Database instance = new Database();
+	private static Database instance;
 	private ObjectOutputStream stream = null;
 	public final ClanDB clanDB = new ClanDB();
 	public final PostDB postDB = new PostDB();
@@ -40,11 +40,51 @@ public class Database {
 	// getAndIncrementCountID() will increment this by 1.
 	private int countID = -1;
 
-	protected Database() {
-		// Solely to prevent outside instantiation.
+	private final Logger logger;
+
+	protected Database(String dbLocation) throws Exception {
+		logger = Logger.getLogger(dbLocation + " database");
+		int objects_read = 0;
+
+		try {
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(
+					dbLocation));
+			SealedObject msg;
+			while (true) {
+				msg = (SealedObject) ois.readObject();
+				if (msg == null)
+					break;
+				objects_read++;
+				Serializable m = SecurityUtils.decrypt(msg, dec);
+
+				if (m instanceof Model) {
+					Model x = (Model) m;
+					if (x.isDirty())
+						logger.warning(x + " is corrupted.");
+				}
+
+				if (m instanceof Clan) {
+					clanDB.add((Clan) m);
+				} else if (m instanceof Elf) {
+					elfDB.add((Elf) m);
+				} else if (m instanceof Post) {
+					postDB.add((Post) m);
+				} else if (m instanceof User) {
+					userDB.add((User) m);
+				} else if (m instanceof Deletion) {
+					((Deletion) m).deleteObject();
+				}
+			}
+		} catch (FileNotFoundException ex) {
+			logger.info(dbLocation + " not found. Creating...");
+		} catch (EOFException ex) {
+			logger.info("Loaded " + objects_read + " objects");
+		}
+		stream = new ObjectOutputStream(new FileOutputStream(dbLocation));
 	}
 
 	static public Database getInstance() {
+		assert instance != null;
 		return instance;
 	}
 
@@ -55,9 +95,9 @@ public class Database {
 				Serializable msg = obj;
 				stream.writeUnshared(msg);
 			} catch (IOException e) {
-				System.err.println(obj + " could not be saved.");
-			//} catch (IllegalBlockSizeException e) {
-			//	e.printStackTrace();
+				logger.warning(obj + " could not be saved.");
+			} catch (IllegalBlockSizeException e) {
+				logger.log(Level.WARNING, "Bad clock size", e);
 			}
 		}
 		flush();
@@ -65,7 +105,7 @@ public class Database {
 
 	public void flush() {
 		if (stream != null) {
-			System.out.println("flush called!");
+			logger.info("flush called!");
 			try {
 				stream.flush();
 			} catch (IOException e) {
@@ -79,16 +119,28 @@ public class Database {
 		String dbLocation;
 		String db_key_path;
 		if (Server.DEBUG) {
+<<<<<<< HEAD
 			// dbLocation = "resources/elfville"+System.currentTimeMillis()+".db";
 			dbLocation = "resources/elfville.db";
 			db_key_path = "resources/elfville.db.der";	
+=======
+			dbLocation = "resources/elfville" + System.currentTimeMillis()
+					+ ".db";
+			db_key_path = "resources/elfville.db.der";
+>>>>>>> 657282adccbe93b9f85ce76f94e00dbc6228bc20
 		} else {
-			// Ask users for database shared key		
+			// Ask users for database shared key
 			Scanner scanner = new Scanner(System.in);
-			System.out.println("Input Database encryption key path (type 'resources/elfville.db' for demonstration: ");
+			System.out
+					.println("Input Database file path (type 'resources/elfville.db' for demonstration: ");
 			dbLocation = scanner.nextLine();
 
+<<<<<<< HEAD
 			System.out.println("Input Database encryption key file path\n (type 'resources/elfville.db.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
+=======
+			System.out
+					.println("Input Database encryption key file path\n (type 'resources/elfville.db.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
+>>>>>>> 657282adccbe93b9f85ce76f94e00dbc6228bc20
 			db_key_path = scanner.nextLine();
 		}
 
@@ -99,6 +151,7 @@ public class Database {
 		enc.init(Cipher.ENCRYPT_MODE, databaseSecret);
 		dec.init(Cipher.DECRYPT_MODE, databaseSecret);
 
+<<<<<<< HEAD
 		try {
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(
 					dbLocation));
@@ -126,6 +179,9 @@ public class Database {
 			System.err.println(dbLocation + " not found. Creating...");
 		}
 		instance.stream = new ObjectOutputStream(new FileOutputStream(dbLocation));
+=======
+		instance = new Database(dbLocation);
+>>>>>>> 657282adccbe93b9f85ce76f94e00dbc6228bc20
 	}
 
 	public synchronized int getAndIncrementCountID() {

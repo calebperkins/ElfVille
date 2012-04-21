@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ElfVille" default="compile" basedir=".">
+	<description>ElfVille build script.</description>
+	<property name="src" location="src" />
+	<property name="build" location="bin" />
+	<property name="lib" location="lib" />
+
+	<target name="init" description="Initialize stuff">
+		<tstamp />
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="compile" depends="init" description="Compile the source">
+		<javac srcdir="${src}" destdir="${build}" includeantruntime="false">
+			<classpath>
+				<path id="junit" location="${lib}/junit.jar"/>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile" description="Make the JARs">
+		<mkdir dir="${build}/dist" />
+		<jar destfile="${build}/dist/server.jar" basedir="${build}">
+			<manifest>
+				<attribute name="Main-Class" value="elfville.server.Server" />
+			</manifest>
+		</jar>
+		<jar destfile="${build}/dist/client.jar" basedir="${build}">
+			<manifest>
+				<attribute name="Main-Class" value="elfville.client.Client" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="clean">
+		<delete dir="${build}" />
+		<delete>
+			<fileset dir="resources" includes="*.db"></fileset>
+		</delete>
+	</target>
+</project>

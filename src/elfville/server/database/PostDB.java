@@ -1,28 +1,31 @@
 package elfville.server.database;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Iterator;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 import elfville.server.SecurityUtils;
 import elfville.server.model.*;
 
-public class PostDB extends DB {
+public class PostDB extends DB implements Iterable<Post> {
 	private final ConcurrentHashMap<Integer, Post> idMap = new ConcurrentHashMap<Integer, Post>();
-	private final ConcurrentHashMap<Integer, Post> centralPosts = new ConcurrentHashMap<Integer, Post>();
-	// private final List<Post> centralPosts = Collections.synchronizedList(new ArrayList<Post>());
+	private final ConcurrentSkipListMap<Integer, Post> centralPosts = new ConcurrentSkipListMap<Integer, Post>();
 
-	public void insert(Post post) {
-		//if (!hasModel(post)) {
+	// private final List<Post> centralPosts = Collections.synchronizedList(new
+	// ArrayList<Post>());
+
+	public void add(Post post) {
+		// if (!hasModel(post)) {
 		idMap.put(post.getModelID(), post);
 		if (post.clanID == 0)
 			centralPosts.put(post.getModelID(), post);
-		//}
+		// }
 	}
 
-	public void delete(int i) {
+	public void remove(int i) {
 		Post p = idMap.get(i);
 		idMap.remove(i);
 		if (p.clanID == 0) {
@@ -30,10 +33,10 @@ public class PostDB extends DB {
 		}
 	}
 
-	public boolean hasModel(Post post) {
+	public boolean contains(Post post) {
 		return idMap.containsKey(post.getModelID());
 	}
-	
+
 	public Post findByModelID(int modelID) {
 		return idMap.get(modelID);
 	}
@@ -54,18 +57,12 @@ public class PostDB extends DB {
 		return posts;
 	}
 
+	@Override
 	/**
-	 * Returns a list of central board posts sorted by socks.
-	 * 
-	 * @return
+	 * Returns posts sorted by socks
 	 */
-	public List<Post> getCentralPosts() {
-		List<Post> posts = new ArrayList<Post>();
-		for (Post p : centralPosts.values()) {
-			posts.add(p);
-		}
-		Collections.sort(posts);
-		return posts;
+	public Iterator<Post> iterator() {
+		return centralPosts.values().iterator();
 	}
 
 }

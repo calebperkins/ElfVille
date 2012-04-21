@@ -1,27 +1,20 @@
 package elfville.server.database;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 import elfville.server.SecurityUtils;
 import elfville.server.model.*;
 
-public class ClanDB extends DB {
+public class ClanDB extends DB implements Iterable<Clan> {
 	private final ConcurrentHashMap<Integer, Clan> idMap = new ConcurrentHashMap<Integer, Clan>();;
-	private final ConcurrentHashMap<String, Clan> nameMap = new ConcurrentHashMap<String, Clan>();;
+	private final ConcurrentSkipListMap<String, Clan> nameMap = new ConcurrentSkipListMap<String, Clan>();;
 
-	public List<Clan> getClans() {
-		ArrayList<Clan> clans = new ArrayList<Clan>(nameMap.values());
-		Collections.sort(clans);
-		return clans;
-	}
-
-	public boolean hasModel(Clan clan) {
+	public boolean contains(Clan clan) {
 		return idMap.containsKey(clan.getModelID());
 	}
-	
+
 	public Clan findByModelID(int modelID) {
 		return idMap.get(modelID);
 	}
@@ -33,14 +26,14 @@ public class ClanDB extends DB {
 		return findByModelID(modelID);
 	}
 
-	public void insert(Clan clan) {
-		//if (!hasModel(clan)) {
+	public void add(Clan clan) {
+		// if (!hasModel(clan)) {
 		idMap.put(clan.getModelID(), clan);
 		nameMap.put(clan.getName(), clan);
-		//}
+		// }
 	}
 
-	public void delete(Clan clan) {
+	public void remove(Clan clan) {
 		idMap.remove(clan.getModelID());
 		nameMap.remove(clan.getName());
 
@@ -54,6 +47,14 @@ public class ClanDB extends DB {
 
 	public Clan findByName(String clanName) {
 		return nameMap.get(clanName);
+	}
+
+	/**
+	 * Returns clans sorted by name.
+	 */
+	@Override
+	public Iterator<Clan> iterator() {
+		return nameMap.values().iterator();
 	}
 
 }

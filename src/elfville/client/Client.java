@@ -18,16 +18,17 @@ public class Client {
 		String publicKeyPath;
 		if (args.length != 3) {
 			System.out.println("Usage: host port /path/to/elfville.pub.der");
-			System.out.println("Not enough arguments. Default: localhost 8444 resources/elfville.pub.der");
+			System.out
+					.println("Not enough arguments. Default: localhost 8444 resources/elfville.pub.der");
 			host = "localhost";
 			port = 8444;
-			publicKeyPath = "resources/elfville.pub.der"; 
+			publicKeyPath = "resources/elfville.pub.der";
 		} else {
 			host = args[0];
 			port = Integer.parseInt(args[1]);
 			publicKeyPath = args[2];
 		}
-		
+
 		PublicKeyCipher.instance = new PublicKeyCipher(publicKeyPath);
 
 		EventQueue.invokeLater(new Runnable() {

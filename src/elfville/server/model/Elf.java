@@ -3,6 +3,7 @@ package elfville.server.model;
 import java.util.List;
 
 import elfville.protocol.models.SerializableElf;
+import elfville.server.Database;
 
 /*
  * Elf Model.
@@ -10,16 +11,15 @@ import elfville.protocol.models.SerializableElf;
 public class Elf extends Model implements Comparable<Elf> {
 	private static final long serialVersionUID = 4948830835289818367L;
 	private final String name;
-	private final String description;
+	private String description;
 
-	public Elf(String name, String description) {
+	public Elf(String name) {
 		super();
 		this.name = name;
-		this.description = description;
 	}
 
 	public List<Post> getPosts() {
-		return database.postDB.findCentralPostsByElf(this);
+		return Database.getInstance().postDB.findCentralPostsByElf(this);
 	}
 
 	public SerializableElf toSerializableElf() {
@@ -51,15 +51,19 @@ public class Elf extends Model implements Comparable<Elf> {
 	@Override
 	public void save() {
 		super.save();
-		database.elfDB.insert(this);
+		Database.getInstance().elfDB.add(this);
 	}
 
 	public static Elf get(int id) {
-		return database.elfDB.findByID(id);
+		return Database.getInstance().elfDB.findByID(id);
 	}
 
 	@Override
 	public int compareTo(Elf other) {
 		return name.compareTo(other.name);
+	}
+	
+	public void setDescription(String description) {
+		this.description= description;
 	}
 }

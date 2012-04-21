@@ -2,9 +2,11 @@ package elfville.server.model;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import elfville.protocol.models.SerializablePost;
+import elfville.server.Database;
 
 /*
  * Post Model
@@ -12,14 +14,16 @@ import elfville.protocol.models.SerializablePost;
 public class Post extends Model implements Comparable<Post> {
 	@Override
 	public void save() {
-		super.save(); 
-		database.postDB.insert(this);
+		super.save();
+		Database.getInstance().postDB.add(this);
 	}
 
 	private static final long serialVersionUID = 6422767335685038776L;
 	private final int elfID;
 	private final String title;
 	private final String content;
+
+	private final static Random rand = new Random();
 
 	public int clanID = 0;
 
@@ -41,9 +45,15 @@ public class Post extends Model implements Comparable<Post> {
 		SerializablePost sPost = new SerializablePost();
 		sPost.title = getTitle();
 		sPost.content = getContent();
-		sPost.createdAt = getCreatedAt();
 		sPost.upvotes = getNumUpsock();
 		sPost.downvotes = getNumDownsock();
+		sPost.createdAt = getCreatedAt();
+
+		// Add a small random fluctuation in votes so attacker cannot determine
+		// who upvoted/downvoted
+		sPost.upvotes = Math.max(getNumUpsock() - 1 + rand.nextInt(3), 0);
+		sPost.downvotes = Math.max(getNumDownsock() - 1 + rand.nextInt(3), 0);
+
 		sPost.username = getElf().getName();
 		sPost.elfModelID = getElf().getEncryptedModelID();
 		sPost.modelID = getEncryptedModelID();
@@ -59,15 +69,16 @@ public class Post extends Model implements Comparable<Post> {
 	}
 
 	public void delete() {
-		database.postDB.delete(modelID);
-		database.persist(new Deletion(this));
+		Database.getInstance().postDB.remove(modelID);
+		Database.getInstance().persist(new Deletion(this));
 	}
 
 	public boolean upsock(Elf upsockingElf) {
 		// each elf can only upsock OR downsock a single post
 		Integer id = upsockingElf.modelID;
 		boolean voted = !downsocks.contains(id) && upsocks.add(id);
-		if (voted) save();
+		if (voted)
+			save();
 		return voted;
 	}
 
@@ -75,7 +86,8 @@ public class Post extends Model implements Comparable<Post> {
 	public boolean downsock(Elf downsockingElf) {
 		Integer id = downsockingElf.modelID;
 		boolean voted = !upsocks.contains(id) && downsocks.add(id);
-		if (voted) save();
+		if (voted)
+			save();
 		return voted;
 	}
 
@@ -106,17 +118,13 @@ public class Post extends Model implements Comparable<Post> {
 	}
 
 	public static Post get(String encID) {
-		return database.postDB.findByEncryptedModelID(encID);
+		return Database.getInstance().postDB.findByEncryptedModelID(encID);
 	}
 
 	@Override
 	public int compareTo(Post other) {
-		if (getNumSock() > other.getNumSock()) {
-			return -1;
-		} else if (getNumSock() < other.getNumSock()) {
-			return 1;
-		} else {
-			return new Integer(other.modelID).compareTo(modelID);
-		}
+		if (getNumSock() == other.getNumSock())
+			return other.modelID - modelID;
+		return other.getNumSock() - getNumSock();
 	}
 }

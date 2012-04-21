@@ -17,8 +17,7 @@ public class CentralBoardControl extends Controller {
 
 		CentralBoardResponse resp = new CentralBoardResponse(Status.FAILURE,
 				"failure", null);
-		User user = database.userDB.findUserByModelID(currentUser
-				.getCurrentUserId());
+		User user = User.get(currentUser.getCurrentUserId());
 
 		if (user == null) {
 			return resp;
@@ -26,8 +25,7 @@ public class CentralBoardControl extends Controller {
 
 		Elf elf = user.getElf();
 
-		resp.posts = ControllerUtils.buildPostList(
-				database.postDB.getCentralPosts(), elf);
+		resp.posts = ControllerUtils.buildPostList(database.postDB, elf);
 		resp.status = Status.SUCCESS;
 		return resp;
 	}

@@ -18,10 +18,10 @@ import elfville.protocol.*;
  * @author Caleb Perkins
  * 
  */
-public class PKcipher {
+public class PublicKeyCipher {
 	private final PrivateKey private_key;
-	
-	public static PKcipher instance;
+
+	public static PublicKeyCipher instance;
 
 	private static final String ALG = "RSA";
 
@@ -42,11 +42,12 @@ public class PKcipher {
 		return kf.generatePrivate(spec);
 	}
 
-	public PKcipher(String private_key_path) throws Exception {
+	public PublicKeyCipher(String private_key_path) throws Exception {
 		private_key = loadPrivateKey(private_key_path);
 	}
 
-	public SignInRequest decrypt(SealedObject obj) throws IOException, ClassNotFoundException, GeneralSecurityException {
+	public SignInRequest decrypt(SealedObject obj) throws IOException,
+			ClassNotFoundException, GeneralSecurityException {
 		return (SignInRequest) obj.getObject(private_key);
 	}
 
