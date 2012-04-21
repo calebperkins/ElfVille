@@ -51,12 +51,13 @@ public class Database {
 	public void persist(Serializable obj) {
 		if (stream != null) {
 			try {
-				Serializable msg = SecurityUtils.encrypt(obj, enc);
+				// Serializable msg = SecurityUtils.encrypt(obj, enc);
+				Serializable msg = obj;
 				stream.writeUnshared(msg);
 			} catch (IOException e) {
 				System.err.println(obj + " could not be saved.");
-			} catch (IllegalBlockSizeException e) {
-				e.printStackTrace();
+			//} catch (IllegalBlockSizeException e) {
+			//	e.printStackTrace();
 			}
 		}
 		flush();
@@ -78,8 +79,8 @@ public class Database {
 		String dbLocation;
 		String db_key_path;
 		if (Server.DEBUG) {
-			dbLocation = "resources/elfville"+System.currentTimeMillis()+".db";
-			// dbLocation = "resources/elfville.db";
+			// dbLocation = "resources/elfville"+System.currentTimeMillis()+".db";
+			dbLocation = "resources/elfville.db";
 			db_key_path = "resources/elfville.db.der";	
 		} else {
 			// Ask users for database shared key		
@@ -88,7 +89,7 @@ public class Database {
 			dbLocation = scanner.nextLine();
 
 			System.out.println("Input Database encryption key file path\n (type 'resources/elfville.db.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
-			db_key_path = System.currentTimeMillis() + scanner.nextLine();
+			db_key_path = scanner.nextLine();
 		}
 
 		// Initiate database key
@@ -104,10 +105,11 @@ public class Database {
 			SealedObject msg;
 			// TODO: handle deleted objects
 			while (true) {
-				msg = (SealedObject)ois.readObject();
-				if (msg == null) break;
-				Serializable m = SecurityUtils.decrypt(msg, dec);
-
+				System.out.println("Hey!");
+				// msg = (SealedObject)ois.readObject();
+				// if (msg == null) break;
+				// Serializable m = SecurityUtils.decrypt(msg, dec);
+				Object m = ois.readObject();
 				if (m instanceof Clan) {
 					instance.clanDB.insert((Clan) m);
 				} else if (m instanceof Elf) {

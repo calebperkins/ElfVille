@@ -29,7 +29,7 @@ public class Server {
 		if (args.length > 1 && args[1].equals("DEBUG")) {
 				DEBUG = true;
 		}
-		
+		DEBUG = true;
 		ServerSocket serverSocket = null;
 		boolean listening = true;
 
@@ -66,7 +66,7 @@ public class Server {
 				continue;
 			}
 		}
-
+		// TODO: close the file correctly!
 		serverSocket.close();
 	}
 }

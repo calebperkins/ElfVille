@@ -32,11 +32,11 @@ S → C: {success}S_C
 else
         S → C: {failure}S_C
 
-Justification of Nonce Sizes and Key Lengths
+ Justification of Nonce Sizes and Key Lengths
 ===================================
 shared_nonce: incremented with each messaged passed (both from server to client and from client to server). Its size is 32 bits. Since its only purpose is to prevent replay attacks after the session key has been established (for the message before, that’s handled by an included time), the only requirement is that it is long enough that there will be no repeats within a session, and at about 4.3 billion options it’d take about 490 days at the unreasonable rate of one hundred messages per second. This means it’s sufficiently long, and 32 bits is nice because it falls on a word boundary so we can treat it as an int.
 
-S_p: Server’s public key. Its length is 4048 bits. Not so long that it takes unreasonable amounts of time to decrypt (less than a second, which would become a problem if we had tons of users, but we’d reach socket limit before that), but long enough that we can encrypt our entire initial message (which includes a lot for the sake of simplicity of programming).
+S_p: Server’s public key. Its length is 4096 bits. Not so long that it takes unreasonable amounts of time to decrypt (less than a second, which would become a problem if we had tons of users, but we’d reach socket limit before that), but long enough that we can encrypt our entire initial message (which includes a lot for the sake of simplicity of programming).
 
 S_C: Session key for communication between the client and the server. Its length is 128 bits. 
 
