@@ -3,15 +3,12 @@ package elfville.protocol.utils;
 import java.io.IOException;
 
 import java.security.GeneralSecurityException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
+import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SealedObject;
 import javax.crypto.SecretKey;
 
@@ -23,40 +20,44 @@ public class SharedKeyCipher {
 	private Cipher dec;
 	private KeyGenerator gen;
 
-	private static final String SHARED = "AES";
+	private static final String SHARED = "AES/CBC/PKCS5Padding";
 	private static final int SHAREDKEY_LENGTH = 128;
 
 	/*
-	 * used by client to allow creationg of a key that can be passed to server
+	 * used by client to allow creation of a key that can be passed to server
 	 */
 	public SharedKeyCipher() throws GeneralSecurityException {
 		enc = Cipher.getInstance(SHARED);
 		dec = Cipher.getInstance(SHARED);
-		gen = KeyGenerator.getInstance(SHARED);
+		
+		// Note: key generator takes only algorithm as parameter! 
+		gen = KeyGenerator.getInstance("AES");
 		gen.init(SHAREDKEY_LENGTH);
 	}
 
 	/*
 	 * used by server given client's generated key
 	 */
-	public SharedKeyCipher(SecretKey shared_key)
+	public SharedKeyCipher(SecretKey shared_key, AlgorithmParameterSpec spec)
 			throws GeneralSecurityException {
 		enc = Cipher.getInstance(SHARED);
 		dec = Cipher.getInstance(SHARED);
-		enc.init(Cipher.ENCRYPT_MODE, shared_key);
-		dec.init(Cipher.DECRYPT_MODE, shared_key);
+		enc.init(Cipher.ENCRYPT_MODE, shared_key, spec);
+		dec.init(Cipher.DECRYPT_MODE, shared_key, spec);
 	}
 
 	/*
 	 * Used by client to generate the key
 	 */
-	public SecretKey getNewSharedKey() throws InvalidKeySpecException,
-			NoSuchAlgorithmException, InvalidKeyException,
-			NoSuchPaddingException {
+	public SecretKey getNewSharedKey() throws GeneralSecurityException {
 		SecretKey shared_key = gen.generateKey();
 		enc.init(Cipher.ENCRYPT_MODE, shared_key);
-		dec.init(Cipher.DECRYPT_MODE, shared_key);
+		dec.init(Cipher.DECRYPT_MODE, shared_key, enc.getParameters());
 		return shared_key;
+	}
+	
+	public byte[] getIV() {
+		return enc.getIV();
 	}
 
 	/*

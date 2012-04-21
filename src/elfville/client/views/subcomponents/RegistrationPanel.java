@@ -119,11 +119,14 @@ public class RegistrationPanel extends JPanel implements ActionListener,
 			board.getSocketController().setCipher(cipher);
 			int nonce = SecureRandom.getInstance("SHA1PRNG").nextInt();
 			board.getSocketController().setNonce(nonce);
+			
+			byte[] iv = cipher.getIV();
+			assert iv != null;
 
 			// create request
 			SignUpRequest req = new SignUpRequest(usernameField.getText(),
 					passwordField.getPassword(), shared_key, nonce,
-					descriptionArea.getText());
+					iv, descriptionArea.getText());
 			board.getSocketController().sendRequest(req, board,
 					"Registration error", this);
 			req.zeroOutPassword();
