@@ -12,19 +12,11 @@ import elfville.server.Database;
  */
 public final class Deletion implements Serializable {
 	private static final long serialVersionUID = -5494544262655106127L;
-	private static final Database db = Database.getInstance();
-	private final Model model;
+	// private static final Database db = Database.getInstance();
+	public final Model model;
 
 	public Deletion(Model m) {
 		this.model = m;
-	}
-
-	public void deleteObject() {
-		if (model instanceof Clan) {
-			db.clanDB.remove((Clan) model);
-		} else if (model instanceof Post) {
-			db.postDB.remove(model.modelID);
-		}
 	}
 
 }

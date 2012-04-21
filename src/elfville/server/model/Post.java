@@ -51,8 +51,8 @@ public class Post extends Model implements Comparable<Post> {
 
 		// Add a small random fluctuation in votes so attacker cannot determine
 		// who upvoted/downvoted
-		sPost.upvotes = Math.max(getNumUpsock() - 1 + rand.nextInt(3), 0);
-		sPost.downvotes = Math.max(getNumDownsock() - 1 + rand.nextInt(3), 0);
+		//sPost.upvotes = Math.max(getNumUpsock() - 1 + rand.nextInt(3), 0);
+		//sPost.downvotes = Math.max(getNumDownsock() - 1 + rand.nextInt(3), 0);
 
 		sPost.username = getElf().getName();
 		sPost.elfModelID = getElf().getEncryptedModelID();
