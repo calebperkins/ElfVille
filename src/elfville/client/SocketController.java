@@ -88,17 +88,26 @@ public class SocketController {
 		try {
 			if ((req instanceof SignUpRequest)
 					|| (req instanceof SignInRequest)) {
+				req.setChecksum();
 				out.writeObject(PublicKeyCipher.instance.encrypt(req));
 			} else {
 				nonce += 1;
 				req.setNonce(nonce);
+				req.setChecksum();
 				out.writeObject(cipher.encrypt(req));
 			}
 			out.flush();
 
 			SealedObject blah = (SealedObject) in.readObject();
-			// can be combined into next line, split for testing.
+			// can be combined into next line, split for debugging.
 			Response resp = cipher.decrypt(blah);
+			
+			// check integrity of response
+			if (resp.isDirty()) {
+				// TODO make error message better, also maybe throw error
+				System.err.print("Received corrupted message.");
+				return null;
+			}
 
 			if (resp.getNonce() != nonce + 1) {
 				// TODO make error message better, also maybe throw error

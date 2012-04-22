@@ -18,7 +18,7 @@ import javax.crypto.spec.SecretKeySpec;
 import elfville.protocol.utils.Converter;
 
 public class SecurityUtils {
-	static final int PEPPER_SIZE = 1; // 1 byte
+	static final int PEPPER_SIZE = 1; // 1 byte TODO make longer
 
 	// Pepper password
 	public static String generateRandomPepper(String password)

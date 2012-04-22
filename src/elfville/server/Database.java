@@ -127,7 +127,7 @@ public class Database {
 			} catch (IOException e) {
 				logger.warning(obj + " could not be saved.");
 			} catch (IllegalBlockSizeException e) {
-				logger.log(Level.WARNING, "Bad clock size", e);
+				logger.log(Level.WARNING, "Bad block size", e);
 			}
 		}
 		flush();
