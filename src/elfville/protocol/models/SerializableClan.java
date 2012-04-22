@@ -28,4 +28,16 @@ public class SerializableClan extends SerializableModel {
 		clanDescription = description;
 	}
 
+	@Override
+	public int getChecksum() {
+		int c = clanName.hashCode() ^ clanDescription.hashCode() ^ numSocks ^ leader.getChecksum();
+		for (SerializableModel member : members)
+			c ^= member.getChecksum();
+		for (SerializableModel member : applicants)
+			c ^= member.getChecksum();
+		for (SerializableModel member : posts)
+			c ^= member.getChecksum();
+		return c;
+	}
+
 }

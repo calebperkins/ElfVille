@@ -3,6 +3,8 @@ package elfville.protocol;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
+import elfville.protocol.models.SerializableModel;
+
 public class Message implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int nonce;
@@ -21,17 +23,37 @@ public class Message implements Serializable {
 	 * 
 	 * @return an XOR of all this object's field hash codes
 	 */
-	public final int getChecksum() {
+	public int getChecksum() {
 		Field[] fields = this.getClass().getDeclaredFields();
 		int c = 0;
 		for (Field f : fields) {
 			if (!f.getName().equals("checksum"))
 				try {
-					c = c ^ f.get(this).hashCode();
+					Object o = f.get(this);
+					c ^= getChecksumFor(o);
 				} catch (IllegalAccessException e) {
-					System.err.println("illegal to access " + f.getName());
+					//System.err.println("illegal to access " + f.getName());
 					// ignore it...
 				}
+		}
+		System.err.println("Checksummed!!!");
+		return c;
+	}
+	
+	private int getChecksumFor(Object o) {
+		int c = 0;
+		if (o instanceof SerializableModel) {
+			c ^= ((SerializableModel) o).getChecksum();
+		} else if (o instanceof Enum) {
+			c = c ^ o.toString().hashCode();
+		} else if (o instanceof Iterable<?>) {
+			Iterable<?> i = (Iterable<?>) o;
+			for (Object oo : i) {
+				System.err.println("hi");
+				c ^= getChecksumFor(oo);
+			}
+		} else {
+			c = c ^ o.hashCode();
 		}
 		return c;
 	}

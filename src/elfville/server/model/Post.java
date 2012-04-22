@@ -2,7 +2,6 @@ package elfville.server.model;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 import elfville.protocol.models.SerializablePost;
@@ -22,8 +21,6 @@ public class Post extends Model implements Comparable<Post> {
 	private final int elfID;
 	private final String title;
 	private final String content;
-
-	private final static Random rand = new Random();
 
 	public int clanID = 0;
 
