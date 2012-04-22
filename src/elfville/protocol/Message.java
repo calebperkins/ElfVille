@@ -7,7 +7,7 @@ public class Message implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int nonce;
 	private int checksum;
-	
+
 	public int getNonce() {
 		return nonce;
 	}
@@ -15,7 +15,7 @@ public class Message implements Serializable {
 	public void setNonce(int n) {
 		nonce = n;
 	}
-	
+
 	/**
 	 * Construct a checksum using reflection.
 	 * 
@@ -29,22 +29,25 @@ public class Message implements Serializable {
 				try {
 					c = c ^ f.get(this).hashCode();
 				} catch (IllegalAccessException e) {
+					System.err.println("illegal to access " + f.getName());
 					// ignore it...
 				}
 		}
 		return c;
 	}
-	
+
 	/**
-	 * Use this to enforce message integrity. If you receive a message
-	 * and this returns true, the message is corrupted.
+	 * Use this to enforce message integrity. If you receive a message and this
+	 * returns true, the message is corrupted.
 	 * 
 	 * @return whether this object is corrupted / hasn't been saved yet
 	 */
 	public final boolean isDirty() {
-		return checksum != getChecksum();
+		// can be combined into line below, split for debugging
+		int currentChecksum = getChecksum();
+		return checksum != currentChecksum;
 	}
-	
+
 	public void setChecksum() {
 		checksum = getChecksum();
 	}

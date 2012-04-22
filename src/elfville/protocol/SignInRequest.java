@@ -14,16 +14,16 @@ public class SignInRequest extends Request {
 	private char[] password;
 	private byte[] shared_key;
 	private long time;
-	private int shared_nonce;
 	private byte[] iv;
 
-	public SignInRequest(String name, char[] pass, SharedKeyCipher cipher, int nonce) {
+	public SignInRequest(String name, char[] pass, SharedKeyCipher cipher,
+			int nonce) {
 		super();
 		username = name.toCharArray();
 		password = pass;
 		shared_key = cipher.getSharedKey().getEncoded();
 		time = System.currentTimeMillis();
-		shared_nonce = nonce;
+		setNonce(nonce);
 		this.iv = cipher.getIV();
 	}
 
@@ -38,17 +38,13 @@ public class SignInRequest extends Request {
 	public SecretKey getSharedKey() {
 		return new SecretKeySpec(shared_key, 0, shared_key.length, "AES");
 	}
-	
+
 	public AlgorithmParameterSpec getIV() {
 		return new IvParameterSpec(iv);
 	}
 
 	public long getTime() {
 		return time;
-	}
-
-	public int getSharedNonce() {
-		return shared_nonce;
 	}
 
 	public void zeroOutPassword() {

@@ -1,13 +1,14 @@
 package elfville.server;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.ServerSocket;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
 
+	public static final boolean DBENCRYPT = false;
 	public static boolean DEBUG = true;
 
 	/**
@@ -26,8 +27,8 @@ public class Server {
 			System.out.println("Using port " + port + " as default");
 		}
 
-		DEBUG = args.length > 1 && args[1].equals("DEBUG");
-		DEBUG = true;
+		// DEBUG = args.length > 1 && args[1].equals("DEBUG");
+		// DEBUG = true;
 
 		ServerSocket serverSocket = null;
 		boolean listening = true;
@@ -47,7 +48,8 @@ public class Server {
 			dbPrivateKeyPath = "resources/elfville.der";
 		} else {
 			Scanner scanner = new Scanner(System.in);
-			System.out.println("Input the file path for the private encryption key to use for socket communications.\n(Type 'resources/elfville.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
+			System.out
+					.println("Input the file path for the private encryption key to use for socket communications.\n(Type 'resources/elfville.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
 			dbPrivateKeyPath = scanner.nextLine();
 		}
 		// Initialize private key
@@ -56,7 +58,7 @@ public class Server {
 		ExecutorService pool = Executors.newCachedThreadPool();
 
 		System.out.println("Server now listening...");
-		
+
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
 				System.out.println("Shutting down...");

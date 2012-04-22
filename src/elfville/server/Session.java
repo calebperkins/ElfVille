@@ -73,8 +73,9 @@ public class Session implements Runnable {
 					request = PublicKeyCipher.instance
 							.decrypt(encrypted_request);
 					sks = new SharedKeyCipher(
-							((SignInRequest) request).getSharedKey(), ((SignInRequest) request).getIV());
-					nonce = ((SignInRequest) request).getSharedNonce(); // init nonce
+							((SignInRequest) request).getSharedKey(),
+							((SignInRequest) request).getIV());
+					nonce = ((SignInRequest) request).getNonce(); // init nonce
 				} else {
 					try {
 						request = sks.decryptWithSharedKey(encrypted_request);
@@ -83,8 +84,9 @@ public class Session implements Runnable {
 					}
 					nonce += 1; // compute expected request nonce
 					if (nonce != request.getNonce()) {
-						// we should not be telling the adversary what the nonce
-						// should be !
+						// TODO we should not be telling the adversary what the
+						// nonce should be ! - someone
+						// Aaron: I do not understand this complaint.
 						response = new Response(Response.Status.FAILURE,
 								"bad nonce");
 					}
@@ -103,7 +105,7 @@ public class Session implements Runnable {
 					if (response.isOK())
 						logger.info(this + " logged in.");
 				}
-				
+
 				response.setChecksum();
 				SealedObject encrypted_response = sks.encrypt(response);
 				oos.writeObject(encrypted_response);

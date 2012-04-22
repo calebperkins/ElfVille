@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -18,7 +19,7 @@ import javax.crypto.spec.SecretKeySpec;
 import elfville.protocol.utils.Converter;
 
 public class SecurityUtils {
-	static final int PEPPER_SIZE = 1; // 1 byte TODO make longer
+	static final int PEPPER_SIZE = 3; // in bytes
 
 	// Pepper password
 	public static String generateRandomPepper(String password)

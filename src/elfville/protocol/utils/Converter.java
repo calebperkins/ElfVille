@@ -40,7 +40,7 @@ public class Converter {
 	}
 
 	// byteRange is the largest number of bytes you want.
-	// i.e. byteRange=1 means you want a random number from 0 - 2^8
+	// i.e. byteRange=1 means you want a random number in interval [0, 2^8 - 1]
 	public static int secureRandomInt(int byteRange) {
 		SecureRandom sr;
 		int out = 0;

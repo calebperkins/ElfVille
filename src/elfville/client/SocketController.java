@@ -55,6 +55,9 @@ public class SocketController {
 			SuccessFunction fun) {
 		try {
 			Response resp = this.send(req);
+			if (null == resp) {
+				return;
+			}
 			if (resp.isOK()) {
 				if (null == fun) {
 					board.refresh();
@@ -101,7 +104,7 @@ public class SocketController {
 			SealedObject blah = (SealedObject) in.readObject();
 			// can be combined into next line, split for debugging.
 			Response resp = cipher.decrypt(blah);
-			
+
 			// check integrity of response
 			if (resp.isDirty()) {
 				// TODO make error message better, also maybe throw error
