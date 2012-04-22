@@ -121,7 +121,7 @@ public class Clan extends Model implements Comparable<Clan> {
 		if (isLeader(elf)) {
 			return;
 		}
-		for (Integer pid : postIDs) {
+		for (Integer pid : postIDs.subList(0, postIDs.size())) {
 			Post p = Database.getInstance().postDB.findByModelID(pid);
 			if (p.getElf().equals(elf)) {
 				postIDs.remove(pid);
