@@ -35,7 +35,7 @@
 	<target name="clean">
 		<delete dir="${build}" />
 		<delete>
-			<fileset dir="resources" includes="*.db"></fileset>
+			<fileset dir="resources" includes="*.db*"></fileset>
 		</delete>
 	</target>
 </project>
