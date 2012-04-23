@@ -81,21 +81,22 @@ public class CustomClassLoader extends ClassLoader {
 		return cls;
 	}
 
-
+/*
 	public static void main(String[] args) throws Exception {
 
-		CustomSecurityManager sm = new CustomSecurityManager(null);
-		// SecurityManager old = System.getSecurityManager();
+		CustomSecurityManager sm = new CustomSecurityManager("1");
+		SecurityManager old = System.getSecurityManager();
 
 		CustomClassLoader loader = new CustomClassLoader();
 		System.setSecurityManager(sm);
 
 		Class userUploadedClass = Class.forName("loader.MyClass", true, loader);
 
-		// System.setSecurityManager(old);
+		sm.disable("1");
+		System.setSecurityManager(old);
 
 
-		/*
+		// /*
 		System.out.println("load class done?");
 		System.out.println("Base64 class: " + clsB64);
 
@@ -105,11 +106,11 @@ public class CustomClassLoader extends ClassLoader {
 		else {
 			System.out.println("Base64 loaded through custom loader is NOT same as that loaded by System loader.");
 		}
-		 */
+		 // *
 		// call the main method in Base64
 		java.lang.reflect.Method main = userUploadedClass.getMethod("main", 
 				new Class[] {String[].class});
 		main.invoke(null, new Object[]{ new String[]{} });
 	}
-
+*/
 }

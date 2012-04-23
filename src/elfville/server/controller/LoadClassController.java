@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import elfville.protocol.LoadClassRequest;
 import elfville.protocol.Request;
@@ -42,8 +45,10 @@ public class LoadClassController extends Controller {
 			e.printStackTrace();
 		}
 
+		
 		LoadClassRequestQueue.startNewThread(r.fileName);
 		Response res = new Response();
+		res.message = "Load Succeed! No display sorry";
 		return res;
 	}
 }

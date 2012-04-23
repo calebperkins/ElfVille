@@ -20,16 +20,25 @@ public class CustomSecurityManager extends SecurityManager {
 
 	// ... override checkXXX method(s) here.
 	// Always allow them to succeed when secret==null
-	
+
 	public void checkPermission(Permission perm) {
-		// System.out.println("Permission check called");
-		// System.out.println(perm.getActions());
-		// System.out.println(perm.getName());
-		// System.out.println(perm.getClass());
-		System.out.println(perm);
-		if (perm.equals(new RuntimePermission("createClassLoader"))) {
-			// throw new SecurityException();
+		if (secret == null) {
+			return;
 		}
+		System.out.println("Permission check called");
+		System.out.println(perm.getActions());
+		System.out.println(perm.getName());
+		System.out.println(perm.getClass());
+		System.out.println(perm);
+		//erm.equals(new RuntimePermission("createClassLoader")) ||
+		//perm.equals(new RuntimePermission("setSecurityManager")) ||
+		if (perm.getClass().toString().equals("class java.io.FilePermission") ||
+				perm.getClass().toString().equals("class java.util.PropertyPermission")
+				) {
+			return;
+		}
+		throw new SecurityException();
+
 	}
 }
 

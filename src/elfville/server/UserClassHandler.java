@@ -15,15 +15,15 @@ public class UserClassHandler extends Thread {
 	public void handleRequestQueue() throws InterruptedException {
 		while(true) {
 			Thread.sleep(500);
-			System.out.println("apiQueue length is: " + LoadClassRequestQueue.size());
+			// System.out.println("apiQueue length is: " + LoadClassRequestQueue.size());
 			if (LoadClassRequestQueue.isEmpty()) {
 				continue;
 			}
 			Request userReq = LoadClassRequestQueue.poll();
+			userReq.setChecksum();
 			System.out.println(userReq.toString());
 			
 			Response response = Routes.processRequest(userReq, currentUser);
-
 		}
 	}
 	

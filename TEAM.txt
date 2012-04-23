@@ -13,7 +13,11 @@ TODO
 
 Heran Yang (hy279)
 ==================
-TODO
+* Fixed database logging and caching
+* Created class loader, security manager
+* Created file transfer between server and client
+* Programmed a new GUI screen for uploading classes
+Spent about 30 hours
 
 Aaron Martinez (amm257)
 =======================

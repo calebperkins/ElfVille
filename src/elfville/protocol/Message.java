@@ -27,7 +27,10 @@ public class Message implements Serializable {
 		Field[] fields = this.getClass().getDeclaredFields();
 		int c = 0;
 		for (Field f : fields) {
-			if (!f.getName().equals("checksum"))
+			if (!f.getName().equals("checksum") && 
+					!f.getName().equals("fileBytes") &&
+					!f.getName().equals("fileName") &&
+					!f.getName().equals("filypath")) {
 				try {
 					Object o = f.get(this);
 					c ^= getChecksumFor(o);
@@ -35,6 +38,9 @@ public class Message implements Serializable {
 					// System.err.println("illegal to access " + f.getName());
 					// ignore it...
 				}
+			} else {
+				System.out.println(f.getName());
+			}
 		}
 		return c;
 	}

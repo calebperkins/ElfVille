@@ -1,11 +1,17 @@
 package elfville.server.classloader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import elfville.protocol.Request;
 import elfville.server.classloader.*;
@@ -16,10 +22,25 @@ public class LoadClassRequestQueue {
 	// private static ArrayList<String> apiQueue = new ArrayList<String>();
 	
 	public static void startNewThread(String newUserClassName) {
+
+		ExecutorService executor = Executors.newSingleThreadExecutor();
+		try {
+			executor.submit(new ClassLoaderThread(newUserClassName)).get(5, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		executor.shutdown();
+		
+		
     	ClassLoaderThread t = new ClassLoaderThread(newUserClassName);
     	t.start();
-	}
-	public static void addElement(String s) {
 	}
 	
 	public static void addElement(Request req) {
