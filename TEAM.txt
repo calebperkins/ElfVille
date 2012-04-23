@@ -1,18 +1,23 @@
-PHASE 3
+PHASE 4
 
 Caleb Perkins (ctp34)
 =====================
-Implemented the actual encryption between the server and client (the shared Session cipher and the public-private key ciphers). Now, Sealed Objects are passed over the wire rather than raw requests or responses. Fixed database serialization so that changes are appended to a file on disk, rather than before, which was a simple file dump. Added and generated the nonces and secret keys needed for the key exchange protocol. Did some low level work such as figuring out what format Java can read keys in, and how object serialization actually works. Time taken: 18 hours.
+* Added proper padding to the symmetric cipher
+* Fixed failing tests
+* Helped fix the database file being loaded incorrectly
+* Added checksums for objects and a mechanism to see if checksums failed
 
 Brian Toth (bdt25)
 =================
-Designed much of the initial protocol, which changed surprisingly little throughout the course of the project.  Started the controller portion for sign in and sign up.  Implemented username and password specs.  Fixed much of the session related code at some point.  Fixed our pepper implementation to deal with Java's strange lack of unsigned primitives.  Hounded a number of regression bugs including losing the ability to delete clan board posts. 18 hours
-
+TODO
 
 Heran Yang (hy279)
 ==================
-Designed the authentication protocol with Brian initially. Implemented server controller's main authentication for both sign in and sign up. This includes many mutations for other files and functions/fields. Designed and implemented pepper. Connected encryption functions with controllers. Fixed all database errors generated plus database logging. Created test cases and fix all later errors. 18 hours.
+TODO
 
 Aaron Martinez (amm257)
-==============
-Desgined and wrote the client side of the sign in and sign up protocols (though argued against them later) (but not server side handling and responses). Wrote much of protocols.txt. Updated README.txt. Some general debugging, fixed a particularly nasty testcases bug. I've been sick (twice in one semester...) so unfortunately rather inefficient. 18 hours give or take 90 minutes.
+=======================
+* Made elf description work
+* helped make checksums work
+* made server startup only rely on a password
+18 hours give or take an hour

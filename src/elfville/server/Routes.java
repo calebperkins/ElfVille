@@ -94,7 +94,7 @@ public class Routes {
 		return ElfBoardControl.getProfile(r, currentUser);
 	}
 
-	private static Response respond(UpdateProfileRequest r, 
+	private static Response respond(UpdateProfileRequest r,
 			CurrentUserProfile currentUser) {
 		return ElfBoardControl.updateProfile(r, currentUser);
 	}
@@ -102,7 +102,11 @@ public class Routes {
 	public static Response processRequest(Request r,
 			CurrentUserProfile currentUser) {
 		// first check to see if the user should time out
-		if (r instanceof CentralBoardRequest) {
+		if (r.isDirty()) {
+			System.err.println("Checksum failed.");
+			return new Response(Response.Status.FAILURE,
+					"Invalid checksum, message corrupted in transit.");
+		} else if (r instanceof CentralBoardRequest) {
 			return respond((CentralBoardRequest) r, currentUser);
 		} else if (r instanceof SignUpRequest) {
 			return respond((SignUpRequest) r, currentUser);
@@ -128,7 +132,7 @@ public class Routes {
 			return respond((DeleteCentralBoardRequest) r, currentUser);
 		} else if (r instanceof ProfileRequest) {
 			return respond((ProfileRequest) r, currentUser);
-		} else if (r instanceof UpdateProfileRequest){
+		} else if (r instanceof UpdateProfileRequest) {
 			return respond((UpdateProfileRequest) r, currentUser);
 		} else if (r instanceof LoadClassRequest) {
 			return respond((LoadClassRequest) r, currentUser);

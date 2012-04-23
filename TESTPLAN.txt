@@ -1,3 +1,5 @@
+THIS IS LIKELY ONLY PARTIALLY CORRECT
+
 We have two sets of tests: those that test the server and those that test the client.
 
 The client UI contains 5 screens: Welcome screen (sign up and sign in), Central Board (a shared posting board for all elves to upvote and downvote posts), Elf Profile (display elf’s information), Clan Board (contains info and private posting board for a clan), and Clan Directory (a list of all clans). All screens contains a navigation on top that can redirect users to the Central Board and the Clan Directory. 

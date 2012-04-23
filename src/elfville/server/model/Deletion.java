@@ -2,8 +2,6 @@ package elfville.server.model;
 
 import java.io.Serializable;
 
-import elfville.server.Database;
-
 /***
  * Hacky way to delete objects from a stream. See Database.load() for use.
  * 

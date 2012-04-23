@@ -80,24 +80,25 @@ public class Session implements Runnable {
 					request = PublicKeyCipher.instance
 							.decrypt(encrypted_request);
 					sks = new SharedKeyCipher(
-							((SignInRequest) request).getSharedKey(), ((SignInRequest) request).getIV());
-					nonce = ((SignInRequest) request).getSharedNonce();
-					// -1 is for compatibility with below if-statement
+							((SignInRequest) request).getSharedKey(),
+							((SignInRequest) request).getIV());
+					nonce = ((SignInRequest) request).getNonce(); // init nonce
 				} else {
 					try {
 						request = sks.decryptWithSharedKey(encrypted_request);
 					} catch (javax.crypto.BadPaddingException e) {
 						break;
 					}
-					if (nonce + 1 != request.getNonce()) {
-						// we should not be telling the adversary what the nonce
-						// should be !
+					nonce += 1; // compute expected request nonce
+					if (nonce != request.getNonce()) {
+						// TODO we should not be telling the adversary what the
+						// nonce should be ! - someone
+						// Aaron: I do not understand this complaint.
 						response = new Response(Response.Status.FAILURE,
 								"bad nonce");
 					}
-					nonce += 1;
 				}
-				nonce += 1;
+				nonce += 1; // compute proper response nonce
 				if (null == response) {
 					response = Routes.processRequest(request, currentUser);
 				}
@@ -112,6 +113,7 @@ public class Session implements Runnable {
 						logger.info(this + " logged in.");
 				}
 
+				response.setChecksum();
 				SealedObject encrypted_response = sks.encrypt(response);
 				oos.writeObject(encrypted_response);
 				oos.flush();

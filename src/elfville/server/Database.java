@@ -18,8 +18,16 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.SealedObject;
 import javax.crypto.SecretKey;
 
-import elfville.server.database.*;
-import elfville.server.model.*;
+import elfville.server.database.ClanDB;
+import elfville.server.database.ElfDB;
+import elfville.server.database.PostDB;
+import elfville.server.database.UserDB;
+import elfville.server.model.Clan;
+import elfville.server.model.Deletion;
+import elfville.server.model.Elf;
+import elfville.server.model.Model;
+import elfville.server.model.Post;
+import elfville.server.model.User;
 
 /*
  * Contains data structures that represent the server's database.
@@ -50,30 +58,37 @@ public class Database {
 
 		int dbCounter = 0;
 		String currentDbLocation = dbLocation + dbCounter;
-		while(true) {
+		while (true) {
 			currentDbLocation = dbLocation + dbCounter;
-			dbCounter ++; 	
+			dbCounter++;
 
 			try {
-				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(
-						currentDbLocation));
+				ObjectInputStream ois = new ObjectInputStream(
+						new FileInputStream(currentDbLocation));
 				SealedObject msg;
 				while (true) {
-					msg = (SealedObject) ois.readObject();
-					if (msg == null)
-						break;
+					Serializable m;
+					// read from database, if encrypted then decrypt it
+					if (Server.DBENCRYPT) {
+						msg = (SealedObject) ois.readObject();
+						if (msg == null)
+							break;
+						m = SecurityUtils.decrypt(msg, dec);
+					} else {
+						m = (Serializable) ois.readObject();
+						if (m == null)
+							break;
+					}
 					objects_read++;
-					Serializable m = SecurityUtils.decrypt(msg, dec);
 
 					if (m instanceof Model) {
 						Model x = (Model) m;
 						if (x.isDirty()) {
 							logger.warning(x + " is corrupted.");
 						}
-						System.out.println("loading model ID: " + x.getModelID());
-						if (oldCountId < x.getModelID()) {
-							oldCountId = x.getModelID();
-						}
+						System.out.println("loading model ID: "
+								+ x.getModelID());
+						oldCountId = Math.max(oldCountId, x.getModelID());
 					}
 
 					if (m instanceof Clan) {
@@ -121,13 +136,17 @@ public class Database {
 	public void persist(Serializable obj) {
 		if (stream != null) {
 			try {
-				Serializable msg = SecurityUtils.encrypt(obj, enc);
-				// Serializable msg = obj;
+				Serializable msg;
+				if (Server.DBENCRYPT) {
+					msg = SecurityUtils.encrypt(obj, enc);
+				} else {
+					msg = obj;
+				}
 				stream.writeUnshared(msg);
 			} catch (IOException e) {
 				logger.warning(obj + " could not be saved.");
 			} catch (IllegalBlockSizeException e) {
-				logger.log(Level.WARNING, "Bad clock size", e);
+				logger.log(Level.WARNING, "Bad block size", e);
 			}
 		}
 		flush();
@@ -145,30 +164,35 @@ public class Database {
 	}
 
 	// Read the database from disk
-	static public void load() throws Exception {
+	static public void load(Cipher adminDec) throws Exception {
 		String dbLocation;
 		String db_key_path;
 		if (Server.DEBUG) {
-			// dbLocation = "resources/elfville"+System.currentTimeMillis()+".db";
+			// dbLocation =
+			// "resources/elfville"+System.currentTimeMillis()+".db";
 			dbLocation = "resources/elfville.db";
-			db_key_path = "resources/elfville.db.der";	
+			db_key_path = "resources/db_key.der";
 		} else {
 			// Ask users for database shared key
 			Scanner scanner = new Scanner(System.in);
 			System.out
-			.println("Input Database file path (type 'resources/elfville.db' for demonstration: ");
+					.println("Input Database file path (type 'resources/elfville.db' for demonstration): ");
 			dbLocation = scanner.nextLine();
 
-			System.out.println("Input Database encryption key file path\n (type 'resources/elfville.db.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
+			System.out
+					.println("Input Database encryption key file path\n (type 'resources/db_key.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
 			db_key_path = scanner.nextLine();
 		}
 
 		// Initiate database key
-		databaseSecret = SecurityUtils.getKeyFromFile(db_key_path);
-		enc = Cipher.getInstance("AES");
-		dec = Cipher.getInstance("AES");
-		enc.init(Cipher.ENCRYPT_MODE, databaseSecret);
-		dec.init(Cipher.DECRYPT_MODE, databaseSecret);
+		if (Server.DBENCRYPT) {
+			databaseSecret = SecurityUtils
+					.getKeyFromFile(db_key_path, adminDec);
+			enc = Cipher.getInstance("AES");
+			dec = Cipher.getInstance("AES");
+			enc.init(Cipher.ENCRYPT_MODE, databaseSecret);
+			dec.init(Cipher.DECRYPT_MODE, databaseSecret);
+		}
 		instance = new Database(dbLocation);
 	}
 

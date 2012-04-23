@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -18,7 +19,7 @@ import javax.crypto.spec.SecretKeySpec;
 import elfville.protocol.utils.Converter;
 
 public class SecurityUtils {
-	static final int PEPPER_SIZE = 1; // 1 byte
+	static final int PEPPER_SIZE = 2; // in bytes
 
 	// Pepper password
 	public static String generateRandomPepper(String password)
@@ -71,15 +72,17 @@ public class SecurityUtils {
 		return (Serializable) m.getObject(dec);
 	}
 
-	public static SecretKey getKeyFromFile(String filepath) throws IOException {
+	public static SecretKey getKeyFromFile(String filepath, Cipher adminDec)
+			throws IOException, IllegalBlockSizeException, BadPaddingException {
 		File f = new File(filepath);
 		FileInputStream fis = new FileInputStream(f);
 		DataInputStream dis = new DataInputStream(fis);
-		byte[] keyBytes = new byte[32];
-		dis.readFully(keyBytes);
+		byte[] b = new byte[32];
+		dis.readFully(b);
+		// fis.read(b);
 		dis.close();
+		// fis.close();
+		byte[] keyBytes = adminDec.doFinal(b);
 		return new SecretKeySpec(keyBytes, "AES");
-
 	}
-
 }
