@@ -48,7 +48,6 @@ public class Message implements Serializable {
 		} else if (o instanceof Iterable<?>) {
 			Iterable<?> i = (Iterable<?>) o;
 			for (Object oo : i) {
-				System.err.println("hi");
 				c ^= getChecksumFor(oo);
 			}
 		} else {

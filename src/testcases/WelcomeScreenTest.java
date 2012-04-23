@@ -40,7 +40,7 @@ public class WelcomeScreenTest extends TestBase {
 				password.toCharArray(), newSharedCipher, 0, "I am an awesome elf");
 		Response resp = thisController.send(req);
 		// System.out.println("signUpTest: " + resp.status.toString());
-		assertEquals(resp.status, Status.SUCCESS);
+		assertEquals(resp.message, Status.SUCCESS, resp.status);
 	}
 
 	/*
@@ -63,12 +63,9 @@ public class WelcomeScreenTest extends TestBase {
 			SocketController thisController = socketControllers.get(i);
 			SharedKeyCipher newSharedCipher = newSharedCipher(thisController);
 			SignUpRequest req = new SignUpRequest("user" + i,
-					password.toCharArray(), newSharedCipher, 0, "I am an awesome elf");
-			descriptions.add("sdfkjdsf" + i);
-			req.description = descriptions.get(i);
+					password.toCharArray(), newSharedCipher, 0, "sdfkjdsf" + i);
+			descriptions.add(req.description);
 			Response resp = thisController.send(req);
-			// System.out.println("multi signup: " + i + " " +
-			// resp.status.toString());
 			assertEquals(resp.status, Status.SUCCESS);
 		}
 	}

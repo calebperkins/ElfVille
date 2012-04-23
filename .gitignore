@@ -5,6 +5,6 @@ bin/*
 *.lock
 *.DS_STORE
 *.swp
-*.db
+*.db*
 *.out
 

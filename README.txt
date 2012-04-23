@@ -11,8 +11,7 @@ root
 * TEAM.txt - our team, and who did what
 * TESTPLAN.txt - a description of our test plan
 * .classpath, .project - files needed if you use Eclipse to build
-* server.jar - a precompiled Server
-* client.jar - a precompiled Client
+* build.xml - If you use Ant to build
 
 src (and bin)
 * elfville - the code for both the server and the client
@@ -27,31 +26,23 @@ elville
 Compiling and running the software from source code
 ===================================================
 
-1. Download and install "Eclipse IDE for Java Developers" from "http://www.eclipse.org/downloads/", if you do not already have it.
-
-2. Start Eclipse. Click File -> Import -> General -> Existing Projects into Workspace. Click Next.
-
-3. For "Select root directory", select the directory in which you downloaded ElfVille. Select to import ElfVille. Click Finish.
-
-4. Eclipse will generate and compile all the .class files for you. Right-click the project and select Export. Select Java -> JAR file -> Next. Select where you want to save the JAR file (name this one server.jar) and click Next. Click Next again.
-
-5. Under "Main class:", select "Server." Click Finish.
-
-6. To build the client jar, repeat step 4 (but name it client.jar), and for step 5, select "Client."
+1. `cd` to the directory you downloaded Elfville.
+2. Run `ant jar` to compile and build the jar files
+3. The jar files will be found in `bin/dist/`
 
 Running the server
 ==================
 
-1. Open up a command prompt and "cd" to the ElfVille directory to use our provided JAR, or to the directory where you exported a server JAR if you built from source.
+1. Open up a command prompt and `cd` to `Elfville`
 
-2. Execute `java -jar server.jar 8444 /path/to/elfville.db /path/to/imitation_sysadmin.der`, where `/path/to/elfville.db` is where you would like to load an existing database or store a new one, and `/path/to/imitation_sysadmin.der` is the "very long secret" that our sysadmin will have memorized as a password of sorts (for simplification purposes). If the file cannot be found, the server will create it for you, but be sure the file location is writable! The `8444` refers to the port to listen on.
+2. Execute `java -jar bin/dist/server.jar 8444 /path/to/elfville.db /path/to/imitation_sysadmin.der`, where `/path/to/elfville.db` is where you would like to load an existing database or store a new one, and `/path/to/imitation_sysadmin.der` is the "very long secret" that our sysadmin will have memorized as a password of sorts (for simplification purposes). If the file cannot be found, the server will create it for you, but be sure the file location is writable! The `8444` refers to the port to listen on.
 
 3. Ensure port 8444 is available for your server, and open firewalls if needed. You should now have a server running on "localhost", port "8444."
 
 Running a client
 ================
 
-1. Open up a command prompt and "cd" to the ElfVille directory to use our provided JAR, or to the directory where you exported a client JAR if you built from source.
+1. Open up a command prompt and `cd` to `Elfville/bin/dist`
 
 2. Execute `java -jar client.jar localhost 8444 /path/to/elfville.pub.der`. The first two arguments refer to the server you started in the previous section. The final argument, `/path/to/elfville.pub.der` is the location of the stored public key for the server. A Swing window will appear.
 
