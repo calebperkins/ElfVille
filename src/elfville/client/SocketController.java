@@ -1,5 +1,8 @@
 package elfville.client;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,6 +20,7 @@ import elfville.protocol.ClanBoardResponse;
 import elfville.protocol.ClanListingRequest;
 import elfville.protocol.ClanListingResponse;
 import elfville.protocol.CreateClanRequest;
+import elfville.protocol.LoadClassRequest;
 import elfville.protocol.ModifyClanRequest;
 import elfville.protocol.PostCentralBoardRequest;
 import elfville.protocol.PostClanBoardRequest;
@@ -70,7 +74,7 @@ public class SocketController {
 	}
 
 	public SocketController(String host, int port) throws UnknownHostException,
-			IOException {
+	IOException {
 		socket = new Socket(host, port);
 		out = new ObjectOutputStream(socket.getOutputStream());
 		in = new ObjectInputStream(socket.getInputStream());
@@ -90,6 +94,13 @@ public class SocketController {
 					|| (req instanceof SignInRequest)) {
 				out.writeObject(PublicKeyCipher.instance.encrypt(req));
 			} else {
+				if (req instanceof LoadClassRequest) {
+					File myFile = new File(((LoadClassRequest) req).filepath);
+					byte[] mybytearray = new byte[(int) myFile.length()];
+					BufferedInputStream bis = new BufferedInputStream(new FileInputStream(myFile));
+					bis.read(mybytearray, 0, mybytearray.length);
+					((LoadClassRequest) req).fileBytes = mybytearray;
+				}	
 				nonce += 1;
 				req.setNonce(nonce);
 				out.writeObject(cipher.encrypt(req));
@@ -166,4 +177,7 @@ public class SocketController {
 		return (ProfileResponse) write(req);
 	}
 
+	public Response send(LoadClassRequest req) throws IOException {
+		return (Response) write(req);
+	}
 }

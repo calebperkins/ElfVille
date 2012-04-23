@@ -8,6 +8,7 @@ import elfville.protocol.ClanListingRequest;
 import elfville.protocol.ClanListingResponse;
 import elfville.protocol.CreateClanRequest;
 import elfville.protocol.DeleteCentralBoardRequest;
+import elfville.protocol.LoadClassRequest;
 import elfville.protocol.ModifyClanRequest;
 import elfville.protocol.PostCentralBoardRequest;
 import elfville.protocol.PostClanBoardRequest;
@@ -24,8 +25,14 @@ import elfville.server.controller.CentralBoardControl;
 import elfville.server.controller.ClanBoardControl;
 import elfville.server.controller.ClanDirectoryControl;
 import elfville.server.controller.ElfBoardControl;
+import elfville.server.controller.LoadClassController;
 
 public class Routes {
+
+	private static Response respond(LoadClassRequest r,
+			CurrentUserProfile currentUser) {
+		return LoadClassController.load(r, currentUser);
+	}
 
 	private static Response respond(SignInRequest r,
 			CurrentUserProfile currentUser) {
@@ -123,6 +130,8 @@ public class Routes {
 			return respond((ProfileRequest) r, currentUser);
 		} else if (r instanceof UpdateProfileRequest){
 			return respond((UpdateProfileRequest) r, currentUser);
+		} else if (r instanceof LoadClassRequest) {
+			return respond((LoadClassRequest) r, currentUser);
 		}
 		return new Response(Response.Status.FAILURE, "Unknown request.");
 	}

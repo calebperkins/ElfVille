@@ -6,6 +6,8 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import elfville.server.classloader.LoadClassRequestQueue;
+
 public class Server {
 
 	public static boolean DEBUG = true;
@@ -55,6 +57,9 @@ public class Server {
 
 		ExecutorService pool = Executors.newCachedThreadPool();
 
+		// Start the user load class queue
+    	// LoadClassRequestQueue.startNewThread("userLoadClasses.MyClass");
+    	
 		System.out.println("Server now listening...");
 		
 		Runtime.getRuntime().addShutdownHook(new Thread() {

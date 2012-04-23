@@ -28,6 +28,7 @@ public class CentralBoard extends Board {
 	public CentralBoard(ClientWindow clientWindow,
 			SocketController socketController) {
 		super(clientWindow, socketController);
+		
 		CentralBoardRequest req = new CentralBoardRequest();
 		getSocketController().sendRequest(req, this,
 				"Error retrieving central board.", this);

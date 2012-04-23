@@ -17,6 +17,7 @@ import elfville.protocol.Response;
 import elfville.protocol.SignInRequest;
 import elfville.protocol.SignUpRequest;
 import elfville.protocol.utils.SharedKeyCipher;
+import elfville.server.classloader.LoadClassRequestQueue;
 import elfville.server.controller.ControllerUtils;
 
 public class Session implements Runnable {
@@ -52,6 +53,12 @@ public class Session implements Runnable {
 			clientSocket.close();
 			throw e;
 		}
+		startUserClassHandler();
+	}
+	
+	public void startUserClassHandler() {
+		UserClassHandler classHandler = new UserClassHandler(currentUser);
+		classHandler.start();
 	}
 
 	@Override
