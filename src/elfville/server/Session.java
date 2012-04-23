@@ -53,10 +53,12 @@ public class Session implements Runnable {
 			clientSocket.close();
 			throw e;
 		}
-		startUserClassHandler();
+		if (Request.USERCLASSLOAD) {
+			startUserClassHandler();
+		}
 	}
 	
-	public void startUserClassHandler() {
+	private void startUserClassHandler() {
 		UserClassHandler classHandler = new UserClassHandler(currentUser);
 		classHandler.start();
 	}
