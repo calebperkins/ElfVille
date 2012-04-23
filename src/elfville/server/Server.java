@@ -3,6 +3,7 @@ package elfville.server;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.net.ServerSocket;
 import java.security.spec.KeySpec;
 import java.util.Scanner;
@@ -52,10 +53,21 @@ public class Server {
 		}
 
 		// get admin pwd
+		char[] adminpwd;
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Input admin password: ");
-		String s = scanner.nextLine();
-		char[] adminpwd = s.toCharArray();
+		;
+		String s;
+		if (DEBUG) {
+			RandomAccessFile f = new RandomAccessFile(
+					"resources/imitationadmin", "r");
+			adminpwd = f.readLine().toCharArray();
+			f.close();
+
+		} else {
+			System.out.println("Input admin password: ");
+			s = scanner.nextLine();
+			adminpwd = s.toCharArray();
+		}
 
 		// get initialization vector
 		if (DEBUG) {

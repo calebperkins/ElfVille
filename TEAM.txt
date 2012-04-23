@@ -17,4 +17,7 @@ TODO
 
 Aaron Martinez (amm257)
 =======================
-TODO
+* Made elf description work
+* helped make checksums work
+* made server startup only rely on a password
+18 hours give or take an hour
