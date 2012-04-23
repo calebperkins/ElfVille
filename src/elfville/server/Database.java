@@ -166,7 +166,7 @@ public class Database {
 	}
 
 	// Read the database from disk
-	static public void load() throws Exception {
+	static public void load(Cipher adminDec) throws Exception {
 		String dbLocation;
 		String db_key_path;
 		if (Server.DEBUG) {
@@ -188,7 +188,8 @@ public class Database {
 
 		// Initiate database key
 		if (Server.DBENCRYPT) {
-			databaseSecret = SecurityUtils.getKeyFromFile(db_key_path);
+			databaseSecret = SecurityUtils
+					.getKeyFromFile(db_key_path, adminDec);
 			enc = Cipher.getInstance("AES");
 			dec = Cipher.getInstance("AES");
 			enc.init(Cipher.ENCRYPT_MODE, databaseSecret);

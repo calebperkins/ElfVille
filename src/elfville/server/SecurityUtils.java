@@ -72,15 +72,17 @@ public class SecurityUtils {
 		return (Serializable) m.getObject(dec);
 	}
 
-	public static SecretKey getKeyFromFile(String filepath) throws IOException {
+	public static SecretKey getKeyFromFile(String filepath, Cipher adminDec)
+			throws IOException, IllegalBlockSizeException, BadPaddingException {
 		File f = new File(filepath);
 		FileInputStream fis = new FileInputStream(f);
 		DataInputStream dis = new DataInputStream(fis);
-		byte[] keyBytes = new byte[32];
-		dis.readFully(keyBytes);
+		byte[] b = new byte[32];
+		dis.readFully(b);
+		// fis.read(b);
 		dis.close();
+		// fis.close();
+		byte[] keyBytes = adminDec.doFinal(b);
 		return new SecretKeySpec(keyBytes, "AES");
-
 	}
-
 }
