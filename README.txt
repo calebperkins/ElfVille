@@ -96,3 +96,11 @@ Client
 ======
 
 The client follows a similar MVC pattern. All the communication to the server takes place in SocketController class, the only needed controller. To handle button clicks and the like, some of the views implement ActionListener, which invoke the SocketController. The client is implemented in Java Swing.
+
+=======================
+Extra Credit
+======================
+
+- Initiate new thread for each incoming user class load request. Each thread is limited to run for only at most 5 second to prevent infinite loops or extreme memory or computation usage.
+- The customized security manager and class loader block user uploaded class’s access to any package in elfville.server except elfville.server.classloader, which contains the API. It’s also banned to do everything other than loading classes.
+- All user uploaded class can do is to create new Request req and call API.addRequest(req). This will put the request into a Queue and a server thread created only for this socket connection will handle the requests.

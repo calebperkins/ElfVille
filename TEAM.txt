@@ -9,7 +9,9 @@ Caleb Perkins (ctp34)
 
 Brian Toth (bdt25)
 =================
-TODO
+* Fixed padding
+* Fixed controller classes
+* Added Authorization to controller classes
 
 Heran Yang (hy279)
 ==================

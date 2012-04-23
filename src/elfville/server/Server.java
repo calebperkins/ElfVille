@@ -40,7 +40,7 @@ public class Server {
 		}
 
 		DEBUG = args.length > 1 && args[1].equals("DEBUG");
-		DEBUG = true;
+		// DEBUG = true;
 
 		ServerSocket serverSocket = null;
 		boolean listening = true;
