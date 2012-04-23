@@ -88,9 +88,7 @@ public class Database {
 						}
 						System.out.println("loading model ID: "
 								+ x.getModelID());
-						if (oldCountId < x.getModelID()) {
-							oldCountId = x.getModelID();
-						}
+						oldCountId = Math.max(oldCountId, x.getModelID());
 					}
 
 					if (m instanceof Clan) {
@@ -173,7 +171,7 @@ public class Database {
 			// dbLocation =
 			// "resources/elfville"+System.currentTimeMillis()+".db";
 			dbLocation = "resources/elfville.db";
-			db_key_path = "resources/elfville.db.der";
+			db_key_path = "resources/db_key.der";
 		} else {
 			// Ask users for database shared key
 			Scanner scanner = new Scanner(System.in);
@@ -182,7 +180,7 @@ public class Database {
 			dbLocation = scanner.nextLine();
 
 			System.out
-					.println("Input Database encryption key file path\n (type 'resources/elfville.db.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
+					.println("Input Database encryption key file path\n (type 'resources/db_key.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
 			db_key_path = scanner.nextLine();
 		}
 

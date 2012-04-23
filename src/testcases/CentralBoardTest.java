@@ -108,7 +108,7 @@ public class CentralBoardTest extends TestBase {
 		System.out.println("CENTRAL BOARD TEST 4!");
 		CentralBoardRequest req = new CentralBoardRequest();
 		CentralBoardResponse resp = socketControllers.get(0).send(req);
-		assertEquals(resp.status, Status.SUCCESS);
+		assertTrue(resp.message, resp.isOK());
 
 		for (int i = 0; i < clientNum; i++) {
 			SerializablePost post = resp.posts.get(i);

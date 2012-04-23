@@ -40,7 +40,7 @@ public class WelcomeScreenTest extends TestBase {
 				password.toCharArray(), newSharedCipher, 0, "I am an awesome elf");
 		Response resp = thisController.send(req);
 		// System.out.println("signUpTest: " + resp.status.toString());
-		assertEquals(resp.status, Status.SUCCESS);
+		assertEquals(resp.message, Status.SUCCESS, resp.status);
 	}
 
 	/*
