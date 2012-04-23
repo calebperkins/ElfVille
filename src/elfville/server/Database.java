@@ -176,7 +176,7 @@ public class Database {
 			// Ask users for database shared key
 			Scanner scanner = new Scanner(System.in);
 			System.out
-					.println("Input Database file path (type 'resources/elfville.db' for demonstration: ");
+					.println("Input Database file path (type 'resources/elfville.db' for demonstration): ");
 			dbLocation = scanner.nextLine();
 
 			System.out

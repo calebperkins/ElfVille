@@ -7,20 +7,29 @@ Directory contents
 root
 * src - all files in here are *.java files, needed to compile the software
 * bin - this is where generated *.class files can go, and also *.jar files
+* resources - where (encrypted) database and (encrypted) keys are stored
 * README.txt - this file!
 * TEAM.txt - our team, and who did what
 * TESTPLAN.txt - a description of our test plan
 * .classpath, .project - files needed if you use Eclipse to build
 * build.xml - If you use Ant to build
 
+resources
+* db_Key.der is a 128 bit (because my computer does not support 256 bits) AES key that is encrypted under the admins password (by which I mean the admin's password is used to generate a 128 bit AES key that encrypts and decrypts the other keys)
+* elfville.der is the 4096 bit RSA private key encrypted under admin's password
+* elfville.pub.der is the 4096 bit RSA public key
+* initializationvector is the initialization vector associated with the admin's generated AES key
+* imitationadmin is a clear text storage of the admin's password that only exists for debugging and testing purposes (in reality you have a real admin that remember's his or her password). Our test suite requires that there's an automated way to start the server.
+
 src (and bin)
 * elfville - the code for both the server and the client
 * testcases - source for junit testing code
 
-elville
+elfville
 * client - code for the client; includes views which are the high level "pages" that you see (views is legacy name from when we were using a cardlayout); and views in turn has the sub package "subcomponents" which are generally JPanel elements on the view jpanel "pages".
 * protocol - These are the classes sent back and forth between the client and the server (all are serializable). This has the subpackage "models" which contains classes that contain information that is data (and not merely a signalt to the server (or client) of what to do with the received message). It also has the subpackage utils, which is contains classes for cryptography.
 * server - code for the server. Includes the database classes (storing and retrieving information), the model classes (the data objects), and the controller classes (deal with incoming requests (and sending responses back)).
+* createkeys - contains the necessary code for generating keys encrypted under an admin password. Obviously you could generate your own key and then apply the generated admin key to it, we just found this easier for testing.
 
 ==================================================
 Compiling and running the software from source code
@@ -35,7 +44,7 @@ Running the server
 
 1. Open up a command prompt and `cd` to `Elfville`
 
-2. Execute `java -jar bin/dist/server.jar 8444 /path/to/elfville.db /path/to/imitation_sysadmin.der`, where `/path/to/elfville.db` is where you would like to load an existing database or store a new one, and `/path/to/imitation_sysadmin.der` is the "very long secret" that our sysadmin will have memorized as a password of sorts (for simplification purposes). If the file cannot be found, the server will create it for you, but be sure the file location is writable! The `8444` refers to the port to listen on.
+2. Execute `java -jar bin/dist/server.jar 8444 DEBUG where 8444 is desired port (if no arguments, defaults to 8444), and DEBUG is essentially a flag declaring whether debugging or not (automatically assumes all defaults and presumes there will be an imitation admin file). If not in debug, it will prompt you for the admin password (thisisalongpassphrase is default), the path to the initializationvector file, the path to the database, the path to the AES key (encrypted under admin password) that is used to decrypt and encrypt the database, and the path to the rsa private key (encrypted under admin password).
 
 3. Ensure port 8444 is available for your server, and open firewalls if needed. You should now have a server running on "localhost", port "8444."
 

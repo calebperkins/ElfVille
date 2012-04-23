@@ -39,7 +39,7 @@ public class Server {
 			System.out.println("Using port " + port + " as default");
 		}
 
-		// DEBUG = args.length > 1 && args[1].equals("DEBUG");
+		DEBUG = args.length > 1 && args[1].equals("DEBUG");
 		// DEBUG = true;
 
 		ServerSocket serverSocket = null;
@@ -64,7 +64,8 @@ public class Server {
 			f.close();
 
 		} else {
-			System.out.println("Input admin password: ");
+			System.out
+					.println("Input admin password (resouces/initializationvector for demo): ");
 			s = scanner.nextLine();
 			adminpwd = s.toCharArray();
 		}
