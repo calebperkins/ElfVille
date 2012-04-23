@@ -11,7 +11,7 @@ public class SerializableClan extends SerializableModel {
 	private static final long serialVersionUID = 1L;
 	public String clanName;
 	public String clanDescription;
-	public int numSocks;
+	public int numSocks = 0;
 	public SerializableElf leader;
 	public Set<SerializableElf> members;
 	public List<SerializableElf> applicants;
@@ -30,14 +30,21 @@ public class SerializableClan extends SerializableModel {
 
 	@Override
 	public int getChecksum() {
-		int c = clanName.hashCode() ^ clanDescription.hashCode() ^ numSocks ^ leader.getChecksum();
-		for (SerializableModel member : members)
-			c ^= member.getChecksum();
-		for (SerializableModel member : applicants)
-			c ^= member.getChecksum();
-		for (SerializableModel member : posts)
-			c ^= member.getChecksum();
+		int c = (clanName == null ? 0 : clanName.hashCode())
+				^ (clanDescription == null ? 0 : clanDescription.hashCode())
+				^ numSocks ^ (leader == null ? 0 : leader.getChecksum());
+		if (members != null) {
+			for (SerializableModel member : members)
+				c ^= member.getChecksum();
+		}
+		if (applicants != null) {
+			for (SerializableModel member : applicants)
+				c ^= member.getChecksum();
+		}
+		if (posts != null) {
+			for (SerializableModel member : posts)
+				c ^= member.getChecksum();
+		}
 		return c;
 	}
-
 }

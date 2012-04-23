@@ -32,14 +32,13 @@ public class Message implements Serializable {
 					Object o = f.get(this);
 					c ^= getChecksumFor(o);
 				} catch (IllegalAccessException e) {
-					//System.err.println("illegal to access " + f.getName());
+					// System.err.println("illegal to access " + f.getName());
 					// ignore it...
 				}
 		}
-		System.err.println("Checksummed!!!");
 		return c;
 	}
-	
+
 	private int getChecksumFor(Object o) {
 		int c = 0;
 		if (o instanceof SerializableModel) {
@@ -53,7 +52,8 @@ public class Message implements Serializable {
 				c ^= getChecksumFor(oo);
 			}
 		} else {
-			c = c ^ o.hashCode();
+			if (o != null)
+				c = c ^ o.hashCode();
 		}
 		return c;
 	}

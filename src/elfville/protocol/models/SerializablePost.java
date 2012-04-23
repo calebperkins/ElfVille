@@ -32,10 +32,9 @@ public class SerializablePost extends SerializableModel implements
 
 	@Override
 	public int getChecksum() {
-		return (username == null ? 0 :username.hashCode())
-				^ title.hashCode() 
-				^ upvotes ^ downvotes
-				^ content.hashCode() ^ elfModelID.hashCode()
+		return (username == null ? 0 : username.hashCode()) ^ title.hashCode()
+				^ upvotes ^ downvotes ^ content.hashCode()
+				^ (elfModelID == null ? 0 : elfModelID.hashCode())
 				^ (iVoted ? 1231 : 1237) ^ (myPost ? 1231 : 1237);
 	}
 }

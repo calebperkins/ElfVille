@@ -96,6 +96,7 @@ public class Routes {
 			CurrentUserProfile currentUser) {
 		// first check to see if the user should time out
 		if (r.isDirty()) {
+			System.err.println("Checksum failed.");
 			return new Response(Response.Status.FAILURE,
 					"Invalid checksum, message corrupted in transit.");
 		} else if (r instanceof CentralBoardRequest) {

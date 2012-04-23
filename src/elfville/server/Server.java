@@ -27,6 +27,10 @@ public class Server {
 			System.out.println("Using port " + port + " as default");
 		}
 
+		Scanner scanner = new Scanner(System.in);
+		// System.out.println("Input admin password: ");
+		// String adminpwd = scanner.nextLine();
+
 		// DEBUG = args.length > 1 && args[1].equals("DEBUG");
 		// DEBUG = true;
 
@@ -47,7 +51,6 @@ public class Server {
 		if (DEBUG) {
 			dbPrivateKeyPath = "resources/elfville.der";
 		} else {
-			Scanner scanner = new Scanner(System.in);
 			System.out
 					.println("Input the file path for the private encryption key to use for socket communications.\n(Type 'resources/elfville.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
 			dbPrivateKeyPath = scanner.nextLine();

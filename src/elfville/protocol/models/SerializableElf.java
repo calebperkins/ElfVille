@@ -9,12 +9,14 @@ public class SerializableElf extends SerializableModel {
 	public int numSocks;
 	public String description;
 	public List<SerializablePost> centralBoardPosts;
-	
+
 	@Override
 	public int getChecksum() {
 		int c = elfName.hashCode() ^ numSocks ^ description.hashCode();
-		for (SerializablePost p : centralBoardPosts)
-			c ^= p.getChecksum();
+		if (centralBoardPosts != null) {
+			for (SerializablePost p : centralBoardPosts)
+				c ^= p.getChecksum();
+		}
 		return c;
 	}
 
