@@ -1,32 +1,47 @@
 package elfville.server;
 
+import elfville.protocol.CentralBoardRequest;
+import elfville.protocol.PostClassLoaderBoardRequest;
 import elfville.protocol.Request;
 import elfville.protocol.Response;
-import elfville.server.classloader.LoadClassRequestQueue;
+import elfville.server.classloader.Holder;
+import elfville.server.classloader.QueueClassLoader;
+import elfville.server.controller.LoadClassController;
 
 public class UserClassHandler extends Thread {
-	
-	private CurrentUserProfile currentUser;
-	
-	UserClassHandler(CurrentUserProfile currentUser) {
-		this.currentUser = currentUser;
-	}
 
 	public void handleRequestQueue() throws InterruptedException {
+		Request userReq;
+		Holder holder;
 		while(true) {
-			Thread.sleep(500);
-			// System.out.println("apiQueue length is: " + LoadClassRequestQueue.size());
-			if (LoadClassRequestQueue.isEmpty()) {
-				continue;
+			userReq = null;
+			holder = QueueClassLoader.dequeue();
+			synchronized(holder.requestHolderLock) {
+				while (holder.requestHolder == null) {
+					holder.requestHolderLock.wait();
+				}
+				userReq = holder.requestHolder;
+				holder.requestHolder = null;
 			}
-			Request userReq = LoadClassRequestQueue.poll();
-			userReq.setChecksum();
-			System.out.println(userReq.toString());
-			
-			Response response = Routes.processRequest(userReq, currentUser);
+
+			if (userReq instanceof PostClassLoaderBoardRequest) {
+				synchronized(LoadClassController.postLoadMessageLock) {
+					LoadClassController.postLoadMessage = ((PostClassLoaderBoardRequest) userReq).message;
+					LoadClassController.postLoadMessageLock.notify();
+				}
+			}
+
+			synchronized(holder.responseHolderLock) {
+				userReq.setChecksum();
+				System.out.println(userReq.toString());
+
+				holder.responseHolder = Routes.processRequest(userReq, holder.currentUserProfile);
+				holder.responseHolderLock.notify();
+			}
+
 		}
 	}
-	
+
 	public void run() {
 		try {
 			handleRequestQueue();
@@ -41,5 +56,5 @@ public class UserClassHandler extends Thread {
     	LoadClassRequestQueue.startNewThread();
     	// handleRequestQueue();
     }
-    */
+	 */
 }

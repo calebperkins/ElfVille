@@ -25,11 +25,7 @@ public class CustomSecurityManager extends SecurityManager {
 		if (secret == null) {
 			return;
 		}
-		System.out.println("Permission check called");
-		System.out.println(perm.getActions());
-		System.out.println(perm.getName());
-		System.out.println(perm.getClass());
-		System.out.println(perm);
+		
 		//erm.equals(new RuntimePermission("createClassLoader")) ||
 		//perm.equals(new RuntimePermission("setSecurityManager")) ||
 		if (perm.getClass().toString().equals("class java.io.FilePermission") ||
@@ -37,8 +33,14 @@ public class CustomSecurityManager extends SecurityManager {
 				) {
 			return;
 		}
-		throw new SecurityException();
-
+		System.out.println("Permission check called");
+		System.out.println(perm.getActions());
+		System.out.println(perm.getName());
+		System.out.println(perm.getClass());
+		System.out.println(perm);
+		
+		// throw new SecurityException();
+		return;
 	}
 }
 

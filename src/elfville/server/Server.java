@@ -40,7 +40,7 @@ public class Server {
 		}
 
 		DEBUG = args.length > 1 && args[1].equals("DEBUG");
-		// DEBUG = true;
+		DEBUG = true;
 
 		ServerSocket serverSocket = null;
 		boolean listening = true;
@@ -65,7 +65,7 @@ public class Server {
 
 		} else {
 			System.out
-					.println("Input admin password (resouces/initializationvector for demo): ");
+			.println("Input admin password (demo: thisisalongpassphrase): ");
 			s = scanner.nextLine();
 			adminpwd = s.toCharArray();
 		}
@@ -74,7 +74,7 @@ public class Server {
 		if (DEBUG) {
 			s = "resources/initializationvector";
 		} else {
-			System.out.println("Input IV filename: ");
+			System.out.println("Input IV filename (demo: resources/initializationvector): ");
 			s = scanner.nextLine();
 		}
 		FileInputStream fis = new FileInputStream(s);
@@ -104,7 +104,7 @@ public class Server {
 			dbPrivateKeyPath = "resources/elfville.der";
 		} else {
 			System.out
-					.println("Input the file path for the private encryption key to use for socket communications.\n(Type 'resources/elfville.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
+			.println("Input the file path for the private encryption key to use for socket communications.\n(Type 'resources/elfville.der' for demonstration,\n of course you can load one from your flash drive\n that you are inserting right now): ");
 			dbPrivateKeyPath = scanner.nextLine();
 		}
 		// Initialize private key
@@ -114,8 +114,10 @@ public class Server {
 		ExecutorService pool = Executors.newCachedThreadPool();
 
 		// Start the user load class queue
-    	// LoadClassRequestQueue.startNewThread("userLoadClasses.MyClass");
-    	
+		UserClassHandler classHandler = new UserClassHandler();
+		classHandler.start();
+
+
 		System.out.println("Server now listening...");
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {

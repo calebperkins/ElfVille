@@ -4,22 +4,24 @@ import java.lang.reflect.InvocationTargetException;
 
 import elfville.protocol.CentralBoardRequest;
 import elfville.protocol.PostCentralBoardRequest;
+import elfville.protocol.PostClassLoaderBoardRequest;
 import elfville.protocol.Request;
-import elfville.server.classloader.API;
+import elfville.protocol.Response;
+import elfville.protocol.api.API;
 
 public class MyClass {
 
-	public static void main(String [] args) throws InterruptedException, ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public static void main(String arg) {
 		// System.out.println(MyClass.class.getClassLoader().getParent().loadClass("loader.MainRun"));
+		API api = new API(arg);
 		String title = "Paul awesome post";
 		String content = "Hello TAs";
 		PostCentralBoardRequest req = new PostCentralBoardRequest(title,
 				content);
-		API.addRequest(req);
-		
-		// System.getSecurityManager();
+		Response postCentralBoardResponse = api.process(req);
 
-		// MyClass.class.getClassLoader().getParent().loadClass("loader.MainRun").getMethod("addElement", null).invoke(null, null);
-		// MainRun.addElement();
+		PostClassLoaderBoardRequest postReq = new PostClassLoaderBoardRequest();
+		postReq.message = "Im just testing to see if this works";
+		api.process(postReq);
 	}
 }

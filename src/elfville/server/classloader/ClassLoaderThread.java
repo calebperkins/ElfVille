@@ -6,9 +6,11 @@ public class ClassLoaderThread extends Thread {
 	private CustomSecurityManager sm = new CustomSecurityManager(pass);
 	
 	private String newLoadingClassName;
+	private String userIdToken;
 	
-	public ClassLoaderThread(String newUserClassName) {
+	public ClassLoaderThread(String newUserClassName, String userIdToken) {
 		newLoadingClassName = newUserClassName;
+		this.userIdToken = userIdToken;
 	}
 	
 	public void run() {
@@ -27,8 +29,8 @@ public class ClassLoaderThread extends Thread {
 	private void runUntrustedCode() throws Exception {
 		Class clsB64 = Class.forName(newLoadingClassName, true, loader);
 		java.lang.reflect.Method main = clsB64.getMethod("main", 
-				new Class[] {String[].class});
-		main.invoke(null, new Object[]{ new String[]{} });
+				new Class[] {String.class});
+		main.invoke(null, new Object[] {userIdToken});
 	}
 	
 	
